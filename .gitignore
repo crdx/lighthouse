@@ -1,0 +1,9 @@
+/dist/
+/bin/
+/logs/
+
+# sfe: ignore next 4
+/TODO.md
+/.env
+/.env.prod
+static-dhcp.conf

@@ -1,0 +1,17 @@
+/* TODO: Build bulma from SCSS and move some of these to variables. */
+
+code {
+    color: #363636;
+}
+
+.is-family-monospace {
+    font-size: 0.9em;
+}
+
+.icon-online {
+    color: green;
+}
+
+.icon-offline {
+    color: red;
+}

@@ -1,0 +1,43 @@
+<div class="">
+    <section class="section">
+        <table class="table is-striped is-fullwidth is-narrow">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th class="is-hidden-touch">IP Address</th>
+                <th class="is-hidden-touch">Vendor</th>
+                <th class="is-hidden-mobile">MAC Address</th>
+                <th>Last Seen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .devices }}
+            <tr>
+                <td>
+                    {{ if eq .State "online" }}
+                        <i class="fa fa-check icon-online"></i>
+                    {{ else }}
+                        <i class="fa fa-times icon-offline"></i>
+                    {{ end }}
+                </td>
+                <td>
+                    <div>{{ .Name }}</div>
+                    <div class="is-hidden-desktop is-family-monospace has-text-grey">{{ .IPAddress }}</div>
+                </td>
+                <td class="is-hidden-touch is-family-monospace">{{ .IPAddress }}</td>
+                <td class="is-hidden-touch ">{{ .Vendor }}</td>
+                <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
+                <td title="{{ escape .LastSeen.String }}">
+                    <div class="is-hidden-touch">{{ timeAgoVerbose .LastSeen  }}</div>
+                    <div class="is-hidden-desktop">
+                        <div>{{ timeAgo .LastSeen  }}</div>
+                        <!-- <div class="has-text-grey is-italic">{{ .Vendor }}</div> -->
+                    </div>
+                </td>
+            </tr>
+            {{ end }}
+        </tbody>
+        </table>
+    </section>
+</div>

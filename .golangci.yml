@@ -1,0 +1,117 @@
+linters:
+  enable-all: true
+  disable:
+    - cyclop
+    - deadcode
+    - depguard
+    - exhaustivestruct
+    - exhaustruct
+    - forbidigo
+    - forcetypeassert
+    - funlen
+    - gci
+    - gochecknoglobals
+    - gochecknoinits
+    - godox
+    - goerr113
+    - gofmt
+    - gofumpt
+    - golint
+    - gomnd
+    - goprintffuncname
+    - gosec
+    - ifshort
+    - interfacer
+    - ireturn
+    - lll
+    - maligned
+    - nakedret
+    - nestif
+    - nlreturn
+    - noctx
+    - nonamedreturns
+    - nosnakecase
+    - paralleltest
+    - prealloc
+    - scopelint
+    - structcheck
+    - tagliatelle
+    - testpackage
+    - varcheck
+    - varnamelen
+    - wrapcheck
+    - wsl
+
+linters-settings:
+  gocritic:
+    disabled-checks:
+      - ifElseChain
+
+  govet:
+    disable:
+      - loopclosure
+
+  revive:
+    rules:
+      # golint
+      - name: context-as-argument
+      - name: context-keys-type
+      - name: dot-imports
+      - name: error-naming
+      - name: error-return
+      - name: error-strings
+      - name: errorf
+      - name: exported
+      - name: increment-decrement
+      - name: package-comments
+      - name: range
+      - name: time-naming
+      - name: unexported-return
+      - name: var-declaration
+      # extras
+      - name: atomic
+      - name: bool-literal-in-expr
+      - name: call-to-gc
+      - name: confusing-results
+      - name: constant-logical-expr
+      - name: defer
+      - name: duplicated-imports
+      - name: early-return
+      - name: empty-block
+      - name: empty-lines
+      - name: get-return
+      - name: identical-branches
+      - name: if-return
+      - name: import-shadowing
+      - name: imports-blacklist
+      - name: modifies-parameter
+      - name: modifies-value-receiver
+      - name: nested-structs
+      - name: range-val-address
+      - name: redefines-builtin-id
+      - name: string-format
+      - name: string-of-int
+      - name: struct-tag
+      - name: unconditional-recursion
+      - name: unexported-naming
+      - name: unnecessary-stmt
+      - name: unreachable-code
+      - name: unused-parameter
+      - name: unused-receiver
+      - name: useless-break
+      - name: waitgroup-by-value
+      # disabled
+      # - name: add-constant
+      # - name: deep-exit
+      # - name: flag-parameter
+      # - name: unhandled-error
+      - name: receiver-naming
+        disabled: true
+      - name: indent-error-flow
+        disabled: true
+      - name: blank-imports
+        disabled: true
+
+  stylecheck:
+    checks:
+      - '-ST1006'
