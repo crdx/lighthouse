@@ -2,13 +2,26 @@
     <section class="section">
         <table class="table is-striped is-fullwidth is-narrow">
         <thead>
+            {{ define "column" }}
+                <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
+                    {{ .Label }}
+                    {{ if eq .CurrentSortColumn .SortColumn }}
+                        {{ if eq .CurrentSortDirection "asc" }}
+                            <i class="fas fa-arrow-down icon--small"></i>
+                        {{ else }}
+                            <i class="fas fa-arrow-up icon--small"></i>
+                        {{ end }}
+                    {{ end }}
+                </a>
+            {{ end }}
+
             <tr>
-                <th></th>
-                <th>Name</th>
-                <th class="is-hidden-touch">IP Address</th>
-                <th class="is-hidden-touch">Vendor</th>
-                <th class="is-hidden-mobile">MAC Address</th>
-                <th>Last Seen</th>
+                <th><i class="fas fa-exchange-alt icon--small"></i></th>
+                <th>{{ template "column" .columns.name }}</th>
+                <th class="is-hidden-touch">{{ template "column" .columns.ip }}</th>
+                <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
+                <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
+                <th>{{ template "column" .columns.seen }}</th>
             </tr>
         </thead>
         <tbody>

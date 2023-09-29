@@ -1,6 +1,7 @@
 package deviceModel
 
 import (
+	"fmt"
 	"time"
 
 	"crdx.org/db"
@@ -41,8 +42,16 @@ const (
 	StateOffline = "offline"
 )
 
-func GetListView() []DeviceListView {
-	return db.Query[[]DeviceListView](`
+func GetListView(sortColumn string, sortDirection string) []DeviceListView {
+	sortColumns := map[string]string{
+		"name":   "D.name",
+		"ip":     "INET_ATON(DM1.ip_address)",
+		"vendor": "D.vendor",
+		"mac":    "D.mac_address",
+		"seen":   "DM1.last_seen",
+	}
+
+	return db.Query[[]DeviceListView](fmt.Sprintf(`
 		SELECT
 			D.id,
 			D.name,
@@ -58,8 +67,8 @@ func GetListView() []DeviceListView {
 		WHERE D.deleted_at IS NULL
 		AND DM1.deleted_at IS NULL
 		AND DM2.id IS NULL
-		ORDER BY DM1.last_seen DESC
-	`)
+		ORDER BY %s %s
+	`, sortColumns[sortColumn], sortDirection))
 }
 
 func Upsert(networkID uint, macAddress string) (Device, bool) {
