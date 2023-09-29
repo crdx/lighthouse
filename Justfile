@@ -43,7 +43,7 @@ set dotenv-load := true
     docker-compose down
 
 # deploy the container
-@deploy: build
+@deploy: lint build
     deploy-container \
         --host s \
         --image "{{ IMAGE_NAME }}" \
@@ -71,11 +71,16 @@ set dotenv-load := true
 
 # run linter
 @lint:
-    cd src && golangci-lint run
+    # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
+    cd src && go vet -loopclosure=false ./... && golangci-lint run
 
 # fix lint issues
 @fix:
     cd src && golangci-lint run --fix
+
+# format code
+@fmt:
+    cd src && go fmt ./...
 
 # drop the database
 @drop-db:
@@ -123,11 +128,5 @@ remake-autocap:
     {{ BIN_PATH }}
 
 [private]
-remake:
-    #!/bin/bash
-    set -e
-    cd src
-    go fmt ./...
-    # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
-    go vet -loopclosure=false ./...
-    go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
+@remake:
+    cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
