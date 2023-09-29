@@ -8,10 +8,10 @@ code {
     font-size: 0.9em;
 }
 
-.icon-online {
+.icon--online {
     color: green;
 }
 
-.icon-offline {
+.icon--offline {
     color: red;
 }
