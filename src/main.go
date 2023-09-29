@@ -28,6 +28,10 @@ func main() {
 
 	app := fiber.New(conf.GetFiberConfig(views))
 
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendString("OK")
+	})
+
 	initMiddleware(app)
 	initRoutes(app)
 

@@ -42,6 +42,10 @@ RUN addgroup -g 1000 anon && \
 WORKDIR /app
 COPY --from=build /build/dist/lighthouse lighthouse
 
+# This needs to be a script within the container because we need access to $PORT.
+RUN echo 'curl -sSf http://localhost:$PORT/health' >> healthcheck && \
+    chmod +x healthcheck
+
 USER anon
 
 CMD ["dumb-init", "./lighthouse"]
