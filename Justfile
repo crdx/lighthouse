@@ -1,8 +1,7 @@
-BIN_PATH   := 'dist/lighthouse'
+BIN_PATH := 'dist/lighthouse'
 IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
-DB_NAME    := 'lighthouse'
-
+DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
 set dotenv-load := true
