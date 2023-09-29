@@ -7,16 +7,16 @@
                     {{ .Label }}
                     {{ if eq .CurrentSortColumn .SortColumn }}
                         {{ if eq .CurrentSortDirection "asc" }}
-                            <i class="fas fa-arrow-down icon--small"></i>
+                            <i class="fas fa-arrow-down fa-sm"></i>
                         {{ else }}
-                            <i class="fas fa-arrow-up icon--small"></i>
+                            <i class="fas fa-arrow-up fa-sm"></i>
                         {{ end }}
                     {{ end }}
                 </a>
             {{ end }}
 
             <tr>
-                <th><i class="fas fa-exchange-alt icon--small"></i></th>
+                <th><i class="fas fa-exchange-alt fa-sm"></i></th>
                 <th>{{ template "column" .columns.name }}</th>
                 <th class="is-hidden-touch">{{ template "column" .columns.ip }}</th>
                 <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
