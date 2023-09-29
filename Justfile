@@ -6,7 +6,8 @@ AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
 set dotenv-load := true
 
-@_help:
+[private]
+@help:
     just --list --unsorted
 
 # start development
