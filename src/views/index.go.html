@@ -18,7 +18,7 @@
             <tr>
                 <th><i class="fas fa-exchange-alt fa-sm"></i></th>
                 <th>{{ template "column" .columns.name }}</th>
-                <th class="is-hidden-touch">{{ template "column" .columns.ip }}</th>
+                <th class="is-hidden-mobile">{{ template "column" .columns.ip }}</th>
                 <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
                 <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
                 <th>{{ template "column" .columns.seen }}</th>
@@ -36,9 +36,9 @@
                 </td>
                 <td>
                     <div>{{ .Name }}</div>
-                    <div class="is-hidden-desktop is-family-monospace has-text-grey">{{ .IPAddress }}</div>
+                    <div class="is-hidden-tablet is-family-monospace has-text-grey">{{ .IPAddress }}</div>
                 </td>
-                <td class="is-hidden-touch is-family-monospace">{{ .IPAddress }}</td>
+                <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
                 <td class="is-hidden-touch ">{{ .Vendor }}</td>
                 <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
                 <td title="{{ escape .LastSeen.String }}">
