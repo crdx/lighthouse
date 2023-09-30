@@ -51,6 +51,11 @@ func GetListView(sortColumn string, sortDirection string) []DeviceListView {
 		"seen":   "DM1.last_seen",
 	}
 
+	column, ok := sortColumns[sortColumn]
+	if !ok {
+		return []DeviceListView{}
+	}
+
 	return db.Query[[]DeviceListView](fmt.Sprintf(`
 		SELECT
 			D.id,
@@ -68,7 +73,7 @@ func GetListView(sortColumn string, sortDirection string) []DeviceListView {
 		AND DM1.deleted_at IS NULL
 		AND DM2.id IS NULL
 		ORDER BY %s %s
-	`, sortColumns[sortColumn], sortDirection))
+	`, column, sortDirection))
 }
 
 func Upsert(networkID uint, macAddress string) (Device, bool) {
