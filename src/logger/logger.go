@@ -32,7 +32,7 @@ func New() *slog.Logger {
 		panic("unexpected env.LogType")
 	}
 
-	logger.Info("logger initialisation complete", "type", env.LogType)
+	logger.Info("logger init complete", "type", env.LogType)
 	return logger
 }
 
