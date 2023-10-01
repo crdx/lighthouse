@@ -93,7 +93,7 @@ func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<
 	defer handle.Close()
 
 	stop := make(chan struct{})
-	go self.read(handle, ipNet, stop, messages)
+	go self.read(handle, stop, messages)
 	defer close(stop)
 
 	for {
@@ -143,7 +143,7 @@ func (*Scanner) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNe
 	return nil
 }
 
-func (self *Scanner) read(handle *pcap.Handle, ipNet *net.IPNet, stop chan struct{}, messages chan<- networkMessage) {
+func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkMessage) {
 	packets := gopacket.NewPacketSource(handle, layers.LayerTypeEthernet).Packets()
 
 	for {
@@ -156,7 +156,7 @@ func (self *Scanner) read(handle *pcap.Handle, ipNet *net.IPNet, stop chan struc
 			if dhcpLayer := packet.Layer(layers.LayerTypeDHCPv4); dhcpLayer != nil {
 				self.handleDHCPPacket(dhcpLayer.(*layers.DHCPv4), messages)
 			} else if arpLayer := packet.Layer(layers.LayerTypeARP); arpLayer != nil {
-				self.handleARPPacket(arpLayer.(*layers.ARP), ipNet, messages)
+				self.handleARPPacket(arpLayer.(*layers.ARP), messages)
 			}
 		}
 	}
@@ -173,7 +173,7 @@ func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkM
 	}
 }
 
-func (self *Scanner) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet, messages chan<- networkMessage) {
+func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- networkMessage) {
 	// We are interested in the sender's IP<->MAC mapping in both requests and replies.
 	if packet.Operation != layers.ARPReply && packet.Operation != layers.ARPRequest {
 		return
@@ -194,11 +194,6 @@ func (self *Scanner) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet, messa
 	}
 
 	if ipAddressStr == "0.0.0.0" {
-		return
-	}
-
-	if !ipNet.Contains(ipAddress) {
-		self.log.Warn("received an arp packet related to an unknown network", "ip", ipAddressStr, "mac", macAddressStr)
 		return
 	}
 
