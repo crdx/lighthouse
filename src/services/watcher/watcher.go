@@ -9,7 +9,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/models/deviceModel"
-	"crdx.org/lighthouse/service"
+	"crdx.org/lighthouse/services"
 )
 
 type Watcher struct {
@@ -20,11 +20,7 @@ func New() *Watcher {
 	return &Watcher{}
 }
 
-func (*Watcher) Config() service.Config {
-	return config{}
-}
-
-func (self *Watcher) Init(args *service.Args) error {
+func (self *Watcher) Init(args *services.Args) error {
 	self.log = args.Logger
 	return nil
 }

@@ -10,7 +10,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/service"
+	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util"
 	"github.com/imroc/req/v3"
 )
@@ -23,11 +23,7 @@ func New() *VendorDB {
 	return &VendorDB{}
 }
 
-func (*VendorDB) Config() service.Config {
-	return config{}
-}
-
-func (self *VendorDB) Init(args *service.Args) error {
+func (self *VendorDB) Init(args *services.Args) error {
 	self.log = args.Logger
 
 	if env.MACVendorsAPIKey == "" {

@@ -13,7 +13,7 @@ import (
 	"crdx.org/lighthouse/models/deviceModel"
 	"crdx.org/lighthouse/models/networkModel"
 	"crdx.org/lighthouse/pkg/cache"
-	"crdx.org/lighthouse/service"
+	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util"
 
 	"github.com/google/gopacket"
@@ -37,11 +37,7 @@ func New() *Scanner {
 	return &Scanner{}
 }
 
-func (*Scanner) Config() service.Config {
-	return config{}
-}
-
-func (self *Scanner) Init(args *service.Args) error {
+func (self *Scanner) Init(args *services.Args) error {
 	self.log = args.Logger
 	self.macAddressCache = cache.NewTemporal[string]()
 	return nil

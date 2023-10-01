@@ -5,7 +5,7 @@ package prober
 import (
 	"log/slog"
 
-	"crdx.org/lighthouse/service"
+	"crdx.org/lighthouse/services"
 )
 
 type Prober struct {
@@ -16,11 +16,7 @@ func New() *Prober {
 	return &Prober{}
 }
 
-func (*Prober) Config() service.Config {
-	return config{}
-}
-
-func (self *Prober) Init(args *service.Args) error {
+func (self *Prober) Init(args *services.Args) error {
 	self.log = args.Logger
 	return nil
 }

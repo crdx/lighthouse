@@ -6,10 +6,6 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/service"
-	"crdx.org/lighthouse/services/scanner"
-	"crdx.org/lighthouse/services/vendordb"
-	"crdx.org/lighthouse/services/watcher"
 	"crdx.org/session"
 
 	"github.com/gofiber/fiber/v2"
@@ -40,9 +36,7 @@ func main() {
 		return c.SendStatus(404)
 	})
 
-	go service.Start(scanner.New())
-	go service.Start(watcher.New())
-	go service.Start(vendordb.New())
+	startServices()
 
 	panic(app.Listen(env.BindHost + ":" + env.BindPort))
 }
