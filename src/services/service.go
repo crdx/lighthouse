@@ -41,7 +41,9 @@ type Config struct {
 	NextRestartInterval func(time.Duration) time.Duration
 }
 
-func sanitise(config *Config) {
+// applyDefaults updates config by setting default values for any unset fields, ensuring that the
+// config object is valid.
+func applyDefaults(config *Config) {
 	if config.InitialRestartInterval == 0 {
 		config.InitialRestartInterval = time.Second
 	}
@@ -52,7 +54,7 @@ func sanitise(config *Config) {
 }
 
 func Start(name string, config Config) {
-	sanitise(&config)
+	applyDefaults(&config)
 
 	log := logger.New().With("service", name)
 
