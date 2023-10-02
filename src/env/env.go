@@ -53,6 +53,8 @@ var (
 	MailTo   = os.Getenv("MAIL_TO")
 
 	MACVendorsAPIKey = os.Getenv("MACVENDORS_API_KEY")
+
+	LocalTimeZone = os.Getenv("LOCAL_TZ")
 )
 
 func Check() {
@@ -83,6 +85,7 @@ func Check() {
 	}
 
 	require(LogType, "log type", "LOG_TYPE")
+	require(LocalTimeZone, "local timezone", "LOCAL_TZ")
 }
 
 func require(v, name, envvar string) {

@@ -6,8 +6,14 @@ import (
 	"strings"
 	"time"
 
+	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/util"
+	"github.com/samber/lo"
 )
+
+func tz() *time.Location {
+	return lo.Must(time.LoadLocation(env.LocalTimeZone))
+}
 
 func GetFuncMap() template.FuncMap {
 	return template.FuncMap{
@@ -16,6 +22,12 @@ func GetFuncMap() template.FuncMap {
 		},
 		"timeAgo": func(t time.Time) string {
 			return timeAgo(int(time.Since(t).Seconds()), false, 1)
+		},
+		"formatDate": func(t time.Time) string {
+			return t.In(tz()).Format("02/01/2006")
+		},
+		"formatDateTime": func(t time.Time) string {
+			return t.In(tz()).Format("02/01/2006 15:04 MST")
 		},
 		"escape": escape,
 	}

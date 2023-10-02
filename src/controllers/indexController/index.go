@@ -3,11 +3,14 @@ package indexController
 import (
 	"slices"
 
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/models/deviceModel"
 	"crdx.org/lighthouse/tpl"
 	"golang.org/x/exp/maps"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 func Get(c *fiber.Ctx) error {
@@ -34,4 +37,17 @@ func Get(c *fiber.Ctx) error {
 		"devices": deviceModel.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
 	})
+}
+
+func ViewDevice(c *fiber.Ctx) error {
+	if device, found := db.B(m.Device{ID: uint(lo.Must(c.ParamsInt("id")))}).First(); !found {
+		return c.SendStatus(404)
+	} else {
+		deviceMappings := db.B(m.DeviceMapping{DeviceID: device.ID}).Find()
+
+		return c.Render("view", fiber.Map{
+			"device": device,
+			"deviceMappings": deviceMappings,
+		})
+	}
 }
