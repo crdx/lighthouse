@@ -43,18 +43,21 @@ const (
 )
 
 func GetListView(sortColumn string, sortDirection string) []DeviceListView {
-	sortColumns := map[string]string{
-		"name":   "D.name",
-		"ip":     "INET_ATON(DM1.ip_address)",
-		"vendor": "D.vendor",
-		"mac":    "D.mac_address",
-		"seen":   "DM1.last_seen",
+	// Ensure sort is stable by appending "D.id ASC" to some of these.
+	orderByTemplates := map[string]string{
+		"name":   "D.name %s, D.id ASC",
+		"ip":     "INET_ATON(DM1.ip_address) %s",
+		"vendor": "D.vendor %s, D.id ASC",
+		"mac":    "D.mac_address %s",
+		"seen":   "DM1.last_seen %s, D.id ASC",
 	}
 
-	column, ok := sortColumns[sortColumn]
+	orderByTemplate, ok := orderByTemplates[sortColumn]
 	if !ok {
 		return []DeviceListView{}
 	}
+
+	orderBy:= fmt.Sprintf(orderByTemplate, sortDirection)
 
 	return db.Query[[]DeviceListView](fmt.Sprintf(`
 		SELECT
@@ -72,8 +75,8 @@ func GetListView(sortColumn string, sortDirection string) []DeviceListView {
 		WHERE D.deleted_at IS NULL
 		AND DM1.deleted_at IS NULL
 		AND DM2.id IS NULL
-		ORDER BY %s %s
-	`, column, sortDirection))
+		ORDER BY %s
+	`, orderBy))
 }
 
 func Upsert(networkID uint, macAddress string) (Device, bool) {
