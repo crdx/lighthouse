@@ -34,7 +34,7 @@ func main() {
 
 	for macAddress, name := range names {
 		fmt.Printf(
-			"UPDATE devices SET name = %s WHERE mac_address = %s AND name = '';\n",
+			"UPDATE devices SET name = %s WHERE mac_address = %s;\n",
 			quote(name),
 			quote(macAddress),
 		)
