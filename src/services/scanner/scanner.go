@@ -40,14 +40,14 @@ type Scanner struct {
 }
 
 func New() *Scanner {
-	return &Scanner{}
+	return &Scanner{
+		macAddressCache: cache.NewTemporal[string](),
+		hostnameCache:   map[string]string{},
+	}
 }
 
 func (self *Scanner) Init(args *services.Args) error {
 	self.log = args.Logger
-	self.macAddressCache = cache.NewTemporal[string]()
-	self.hostnameCache = map[string]string{}
-
 	return nil
 }
 
