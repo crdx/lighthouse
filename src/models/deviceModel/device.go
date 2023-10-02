@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/util"
 	"gorm.io/gorm"
 )
@@ -79,7 +80,7 @@ func GetListView(sortColumn string, sortDirection string) []DeviceListView {
 	`, orderBy))
 }
 
-func Upsert(networkID uint, macAddress string) (Device, bool) {
+func Upsert(networkID uint, macAddress string, hostname string) (Device, bool) {
 	// This method has the potential to be called very often, so let's not hang onto a model object
 	// for longer than necessary. Immediately create the record if it doesn't exist, and then just
 	// run the query that updates the specific fields.
@@ -94,12 +95,30 @@ func Upsert(networkID uint, macAddress string) (Device, bool) {
 		columns["state"] = StateOnline
 	}
 
+	// Try to find a valid device name if we don't have one by this point. Hostname is preferable as
+	// it comes from a DHCP request so it's generally accurate, but vendor is an okay fallback. The
+	// expectation is that users will set their own labels for their devices anyway.
+	name := device.Name
+
+	if isUnknown(name) {
+		name = hostname
+	}
+
 	if device.Vendor == "" {
 		if vendor, found := util.GetVendor(macAddress); found {
 			columns["vendor"] = vendor
+
+			if isUnknown(name) {
+				name = vendor
+			}
 		}
 	}
 
+	if isUnknown(name) {
+		name = constants.UnknownDeviceLabel
+	}
+
+	columns["name"] = name
 	columns["last_seen"] = time.Now()
 
 	q := Device{ID: device.ID}
@@ -116,11 +135,15 @@ func UpdateHostname(macAddress string, hostname string) {
 	if device, found := db.B(q).First(); found {
 		updates := map[string]any{}
 
-		if device.Name == "" {
+		if isUnknown(device.Name) {
 			updates["name"] = hostname
 		}
 
 		updates["hostname"] = hostname
 		db.B(q).Update(updates)
 	}
+}
+
+func isUnknown(name string) bool {
+	return name == "" || name == constants.UnknownDeviceLabel
 }

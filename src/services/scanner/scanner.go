@@ -31,6 +31,12 @@ const scanInterval = 60 * time.Second
 type Scanner struct {
 	log             *slog.Logger
 	macAddressCache *cache.TemporalCache[string]
+
+	// Since the DHCP handshake happens before the device officially joins the network and starts
+	// responding to ARP requests, hostnameCache stores a mapping of MAC addresses to hostnames.
+	// This is then used as a lookup for a device hostname when we discover a new device on the
+	// network.
+	hostnameCache map[string]string
 }
 
 func New() *Scanner {
@@ -40,6 +46,8 @@ func New() *Scanner {
 func (self *Scanner) Init(args *services.Args) error {
 	self.log = args.Logger
 	self.macAddressCache = cache.NewTemporal[string]()
+	self.hostnameCache = map[string]string{}
+
 	return nil
 }
 
@@ -210,11 +218,13 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 		"hostname", hostname,
 	)
 
+	self.hostnameCache[macAddress] = hostname
+
 	deviceModel.UpdateHostname(macAddress, hostname)
 }
 
 func (self *Scanner) handleARPMessage(network m.Network, macAddress string, ipAddress string) {
-	device, _ := deviceModel.Upsert(network.ID, macAddress)
+	device, _ := deviceModel.Upsert(network.ID, macAddress, self.hostnameCache[macAddress])
 
 	if _, found := deviceMappingModel.Upsert(device.ID, ipAddress); !found {
 		self.log.Info(

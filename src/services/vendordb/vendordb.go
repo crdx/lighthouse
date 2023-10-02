@@ -8,6 +8,7 @@ import (
 	"log/slog"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/services"
@@ -39,7 +40,15 @@ func (self *VendorDB) Run() error {
 
 		update := func(deviceID uint, vendor string) {
 			log.Info("lookup complete", "vendor", vendor)
-			db.B(m.Device{ID: deviceID}).Update("vendor", vendor)
+
+			columns := db.Map{}
+			columns["vendor"] = vendor
+
+			if device.Name == "" || device.Name == constants.UnknownDeviceLabel {
+				columns["name"] = vendor
+			}
+
+			db.B(m.Device{ID: deviceID}).Update(columns)
 		}
 
 	retry:
@@ -47,7 +56,7 @@ func (self *VendorDB) Run() error {
 		res, err := self.getVendor(device.MACAddress)
 
 		if err != nil || res.StatusCode == http.StatusNotFound {
-			update(device.ID, "Unknown")
+			update(device.ID, constants.UnknownVendorLabel)
 			continue
 		}
 
@@ -72,7 +81,7 @@ func (self *VendorDB) Run() error {
 		vendor := res.String()
 
 		if vendor == "" || res.StatusCode == http.StatusNotFound {
-			update(device.ID, "Unknown")
+			update(device.ID, constants.UnknownVendorLabel)
 			continue
 		}
 
