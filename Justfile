@@ -65,7 +65,7 @@ set dotenv-load := true
 @test *args:
     cd src && go test -cover ./... {{ args }} | grep -vF '[no test files]' || true
 
-# connect to the test database
+# connect to the test db
 @test-db:
     mariadb {{ DB_NAME }}_test
 
@@ -82,19 +82,19 @@ set dotenv-load := true
 @fmt:
     cd src && go fmt ./...
 
-# drop the database
+# drop the db
 @drop-db:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
 
-# initialise the db with some static mappings
+# initialise the dev db with some static mappings
 @init-db:
     go run helpers/staticdb/main.go | mariadb {{ DB_NAME }}
 
-# connect to the dev database
+# connect to the dev db
 @db:
     mariadb {{ DB_NAME }}
 
-# pull down the live database
+# pull down the live db
 @pull:
     importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
