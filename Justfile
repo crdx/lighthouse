@@ -86,10 +86,6 @@ set dotenv-load := true
 @drop-db:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
 
-# initialise the dev db with some static mappings
-@init-db:
-    go run helpers/staticdb/main.go | mariadb {{ DB_NAME }}
-
 # connect to the dev db
 @db:
     mariadb {{ DB_NAME }}

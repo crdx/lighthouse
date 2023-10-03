@@ -9,6 +9,7 @@ import (
 	"log/slog"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/models/adapterM"
 	"crdx.org/lighthouse/models/deviceM"
@@ -252,6 +253,13 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 		})
 
 		adapter.Update("device_id", device.ID)
+
+		if hostname == "" {
+			if names, err := net.LookupAddr(ipAddress); err == nil && len(names) > 0 {
+				hostname = util.UnqualifyHostname(names[0])
+				log.Info("found hostname via DNS", "hostname", hostname)
+			}
+		}
 	}
 
 	device.Update("last_seen", time.Now())

@@ -2,8 +2,7 @@
 /bin/
 /logs/
 
-# sfe: ignore next 4
+# sfe: ignore next 3
 /TODO.md
 /.env
 /.env.prod
-static-dhcp.conf

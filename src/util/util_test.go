@@ -130,3 +130,28 @@ func TestGetVendor(t *testing.T) {
 		})
 	}
 }
+
+func TestUnqualifyHostname(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		inputHostname    string
+		expectedHostname string
+	}{
+		{"test.local.", "test"},
+		{"test.local", "test"},
+		{"test", "test"},
+		{"test.", "test"},
+		{"", ""},
+		{".", ""},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.inputHostname, func(t *testing.T) {
+			t.Parallel()
+
+			actualHostname := UnqualifyHostname(testCase.inputHostname)
+			assert.Equal(t, testCase.expectedHostname, actualHostname)
+		})
+	}
+}

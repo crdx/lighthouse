@@ -67,3 +67,14 @@ func GetVendor(macAddress string) (string, bool) {
 	vendor, found := macs.ValidMACPrefixMap[prefix]
 	return vendor, found
 }
+
+func UnqualifyHostname(hostname string) string {
+	hostname = strings.TrimSuffix(hostname, ".")
+
+	index := strings.LastIndex(hostname, ".")
+	if index == -1 {
+		return hostname
+	}
+
+	return hostname[:index]
+}
