@@ -8,7 +8,6 @@ import (
 	"net/smtp"
 	"runtime"
 	"strings"
-	"time"
 
 	"crdx.org/lighthouse/env"
 	"github.com/google/gopacket/macs"
@@ -54,15 +53,6 @@ func sendMail(send SendFunc, subject string, message string) error {
 			message,
 		)),
 	)
-}
-
-// Sleep sleeps for duration while guaranteeing no matter how much jitter occurs (even if duration
-// is very long) it will never be off by more than 1 second.
-func Sleep(duration time.Duration) {
-	waitUntil := time.Now().Add(duration)
-	for time.Now().Before(waitUntil) {
-		time.Sleep(time.Second)
-	}
 }
 
 func GetVendor(macAddress string) (string, bool) {

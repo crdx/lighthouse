@@ -110,7 +110,7 @@ func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<
 			return err
 		}
 
-		util.Sleep(scanInterval)
+		time.Sleep(scanInterval)
 	}
 }
 

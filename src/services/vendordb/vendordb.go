@@ -13,7 +13,6 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/models/deviceM"
 	"crdx.org/lighthouse/services"
-	"crdx.org/lighthouse/util"
 	"github.com/imroc/req/v3"
 )
 
@@ -77,7 +76,7 @@ func (self *VendorDB) Run() error {
 		if res.StatusCode == http.StatusTooManyRequests {
 			delay := 5 * time.Second
 			self.log.Info("throttling", "response_code", res.StatusCode, "delay", delay)
-			util.Sleep(delay)
+			time.Sleep(delay)
 
 			goto retry
 		}

@@ -70,7 +70,7 @@ func Start(name string, config Config) {
 	)
 
 	if config.StartDelay > 0 {
-		util.Sleep(config.StartDelay)
+		time.Sleep(config.StartDelay)
 		log.Info("service start delay elapsed")
 	}
 
@@ -83,7 +83,7 @@ func Start(name string, config Config) {
 				log.Error("service panicked", "msg", err)
 				util.PrintStackTrace(3)
 				log.Error("restarting service", "restart_interval", restartInterval.String())
-				util.Sleep(restartInterval)
+				time.Sleep(restartInterval)
 				restartInterval = config.NextRestartInterval(restartInterval)
 				restarting = true
 			}
@@ -109,7 +109,7 @@ func Start(name string, config Config) {
 		}
 
 		if !restarting {
-			util.Sleep(config.RunInterval)
+			time.Sleep(config.RunInterval)
 		}
 	}
 }

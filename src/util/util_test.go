@@ -105,35 +105,6 @@ func TestSendMail(t *testing.T) {
 	}
 }
 
-// func TestSleep(t *testing.T) {
-// 	t.Parallel()
-
-// 	testCases := []struct {
-// 		inputDuration  time.Duration
-// 		expectedMinDur time.Duration
-// 		expectedMaxDur time.Duration
-// 	}{
-// 		{time.Millisecond * 0, time.Millisecond * 0, time.Millisecond * 1000},
-// 		{time.Millisecond * 500, time.Millisecond * 500, time.Millisecond * 1500},
-// 		{time.Millisecond * 1500, time.Millisecond * 1500, time.Millisecond * 2500},
-// 		{time.Second * 3, time.Second * 3, time.Second * 4},
-// 		{time.Second * 5, time.Second * 5, time.Second * 6},
-// 	}
-
-// 	for _, testCase := range testCases {
-// 		t.Run(fmt.Sprintf("%s", testCase.inputDuration), func(t *testing.T) {
-// 			t.Parallel()
-
-// 			start := time.Now()
-// 			Sleep(testCase.inputDuration)
-// 			elapsed := time.Since(start)
-
-// 			assert.True(t, elapsed >= testCase.expectedMinDur)
-// 			assert.True(t, elapsed <= testCase.expectedMaxDur)
-// 		})
-// 	}
-// }
-
 func TestGetVendor(t *testing.T) {
 	t.Parallel()
 
