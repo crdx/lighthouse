@@ -42,6 +42,14 @@ func (self *Device) Adapters() []*adapterM.Adapter {
 	return db.B(adapterM.Adapter{DeviceID: self.ID}).Find()
 }
 
+func (self *Device) Delete() {
+	for _, adapter := range self.Adapters() {
+		adapter.Delete()
+	}
+
+	For(self.ID).Delete()
+}
+
 func For(id uint) *db.Builder[Device] {
 	return db.B(Device{ID: id})
 }

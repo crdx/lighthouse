@@ -31,6 +31,10 @@ func (self *Adapter) Fresh() *Adapter {
 	return i
 }
 
+func (self *Adapter) Delete() {
+	For(self.ID).Delete()
+}
+
 func For(id uint) *db.Builder[Adapter] {
 	return db.B(Adapter{ID: id})
 }

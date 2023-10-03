@@ -47,3 +47,11 @@ func ViewDevice(c *fiber.Ctx) error {
 
 	return c.SendStatus(404)
 }
+
+func DeleteDevice(c *fiber.Ctx) error {
+	if device, found := deviceM.For(uint(lo.Must(c.ParamsInt("id")))).First(); found {
+		device.Delete()
+	}
+
+	return c.Redirect("/")
+}
