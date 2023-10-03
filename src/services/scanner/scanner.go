@@ -8,10 +8,11 @@ import (
 
 	"log/slog"
 
+	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/models/deviceMappingModel"
-	"crdx.org/lighthouse/models/deviceModel"
-	"crdx.org/lighthouse/models/networkModel"
+	"crdx.org/lighthouse/models/adapterM"
+	"crdx.org/lighthouse/models/deviceM"
+	"crdx.org/lighthouse/models/networkM"
 	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util"
@@ -67,7 +68,7 @@ func (self *Scanner) Run() error {
 	// Convert e.g. 192.168.1.20/24 to 192.168.1.0/24.
 	_, generalIPNet := lo.Must2(net.ParseCIDR(ipNet.String()))
 
-	network, _ := networkModel.Upsert(generalIPNet.String())
+	network, _ := networkM.Upsert(generalIPNet.String())
 
 	networkMessages := make(chan networkMessage)
 
@@ -220,20 +221,77 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 
 	self.hostnameCache[macAddress] = hostname
 
-	deviceModel.UpdateHostname(macAddress, hostname)
+	updateHostname(macAddress, hostname)
 }
 
-func (self *Scanner) handleARPMessage(network m.Network, macAddress string, ipAddress string) {
-	device, _ := deviceModel.Upsert(network.ID, macAddress, self.hostnameCache[macAddress])
+func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipAddress string) {
+	adapter, adapterFound := adapterM.Upsert(macAddress, ipAddress)
 
-	if _, found := deviceMappingModel.Upsert(device.ID, ipAddress); !found {
-		self.log.Info(
+	log := self.log.With(
+		"adapter_id", adapter.ID,
+		"mac", adapter.MACAddress,
+		"ip", adapter.IPAddress,
+		"vendor", adapter.Vendor,
+	)
+
+	var device *m.Device
+	hostname := self.hostnameCache[macAddress]
+
+	// If an adapter was found, then we know it must have an attached device.
+	if adapterFound {
+		var deviceFound bool
+		device, deviceFound = deviceM.For(adapter.DeviceID).First()
+		if !deviceFound {
+			log.Warn("existing adapter found with no associated device")
+			return
+		}
+	} else {
+		device = db.Create(&m.Device{
+			NetworkID: network.ID,
+			State:     deviceM.StateOnline,
+		})
+
+		adapter.Update("device_id", device.ID)
+	}
+
+	device.Update("last_seen", time.Now())
+	populateDeviceName(device, hostname)
+
+	if hostname != "" {
+		device.Update("hostname", hostname)
+	}
+
+	if !adapterFound {
+		log.Info(
 			"a new device joined the network",
 			"device_id", device.ID,
 			"name", device.Name,
-			"vendor", device.Vendor,
-			"mac", macAddress,
-			"ip", ipAddress,
 		)
+	}
+}
+
+func updateHostname(macAddress string, hostname string) {
+	if adapter, found := db.B(m.Adapter{MACAddress: macAddress}).First(); found {
+		if device, found := deviceM.For(adapter.DeviceID).First(); found {
+			device.Update("hostname", hostname)
+		}
+	}
+}
+
+func populateDeviceName(device *m.Device, hostname string) {
+	if device.Name != "" {
+		return
+	}
+
+	if hostname != "" {
+		device.Update("name", hostname)
+		return
+	}
+
+	for _, adapter := range device.Adapters() {
+		if adapter.Vendor != "" && adapter.Vendor != constants.UnknownVendorLabel {
+			device.Update("name", adapter.Vendor)
+			return
+		}
 	}
 }

@@ -1,4 +1,3 @@
 package constants
 
-const UnknownVendorLabel = "(Unknown)"
-const UnknownDeviceLabel = "(Unknown)"
+const UnknownVendorLabel = "Unknown vendor"

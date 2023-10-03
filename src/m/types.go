@@ -1,25 +1,25 @@
 package m
 
 import (
-	"crdx.org/lighthouse/models/deviceMappingModel"
-	"crdx.org/lighthouse/models/deviceModel"
-	"crdx.org/lighthouse/models/deviceStateLogModel"
-	"crdx.org/lighthouse/models/networkModel"
-	"crdx.org/lighthouse/models/notificationModel"
+	"crdx.org/lighthouse/models/adapterM"
+	"crdx.org/lighthouse/models/deviceM"
+	"crdx.org/lighthouse/models/deviceStateLogM"
+	"crdx.org/lighthouse/models/networkM"
+	"crdx.org/lighthouse/models/notificationM"
 )
 
 type (
-	Network        = networkModel.Network
-	Device         = deviceModel.Device
-	DeviceMapping  = deviceMappingModel.DeviceMapping
-	DeviceStateLog = deviceStateLogModel.DeviceStateLog
-	Notification   = notificationModel.Notification
+	Network        = networkM.Network
+	Device         = deviceM.Device
+	Adapter        = adapterM.Adapter
+	DeviceStateLog = deviceStateLogM.DeviceStateLog
+	Notification   = notificationM.Notification
 )
 
 var All = []any{
 	&Network{},
 	&Device{},
-	&DeviceMapping{},
+	&Adapter{},
 	&DeviceStateLog{},
 	&Notification{},
 }

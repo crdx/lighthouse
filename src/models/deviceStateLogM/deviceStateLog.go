@@ -1,8 +1,9 @@
-package deviceStateLogModel
+package deviceStateLogM
 
 import (
 	"time"
 
+	"crdx.org/db"
 	"gorm.io/gorm"
 )
 
@@ -14,4 +15,12 @@ type DeviceStateLog struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 	DeviceID  uint           `gorm:"not null"`
 	State     string         `gorm:"size:15;not null"`
+}
+
+func (self *DeviceStateLog) Update(values ...any) {
+	For(self.ID).Update(values...)
+}
+
+func For(id uint) *db.Builder[DeviceStateLog] {
+	return db.B(DeviceStateLog{ID: id})
 }

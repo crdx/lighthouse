@@ -3,7 +3,7 @@ module crdx.org/lighthouse
 go 1.21.0
 
 require (
-	crdx.org/db v1.1.0
+	crdx.org/db v1.2.0
 	crdx.org/session v1.0.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.1
 	github.com/gofiber/fiber/v2 v2.49.2
@@ -14,6 +14,7 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/samber/slog-multi v1.0.1
 	github.com/stretchr/testify v1.8.4
+	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	gorm.io/gorm v1.25.4
 )
 
@@ -51,7 +52,6 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/mock v0.3.0 // indirect
 	golang.org/x/crypto v0.13.0 // indirect
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect

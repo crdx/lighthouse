@@ -1,4 +1,4 @@
-package networkModel
+package networkM
 
 import (
 	"time"
@@ -18,7 +18,7 @@ type Network struct {
 	AlertOnNewDevices bool           `gorm:"default:false"`
 }
 
-func Upsert(ipRange string) (Network, bool) {
+func Upsert(ipRange string) (*Network, bool) {
 	network, found := db.FirstOrInit(Network{IPRange: ipRange})
 
 	if !found {

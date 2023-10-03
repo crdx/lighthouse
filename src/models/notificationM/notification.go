@@ -1,4 +1,4 @@
-package notificationModel
+package notificationM
 
 import (
 	"time"

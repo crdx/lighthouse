@@ -1,7 +1,7 @@
 <section class="section">
     <div class="container">
         <h1 class="title">
-            {{ .device.Name }}
+            {{ or .device.Name "Unidentified device" }}
             {{ if eq .device.State "online" }}
                 <i class="fas fa-computer icon--online"></i>
             {{ else }}
@@ -17,42 +17,61 @@
 
             <tr>
                 <th>Hostname</th>
-                <td>{{ or .device.Hostname "(Unknown)" }}</td>
-            </tr>
-
-            <tr>
-                <th>Vendor</th>
-                <td>{{ .device.Vendor }}</td>
+                <td>
+                    {{ if ne .device.Hostname "" }}
+                        {{ .device.Hostname }}
+                    {{ else }}
+                        <i>None</i>
+                    {{ end }}
+                </td>
             </tr>
 
             <tr>
                 <th>Discovered</th>
-                <td>{{ timeAgo .device.CreatedAt }} ({{ formatDateTime .device.CreatedAt }})</td>
+                <td title="{{ escape (formatDateTime .device.CreatedAt) }}">
+                    {{ timeAgoVerbose .device.CreatedAt }}
+                </td>
             </tr>
 
             <tr>
                 <th>Last Seen</th>
-                <td>{{ timeAgo .device.LastSeen }} ({{ formatDateTime .device.LastSeen }})</td>
+                <td title="{{ escape (formatDateTime .device.LastSeen) }}">
+                    {{ timeAgoVerbose .device.LastSeen }}
+                </td>
             </tr>
 
             <tr>
-                <th>MAC Address</th>
-                <td><span class="is-family-monospace">{{ .device.MACAddress }}</span></td>
+                <th>Grace Period</th>
+                <td>{{ .device.GracePeriod }}</td>
             </tr>
-
         </table>
 
-        <h2 class="subtitle">Devices</h2>
+        <h2 class="subtitle">Adapters</h2>
 
         <table class="table">
             <tr>
+                <th>Label</th>
+                <th>MAC Address</th>
                 <th>IP Address</th>
+                <th>Vendor</th>
                 <th>Last Seen</th>
             </tr>
-            {{ range .deviceMappings }}
+            {{ range .adapters }}
                 <tr>
+                    <td>
+                        {{ if ne .Name "" }}
+                            {{ .Name }}
+                        {{ else }}
+                            <i>Untitled</i>
+                        {{ end }}</td>
+                    <td>
+                        <span class="is-family-monospace">{{ .MACAddress }}</span>
+                    </td>
                     <td>{{ .IPAddress }}</td>
-                    <td>{{ timeAgo .LastSeen }} ({{ formatDateTime .LastSeen }})</td>
+                    <td>{{ .Vendor }}</td>
+                    <td title="{{ escape (formatDateTime .LastSeen) }}">
+                        {{ timeAgoVerbose .LastSeen }}
+                    </td>
                 </tr>
             {{ end }}
         </table>

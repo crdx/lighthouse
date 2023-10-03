@@ -11,6 +11,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/models/deviceM"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util"
 	"github.com/imroc/req/v3"
@@ -35,28 +36,36 @@ func (self *VendorDB) Init(args *services.Args) error {
 }
 
 func (self *VendorDB) Run() error {
-	for _, device := range db.B[m.Device]().Where(`vendor = ""`).Find() {
-		log := self.log.With("mac", device.MACAddress)
+	for _, adapter := range db.B[m.Adapter]().Where(`vendor = ""`).Find() {
+		log := self.log.With("mac", adapter.MACAddress)
 
-		update := func(deviceID uint, vendor string) {
+		update := func(adapter *m.Adapter, vendor string) {
 			log.Info("lookup complete", "vendor", vendor)
-
 			columns := db.Map{}
-			columns["vendor"] = vendor
 
-			if device.Name == "" || device.Name == constants.UnknownDeviceLabel {
+			if adapter.Name == "" && vendor != constants.UnknownVendorLabel {
 				columns["name"] = vendor
 			}
 
-			db.B(m.Device{ID: deviceID}).Update(columns)
+			columns["vendor"] = vendor
+
+			adapter.Update(columns)
+
+			if vendor != constants.UnknownVendorLabel {
+				if device, found := deviceM.For(adapter.DeviceID).First(); found {
+					if device.Name == "" {
+						device.Update("name", vendor)
+					}
+				}
+			}
 		}
 
 	retry:
 
-		res, err := self.getVendor(device.MACAddress)
+		res, err := self.getVendor(adapter.MACAddress)
 
 		if err != nil || res.StatusCode == http.StatusNotFound {
-			update(device.ID, constants.UnknownVendorLabel)
+			update(adapter, constants.UnknownVendorLabel)
 			continue
 		}
 
@@ -81,11 +90,11 @@ func (self *VendorDB) Run() error {
 		vendor := res.String()
 
 		if vendor == "" || res.StatusCode == http.StatusNotFound {
-			update(device.ID, constants.UnknownVendorLabel)
+			update(adapter, constants.UnknownVendorLabel)
 			continue
 		}
 
-		update(device.ID, vendor)
+		update(adapter, vendor)
 
 		// MacVendors API free plan allows 2 requests per second, so to be safe limit to 1 per second.
 		time.Sleep(time.Second)
