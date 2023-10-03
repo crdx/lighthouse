@@ -34,7 +34,8 @@ RUN apk add --no-cache \
     dumb-init \
     bash \
     libpcap-dev \
-    curl
+    curl \
+    tzdata
 
 RUN addgroup -g 1000 anon && \
     adduser -G anon -D -u 1000 anon
