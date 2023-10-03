@@ -5,7 +5,8 @@ RUN apk add --no-cache \
     build-base \
     git \
     libpcap-dev \
-    libcap-utils
+    libcap-utils \
+    upx
 
 WORKDIR /build/src
 COPY src/go.sum src/go.mod ./
@@ -19,6 +20,7 @@ RUN for PACKAGE in $(go list -m -f "$FORMAT" all); do go get $PACKAGE; done
 # Build.
 COPY src ./
 RUN go build -o /build/dist/lighthouse -trimpath -ldflags '-s -w' && \
+    upx /build/dist/lighthouse && \
     setcap cap_net_raw+eip /build/dist/lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
