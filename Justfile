@@ -22,6 +22,10 @@ set dotenv-load := true
 @devv:
     LIGHTHOUSE_VERBOSE=1 just dev
 
+# open the development site in the default browser
+@open:
+    xdg-open http://$HOST:$PORT
+
 # build binary
 @make:
     mkif {{ BIN_PATH }} $(find src -type f) -x 'just remake'
