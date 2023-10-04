@@ -1,85 +1,104 @@
-<section class="section">
-    <div class="container">
-        <h1 class="title">
-            {{ or .device.Name "Unidentified device" }}
-            {{ if eq .device.State "online" }}
-                <i class="fas fa-computer icon--online"></i>
-            {{ else }}
-                <i class="fas fa-computer icon--offline"></i>
-            {{ end }}
-        </h1>
-
-        <table class="table">
-            <tr>
-                <th>State</th>
-                <td>{{ .device.State }}</td>
-            </tr>
-
-            <tr>
-                <th>Hostname</th>
-                <td>
-                    {{ if ne .device.Hostname "" }}
-                        {{ .device.Hostname }}
+<div class="container">
+    <div class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <h1 class="title">
+                    {{ or .device.Name "Unidentified device" }}
+                </h1>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <span class="icon is-large">
+                    {{ if eq .device.State "online" }}
+                        <i class="fas fa-2x fa-computer icon--online"></i>
                     {{ else }}
-                        <i>None</i>
+                        <i class="fas fa-2x fa-computer icon--offline"></i>
                     {{ end }}
-                </td>
-            </tr>
-
-            <tr>
-                <th>Discovered</th>
-                <td title="{{ escape (formatDateTime .device.CreatedAt) }}">
-                    {{ timeAgoVerbose .device.CreatedAt }}
-                </td>
-            </tr>
-
-            <tr>
-                <th>Last Seen</th>
-                <td title="{{ escape (formatDateTime .device.LastSeen) }}">
-                    {{ timeAgoVerbose .device.LastSeen }}
-                </td>
-            </tr>
-
-            <tr>
-                <th>Grace Period</th>
-                <td>{{ .device.GracePeriod }}</td>
-            </tr>
-        </table>
-
-        <h2 class="subtitle">Adapters</h2>
-
-        <table class="table">
-            <tr>
-                <th>Label</th>
-                <th>MAC Address</th>
-                <th>IP Address</th>
-                <th>Vendor</th>
-                <th>Last Seen</th>
-            </tr>
-            {{ range .adapters }}
-                <tr>
-                    <td>
-                        {{ if ne .Name "" }}
-                            {{ .Name }}
-                        {{ else }}
-                            <i>Untitled</i>
-                        {{ end }}</td>
-                    <td>
-                        <span class="is-family-monospace">{{ .MACAddress }}</span>
-                    </td>
-                    <td>{{ .IPAddress }}</td>
-                    <td>{{ .Vendor }}</td>
-                    <td title="{{ escape (formatDateTime .LastSeen) }}">
-                        {{ timeAgoVerbose .LastSeen }}
-                    </td>
-                </tr>
-            {{ end }}
-        </table>
+                </span>
+            </div>
+        </div>
     </div>
 
-    <div class="container">
-        <form method="post" onsubmit="return alert('Are you sure?')" action="/device/{{ .device.ID }}/delete">
-            <button class="button is-danger" type="submit">Delete</button>
-        </form>
+    <table class="table">
+        <tr>
+            <th>State</th>
+            <td>{{ .device.State }}</td>
+        </tr>
+
+        <tr>
+            <th>Hostname</th>
+            <td>
+                {{ if ne .device.Hostname "" }}
+                    {{ .device.Hostname }}
+                {{ else }}
+                    <i>None</i>
+                {{ end }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Discovered</th>
+            <td title="{{ escape (formatDateTime .device.CreatedAt) }}">
+                {{ timeAgoVerbose .device.CreatedAt }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Last Seen</th>
+            <td title="{{ escape (formatDateTime .device.LastSeen) }}">
+                {{ timeAgoVerbose .device.LastSeen }}
+            </td>
+        </tr>
+
+        <tr>
+            <th>Grace Period</th>
+            <td>{{ .device.GracePeriod }}</td>
+        </tr>
+    </table>
+
+    <h2 class="subtitle">Adapters</h2>
+
+    <table class="table">
+        <tr>
+            <th>Label</th>
+            <th class="is-hidden-mobile">MAC Address</th>
+            <th>IP Address</th>
+            <th class="is-hidden-mobile">Vendor</th>
+            <th>Last Seen</th>
+        </tr>
+        {{ range .adapters }}
+            <tr>
+                <td>
+                    {{ if ne .Name "" }}
+                        {{ .Name }}
+                    {{ else }}
+                        <i>Untitled</i>
+                    {{ end }}</td>
+                <td class="is-hidden-mobile">
+                    <span class="is-family-monospace">{{ .MACAddress }}</span>
+                </td>
+                <td>{{ .IPAddress }}</td>
+                <td class="is-hidden-mobile">{{ .Vendor }}</td>
+                <td title="{{ escape (formatDateTime .LastSeen) }}">
+                    {{ timeAgoVerbose .LastSeen }}
+                </td>
+            </tr>
+        {{ end }}
+    </table>
+
+    <div class="level is-mobile">
+        <div class="level-left">
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a href="/device/{{ .device.ID }}/edit" class="button">Edit</a>
+            </div>
+            <div class="level-item">
+                <form method="post" onsubmit="return confirm('Are you sure?')" action="/device/{{ .device.ID }}/delete">
+                    <button class="button is-danger" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
     </div>
-</section>
+</div>
