@@ -23,7 +23,7 @@ func startServices() {
 	go services.Start("watcher", services.Config{
 		Service:     watcher.New(),
 		RunInterval: 10 * time.Second,
-		StartDelay:  1 * time.Minute,
+		StartDelay:  30 * time.Second,
 	})
 
 	// go services.Start("prober", services.Config{
