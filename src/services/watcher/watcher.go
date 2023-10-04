@@ -8,7 +8,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/models/deviceM"
+	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/services"
 )
 
@@ -26,12 +26,12 @@ func (self *Watcher) Init(args *services.Args) error {
 }
 
 func (*Watcher) Run() error {
-	for _, device := range db.B[m.Device]().Find() {
+	for _, device := range deviceR.All() {
 		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Second
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
-			if device.State == deviceM.StateOnline {
-				newState := deviceM.StateOffline
+			if device.State == deviceR.StateOnline {
+				newState := deviceR.StateOffline
 
 				db.Create(&m.DeviceStateLog{
 					DeviceID: device.ID,
@@ -41,8 +41,8 @@ func (*Watcher) Run() error {
 				device.Update("state", newState)
 			}
 		} else {
-			if device.State == deviceM.StateOffline {
-				newState := deviceM.StateOnline
+			if device.State == deviceR.StateOffline {
+				newState := deviceR.StateOnline
 
 				db.Create(&m.DeviceStateLog{
 					DeviceID: device.ID,

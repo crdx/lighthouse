@@ -11,10 +11,10 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/models/adapterM"
-	"crdx.org/lighthouse/models/deviceM"
-	"crdx.org/lighthouse/models/networkM"
 	"crdx.org/lighthouse/pkg/cache"
+	"crdx.org/lighthouse/repos/adapterR"
+	"crdx.org/lighthouse/repos/deviceR"
+	"crdx.org/lighthouse/repos/networkR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util"
 
@@ -69,12 +69,12 @@ func (self *Scanner) Run() error {
 	// Convert e.g. 192.168.1.20/24 to 192.168.1.0/24.
 	_, generalIPNet := lo.Must2(net.ParseCIDR(ipNet.String()))
 
-	network, _ := networkM.Upsert(generalIPNet.String())
+	network, _ := networkR.Upsert(generalIPNet.String())
 
-	networkMessages := make(chan networkMessage)
+	networkRessages := make(chan networkRessage)
 
 	go func() {
-		if err := self.scan(iface, ipNet, networkMessages); err != nil {
+		if err := self.scan(iface, ipNet, networkRessages); err != nil {
 			// None of the errors generated so far are recoverable, but if one is returned by scan
 			// then it's likely something intermittent like a network write failure, so panic here
 			// to allow the recovery handler to deal with it.
@@ -83,9 +83,9 @@ func (self *Scanner) Run() error {
 	}()
 
 	for {
-		networkMessage := <-networkMessages
+		networkRessage := <-networkRessages
 
-		switch message := networkMessage.(type) {
+		switch message := networkRessage.(type) {
 		case arpMessage:
 			self.handleARPMessage(network, message.MACAddress, message.IPAddress)
 		case dhcpMessage:
@@ -94,7 +94,7 @@ func (self *Scanner) Run() error {
 	}
 }
 
-func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<- networkMessage) error {
+func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<- networkRessage) error {
 	handle, err := pcap.OpenLive(iface.Name, 65536, true, pcap.BlockForever)
 	if err != nil {
 		return err
@@ -153,7 +153,7 @@ func (*Scanner) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNe
 	return nil
 }
 
-func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkMessage) {
+func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkRessage) {
 	packets := gopacket.NewPacketSource(handle, layers.LayerTypeEthernet).Packets()
 
 	for {
@@ -172,7 +172,7 @@ func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan
 	}
 }
 
-func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkMessage) {
+func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkRessage) {
 	for _, option := range packet.Options {
 		if option.Type == layers.DHCPOptHostname {
 			messages <- dhcpMessage{
@@ -183,7 +183,7 @@ func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkM
 	}
 }
 
-func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- networkMessage) {
+func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- networkRessage) {
 	// We are interested in the sender's IP<->MAC mapping in both requests and replies.
 	if packet.Operation != layers.ARPReply && packet.Operation != layers.ARPRequest {
 		return
@@ -226,7 +226,7 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 }
 
 func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipAddress string) {
-	adapter, adapterFound := adapterM.Upsert(macAddress, ipAddress)
+	adapter, adapterFound := adapterR.Upsert(macAddress, ipAddress)
 
 	log := self.log.With(
 		"adapter_id", adapter.ID,
@@ -240,16 +240,15 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 
 	// If an adapter was found, then we know it must have an attached device.
 	if adapterFound {
-		var deviceFound bool
-		device, deviceFound = deviceM.For(adapter.DeviceID).First()
-		if !deviceFound {
+		var found bool
+		if device, found = adapter.Device(); !found {
 			log.Warn("existing adapter found with no associated device")
 			return
 		}
 	} else {
 		device = db.Create(&m.Device{
 			NetworkID: network.ID,
-			State:     deviceM.StateOnline,
+			State:     deviceR.StateOnline,
 		})
 
 		adapter.Update("device_id", device.ID)
@@ -279,8 +278,8 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 }
 
 func updateHostname(macAddress string, hostname string) {
-	if adapter, found := db.B(m.Adapter{MACAddress: macAddress}).First(); found {
-		if device, found := deviceM.For(adapter.DeviceID).First(); found {
+	if adapter, found := adapterR.FindByMACAddress(macAddress); found {
+		if device, found := m.ForDevice(adapter.DeviceID).First(); found {
 			device.Update("hostname", hostname)
 		}
 	}

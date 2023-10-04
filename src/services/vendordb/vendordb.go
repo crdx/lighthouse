@@ -11,7 +11,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/models/deviceM"
+	"crdx.org/lighthouse/repos/adapterR"
 	"crdx.org/lighthouse/services"
 	"github.com/imroc/req/v3"
 )
@@ -35,7 +35,7 @@ func (self *VendorDB) Init(args *services.Args) error {
 }
 
 func (self *VendorDB) Run() error {
-	for _, adapter := range db.B[m.Adapter]().Where(`vendor = ""`).Find() {
+	for _, adapter := range adapterR.AllWithoutVendor() {
 		log := self.log.With("mac", adapter.MACAddress)
 
 		update := func(adapter *m.Adapter, vendor string) {
@@ -51,7 +51,7 @@ func (self *VendorDB) Run() error {
 			adapter.Update(columns)
 
 			if vendor != constants.UnknownVendorLabel {
-				if device, found := deviceM.For(adapter.DeviceID).First(); found {
+				if device, found := m.ForDevice(adapter.DeviceID).First(); found {
 					if device.Name == "" {
 						device.Update("name", vendor)
 					}

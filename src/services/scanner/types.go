@@ -1,7 +1,7 @@
 package scanner
 
-type networkMessage interface {
-	IsNetworkMessage()
+type networkRessage interface {
+	IsnetworkRessage()
 }
 
 type arpMessage struct {
@@ -9,11 +9,11 @@ type arpMessage struct {
 	IPAddress  string
 }
 
-func (arpMessage) IsNetworkMessage() {}
+func (arpMessage) IsnetworkRessage() {}
 
 type dhcpMessage struct {
 	MACAddress string
 	Hostname   string
 }
 
-func (dhcpMessage) IsNetworkMessage() {}
+func (dhcpMessage) IsnetworkRessage() {}

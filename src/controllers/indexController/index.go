@@ -3,7 +3,8 @@ package indexController
 import (
 	"slices"
 
-	"crdx.org/lighthouse/models/deviceM"
+	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/tpl"
 	"golang.org/x/exp/maps"
 
@@ -32,13 +33,13 @@ func Get(c *fiber.Ctx) error {
 	}
 
 	return c.Render("index", fiber.Map{
-		"devices": deviceM.GetListView(currentSortColumn, currentSortDirection),
+		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
 	})
 }
 
 func ViewDevice(c *fiber.Ctx) error {
-	if device, found := deviceM.For(uint(lo.Must(c.ParamsInt("id")))).First(); found {
+	if device, found := m.ForDevice(uint(lo.Must(c.ParamsInt("id")))).First(); found {
 		return c.Render("view", fiber.Map{
 			"device":   device,
 			"adapters": device.Adapters(),
@@ -49,7 +50,7 @@ func ViewDevice(c *fiber.Ctx) error {
 }
 
 func DeleteDevice(c *fiber.Ctx) error {
-	if device, found := deviceM.For(uint(lo.Must(c.ParamsInt("id")))).First(); found {
+	if device, found := m.ForDevice(uint(lo.Must(c.ParamsInt("id")))).First(); found {
 		device.Delete()
 	}
 
