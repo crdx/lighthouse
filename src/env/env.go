@@ -3,6 +3,8 @@ package env
 import (
 	"fmt"
 	"os"
+	"slices"
+	"strings"
 )
 
 const (
@@ -63,7 +65,11 @@ func Check() {
 		panic("running in production (MODE=production) but no port set")
 	}
 
-	if AuthType != AuthTypeNone {
+	require("HOST")
+
+	requireIn("AUTH_TYPE", []string{"none", "basic"}, true)
+
+	if AuthType == AuthTypeBasic {
 		require("AUTH_USER")
 		require("AUTH_PASS")
 	}
@@ -75,6 +81,8 @@ func Check() {
 	require("DB_NAME")
 	require("DB_USER")
 
+	requireIn("MAIL_TYPE", []string{"smtp", "none"}, true)
+
 	if MailType == MailTypeSMTP {
 		require("SMTP_HOST")
 		require("SMTP_PORT")
@@ -84,12 +92,38 @@ func Check() {
 		require("MAIL_TO")
 	}
 
-	require("LOG_TYPE")
+	requireIn("LOG_TYPE", []string{"all", "disk", "stdout", "none"}, false)
 	require("LOCAL_TZ")
 }
 
 func require(name string) {
 	if os.Getenv(name) == "" {
 		panic(fmt.Sprintf("required environment variable %s is not set", name))
+	}
+}
+
+func requireIn(name string, values []string, canBeEmpty bool) {
+	if !canBeEmpty {
+		require(name)
+	}
+
+	value := os.Getenv(name)
+
+	if canBeEmpty && value == "" {
+		return
+	}
+
+	if !slices.Contains(values, value) {
+		s := ""
+		if canBeEmpty {
+			s = `, or the empty string ("")`
+		}
+
+		panic(fmt.Sprintf(
+			`required environment variable %s contains an invalid value (must be one of: "%s"%s)`,
+			name,
+			strings.Join(values, `", "`),
+			s,
+		))
 	}
 }
