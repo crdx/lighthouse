@@ -64,32 +64,32 @@ func Check() {
 	}
 
 	if AuthType != AuthTypeNone {
-		require(AuthUser, "auth user", "AUTH_USER")
-		require(AuthPass, "auth pass", "AUTH_PASS")
+		require("AUTH_USER")
+		require("AUTH_PASS")
 	}
 
 	if DatabaseSocket == "" && DatabaseHost == "" {
 		panic("database socket (DB_SOCK) or host (DB_HOST) not set")
 	}
 
-	require(DatabaseName, "database name", "DB_NAME")
-	require(DatabaseUser, "database user", "DB_USER")
+	require("DB_NAME")
+	require("DB_USER")
 
 	if MailType == MailTypeSMTP {
-		require(SMTPHost, "SMTP host", "SMTP_HOST")
-		require(SMTPPort, "SMTP port", "SMTP_PORT")
-		require(SMTPUser, "SMTP user", "SMTP_USER")
-		require(SMTPPass, "SMTP pass", "SMTP_PASS")
-		require(MailFrom, "mail from", "MAIL_FROM")
-		require(MailTo, "mail to", "MAIL_TO")
+		require("SMTP_HOST")
+		require("SMTP_PORT")
+		require("SMTP_USER")
+		require("SMTP_PASS")
+		require("MAIL_FROM")
+		require("MAIL_TO")
 	}
 
-	require(LogType, "log type", "LOG_TYPE")
-	require(LocalTimeZone, "local timezone", "LOCAL_TZ")
+	require("LOG_TYPE")
+	require("LOCAL_TZ")
 }
 
-func require(v, name, envvar string) {
-	if v == "" {
-		panic(fmt.Sprintf("%s (%s) not set", name, envvar))
+func require(name string) {
+	if os.Getenv(name) == "" {
+		panic(fmt.Sprintf("required environment variable %s is not set", name))
 	}
 }
