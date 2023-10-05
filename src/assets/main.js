@@ -1,3 +1,16 @@
+function findParentByClass(node, className) {
+  let current = node
+
+  while (current !== null) {
+    if (current.classList && current.classList.contains(className)) {
+      return current
+    }
+    current = current.parentNode
+  }
+
+  return null
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const burgers = document.querySelectorAll('.navbar-burger') || []
 
@@ -13,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     deleteButtons.forEach(function(deleteNode) {
         deleteNode.addEventListener('click', function() {
-            const notification = deleteNode.parentNode
+            const notification = findParentByClass(deleteNode, 'container')
             notification.parentNode.removeChild(notification)
         })
     })

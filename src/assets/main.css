@@ -1,5 +1,14 @@
 /* TODO: Build bulma from SCSS and move some of these to variables. */
 
+.section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+th {
+    white-space: nowrap;
+}
+
 code {
     color: #363636;
 }
@@ -16,11 +25,6 @@ code {
     color: grey;
 }
 
-th {
-    white-space: nowrap;
-}
-
-nav {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 1.5rem;
+.notification {
+    margin-top: 1rem;
 }

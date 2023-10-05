@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.svg">
 
-    <!-- TODO: Host locally or switch to another icon pack. -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="/assets/fontawesome/css/all.min.css" rel="stylesheet">
+    <!-- <link href="/assets/fontawesome/css/fontawesome.min.css" rel="stylesheet"> -->
+    <!-- <link href="/assets/fontawesome/css/duotone.min.css" rel="stylesheet"> -->
+    <!-- <link href="/assets/fontawesome/css/solid.min.css" rel="stylesheet"> -->
 
     <link rel="stylesheet" href="/assets/bulma.min.css">
     <link rel="stylesheet" href="/assets/main.css">
@@ -14,42 +16,59 @@
     <title>lighthouse</title>
 </head>
 <body>
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">
-                    lighthouse
+                <a class="navbar-item" href="/" title="Home">
+                    <span class="icon is-medium">
+                        <i class="fa-duotone fa-lighthouse fa-lg"></i>
+                    </span>
                 </a>
 
+                <a href="/" class="navbar-item">
+                    <span>devices</span>
+                </a>
                 <!--
-                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
+                <a href="/people" class="navbar-item">
+                    <span>people</span>
                 </a>
                 -->
+                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="js-navbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
 
-            <!--
-            <div id="navbar" class="navbar-menu">
+            <div id="js-navbar" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item">
-                        Settings
+                </div>
+
+                <div class="navbar-end">
+                    <!--
+                    <a href="/settings" class="navbar-item" title="Settings">
+                        <span class="icon is-hidden-touch"><i class="fas fa-cog"></i></span>
+                        <span class="is-hidden-desktop">settings</span>
                     </a>
+                    -->
                 </div>
             </div>
-            -->
         </div>
     </nav>
 
     {{ if .i_flash }}
-        <div class="container notification is-light is-{{ .i_flash.Class }}">
+    <div class="container">
+        <div class="notification is-light is-{{ .i_flash.Class }}">
             {{ if not .i_flash.Persistent }}<button class="delete"></button>{{ end }}
             {{ .i_flash.Content }}
         </div>
+    </div>
     {{ end }}
 
+
     {{ embed }}
+
+    <!-- <footer class="footer"></footer> -->
 
     <script type="text/javascript" src="/assets/main.js"></script>
 </body>

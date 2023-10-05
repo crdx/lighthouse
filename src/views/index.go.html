@@ -1,53 +1,61 @@
-<div class="container">
-    <table class="table is-striped is-fullwidth is-narrow">
-        <thead>
-            {{ define "column" }}
-                <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
-                    {{ .Label }}
-                    {{ if eq .CurrentSortColumn .SortColumn }}
-                        {{ if eq .CurrentSortDirection "asc" }}
-                            <i class="fas fa-arrow-down fa-sm"></i>
-                        {{ else }}
-                            <i class="fas fa-arrow-up fa-sm"></i>
-                        {{ end }}
+<div class="section">
+    <div class="container">
+        <div class="box">
+            <table class="table is-striped is-fullwidth is-narrow">
+                <thead>
+                    {{ define "column" }}
+                        <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
+                            {{ .Label }}
+                            {{ if eq .CurrentSortColumn .SortColumn }}
+                                <span class="icon">
+                                    {{ if eq .CurrentSortDirection "asc" }}
+                                        <i class="fa-duotone fa-arrow-down fa-sm"></i>
+                                    {{ else }}
+                                        <i class="fa-duotone fa-arrow-up fa-sm"></i>
+                                    {{ end }}
+                                </span>
+                            {{ end }}
+                        </a>
                     {{ end }}
-                </a>
-            {{ end }}
 
-            <tr>
-                <th><i class="fas fa-exchange-alt fa-sm"></i></th>
-                <th>{{ template "column" .columns.name }}</th>
-                <th class="is-hidden-mobile">{{ template "column" .columns.ip }}</th>
-                <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
-                <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
-                <th>{{ template "column" .columns.seen }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{ range .devices }}
-            <tr>
-                <td>
-                    {{ if eq .State "online" }}
-                        <i class="fas fa-computer icon--online"></i>
-                    {{ else }}
-                        <i class="fas fa-computer icon--offline"></i>
+                    <tr>
+                        <th><span class="icon"><i class="fa-duotone fa-exchange-alt fa-sm"></i></span></th>
+                        <th>{{ template "column" .columns.name }}</th>
+                        <th class="is-hidden-mobile">{{ template "column" .columns.ip }}</th>
+                        <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
+                        <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
+                        <th>{{ template "column" .columns.seen }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .devices }}
+                    <tr>
+                        <td>
+                            <span class="icon">
+                                 {{ if eq .State "online" }}
+                                    <i class="fa-duotone fa-desktop icon--online"></i>
+                                {{ else }}
+                                    <i class="fa-duotone fa-desktop icon--offline"></i>
+                                {{ end }}
+                            </span>
+                        </td>
+                        <td>
+                            <div><a href="/device/{{ .ID }}">{{ or .Name "Unidentified device" }}</a></div>
+                            <div class="is-hidden-tablet is-family-monospace has-text-grey">{{ .IPAddress }}</div>
+                        </td>
+                        <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
+                        <td class="is-hidden-touch ">{{ or .Vendor "Unknown vendor" }}</td>
+                        <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
+                        <td title="{{ escape .LastSeen.String }}">
+                            <div class="is-hidden-touch">{{ timeAgoVerbose .LastSeen  }}</div>
+                            <div class="is-hidden-desktop">
+                                <div>{{ timeAgo .LastSeen  }}</div>
+                            </div>
+                        </td>
+                    </tr>
                     {{ end }}
-                </td>
-                <td>
-                    <div><a href="/device/{{ .ID }}">{{ or .Name "Unidentified device" }}</a></div>
-                    <div class="is-hidden-tablet is-family-monospace has-text-grey">{{ .IPAddress }}</div>
-                </td>
-                <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
-                <td class="is-hidden-touch ">{{ or .Vendor "Unknown vendor" }}</td>
-                <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
-                <td title="{{ escape .LastSeen.String }}">
-                    <div class="is-hidden-touch">{{ timeAgoVerbose .LastSeen  }}</div>
-                    <div class="is-hidden-desktop">
-                        <div>{{ timeAgo .LastSeen  }}</div>
-                    </div>
-                </td>
-            </tr>
-            {{ end }}
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
