@@ -24,10 +24,7 @@ func main() {
 
 	app := fiber.New(conf.GetFiberConfig(views))
 
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.SendString("OK")
-	})
-
+	initHealthCheck(app)
 	initMiddleware(app)
 	initRoutes(app)
 
@@ -40,3 +37,10 @@ func main() {
 
 	panic(app.Listen(env.BindHost + ":" + env.BindPort))
 }
+
+func initHealthCheck(app *fiber.App) {
+	app.Get("/health", func(c *fiber.Ctx) error {
+		return c.SendString("OK")
+	})
+}
+
