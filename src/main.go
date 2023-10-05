@@ -2,10 +2,12 @@ package main
 
 import (
 	"embed"
+	"encoding/gob"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/session"
 
 	"github.com/gofiber/fiber/v2"
@@ -26,6 +28,7 @@ func main() {
 
 	initHealthCheck(app)
 	initMiddleware(app)
+	initFlash(app)
 	initRoutes(app)
 
 	// Catch all requests not defined in initRoutes above.
@@ -44,3 +47,14 @@ func initHealthCheck(app *fiber.App) {
 	})
 }
 
+func initFlash(app *fiber.App) {
+	gob.Register(flash.Message{})
+
+	app.Use(func(c *fiber.Ctx) error {
+		if flashMessage, found := session.GetOnce[flash.Message](c, flash.Key); found {
+			c.Locals(flash.Key, flashMessage)
+		}
+
+		return c.Next()
+	})
+}

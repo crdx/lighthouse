@@ -1,14 +1,15 @@
 package conf
 
 import (
-	"crdx.org/lighthouse/env"
 	"crdx.org/session"
 )
 
 func GetSessionConfig() *session.Config {
 	return &session.Config{
-		Table:        "sessions",
-		CookieSecure: env.Production,
+		Table: "sessions",
+
+		// lighthouse is intended to be accessed over the local network only.
+		CookieSecure: false,
 	}
 }
 

@@ -42,6 +42,13 @@
         </div>
     </nav>
 
+    {{ if .i_flash }}
+        <div class="container notification is-light is-{{ .i_flash.Class }}">
+            {{ if not .i_flash.Persistent }}<button class="delete"></button>{{ end }}
+            {{ .i_flash.Content }}
+        </div>
+    {{ end }}
+
     {{ embed }}
 
     <script type="text/javascript" src="/assets/main.js"></script>

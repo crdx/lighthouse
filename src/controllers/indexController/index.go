@@ -4,6 +4,7 @@ import (
 	"slices"
 
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/tpl"
 	"golang.org/x/exp/maps"
@@ -35,6 +36,7 @@ func Get(c *fiber.Ctx) error {
 	return c.Render("index", fiber.Map{
 		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
+		flash.Key: c.Locals(flash.Key), // TODO: Find a way to not need this in every route.
 	})
 }
 
@@ -43,6 +45,7 @@ func ViewDevice(c *fiber.Ctx) error {
 		return c.Render("view", fiber.Map{
 			"device":   device,
 			"adapters": device.Adapters(),
+			flash.Key:  c.Locals(flash.Key), // TODO: Find a way to not need this in every route.
 		})
 	}
 
@@ -52,6 +55,7 @@ func ViewDevice(c *fiber.Ctx) error {
 func DeleteDevice(c *fiber.Ctx) error {
 	if device, found := m.ForDevice(uint(lo.Must(c.ParamsInt("id")))).First(); found {
 		device.Delete()
+		flash.AddSuccess(c, "Device deleted")
 	}
 
 	return c.Redirect("/")
