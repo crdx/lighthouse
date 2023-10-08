@@ -17,6 +17,7 @@ type Device struct {
 	Name                 string         `gorm:"size:255;not null"`
 	Hostname             string         `gorm:"size:255;not null"`
 	State                string         `gorm:"size:32;not null"`
+	Icon                 string         `gorm:"size:255;not null"`
 	LastSeen             time.Time      `gorm:""`
 	NotifyOnStatusChange bool           `gorm:"not null;default:false"`
 	GracePeriod          uint           `gorm:"not null;default:300"`

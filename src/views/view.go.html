@@ -13,9 +13,9 @@
                     <div class="level-item">
                         <span class="icon is-large">
                             {{ if eq .device.State "online" }}
-                                <i class="fa-duotone fa-2x fa-desktop icon--online"></i>
+                                <i class="fa-2x {{ .device.Icon }} state--online"></i>
                             {{ else }}
-                                <i class="fa-duotone fa-2x fa-desktop icon--offline"></i>
+                                <i class="fa-2x {{ .device.Icon }} state--offline"></i>
                             {{ end }}
                         </span>
                     </div>

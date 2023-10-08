@@ -249,6 +249,7 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 		device = db.Create(&m.Device{
 			NetworkID: network.ID,
 			State:     deviceR.StateOnline,
+			Icon:      constants.DefaultDeviceIconClass,
 		})
 
 		adapter.Update("device_id", device.ID)

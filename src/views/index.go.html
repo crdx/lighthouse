@@ -33,9 +33,9 @@
                         <td>
                             <span class="icon">
                                  {{ if eq .State "online" }}
-                                    <i class="fa-duotone fa-desktop icon--online"></i>
+                                    <i class="{{ .Icon }} state--online"></i>
                                 {{ else }}
-                                    <i class="fa-duotone fa-desktop icon--offline"></i>
+                                    <i class="{{ .Icon }} state--offline"></i>
                                 {{ end }}
                             </span>
                         </td>

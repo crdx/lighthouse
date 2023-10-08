@@ -24,6 +24,7 @@ type ListView struct {
 	Name       string
 	State      string
 	Hostname   string
+	Icon       string
 	MACAddress string
 	Vendor     string
 	IPAddress  string
@@ -53,6 +54,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 			D.name,
 			D.state,
 			D.hostname,
+			D.icon,
 			A1.mac_address,
 			A1.vendor,
 			A1.ip_address,
