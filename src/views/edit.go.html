@@ -1,0 +1,77 @@
+<div class="section">
+    <div class="container">
+        <div class="box">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title">
+                            {{ or .device.Name "Unidentified device" }}
+                        </h1>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <span class="icon is-large">
+                            {{ if eq .device.State "online" }}
+                                <i class="fa-2x {{ .device.Icon }} state--online"></i>
+                            {{ else }}
+                                <i class="fa-2x {{ .device.Icon }} state--offline"></i>
+                            {{ end }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <form method="post">
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input class="input"
+                               type="text"
+                               name="name"
+                               value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
+                    </div>
+                    {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
+                </div>
+
+                <div class="field">
+                    <label class="label">Notes</label>
+                    <div class="control">
+                        <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                    </div>
+                    {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
+                    <p class="help"></p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Icon</label>
+                    <div class="control">
+                        <input class="input"
+                               type="text"
+                               name="icon"
+                               value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
+                    </div>
+                    {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
+                    <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Grace Period</label>
+                    <div class="control">
+                        <input class="input"
+                               type="text"
+                               name="grace_period"
+                               value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
+                    </div>
+                    {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
+                    <p class="help">The number of minutes to wait before considering this device to be offline.</p>
+                </div>
+
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button type="submit" class="button is-link">Save</button>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

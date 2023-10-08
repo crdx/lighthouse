@@ -30,7 +30,14 @@ func GetFuncMap() template.FuncMap {
 			return t.In(tz()).Format("02/01/2006 15:04 MST")
 		},
 		"escape": escape,
+		"nl2br":  nl2br,
 	}
+}
+
+func nl2br(s string) template.HTML {
+	s = template.HTMLEscapeString(s)
+	s = strings.ReplaceAll(s, "\n", "<br>")
+	return template.HTML(s)
 }
 
 func escape(s string) string {

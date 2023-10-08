@@ -46,7 +46,7 @@
                         <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
                         <td class="is-hidden-touch ">{{ or .Vendor "Unknown vendor" }}</td>
                         <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
-                        <td title="{{ escape .LastSeen.String }}">
+                        <td title="{{ .LastSeen.String }}">
                             <div class="is-hidden-touch">{{ timeAgoVerbose .LastSeen  }}</div>
                             <div class="is-hidden-desktop">
                                 <div>{{ timeAgo .LastSeen  }}</div>
