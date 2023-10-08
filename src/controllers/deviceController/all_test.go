@@ -4,8 +4,10 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/controllers/deviceController"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -57,4 +59,28 @@ func TestEditDevice(t *testing.T) {
 	assert.Contains(t, body, nameUUID)
 	assert.Contains(t, body, notesUUID)
 	assert.Contains(t, body, iconUUID)
+}
+
+func TestMergeDevice(t *testing.T) {
+	app := app()
+
+	res, _ := helpers.PostForm(app, "/device/1/merge", map[string]string{
+		"device_id": "2",
+	})
+
+	assert.Equal(t, 302, res.StatusCode)
+
+	_, body := helpers.Get(app, "/device/1")
+
+	assert.Contains(t, body, "01/10/2023")
+	assert.Contains(t, body, "adapter1")
+	assert.Contains(t, body, "adapter2")
+
+	device := lo.Must(m.ForDevice(1).First())
+
+	assert.Len(t, device.Adapters(), 2)
+	assert.NotNil(t, device.DeletedAt)
+
+	_, found := m.ForDevice(2).First()
+	assert.False(t, found)
 }
