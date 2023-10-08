@@ -41,7 +41,7 @@ func Edit(c *fiber.Ctx) error {
 	}
 
 	if fields, err := validate.Struct(form); err {
-		return c.Render("edit", fiber.Map{
+		return c.Render("devices/edit", fiber.Map{
 			"device":  device,
 			"err":     err,
 			"fields":  fields,

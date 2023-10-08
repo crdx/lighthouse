@@ -61,6 +61,28 @@ func TestEditDevice(t *testing.T) {
 	assert.Contains(t, body, iconUUID)
 }
 
+func TestEditDeviceWithErrors(t *testing.T) {
+	app := app()
+
+	notesUUID := helpers.UUID()
+	iconUUID := helpers.UUID()
+
+	res, body := helpers.PostForm(app, "/device/1/edit", map[string]string{
+		"name":         "",
+		"notes":        notesUUID,
+		"icon":         iconUUID,
+		"grace_period": "6",
+	})
+
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, body, "Name is a required field")
+
+	_, body = helpers.Get(app, "/device/1")
+
+	assert.NotContains(t, body, notesUUID)
+	assert.NotContains(t, body, iconUUID)
+}
+
 func TestMergeDevice(t *testing.T) {
 	app := app()
 
