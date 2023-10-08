@@ -2,10 +2,7 @@
     <div class="container is-max-widescreen">
         <div class="box">
             <h1 class="title">{{ .adapter.Name }}</h1>
-            <h2 class="subtitle has-text-grey">
-                <span class="is-family-monospace">{{ .adapter.MACAddress }}</span>,
-                {{ .adapter.IPAddress }}
-            </h2>
+            <h2 class="subtitle has-text-grey">{{ .adapter.IPAddress }}</h2>
 
             <form method="post">
                 <div class="field is-horizontal">
