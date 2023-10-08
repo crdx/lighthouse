@@ -41,6 +41,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 		"mac":    "A1.mac_address %s",
 		"seen":   "A1.last_seen %s, D.id ASC",
 		"watch":  "D.watch %s, D.id ASC",
+		"type":   "D.icon %s, D.id ASC",
 	}
 
 	orderByTemplate, ok := orderByTemplates[sortColumn]

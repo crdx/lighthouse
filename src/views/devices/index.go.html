@@ -19,7 +19,7 @@
                     {{ end }}
 
                     <tr>
-                        <th><span class="icon"><i class="fa-duotone fa-exchange-alt fa-sm"></i></span></th>
+                        <th title="Type">{{ template "column" .columns.type }}</th>
                         <th>{{ template "column" .columns.name }}</th>
                         <th class="is-hidden-mobile">{{ template "column" .columns.ip }}</th>
                         <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>

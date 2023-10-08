@@ -14,6 +14,7 @@ import (
 
 func Get(c *fiber.Ctx) error {
 	watchLabel := template.HTML(constants.WatchColumnLabel)
+	typeLabel := template.HTML(constants.TypeColumnLabel)
 
 	columns := map[string]tpl.SortableColumnConfig{
 		"name":   {Label: "Name", DefaultSortDirection: "asc"},
@@ -22,6 +23,7 @@ func Get(c *fiber.Ctx) error {
 		"mac":    {Label: "MAC Address", DefaultSortDirection: "asc"},
 		"seen":   {Label: "Last Seen", DefaultSortDirection: "desc"},
 		"watch":  {Label: watchLabel, DefaultSortDirection: "desc"},
+		"type":   {Label: typeLabel, DefaultSortDirection: "asc"},
 	}
 
 	currentSortColumn := c.Query("sc", "seen")
