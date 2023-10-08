@@ -1,6 +1,14 @@
 <div class="section">
     <div class="container is-max-widescreen">
         <div class="box">
+            <nav class="breadcrumb has-arrow-separator is-small">
+                <ul>
+                    <li><a href="/">devices</a></li>
+                    <li><a href="/device/{{ .device.ID }}">{{ .device.Name }}</a></li>
+                    <li class="is-active"><a href="/adapter/{{ .adapter.ID }}/edit">{{ .adapter.Name }}</a></li>
+                </ul>
+            </nav>
+
             <h1 class="title">{{ .adapter.Name }}</h1>
             <h2 class="subtitle has-text-grey">{{ .adapter.IPAddress }}</h2>
 

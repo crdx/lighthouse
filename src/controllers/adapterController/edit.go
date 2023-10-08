@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 func ViewEdit(c *fiber.Ctx) error {
@@ -17,6 +18,7 @@ func ViewEdit(c *fiber.Ctx) error {
 
 	return c.Render("adapters/edit", fiber.Map{
 		"adapter": adapter,
+		"device": lo.Must(adapter.Device()),
 		flash.Key: c.Locals(flash.Key),
 	})
 }
