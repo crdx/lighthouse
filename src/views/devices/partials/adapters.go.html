@@ -29,14 +29,14 @@
             <td class="min-column">
                 <div class="level">
                     <div class="level-item">
-                        <a title="Edit" href="#" class="has-text-dark">
+                        <a title="Edit" href="/adapter/{{ .ID }}/edit" class="has-text-dark">
                             <span class="icon">
                                 <i class="fa-duotone fa-edit"></i>
                             </span>
                         </a>
                     </div>
                     <div class="level-item">
-                        <form action="#" method="post">
+                        <form action="/adapter/{{ .ID }}/delete" method="post">
                             <a title="Delete" onclick="confirm('Are you sure?') && parentNode.submit()" class="has-text-dark">
                                 <span class="icon has-text-danger">
                                     <i class="fa-duotone fa-trash"></i>

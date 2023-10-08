@@ -1,0 +1,50 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            <h1 class="title">
+                {{ .adapter.Name }}
+            </h1>
+
+            <form method="post">
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Name</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="name"
+                                       value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .adapter.Name }}{{ end }}">
+                            </div>
+                            {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Vendor</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="vendor"
+                                       value="{{ if .err }}{{ .fields.Vendor.Value }}{{ else }}{{ .adapter.Vendor }}{{ end }}">
+                            </div>
+                            {{ if .fields.Vendor.Error }}<p class="help is-danger">{{ .fields.Vendor.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal is-grouped">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
