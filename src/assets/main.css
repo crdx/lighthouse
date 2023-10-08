@@ -32,3 +32,8 @@ code {
 .notification {
     margin-top: 1rem;
 }
+
+.min-column {
+    width: 0;
+    white-space: nowrap;
+}
