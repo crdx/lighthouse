@@ -21,75 +21,98 @@
                     </div>
                 </div>
             </div>
+
             <form method="post">
-                <div class="field">
-                    <label class="label">Name</label>
-                    <div class="control">
-                        <input class="input"
-                               type="text"
-                               name="name"
-                               value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
-                    </div>
-                    {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
-                </div>
-
-                <div class="field">
-                    <label class="label">Notes</label>
-                    <div class="control">
-                        <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
-                    </div>
-                    {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
-                    <p class="help"></p>
-                </div>
-
-                <div class="field">
-                    <label class="label">Icon</label>
-                    <div class="control">
-                        <input class="input"
-                               type="text"
-                               name="icon"
-                               value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
-                    </div>
-                    {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
-                    <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
-                </div>
-
-                <div class="field">
-                    <label class="label">Grace Period</label>
-                    <div class="control">
-                        <input class="input"
-                               type="text"
-                               name="grace_period"
-                               value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
-                    </div>
-                    {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
-                    <p class="help">The number of minutes to wait before considering this device to be offline.</p>
-                </div>
-
-                <div class="field">
-                    <div class="control">
-                        <label class="checkbox">
-                            <input type="checkbox"
-                                   name="watch"
-                                   {{ if .err }}
-                                       {{ if .fields.Watch.Value }}
-                                           checked
-                                       {{ end }}
-                                   {{ else }}
-                                       {{ if .device.Watch }}
-                                           checked
-                                       {{ end }}
-                                   {{ end }}>
-                            Watch this device
-                        </label>
-                        <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Name</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="name"
+                                       value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
+                            </div>
+                        {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
+                        </div>
                     </div>
                 </div>
 
-                <div class="field is-grouped">
-                  <div class="control">
-                    <button type="submit" class="button is-link">Save</button>
-                  </div>
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Notes</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                            </div>
+                            {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Icon</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="icon"
+                                       value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
+                            </div>
+                            {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
+                            <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Grace Period</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="grace_period"
+                                       value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
+                            </div>
+                            {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
+                            <p class="help">The number of minutes to wait before considering this device to be offline.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"><label class="label">Watch</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox"
+                                           name="watch"
+                                           {{ if .err }}
+                                               {{ if .fields.Watch.Value }}
+                                                   checked
+                                               {{ end }}
+                                           {{ else }}
+                                               {{ if .device.Watch }}
+                                                   checked
+                                               {{ end }}
+                                           {{ end }}>
+                                </label>
+                                <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal is-grouped">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Save</button>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
