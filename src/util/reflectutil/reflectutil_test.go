@@ -9,8 +9,6 @@ import (
 )
 
 func TestStructToMap(t *testing.T) {
-	t.Parallel()
-
 	type TestStruct struct {
 		A string `json:"a"`
 		B int    `json:"b"`
@@ -29,8 +27,6 @@ func TestStructToMap(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v,%s", testCase.inputStruct, testCase.inputTag), func(t *testing.T) {
-			t.Parallel()
-
 			actual := StructToMap(testCase.inputStruct, testCase.inputTag)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -38,8 +34,6 @@ func TestStructToMap(t *testing.T) {
 }
 
 func TestGetValue(t *testing.T) {
-	t.Parallel()
-
 	type SimpleStruct struct {
 		A int
 	}
@@ -56,8 +50,6 @@ func TestGetValue(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			t.Parallel()
-
 			actual := GetValue(testCase.input)
 			assert.Equal(t, testCase.expected.Interface(), actual.Interface())
 			assert.Equal(t, testCase.expected.Kind(), actual.Kind())
@@ -66,8 +58,6 @@ func TestGetValue(t *testing.T) {
 }
 
 func TestGetType(t *testing.T) {
-	t.Parallel()
-
 	type SimpleStruct struct {
 		A int
 	}
@@ -84,8 +74,6 @@ func TestGetType(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			t.Parallel()
-
 			actual := GetType(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -93,8 +81,6 @@ func TestGetType(t *testing.T) {
 }
 
 func TestGetName(t *testing.T) {
-	t.Parallel()
-
 	type SimpleStruct struct {
 		A int
 	}
@@ -111,8 +97,6 @@ func TestGetName(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			t.Parallel()
-
 			actual := GetName(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -120,8 +104,6 @@ func TestGetName(t *testing.T) {
 }
 
 func TestToString(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		input    reflect.Value
 		expected string
@@ -133,8 +115,6 @@ func TestToString(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input.Interface()), func(t *testing.T) {
-			t.Parallel()
-
 			actual := ToString(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})

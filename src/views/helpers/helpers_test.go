@@ -8,8 +8,6 @@ import (
 )
 
 func TestEscape(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		input    string
 		expected string
@@ -27,7 +25,6 @@ func TestEscape(t *testing.T) {
 	for _, testCase := range testCases {
 		testCase := testCase
 		t.Run(testCase.input, func(t *testing.T) {
-			t.Parallel()
 			actual := escape(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -35,8 +32,6 @@ func TestEscape(t *testing.T) {
 }
 
 func TestTimeAgo(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		inputN         int
 		inputVerbose   bool
@@ -57,7 +52,6 @@ func TestTimeAgo(t *testing.T) {
 	for _, testCase := range testCases {
 		testCase := testCase
 		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputVerbose, testCase.inputPrecision), func(t *testing.T) {
-			t.Parallel()
 			actual := timeAgo(testCase.inputN, testCase.inputVerbose, testCase.inputPrecision)
 			assert.Equal(t, testCase.expected, actual)
 		})

@@ -9,8 +9,6 @@ import (
 )
 
 func TestExpandIPNet(t *testing.T) {
-	t.Parallel()
-
 	generate := func(prefix string, n int) []string {
 		var ips []string
 
@@ -33,8 +31,6 @@ func TestExpandIPNet(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s/%s", testCase.inputIPNet, testCase.inputMask), func(t *testing.T) {
-			t.Parallel()
-
 			_, ipNet, err := net.ParseCIDR(fmt.Sprintf("%s/%s", testCase.inputIPNet, testCase.inputMask))
 			assert.NoError(t, err)
 
@@ -49,8 +45,6 @@ func TestExpandIPNet(t *testing.T) {
 }
 
 func TestIPNetTooLarge(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		inputIPNet     string
 		inputFixedBits int
@@ -65,8 +59,6 @@ func TestIPNetTooLarge(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s/%d", testCase.inputIPNet, testCase.inputFixedBits), func(t *testing.T) {
-			t.Parallel()
-
 			_, ipNet, _ := net.ParseCIDR(fmt.Sprintf("%s/%d", testCase.inputIPNet, testCase.inputFixedBits))
 			actual := ipNetTooLarge(ipNet)
 			assert.Equal(t, testCase.expected, actual)

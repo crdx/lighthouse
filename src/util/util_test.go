@@ -15,8 +15,6 @@ import (
 )
 
 func TestPrintStackTrace(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		input            int
 		expectedContains []string
@@ -26,8 +24,6 @@ func TestPrintStackTrace(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d", testCase.input), func(t *testing.T) {
-			t.Parallel()
-
 			originalStdout := os.Stdout
 			r, w, _ := os.Pipe()
 			os.Stdout = w
@@ -49,8 +45,6 @@ func TestPrintStackTrace(t *testing.T) {
 }
 
 func TestPluralise(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		inputCount int
 		inputUnit  string
@@ -66,8 +60,6 @@ func TestPluralise(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d,%s", testCase.inputCount, testCase.inputUnit), func(t *testing.T) {
-			t.Parallel()
-
 			actual := util.Pluralise(testCase.inputCount, testCase.inputUnit)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -75,8 +67,6 @@ func TestPluralise(t *testing.T) {
 }
 
 func TestSendMail(t *testing.T) {
-	t.Parallel()
-
 	testCases := []struct {
 		inputSubject string
 		inputMessage string
@@ -86,8 +76,6 @@ func TestSendMail(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputMessage), func(t *testing.T) {
-			t.Parallel()
-
 			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, msg []byte) error {
 				expectedBody := fmt.Sprintf(
 					"To: %s\nSubject: %s\n\n%s",
