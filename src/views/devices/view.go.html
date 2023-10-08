@@ -1,26 +1,7 @@
 <div class="section">
     <div class="container is-max-widescreen">
         <div class="box">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <h1 class="title">
-                            {{ or .device.Name "Unidentified device" }}
-                        </h1>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <span class="icon is-large">
-                            {{ if eq .device.State "online" }}
-                                <i class="fa-2x {{ .device.Icon }} state--online"></i>
-                            {{ else }}
-                                <i class="fa-2x {{ .device.Icon }} state--offline"></i>
-                            {{ end }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+            {{ template "devices/partials/header" .device }}
 
             <table class="table">
                 <tr>
@@ -134,56 +115,7 @@
         </div>
 
         <div class="box">
-            <h2 class="subtitle">Adapters</h2>
-
-            <table class="table is-fullwidth">
-                <tr>
-                    <th>Label</th>
-                    <th class="is-hidden-mobile">MAC Address</th>
-                    <th>IP Address</th>
-                    <th class="is-hidden-mobile">Vendor</th>
-                    <th>Last Seen</th>
-                    <th></th>
-                </tr>
-                {{ range .adapters }}
-                    <tr>
-                        <td>
-                            {{ if ne .Name "" }}
-                                {{ .Name }}
-                            {{ else }}
-                                <i>Untitled</i>
-                            {{ end }}</td>
-                        <td class="is-hidden-mobile">
-                            <span class="is-family-monospace">{{ .MACAddress }}</span>
-                        </td>
-                        <td>{{ .IPAddress }}</td>
-                        <td class="is-hidden-mobile">{{ .Vendor }}</td>
-                        <td title="{{ escape (formatDateTime .LastSeen) }}">
-                            {{ timeAgoVerbose .LastSeen }}
-                        </td>
-                        <td class="min-column">
-                            <div class="level">
-                                <div class="level-item">
-                                    <a title="Edit" href="#" class="has-text-dark">
-                                        <span class="icon">
-                                            <i class="fa-duotone fa-edit"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="level-item">
-                                    <form action="#" method="post">
-                                        <a title="Delete" onclick="confirm('Are you sure?') && parentNode.submit()" class="has-text-dark">
-                                            <span class="icon has-text-danger">
-                                                <i class="fa-duotone fa-trash"></i>
-                                            </span>
-                                        </a>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                {{ end }}
-            </table>
+            {{ template "devices/partials/adapters" .adapters }}
         </div>
     </div>
 </div>
