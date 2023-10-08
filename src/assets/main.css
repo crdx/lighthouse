@@ -17,12 +17,12 @@ code {
     font-size: 0.9em;
 }
 
-.icon--online {
+.state--online {
     color: green;
 }
 
-.icon--offline {
-    color: grey;
+.state--offline {
+    color: #999;
 }
 
 .notification {

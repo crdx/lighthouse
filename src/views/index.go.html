@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                     {{ range .devices }}
-                    <tr>
+                    <tr {{ if ne .State "online" }}class="state--offline"{{ end }}>
                         <td>
                             <span class="icon">
                                  {{ if eq .State "online" }}
