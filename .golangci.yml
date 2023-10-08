@@ -41,6 +41,7 @@ linters:
     - varnamelen
     - wrapcheck
     - wsl
+    - tagalign
 
 linters-settings:
   gocritic:
