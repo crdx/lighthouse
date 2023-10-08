@@ -194,16 +194,20 @@ func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- network
 	}
 
 	ipAddress := net.IP(packet.SourceProtAddress)
-	ipAddressStr := ipAddress.String()
-
 	macAddress := net.HardwareAddr(packet.SourceHwAddress)
-	macAddressStr := macAddress.String()
 
-	if self.macAddressCache.SeenWithinLast(macAddressStr, 10*time.Second) {
+	invalid := ipAddress.IsUnspecified() ||
+		ipAddress.IsLinkLocalUnicast() ||
+		ipAddress.IsLinkLocalMulticast()
+
+	if invalid {
 		return
 	}
 
-	if ipAddressStr == "0.0.0.0" {
+	ipAddressStr := ipAddress.String()
+	macAddressStr := macAddress.String()
+
+	if self.macAddressCache.SeenWithinLast(macAddressStr, 10*time.Second) {
 		return
 	}
 
