@@ -72,10 +72,10 @@ func (self *Scanner) Run() error {
 
 	network, _ := networkR.Upsert(generalIPNet.String())
 
-	networkRessages := make(chan networkRessage)
+	networkMessages := make(chan networkMessage)
 
 	go func() {
-		if err := self.scan(iface, ipNet, networkRessages); err != nil {
+		if err := self.scan(iface, ipNet, networkMessages); err != nil {
 			// None of the errors generated so far are recoverable, but if one is returned by scan
 			// then it's likely something intermittent like a network write failure, so panic here
 			// to allow the recovery handler to deal with it.
@@ -84,9 +84,9 @@ func (self *Scanner) Run() error {
 	}()
 
 	for {
-		networkRessage := <-networkRessages
+		networkMessage := <-networkMessages
 
-		switch message := networkRessage.(type) {
+		switch message := networkMessage.(type) {
 		case arpMessage:
 			self.handleARPMessage(network, strings.ToUpper(message.MACAddress), message.IPAddress)
 		case dhcpMessage:
@@ -95,7 +95,7 @@ func (self *Scanner) Run() error {
 	}
 }
 
-func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<- networkRessage) error {
+func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<- networkMessage) error {
 	handle, err := pcap.OpenLive(iface.Name, 65536, true, pcap.BlockForever)
 	if err != nil {
 		return err
@@ -154,7 +154,7 @@ func (*Scanner) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNe
 	return nil
 }
 
-func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkRessage) {
+func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkMessage) {
 	packets := gopacket.NewPacketSource(handle, layers.LayerTypeEthernet).Packets()
 
 	for {
@@ -173,7 +173,7 @@ func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan
 	}
 }
 
-func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkRessage) {
+func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkMessage) {
 	for _, option := range packet.Options {
 		if option.Type == layers.DHCPOptHostname {
 			messages <- dhcpMessage{
@@ -184,7 +184,7 @@ func (*Scanner) handleDHCPPacket(packet *layers.DHCPv4, messages chan<- networkR
 	}
 }
 
-func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- networkRessage) {
+func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- networkMessage) {
 	// We are interested in the sender's IP<->MAC mapping in both requests and replies.
 	if packet.Operation != layers.ARPReply && packet.Operation != layers.ARPRequest {
 		return
