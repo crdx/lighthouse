@@ -86,6 +86,12 @@ set dotenv-load := true
 @fmt:
     cd src && go fmt ./...
 
+# show code sloc
+@sloc:
+    tokei -tGo,HTML,CSS,JavaScript \
+        -e src/assets/alpine.min.js \
+        -e src/assets/bulma.min.css
+
 # drop the db
 @drop-db:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
