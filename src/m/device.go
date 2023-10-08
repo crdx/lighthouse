@@ -21,7 +21,7 @@ type Device struct {
 	Notes       string         `gorm:"not null"`
 	LastSeen    time.Time      `gorm:""`
 	Watch       bool           `gorm:"not null;default:false"`
-	GracePeriod uint           `gorm:"not null;default:300"`
+	GracePeriod uint           `gorm:"not null;default:5"`
 }
 
 func (self *Device) Update(values ...any) {
