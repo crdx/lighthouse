@@ -14,6 +14,7 @@ func View(c *fiber.Ctx) error {
 
 	return c.Render("devices/view", fiber.Map{
 		"device":   device,
+		"devices":  deviceR.All(),
 		"adapters": device.Adapters(),
 		flash.Key:  c.Locals(flash.Key),
 	})

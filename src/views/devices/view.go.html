@@ -75,6 +75,7 @@
                         <span>Edit</span>
                     </a>
                 </div>
+
                 <div class="control">
                     <form method="post" onsubmit="return confirm('Are you sure?')" action="/device/{{ .device.ID }}/delete">
                         <button class="button is-ghost has-text-danger" type="submit">Delete</button>
@@ -113,6 +114,29 @@
                     </tr>
                 {{ end }}
             </table>
+
+            <form method="post" action="/device/{{ .device.ID }}/merge">
+                <div class="field is-grouped">
+                    <div class="control has-icons-left">
+                        <div class="select">
+                            <select name="device_id" required>
+                                <option value="">Merge with...</option>
+                                {{ range .devices }}
+                                    {{ if ne .ID $.device.ID }}
+                                        <option value="{{ .ID }}">{{ .Name }}</option>
+                                    {{ end }}
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="icon is-left">
+                            <i class="fa-duotone fa-merge"></i>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <button class="button" type="submit">Merge</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

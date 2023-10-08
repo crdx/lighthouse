@@ -9,7 +9,7 @@ import (
 )
 
 func All() []*m.Device {
-	return db.B[m.Device]().Find()
+	return db.B[m.Device]().Order("name ASC").Find()
 }
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————
