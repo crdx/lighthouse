@@ -1,4 +1,4 @@
-package indexController
+package deviceController
 
 import "github.com/gofiber/fiber/v2"
 

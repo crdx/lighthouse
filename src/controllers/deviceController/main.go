@@ -1,4 +1,4 @@
-package indexController
+package deviceController
 
 import (
 	"fmt"
@@ -35,7 +35,7 @@ func Get(c *fiber.Ctx) error {
 		return c.SendStatus(400)
 	}
 
-	return c.Render("index", fiber.Map{
+	return c.Render("devices/index", fiber.Map{
 		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
 		flash.Key: c.Locals(flash.Key),
@@ -48,7 +48,7 @@ func ViewDevice(c *fiber.Ctx) error {
 		return c.SendStatus(404)
 	}
 
-	return c.Render("view", fiber.Map{
+	return c.Render("devices/view", fiber.Map{
 		"device":   device,
 		"adapters": device.Adapters(),
 		flash.Key:  c.Locals(flash.Key),
@@ -72,7 +72,7 @@ func ViewEditDevice(c *fiber.Ctx) error {
 		return c.SendStatus(404)
 	}
 
-	return c.Render("edit", fiber.Map{
+	return c.Render("devices/edit", fiber.Map{
 		"device":  device,
 		flash.Key: c.Locals(flash.Key),
 	})

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"crdx.org/lighthouse/controllers/indexController"
+	"crdx.org/lighthouse/controllers/deviceController"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func initRoutes(app *fiber.App) {
-	indexController.InitRoutes(app)
+	deviceController.InitRoutes(app)
 }

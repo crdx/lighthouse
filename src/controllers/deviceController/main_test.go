@@ -1,9 +1,9 @@
-package indexController_test
+package deviceController_test
 
 import (
 	"testing"
 
-	"crdx.org/lighthouse/controllers/indexController"
+	"crdx.org/lighthouse/controllers/deviceController"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
@@ -12,7 +12,7 @@ import (
 func app() *fiber.App {
 	helpers.Init()
 	app := helpers.App()
-	indexController.InitRoutes(app)
+	deviceController.InitRoutes(app)
 	return app
 }
 
