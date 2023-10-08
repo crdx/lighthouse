@@ -12,9 +12,8 @@ const (
 )
 
 type Message struct {
-	Class      string
-	Content    string
-	Persistent bool
+	Class   string
+	Content string
 }
 
 func AddSuccess(c *fiber.Ctx, message string) {

@@ -59,7 +59,6 @@
     {{ if .i_flash }}
     <div class="container">
         <div class="notification is-light is-{{ .i_flash.Class }}">
-            {{ if not .i_flash.Persistent }}<button class="delete"></button>{{ end }}
             {{ .i_flash.Content }}
         </div>
     </div>
