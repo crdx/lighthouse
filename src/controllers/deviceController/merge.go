@@ -40,9 +40,11 @@ func Merge(c *fiber.Ctx) error {
 	child.Delete()
 
 	flash.AddSuccess(c, fmt.Sprintf(
-		"Device %s merged into %s (as latter was discovered first)",
+		"Device %s (id %d) merged into %s (id %d) as the latter was discovered first",
 		child.Name,
+		child.ID,
 		parent.Name,
+		parent.ID,
 	))
 
 	return c.Redirect(fmt.Sprintf("/device/%d", parent.ID))
