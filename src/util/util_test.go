@@ -1,4 +1,4 @@
-package util
+package util_test
 
 import (
 	"bytes"
@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/util"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,7 +32,7 @@ func TestPrintStackTrace(t *testing.T) {
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			PrintStackTrace(testCase.input)
+			util.PrintStackTrace(testCase.input)
 
 			w.Close()
 			os.Stdout = originalStdout
@@ -67,7 +68,7 @@ func TestPluralise(t *testing.T) {
 		t.Run(fmt.Sprintf("%d,%s", testCase.inputCount, testCase.inputUnit), func(t *testing.T) {
 			t.Parallel()
 
-			actual := Pluralise(testCase.inputCount, testCase.inputUnit)
+			actual := util.Pluralise(testCase.inputCount, testCase.inputUnit)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -99,59 +100,8 @@ func TestSendMail(t *testing.T) {
 				return nil
 			}
 
-			err := sendMail(mockSend, testCase.inputSubject, testCase.inputMessage)
+			err := util.SendMailFunc(mockSend, testCase.inputSubject, testCase.inputMessage)
 			assert.Nil(t, err)
-		})
-	}
-}
-
-func TestGetVendor(t *testing.T) {
-	t.Parallel()
-
-	testCases := []struct {
-		inputMACAddress string
-		expectedVendor  string
-		expectedFound   bool
-	}{
-		{"00:00:00:00:00:00", "XEROX CORPORATION", true},
-		{"00:1A:11:00:00:00", "Google, Inc.", true},
-		{"FC:FC:48:00:00:00", "Apple, Inc.", true},
-		{"12:34:56:78:9A:BC", "", false},
-		{"invalid", "", false},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.inputMACAddress, func(t *testing.T) {
-			t.Parallel()
-
-			actualVendor, actualFound := GetVendor(testCase.inputMACAddress)
-			assert.Equal(t, testCase.expectedVendor, actualVendor)
-			assert.Equal(t, testCase.expectedFound, actualFound)
-		})
-	}
-}
-
-func TestUnqualifyHostname(t *testing.T) {
-	t.Parallel()
-
-	testCases := []struct {
-		inputHostname    string
-		expectedHostname string
-	}{
-		{"test.local.", "test"},
-		{"test.local", "test"},
-		{"test", "test"},
-		{"test.", "test"},
-		{"", ""},
-		{".", ""},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.inputHostname, func(t *testing.T) {
-			t.Parallel()
-
-			actualHostname := UnqualifyHostname(testCase.inputHostname)
-			assert.Equal(t, testCase.expectedHostname, actualHostname)
 		})
 	}
 }

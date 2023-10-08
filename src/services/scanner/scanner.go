@@ -16,7 +16,7 @@ import (
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/repos/networkR"
 	"crdx.org/lighthouse/services"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/util/netutil"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
@@ -256,7 +256,7 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 
 		if hostname == "" {
 			if names, err := net.LookupAddr(ipAddress); err == nil && len(names) > 0 {
-				hostname = util.UnqualifyHostname(names[0])
+				hostname = netutil.UnqualifyHostname(names[0])
 				log.Info("found hostname via DNS", "hostname", hostname)
 			}
 		}

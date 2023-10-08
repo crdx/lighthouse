@@ -5,7 +5,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/util/netutil"
 )
 
 func All() []*m.Adapter {
@@ -33,7 +33,7 @@ func Upsert(macAddress string, ipAddress string) (*m.Adapter, bool) {
 	}
 
 	if adapter.Vendor == "" {
-		if vendor, vendorFound := util.GetVendor(adapter.MACAddress); vendorFound {
+		if vendor, vendorFound := netutil.GetVendor(adapter.MACAddress); vendorFound {
 			columns["vendor"] = vendor
 
 			if !adapterFound {
