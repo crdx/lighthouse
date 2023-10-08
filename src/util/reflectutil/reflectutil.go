@@ -50,7 +50,9 @@ func GetName(s any) string {
 func ToString(value reflect.Value) string {
 	switch value := value.Interface().(type) {
 	case int:
-		return strconv.Itoa(value)
+		return strconv.FormatInt(int64(value), 10)
+	case uint:
+		return strconv.FormatUint(uint64(value), 10)
 	case float64:
 		return strconv.FormatFloat(value, 'f', 3, 64)
 	case string:
