@@ -25,7 +25,7 @@
                         <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
                         <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
                         <th>{{ template "column" .columns.seen }}</th>
-                        <th title="Watching">{{ template "column" .columns.watch }}</th>
+                        <th class="is-hidden-mobile" title="Watching">{{ template "column" .columns.watch }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,7 +53,7 @@
                                 <div>{{ timeAgo .LastSeen  }}</div>
                             </div>
                         </td>
-                        <td>
+                        <td class="is-hidden-mobile">
                             {{ if .Watch }}
                                 <span class="icon is-small state--checked"><i class="fa-solid fa-check"></i></span>
                             {{ else }}
