@@ -67,7 +67,7 @@ set dotenv-load := true
 
 # run tests
 @test *args:
-    cd src && go test -cover ./... {{ args }} | grep -vF '[no test files]' || true
+    cd src && go test -p 1 -cover ./... {{ args }} | grep -vF '[no test files]' || true
 
 # connect to the test db
 @test-db:
