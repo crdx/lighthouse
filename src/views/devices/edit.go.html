@@ -54,11 +54,14 @@
                     <div class="field-label"><label class="label">Icon</label></div>
                     <div class="field-body">
                         <div class="field">
-                             <div class="control">
+                            <div class="control has-icons-left" x-data="{ icon: '{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}' }">
                                 <input class="input"
                                        type="text"
                                        name="icon"
-                                       value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
+                                       x-model="icon">
+                                <span class="icon is-small is-left">
+                                    <i :class="icon"></i>
+                                </span>
                             </div>
                             {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
                             <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
