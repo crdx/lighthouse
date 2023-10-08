@@ -32,6 +32,7 @@ var (
 	BindPort   = os.Getenv("PORT")
 
 	LogType = os.Getenv("LOG_TYPE")
+	LogPath = os.Getenv("LOG_PATH")
 
 	AuthType = os.Getenv("AUTH_TYPE")
 	AuthUser = os.Getenv("AUTH_USER")
@@ -93,6 +94,11 @@ func Check() {
 	}
 
 	requireIn("LOG_TYPE", []string{"all", "disk", "stdout", "none"}, false)
+
+	if LogType == LogTypeAll || LogType == LogTypeDisk {
+		require("LOG_PATH")
+	}
+
 	require("LOCAL_TZ")
 }
 

@@ -39,7 +39,7 @@ func New() *slog.Logger {
 }
 
 func getDiskHandler() slog.Handler {
-	file := lo.Must(os.OpenFile("logs/lighthouse.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644))
+	file := lo.Must(os.OpenFile(env.LogPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644))
 	lo.Must0(os.MkdirAll("logs", 0755))
 	return slog.NewJSONHandler(file, nil)
 }
