@@ -4,8 +4,10 @@ import (
 	"log/slog"
 	"os"
 	"sync"
+	"time"
 
 	"crdx.org/lighthouse/env"
+	"github.com/lmittmann/tint"
 	"github.com/samber/lo"
 	slogmulti "github.com/samber/slog-multi"
 )
@@ -23,11 +25,11 @@ func New() *slog.Logger {
 
 	switch env.LogType {
 	case env.LogTypeAll:
-		logger = slog.New(slogmulti.Fanout(getDiskHandler(), getStdoutHandler()))
+		logger = slog.New(slogmulti.Fanout(getDiskHandler(), getStderrHandler()))
 	case env.LogTypeDisk:
 		logger = slog.New(getDiskHandler())
 	case env.LogTypeStdout:
-		logger = slog.New(getStdoutHandler())
+		logger = slog.New(getStderrHandler())
 	default:
 		panic("unexpected env.LogType")
 	}
@@ -42,6 +44,8 @@ func getDiskHandler() slog.Handler {
 	return slog.NewJSONHandler(file, nil)
 }
 
-func getStdoutHandler() slog.Handler {
-	return slog.Default().Handler()
+func getStderrHandler() slog.Handler {
+	return tint.NewHandler(os.Stderr, &tint.Options{
+		TimeFormat: time.Kitchen,
+	})
 }
