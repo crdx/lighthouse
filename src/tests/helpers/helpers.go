@@ -6,6 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/tests/helpers/seeder"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
@@ -17,7 +18,7 @@ func Init() {
 	session.Init(conf.GetTestSessionConfig(), dbConfig)
 	gob.Register(&flash.Message{})
 
-	Seed()
+	seeder.Run()
 }
 
 func App() *fiber.App {

@@ -21,20 +21,19 @@ func TestDeviceList(t *testing.T) {
 	res, body := helpers.Get(app, "/")
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "AA:BB:CC:DD:EE:FF")
+	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
 	assert.Contains(t, body, "127.0.0.1")
-	assert.Contains(t, body, "localhost")
+	assert.Contains(t, body, "device1")
 }
 
 func TestViewDevice(t *testing.T) {
 	app := app()
 	res, body := helpers.Get(app, "/device/1")
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "AA:BB:CC:DD:EE:FF")
+	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
 	assert.Contains(t, body, "127.0.0.1")
-	assert.Contains(t, body, "localhost")
 	assert.Contains(t, body, "adapter1")
-	assert.Contains(t, body, "Computer Corporation")
+	assert.Contains(t, body, "Corp 1")
 }
 
 func TestEditDevice(t *testing.T) {
@@ -53,7 +52,7 @@ func TestEditDevice(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, body := helpers.Get(app, "/device/1")
+	_, body := helpers.Get(app, "/device/1")
 
 	assert.Contains(t, body, nameUUID)
 	assert.Contains(t, body, notesUUID)
