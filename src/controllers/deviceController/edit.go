@@ -32,6 +32,7 @@ func Edit(c *fiber.Ctx) error {
 		Icon        string `form:"icon" validate:"required,max=100"`
 		Notes       string `form:"notes" validate:"max=4096"`
 		GracePeriod uint   `form:"grace_period" validate:"required,gte=1,lte=60"`
+		Watch       bool   `form:"watch"`
 	}
 
 	form := new(Form)

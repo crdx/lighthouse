@@ -66,6 +66,26 @@
                     <p class="help">The number of minutes to wait before considering this device to be offline.</p>
                 </div>
 
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox"
+                                   name="watch"
+                                   {{ if .err }}
+                                       {{ if .fields.Watch.Value }}
+                                           checked
+                                       {{ end }}
+                                   {{ else }}
+                                       {{ if .device.Watch }}
+                                           checked
+                                       {{ end }}
+                                   {{ end }}>
+                            Watch this device
+                        </label>
+                        <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                    </div>
+                </div>
+
                 <div class="field is-grouped">
                   <div class="control">
                     <button type="submit" class="button is-link">Save</button>

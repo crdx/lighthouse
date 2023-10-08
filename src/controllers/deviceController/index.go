@@ -1,8 +1,10 @@
 package deviceController
 
 import (
+	"html/template"
 	"slices"
 
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/tpl"
@@ -11,12 +13,15 @@ import (
 )
 
 func Get(c *fiber.Ctx) error {
+	watchLabel := template.HTML(constants.WatchColumnLabel)
+
 	columns := map[string]tpl.SortableColumnConfig{
 		"name":   {Label: "Name", DefaultSortDirection: "asc"},
 		"ip":     {Label: "IP Address", DefaultSortDirection: "asc"},
 		"vendor": {Label: "Vendor", DefaultSortDirection: "asc"},
 		"mac":    {Label: "MAC Address", DefaultSortDirection: "asc"},
 		"seen":   {Label: "Last Seen", DefaultSortDirection: "desc"},
+		"watch":  {Label: watchLabel, DefaultSortDirection: "desc"},
 	}
 
 	currentSortColumn := c.Query("sc", "seen")

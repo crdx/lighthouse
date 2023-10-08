@@ -1,12 +1,12 @@
 package tpl
 
 type SortableColumnConfig struct {
-	Label                string
+	Label                any
 	DefaultSortDirection string
 }
 
 type SortableColumnState struct {
-	Label                string
+	Label                any
 	CurrentSortColumn    string
 	CurrentSortDirection string
 	SortColumn           string

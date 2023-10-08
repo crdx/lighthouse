@@ -25,6 +25,7 @@ type ListView struct {
 	State      string
 	Hostname   string
 	Icon       string
+	Watch      bool
 	MACAddress string
 	Vendor     string
 	IPAddress  string
@@ -39,6 +40,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 		"vendor": "A1.vendor %s, D.id ASC",
 		"mac":    "A1.mac_address %s",
 		"seen":   "A1.last_seen %s, D.id ASC",
+		"watch":  "D.watch %s, D.id ASC",
 	}
 
 	orderByTemplate, ok := orderByTemplates[sortColumn]
@@ -55,6 +57,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 			D.state,
 			D.hostname,
 			D.icon,
+			D.watch,
 			A1.mac_address,
 			A1.vendor,
 			A1.ip_address,

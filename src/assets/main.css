@@ -21,6 +21,10 @@ code {
     color: green;
 }
 
+.state--checked {
+    color: green;
+}
+
 .state--offline {
     color: #999;
 }
