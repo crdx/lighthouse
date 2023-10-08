@@ -1,11 +1,16 @@
 package deviceController
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 func InitRoutes(app *fiber.App) {
 	app.Get("/", Get)
-	app.Get("/device/:id<int>", ViewDevice)
-	app.Post("/device/:id<int>/delete", DeleteDevice)
-	app.Get("/device/:id<int>/edit", ViewEditDevice)
-	app.Post("/device/:id<int>/edit", EditDevice)
+
+	deviceGroup := app.Group("/device/:id<int>")
+	deviceGroup.Get("/", View)
+	deviceGroup.Post("/delete", Delete)
+	deviceGroup.Get("/edit", ViewEdit)
+	deviceGroup.Post("/edit", Edit)
+	deviceGroup.Post("/merge", Merge)
 }

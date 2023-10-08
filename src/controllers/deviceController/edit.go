@@ -9,8 +9,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ViewEditDevice(c *fiber.Ctx) error {
-	device, found := getDevice(c)
+func ViewEdit(c *fiber.Ctx) error {
+	device, found := getDevice(c, c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -21,10 +21,10 @@ func ViewEditDevice(c *fiber.Ctx) error {
 	})
 }
 
-func EditDevice(c *fiber.Ctx) error {
-	device, found := getDevice(c)
+func Edit(c *fiber.Ctx) error {
+	device, found := getDevice(c, c.Params("id"))
 	if !found {
-		return c.SendStatus(404)
+		return c.SendStatus(400)
 	}
 
 	type Form struct {

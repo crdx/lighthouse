@@ -2,11 +2,12 @@ package deviceController
 
 import (
 	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/repos/deviceR"
 	"github.com/gofiber/fiber/v2"
 )
 
-func ViewDevice(c *fiber.Ctx) error {
-	device, found := getDevice(c)
+func View(c *fiber.Ctx) error {
+	device, found := getDevice(c, c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
 	}
