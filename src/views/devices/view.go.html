@@ -61,6 +61,32 @@
             <div class="level">
                 <div class="level-left">
                     <div class="level-item">
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <a href="/device/{{ .device.ID }}/edit" class="button">
+                                    <span class="icon is-small">
+                                        <i class="fa-duotone fa-edit"></i>
+                                    </span>
+                                    <span>Edit</span>
+                                </a>
+                            </div>
+
+                            <div class="control">
+                                <form method="post" onsubmit="return confirm('Are you sure?')" action="/device/{{ .device.ID }}/delete">
+                                    <button class="button is-ghost has-text-danger" type="submit">
+                                        <span class="icon is-small">
+                                            <i class="fa-duotone fa-trash"></i>
+                                        </span>
+                                        <span>Delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
                         <form method="post" action="/device/{{ .device.ID }}/merge">
                             <div class="field is-grouped">
                                 <div class="control has-icons-left">
@@ -83,32 +109,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <div class="level-item">
-                        <div class="field is-grouped">
-                            <div class="control">
-                                <a href="/device/{{ .device.ID }}/edit" class="button">
-                                    <span class="icon is-small">
-                                        <i class="fa-duotone fa-edit"></i>
-                                    </span>
-                                    <span>Edit</span>
-                                </a>
-                            </div>
-
-                            <div class="control">
-                                <form method="post" onsubmit="return confirm('Are you sure?')" action="/device/{{ .device.ID }}/delete">
-                                    <button class="button is-ghost has-text-danger" type="submit">
-                                        <span class="icon is-small">
-                                            <i class="fa-duotone fa-trash"></i>
-                                        </span>
-                                        <span>Delete</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
