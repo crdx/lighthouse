@@ -12,12 +12,7 @@
 
     {{ range . }}
         <tr>
-            <td>
-                {{ if ne .Name "" }}
-                    {{ .Name }}
-                {{ else }}
-                    <i>Untitled</i>
-                {{ end }}</td>
+            <td>{{ if ne .Name "" }}{{ .Name }}{{ else }}<i>Untitled</i>{{ end }}</td>
             <td class="is-hidden-mobile">
                 <span class="is-family-monospace">{{ .MACAddress }}</span>
             </td>

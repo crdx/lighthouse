@@ -14,7 +14,7 @@
                                        name="name"
                                        value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
                             </div>
-                        {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
+                            {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
                         </div>
                     </div>
                 </div>
