@@ -4,6 +4,7 @@ package scanner
 import (
 	"errors"
 	"net"
+	"strings"
 	"time"
 
 	"log/slog"
@@ -87,9 +88,9 @@ func (self *Scanner) Run() error {
 
 		switch message := networkRessage.(type) {
 		case arpMessage:
-			self.handleARPMessage(network, message.MACAddress, message.IPAddress)
+			self.handleARPMessage(network, strings.ToUpper(message.MACAddress), message.IPAddress)
 		case dhcpMessage:
-			self.handleDHCPMessage(message.MACAddress, message.Hostname)
+			self.handleDHCPMessage(strings.ToUpper(message.MACAddress), message.Hostname)
 		}
 	}
 }
