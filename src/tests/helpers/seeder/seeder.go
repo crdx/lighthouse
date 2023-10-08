@@ -29,8 +29,8 @@ func createDevice(id, networkID uint, name, hostname string, lastSeen time.Time)
 	})
 }
 
-func createAdapter(id, deviceID uint, name, vendor, macAddress, ipAddress string, lastSeen time.Time) *m.Adapter {
-	return db.Save(&m.Adapter{
+func createAdapter(id, deviceID uint, name, vendor, macAddress, ipAddress string, lastSeen time.Time) {
+	db.Save(&m.Adapter{
 		ID:         id,
 		DeviceID:   deviceID,
 		Name:       name,
