@@ -27,7 +27,7 @@ func (self *Watcher) Init(args *services.Args) error {
 
 func (*Watcher) Run() error {
 	for _, device := range deviceR.All() {
-		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Second
+		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Minute
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
 			if device.State == deviceR.StateOnline {
