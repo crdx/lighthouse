@@ -6,7 +6,7 @@ import (
 )
 
 func Delete(c *fiber.Ctx) error {
-	device, found := getDevice(c, c.Params("id"))
+	device, found := getDevice(c.Params("id"))
 	if !found {
 		return c.SendStatus(400)
 	}

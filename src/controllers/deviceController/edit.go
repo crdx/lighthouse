@@ -10,7 +10,7 @@ import (
 )
 
 func ViewEdit(c *fiber.Ctx) error {
-	device, found := getDevice(c, c.Params("id"))
+	device, found := getDevice(c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -22,7 +22,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	device, found := getDevice(c, c.Params("id"))
+	device, found := getDevice(c.Params("id"))
 	if !found {
 		return c.SendStatus(400)
 	}

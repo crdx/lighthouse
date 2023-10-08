@@ -4,14 +4,13 @@ import (
 	"strconv"
 
 	"crdx.org/lighthouse/m"
-	"github.com/gofiber/fiber/v2"
 )
 
-func getDevice(c *fiber.Ctx, v string) (*m.Device, bool) {
-	i, err := strconv.Atoi(v)
+func getDevice(idStr string) (*m.Device, bool) {
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return nil, false
 	}
 
-	return m.ForDevice(uint(i)).First()
+	return m.ForDevice(uint(id)).First()
 }
