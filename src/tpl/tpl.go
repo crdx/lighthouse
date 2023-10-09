@@ -3,6 +3,7 @@ package tpl
 type SortableColumnConfig struct {
 	Label                any
 	DefaultSortDirection string
+	Minimal              bool
 }
 
 type SortableColumnState struct {
@@ -11,6 +12,7 @@ type SortableColumnState struct {
 	CurrentSortDirection string
 	SortColumn           string
 	SortDirection        string
+	Minimal              bool
 }
 
 // AddSortMetadata takes information about table columns and the current sort column and direction
@@ -35,6 +37,7 @@ func AddSortMetadata(currentSortColumn string, currentSortDirection string, inpu
 			CurrentSortDirection: currentSortDirection,
 			SortColumn:           slug,
 			SortDirection:        sortDirection,
+			Minimal:              column.Minimal,
 		}
 	}
 

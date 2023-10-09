@@ -6,12 +6,12 @@
                     {{ define "column" }}
                         <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
                             {{ .Label }}
-                            {{ if eq .CurrentSortColumn .SortColumn }}
+                            {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
                                 <span class="icon">
                                     {{ if eq .CurrentSortDirection "asc" }}
-                                        <i class="fa-duotone fa-arrow-down fa-sm"></i>
+                                        <i class="fa-solid fa-arrow-down fa-sm"></i>
                                     {{ else }}
-                                        <i class="fa-duotone fa-arrow-up fa-sm"></i>
+                                        <i class="fa-solid fa-arrow-up fa-sm"></i>
                                     {{ end }}
                                 </span>
                             {{ end }}

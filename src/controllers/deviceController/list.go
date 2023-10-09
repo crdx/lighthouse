@@ -22,8 +22,8 @@ func List(c *fiber.Ctx) error {
 		"vendor": {Label: "Vendor", DefaultSortDirection: "asc"},
 		"mac":    {Label: "MAC Address", DefaultSortDirection: "asc"},
 		"seen":   {Label: "Last Seen", DefaultSortDirection: "desc"},
-		"watch":  {Label: watchLabel, DefaultSortDirection: "desc"},
-		"type":   {Label: typeLabel, DefaultSortDirection: "asc"},
+		"watch":  {Label: watchLabel, DefaultSortDirection: "desc", Minimal: true},
+		"type":   {Label: typeLabel, DefaultSortDirection: "asc", Minimal: true},
 	}
 
 	currentSortColumn := c.Query("sc", "seen")
