@@ -3,6 +3,8 @@ package deviceController
 import (
 	"fmt"
 
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
@@ -10,7 +12,7 @@ import (
 )
 
 func ViewEdit(c *fiber.Ctx) error {
-	device, found := getDevice(c.Params("id"))
+	device, found := db.First[m.Device](c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -22,7 +24,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	device, found := getDevice(c.Params("id"))
+	device, found := db.First[m.Device](c.Params("id"))
 	if !found {
 		return c.SendStatus(400)
 	}

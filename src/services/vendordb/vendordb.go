@@ -51,7 +51,7 @@ func (self *VendorDB) Run() error {
 			adapter.Update(columns)
 
 			if vendor != constants.UnknownVendorLabel {
-				if device, found := m.ForDevice(adapter.DeviceID).First(); found {
+				if device, found := db.First[m.Device](adapter.DeviceID); found {
 					if device.Name == "" {
 						device.Update("name", vendor)
 					}

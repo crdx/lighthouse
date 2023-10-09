@@ -3,19 +3,20 @@ package deviceController
 import (
 	"fmt"
 
+	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Merge(c *fiber.Ctx) error {
-	device1, found := getDevice(c.Params("id"))
+	device1, found := db.First[m.Device](c.Params("id"))
 
 	if !found {
 		return c.SendStatus(400)
 	}
 
-	device2, found := getDevice(c.FormValue("device_id"))
+	device2, found := db.First[m.Device](c.FormValue("device_id"))
 
 	if !found {
 		return c.SendStatus(400)

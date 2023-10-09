@@ -25,12 +25,12 @@ type Device struct {
 }
 
 func (self *Device) Update(values ...any) {
-	ForDevice(self.ID).Update(values...)
+	db.For[Device](self.ID).Update(values...)
 }
 
 // Fresh returns a Device with the latest values from the db.
 func (self *Device) Fresh() *Device {
-	i, _ := ForDevice(self.ID).First()
+	i, _ := db.First[Device](self.ID)
 	return i
 }
 
@@ -40,7 +40,7 @@ func (self *Device) Delete() {
 		adapter.Delete()
 	}
 
-	ForDevice(self.ID).Delete()
+	db.For[Device](self.ID).Delete()
 }
 
 // Adapters returns all Adapters attached to this Device.

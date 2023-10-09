@@ -3,6 +3,7 @@ package deviceController_test
 import (
 	"testing"
 
+	"crdx.org/db"
 	"crdx.org/lighthouse/controllers/deviceController"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/tests/helpers"
@@ -98,11 +99,11 @@ func TestMergeDevice(t *testing.T) {
 	assert.Contains(t, body, "adapter1")
 	assert.Contains(t, body, "adapter2")
 
-	device := lo.Must(m.ForDevice(1).First())
+	device := lo.Must(db.First[m.Device](1))
 
 	assert.Len(t, device.Adapters(), 2)
 	assert.NotNil(t, device.DeletedAt)
 
-	_, found := m.ForDevice(2).First()
+	_, found := db.First[m.Device](2)
 	assert.False(t, found)
 }

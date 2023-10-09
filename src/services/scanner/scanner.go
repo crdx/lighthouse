@@ -285,7 +285,7 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 
 func updateHostname(macAddress string, hostname string) {
 	if adapter, found := adapterR.FindByMACAddress(macAddress); found {
-		if device, found := m.ForDevice(adapter.DeviceID).First(); found {
+		if device, found := db.First[m.Device](adapter.DeviceID); found {
 			device.Update("hostname", hostname)
 		}
 	}

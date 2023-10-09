@@ -3,6 +3,8 @@ package adapterController
 import (
 	"fmt"
 
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
@@ -11,7 +13,7 @@ import (
 )
 
 func ViewEdit(c *fiber.Ctx) error {
-	adapter, found := getAdapter(c.Params("id"))
+	adapter, found := db.First[m.Adapter](c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -24,7 +26,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	adapter, found := getAdapter(c.Params("id"))
+	adapter, found := db.First[m.Adapter](c.Params("id"))
 	if !found {
 		return c.SendStatus(400)
 	}
