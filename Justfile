@@ -114,9 +114,9 @@ set dotenv-load := true
 @new-controller name:
     mkdir -pv src/controllers/{{ name }}Controller
     touch src/controllers/{{ name }}Controller/routes.go
-    touch src/controllers/{{ name }}Controller/all_test.go
+    touch src/controllers/{{ name }}Controller/routes_test.go
     echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/routes.go
-    echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/all_test.go
+    echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/routes_test.go
 
 [private]
 make-autocap:
