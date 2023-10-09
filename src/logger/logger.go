@@ -4,7 +4,6 @@ import (
 	"log/slog"
 	"os"
 	"sync"
-	"time"
 
 	"crdx.org/lighthouse/env"
 	"github.com/lmittmann/tint"
@@ -46,6 +45,6 @@ func getDiskHandler() slog.Handler {
 
 func getStderrHandler() slog.Handler {
 	return tint.NewHandler(os.Stderr, &tint.Options{
-		TimeFormat: time.Kitchen,
+		TimeFormat: "15:04:05 |", // Closer in style to fiber's debug output.
 	})
 }
