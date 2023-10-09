@@ -5,7 +5,7 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
-	app.Get("/", Get)
+	app.Get("/", List)
 
 	deviceGroup := app.Group("/device/:id<int>")
 	deviceGroup.Get("/", View)

@@ -12,7 +12,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-func Get(c *fiber.Ctx) error {
+func List(c *fiber.Ctx) error {
 	watchLabel := template.HTML(constants.WatchColumnLabel)
 	typeLabel := template.HTML(constants.TypeColumnLabel)
 
@@ -37,7 +37,7 @@ func Get(c *fiber.Ctx) error {
 		return c.SendStatus(400)
 	}
 
-	return c.Render("devices/index", fiber.Map{
+	return c.Render("devices/list", fiber.Map{
 		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
 		flash.Key: c.Locals(flash.Key),
