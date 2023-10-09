@@ -113,10 +113,10 @@ set dotenv-load := true
 # scaffold a new controller (name is lowercase e.g. index)
 @new-controller name:
     mkdir -pv src/controllers/{{ name }}Controller
-    touch src/controllers/{{ name }}Controller/{{ name }}.go
     touch src/controllers/{{ name }}Controller/routes.go
-    echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/{{ name }}.go
+    touch src/controllers/{{ name }}Controller/all_test.go
     echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/routes.go
+    echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/all_test.go
 
 [private]
 make-autocap:
