@@ -28,13 +28,6 @@ func (self *Device) Update(values ...any) {
 	db.For[Device](self.ID).Update(values...)
 }
 
-// Fresh returns a Device with the latest values from the db.
-func (self *Device) Fresh() *Device {
-	i, _ := db.First[Device](self.ID)
-	return i
-}
-
-// Delete deletes this Device and all of its attached Adapters.
 func (self *Device) Delete() {
 	for _, adapter := range self.Adapters() {
 		adapter.Delete()
@@ -42,6 +35,8 @@ func (self *Device) Delete() {
 
 	db.For[Device](self.ID).Delete()
 }
+
+// —————————————————————————————————————————————————————————————————————————————————————————————————
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {

@@ -3,6 +3,7 @@ package m
 import (
 	"time"
 
+	"crdx.org/db"
 	"gorm.io/gorm"
 )
 
@@ -16,3 +17,13 @@ type Network struct {
 	Name              string         `gorm:"size:255;not null"`
 	AlertOnNewDevices bool           `gorm:"default:false"`
 }
+
+func (self *Network) Update(values ...any) {
+	db.For[Network](self.ID).Update(values...)
+}
+
+func (self *Network) Delete() {
+	db.For[Network](self.ID).Delete()
+}
+
+// —————————————————————————————————————————————————————————————————————————————————————————————————

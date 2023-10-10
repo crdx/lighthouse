@@ -38,9 +38,10 @@ func main() {
 	var code strings.Builder
 
 	code.WriteString("package conf\n\n")
-	code.WriteString("import \"crdx.org/lighthouse/m\"\n\n")
+	code.WriteString("import \"crdx.org/lighthouse/m\"\n")
+	code.WriteString("import \"crdx.org/db\"\n\n")
 	code.WriteString("//  GENERATED CODE — DO NOT EDIT \n\n")
-	code.WriteString("var models = []any{\n")
+	code.WriteString("var models = []db.Model{\n")
 
 	for _, model := range modelNames {
 		code.WriteString(fmt.Sprintf("\t&m.%s{},\n", model))

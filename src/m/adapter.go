@@ -25,15 +25,15 @@ func (self *Adapter) Update(values ...any) {
 	db.For[Adapter](self.ID).Update(values...)
 }
 
-// Fresh returns an Adapter with the latest values from the db.
+func (self *Adapter) Delete() {
+	db.For[Adapter](self.ID).Delete()
+}
+
+// —————————————————————————————————————————————————————————————————————————————————————————————————
+
 func (self *Adapter) Fresh() *Adapter {
 	i, _ := db.First[Adapter](self.ID)
 	return i
-}
-
-// Delete deletes this Adapter.
-func (self *Adapter) Delete() {
-	db.For[Adapter](self.ID).Delete()
 }
 
 // Device returns the Device for this Adapter, and true if it has one associated.
