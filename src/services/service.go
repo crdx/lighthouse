@@ -53,8 +53,8 @@ func applyDefaults(config *Config) {
 	}
 }
 
-func Start(name string, config Config) {
-	applyDefaults(&config)
+func Start(name string, config *Config) {
+	applyDefaults(config)
 
 	log := logger.New().With("service", name)
 
@@ -69,49 +69,51 @@ func Start(name string, config Config) {
 		"initial_delay", config.StartDelay.String(),
 	)
 
-	if config.StartDelay > 0 {
-		time.Sleep(config.StartDelay)
-		log.Info("service start delay elapsed")
-	}
+	go func() {
+		if config.StartDelay > 0 {
+			time.Sleep(config.StartDelay)
+			log.Info("service start delay elapsed")
+		}
 
-	restarting := false
-	restartInterval := config.InitialRestartInterval
+		restarting := false
+		restartInterval := config.InitialRestartInterval
 
-	run := func() error {
-		defer func() {
-			if err := recover(); err != nil {
-				log.Error("service panicked", "msg", err)
-				util.PrintStackTrace(3)
-				log.Error("restarting service", "restart_interval", restartInterval.String())
-				time.Sleep(restartInterval)
-				restartInterval = config.NextRestartInterval(restartInterval)
-				restarting = true
+		run := func() error {
+			defer func() {
+				if err := recover(); err != nil {
+					log.Error("service panicked", "msg", err)
+					util.PrintStackTrace(3)
+					log.Error("restarting service", "restart_interval", restartInterval.String())
+					time.Sleep(restartInterval)
+					restartInterval = config.NextRestartInterval(restartInterval)
+					restarting = true
+				}
+			}()
+
+			if env.Verbose {
+				log.Info("service started")
 			}
-		}()
 
-		if env.Verbose {
-			log.Info("service started")
+			restarting = false
+			return config.Service.Run()
 		}
 
-		restarting = false
-		return config.Service.Run()
-	}
+		for {
+			if err := run(); err != nil {
+				// If run returns an error then this service has flagged an unrecoverable situation, so
+				// do the only thing we can really do here, and blow up.
+				panic(err)
+			}
 
-	for {
-		if err := run(); err != nil {
-			// If run returns an error then this service has flagged an unrecoverable situation, so
-			// do the only thing we can really do here, and blow up.
-			panic(err)
-		}
+			if config.RunInterval < 0 {
+				break
+			}
 
-		if config.RunInterval < 0 {
-			break
+			if !restarting {
+				time.Sleep(config.RunInterval)
+			}
 		}
-
-		if !restarting {
-			time.Sleep(config.RunInterval)
-		}
-	}
+	}()
 }
 
 // ExponentialBackoff transforms a time.Duration to the next time.Duration using exponential
