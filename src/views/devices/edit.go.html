@@ -68,7 +68,7 @@
                                        value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
                             </div>
                             {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
-                            <p class="help">The number of minutes to wait before considering this device to be offline.</p>
+                            <p class="help">The number of minutes to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.</p>
                         </div>
                     </div>
                 </div>
