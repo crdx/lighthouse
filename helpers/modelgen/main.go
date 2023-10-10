@@ -38,8 +38,10 @@ func main() {
 	var code strings.Builder
 
 	code.WriteString("package conf\n\n")
-	code.WriteString("import \"crdx.org/lighthouse/m\"\n")
-	code.WriteString("import \"crdx.org/db\"\n\n")
+	code.WriteString("import (\n")
+	code.WriteString("\t\"crdx.org/db\"\n")
+	code.WriteString("\t\"crdx.org/lighthouse/m\"\n")
+	code.WriteString(")\n\n")
 	code.WriteString("//  GENERATED CODE — DO NOT EDIT \n\n")
 	code.WriteString("var models = []db.Model{\n")
 

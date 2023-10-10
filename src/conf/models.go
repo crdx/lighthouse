@@ -1,7 +1,9 @@
 package conf
 
-import "crdx.org/lighthouse/m"
-import "crdx.org/db"
+import (
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
+)
 
 //  GENERATED CODE — DO NOT EDIT 
 

@@ -77,7 +77,7 @@ retry:
 
 	if err != nil || res.StatusCode == http.StatusNotFound {
 		update("")
-		return nil
+		return nil //nolint
 	}
 
 	if res.StatusCode == http.StatusUnauthorized {
