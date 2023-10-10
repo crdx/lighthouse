@@ -93,7 +93,9 @@ retry:
 
 	if res.StatusCode != http.StatusOK {
 		log.Error("request failed", "response_code", res.StatusCode, "body", res.String())
-		return errors.New("request failed")
+		// A non-OK response could be an intermittent networking failure, or perhaps the API is
+		// down. Panic as we don't know which.
+		panic("request failed")
 	}
 
 	vendor := res.String()
