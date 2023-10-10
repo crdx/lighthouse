@@ -106,9 +106,11 @@ set dotenv-load := true
 
 # scaffold a new model (name is lowercase e.g. thing)
 @new-model name:
-    mkdir -pv src/models/{{ name }}M
-    touch src/models/{{ name }}M/{{ name }}.go
-    echo 'package {{ name }}M' > src/models/{{ name }}M/{{ name }}.go
+    touch src/m/{{ name }}.go
+    echo 'package m' > src/m/{{ name }}.go
+    mkdir src/repos/{{ name }}R
+    touch src/repos/{{ name }}R/{{ name }}.go
+    echo 'package {{ name }}R' > src/repos/{{ name }}R/{{ name }}.go
 
 # scaffold a new controller (name is lowercase e.g. index)
 @new-controller name:
