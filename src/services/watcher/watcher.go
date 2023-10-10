@@ -25,9 +25,15 @@ func (self *Watcher) Init(args *services.Args) error {
 	return nil
 }
 
-func (*Watcher) Run() error {
+func (self *Watcher) Run() error {
 	for _, device := range deviceR.All() {
 		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Minute
+
+		log := self.log.With(
+			"name", device.Name,
+			"hostname", device.Hostname,
+			"device_id", device.ID,
+		)
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
 			if device.State == deviceR.StateOnline {
@@ -39,6 +45,8 @@ func (*Watcher) Run() error {
 				})
 
 				device.Update("state", newState)
+
+				log.Info("a device has gone offline")
 			}
 		} else {
 			if device.State == deviceR.StateOffline {
@@ -50,8 +58,11 @@ func (*Watcher) Run() error {
 				})
 
 				device.Update("state", newState)
+
+				log.Info("a device has come online")
 			}
 		}
 	}
+
 	return nil
 }
