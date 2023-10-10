@@ -12,12 +12,12 @@
 
     {{ range . }}
         <tr>
-            <td>{{ if ne .Name "" }}{{ .Name }}{{ else }}<i>Untitled</i>{{ end }}</td>
+            <td>{{ template "partials/adapter-name" .Name }}</td>
             <td class="is-hidden-mobile">
                 <span class="is-family-monospace">{{ .MACAddress }}</span>
             </td>
             <td>{{ .IPAddress }}</td>
-            <td class="is-hidden-mobile">{{ .Vendor }}</td>
+            <td class="is-hidden-mobile">{{ template "partials/vendor-name" .Vendor }}</td>
             <td title="{{ escape (formatDateTime .LastSeen) }}">
                 {{ timeAgoVerbose .LastSeen }}
             </td>

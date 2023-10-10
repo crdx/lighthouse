@@ -2,7 +2,7 @@
     <div class="level-left">
         <div class="level-item">
             <h1 class="title">
-                {{ or .Name "Unidentified device" }}
+                {{ template "partials/device-name" .Name }}
             </h1>
         </div>
     </div>

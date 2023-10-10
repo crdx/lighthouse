@@ -1,6 +1,6 @@
 package constants
 
-const UnknownVendorLabel = "Unknown vendor"
+const UnknownVendorLabel = "Unknown"
 
 const DefaultDeviceIconClass = "fa-duotone fa-question"
 

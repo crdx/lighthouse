@@ -4,7 +4,7 @@
             <nav class="breadcrumb has-arrow-separator is-small">
                 <ul>
                     <li><a href="/">devices</a></li>
-                    <li><a href="/device/{{ .device.ID }}">{{ .device.Name }}</a></li>
+                    <li><a href="/device/{{ .device.ID }}">{{ template "partials/device-name" .device.Name }}</a></li>
                 </ul>
             </nav>
 
