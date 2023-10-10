@@ -12,7 +12,7 @@ set dotenv-load := true
 
 # start development
 @dev: make-autocap
-    watchexec -w src -r 'just redev'
+    watchexec -w src -i src/conf/models.go -r 'just redev'
 
 # start development with debug logging
 @devd:
@@ -138,5 +138,9 @@ remake-autocap:
     {{ BIN_PATH }}
 
 [private]
-@remake:
+@generate:
+    cd src && go generate ./...
+
+[private]
+@remake: generate
     cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'

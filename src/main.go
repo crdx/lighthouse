@@ -14,6 +14,8 @@ import (
 	"github.com/samber/lo"
 )
 
+//go:generate go run ../helpers/modelgen/main.go
+
 //go:embed views/*
 var views embed.FS
 

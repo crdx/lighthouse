@@ -5,7 +5,6 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/m"
 )
 
 func GetDbConfig() *db.Config {
@@ -17,7 +16,7 @@ func GetDbConfig() *db.Config {
 		Socket:        env.DatabaseSocket,
 		TimeZone:      env.DatabaseTimeZone,
 		CharSet:       env.DatabaseCharSet,
-		Models:        m.All,
+		Models:        models,
 		Migrations:    migrations,
 		Colour:        !env.Production,
 		Debug:         env.Debug,
@@ -34,7 +33,7 @@ func GetTestDbConfig() *db.Config {
 		Socket:     env.DatabaseSocket,
 		TimeZone:   env.DatabaseTimeZone,
 		CharSet:    env.DatabaseCharSet,
-		Models:     m.All,
+		Models:     models,
 		Migrations: migrations,
 		Colour:     false,
 		Debug:      false,
