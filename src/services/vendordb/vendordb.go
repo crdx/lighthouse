@@ -8,10 +8,9 @@ import (
 	"log/slog"
 
 	"crdx.org/db"
-	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/repos/adapterR"
+	"crdx.org/lighthouse/repos/vendorLookupR"
 	"crdx.org/lighthouse/services"
 	"github.com/imroc/req/v3"
 )
@@ -35,28 +34,25 @@ func (self *VendorDB) Init(args *services.Args) error {
 }
 
 func (self *VendorDB) Run() error {
-	for _, adapter := range adapterR.AllWithoutVendor() {
-		log := self.log.With("mac", adapter.MACAddress)
+	for _, lookup := range vendorLookupR.Unprocessed() {
+		adapter, found := db.First[m.Adapter](lookup.AdapterID)
+		if !found {
+			lookup.Delete()
+			continue
+		}
 
-		update := func(adapter *m.Adapter, vendor string) {
+		log := self.log.With("adapter_id", adapter.ID, "mac", adapter.MACAddress)
+
+		update := func(vendor string) {
 			log.Info("lookup complete", "vendor", vendor)
-			columns := db.Map{}
 
-			if adapter.Name == "" && vendor != constants.UnknownVendorLabel {
-				columns["name"] = vendor
+			var succeeded bool
+			if vendor != "" {
+				adapter.Update("vendor", vendor)
+				succeeded = true
 			}
 
-			columns["vendor"] = vendor
-
-			adapter.Update(columns)
-
-			if vendor != constants.UnknownVendorLabel {
-				if device, found := db.First[m.Device](adapter.DeviceID); found {
-					if device.Name == "" {
-						device.Update("name", vendor)
-					}
-				}
-			}
+			lookup.Update("processed", true, "succeeded", succeeded)
 		}
 
 	retry:
@@ -64,7 +60,7 @@ func (self *VendorDB) Run() error {
 		res, err := self.getVendor(adapter.MACAddress)
 
 		if err != nil || res.StatusCode == http.StatusNotFound {
-			update(adapter, constants.UnknownVendorLabel)
+			update("")
 			continue
 		}
 
@@ -89,11 +85,11 @@ func (self *VendorDB) Run() error {
 		vendor := res.String()
 
 		if vendor == "" || res.StatusCode == http.StatusNotFound {
-			update(adapter, constants.UnknownVendorLabel)
+			update("")
 			continue
 		}
 
-		update(adapter, vendor)
+		update(vendor)
 
 		// MacVendors API free plan allows 2 requests per second, so to be safe limit to 1 per second.
 		time.Sleep(time.Second)

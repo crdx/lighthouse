@@ -14,10 +14,6 @@ func All() []*m.Adapter {
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
-func AllWithoutVendor() []*m.Adapter {
-	return db.B[m.Adapter]().Where(`vendor = ""`).Find()
-}
-
 func FindByMACAddress(macAddress string) (*m.Adapter, bool) {
 	return db.B(m.Adapter{MACAddress: macAddress}).First()
 }
@@ -35,9 +31,10 @@ func Upsert(macAddress string, ipAddress string) (*m.Adapter, bool) {
 	if adapter.Vendor == "" {
 		if vendor, vendorFound := netutil.GetVendor(adapter.MACAddress); vendorFound {
 			columns["vendor"] = vendor
-
-			if !adapterFound {
-				columns["name"] = vendor
+		} else {
+			lookup := m.VendorLookup{AdapterID: adapter.ID}
+			if !db.B(lookup).Exists() {
+				db.Create(&lookup)
 			}
 		}
 	}

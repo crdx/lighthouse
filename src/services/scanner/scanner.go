@@ -300,11 +300,4 @@ func populateDeviceName(device *m.Device, hostname string) {
 		device.Update("name", hostname)
 		return
 	}
-
-	for _, adapter := range device.Adapters() {
-		if adapter.Vendor != "" && adapter.Vendor != constants.UnknownVendorLabel {
-			device.Update("name", adapter.Vendor)
-			return
-		}
-	}
 }

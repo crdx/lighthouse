@@ -9,4 +9,5 @@ var models = []any{
 	&m.Device{},
 	&m.DeviceStateLog{},
 	&m.Network{},
+	&m.VendorLookup{},
 }
