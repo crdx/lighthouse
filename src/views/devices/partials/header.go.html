@@ -1,13 +1,6 @@
 <div class="level">
     <div class="level-left">
         <div class="level-item">
-            <h1 class="title">
-                {{ template "partials/device-name" .Name }}
-            </h1>
-        </div>
-    </div>
-    <div class="level-right">
-        <div class="level-item">
             <span class="icon is-large">
                 {{ if eq .State "online" }}
                     <i class="fa-2x {{ .Icon }} state--online"></i>
@@ -16,5 +9,12 @@
                 {{ end }}
             </span>
         </div>
+        <div class="level-item">
+            <h1 class="title">
+                {{ template "partials/device-name" .Name }}
+            </h1>
+        </div>
+    </div>
+    <div class="level-right">
     </div>
 </div>
