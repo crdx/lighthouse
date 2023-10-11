@@ -220,7 +220,7 @@ func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- network
 
 func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 	self.log.Info(
-		"a device has broadcast its hostname",
+		"device has broadcast its hostname",
 		"mac", macAddress,
 		"hostname", hostname,
 	)
@@ -276,7 +276,7 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 
 	if !adapterFound {
 		log.Info(
-			"a new device joined the network",
+			"new device has joined the network",
 			"device_id", device.ID,
 			"name", device.Name,
 		)

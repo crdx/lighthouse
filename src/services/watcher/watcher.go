@@ -46,7 +46,7 @@ func (self *Watcher) Run() error {
 
 				device.Update("state", newState)
 
-				log.Info("a device has gone offline")
+				log.Info("device is offline")
 			}
 		} else {
 			if device.State == deviceR.StateOffline {
@@ -59,7 +59,7 @@ func (self *Watcher) Run() error {
 
 				device.Update("state", newState)
 
-				log.Info("a device has come online")
+				log.Info("device is online")
 			}
 		}
 	}
