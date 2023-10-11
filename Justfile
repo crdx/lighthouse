@@ -104,7 +104,13 @@ set dotenv-load := true
 @pull:
     importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
-# scaffold a new model (name is lowercase e.g. thing)
+# scaffold a new service (name is lowercase e.g. watcher)
+@new-service name:
+    mkdir -pv src/services/{{ name }}
+    touch src/services/{{ name }}/{{ name }}.go
+    echo 'package {{ name }}' > src/services/{{ name }}/{{ name }}.go
+
+# scaffold a new model (name is lowercase e.g. device)
 @new-model name:
     touch src/m/{{ name }}.go
     echo 'package m' > src/m/{{ name }}.go
