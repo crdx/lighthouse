@@ -27,18 +27,6 @@
                 </div>
 
                 <div class="field is-horizontal">
-                    <div class="field-label is-normal"><label class="label">Notes</label></div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
-                            </div>
-                            {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field is-horizontal">
                     <div class="field-label is-normal"><label class="label">Icon</label></div>
                     <div class="field-body">
                         <div class="field">
@@ -53,6 +41,18 @@
                             </div>
                             {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
                             <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal"><label class="label">Notes</label></div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                            </div>
+                            {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
                         </div>
                     </div>
                 </div>
