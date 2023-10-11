@@ -6,6 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/gofiber/fiber/v2"
@@ -32,14 +33,16 @@ func Edit(c *fiber.Ctx) error {
 	}
 
 	type Form struct {
-		Name   string `form:"name" validate:"required,max=100"`
-		Vendor string `form:"vendor" validate:"required,max=100"`
+		Name   string `form:"name" validate:"required,max=100" transform:"trim"`
+		Vendor string `form:"vendor" validate:"required,max=100" transform:"trim"`
 	}
 
 	form := new(Form)
 	if err := c.BodyParser(form); err != nil {
 		return err
 	}
+
+	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err {
 		return c.Render("adapters/edit", fiber.Map{
