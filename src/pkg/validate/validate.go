@@ -9,6 +9,8 @@ import (
 	"github.com/samber/lo"
 )
 
+// Field represents a submitted HTML field. Error is the error (if any) and Value is the original
+// value that was submitted in the request.
 type Field struct {
 	Error string
 	Value string
@@ -27,7 +29,10 @@ func init() {
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
 }
 
-func Struct(s any) (map[string]Field, bool) {
+// Struct validates a struct's contents according to the rules set in the "validate" tag, and
+// returns all the data needed by the template to render the form: the original submitted values
+// and any validation error messages.
+func Struct[T any](s T) (map[string]Field, bool) {
 	if err := validate.Struct(s); err == nil {
 		return nil, false
 	} else {
