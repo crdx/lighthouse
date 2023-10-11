@@ -32,13 +32,15 @@
                     {{ range .devices }}
                     <tr {{ if ne .State "online" }}class="state--offline"{{ end }}>
                         <td>
-                            <span class="icon">
-                                 {{ if eq .State "online" }}
-                                    <i class="{{ .Icon }} state--online"></i>
-                                {{ else }}
-                                    <i class="{{ .Icon }} state--offline"></i>
-                                {{ end }}
-                            </span>
+                            {{ if .Icon }}
+                                <span class="icon">
+                                     {{ if eq .State "online" }}
+                                        <i class="{{ .Icon }} state--online"></i>
+                                    {{ else }}
+                                        <i class="{{ .Icon }} state--offline"></i>
+                                    {{ end }}
+                                </span>
+                            {{ end }}
                         </td>
                         <td>
                             <div><a href="/device/{{ .ID }}">{{ template "partials/device-name" .Name }}</a></div>

@@ -31,8 +31,8 @@ func Edit(c *fiber.Ctx) error {
 	}
 
 	type Form struct {
-		Name        string `form:"name" validate:"required,max=100" transform:"trim"`
-		Icon        string `form:"icon" validate:"required,max=100" transform:"trim"`
+		Name        string `form:"name" validate:"max=100" transform:"trim"`
+		Icon        string `form:"icon" validate:"max=100" transform:"trim"`
 		Notes       string `form:"notes" validate:"max=4096" transform:"trim"`
 		GracePeriod string `form:"grace_period" validate:"required,number,gte=1,lte=60" transform:"trim"`
 		Watch       bool   `form:"watch"`

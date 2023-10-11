@@ -33,8 +33,8 @@ func Edit(c *fiber.Ctx) error {
 	}
 
 	type Form struct {
-		Name   string `form:"name" validate:"required,max=100" transform:"trim"`
-		Vendor string `form:"vendor" validate:"required,max=100" transform:"trim"`
+		Name   string `form:"name" validate:"max=100" transform:"trim"`
+		Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
 	}
 
 	form := new(Form)
