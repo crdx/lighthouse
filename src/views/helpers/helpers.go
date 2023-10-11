@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
 	"strings"
@@ -9,6 +10,9 @@ import (
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/util"
 	"github.com/samber/lo"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 func tz() *time.Location {
@@ -29,9 +33,39 @@ func GetFuncMap() template.FuncMap {
 		"formatDateTime": func(t time.Time) string {
 			return t.In(tz()).Format("02/01/2006 15:04 MST")
 		},
-		"escape": escape,
-		"nl2br":  nl2br,
+		"escape":         escape,
+		"nl2br":          nl2br,
+		"renderMarkdown": renderMarkdown,
 	}
+}
+
+func renderMarkdown(s string) template.HTML {
+	// Use the typographer extension, but disable some unwanted substitutions.
+	// https://github.com/yuin/goldmark#typographerExtension-extension
+	typographerExtension := extension.NewTypographer(
+		extension.WithTypographicSubstitutions(extension.TypographicSubstitutions{
+			extension.LeftSingleQuote:  nil,
+			extension.RightSingleQuote: nil,
+			extension.LeftDoubleQuote:  nil,
+			extension.RightDoubleQuote: nil,
+			extension.LeftAngleQuote:   nil,
+			extension.RightAngleQuote:  nil,
+		}),
+	)
+
+	markdownRenderer := goldmark.New(
+		// https://github.com/yuin/goldmark#html-renderer-options
+		goldmark.WithRendererOptions(html.WithHardWraps()),
+		// https://github.com/yuin/goldmark#built-in-extensions
+		goldmark.WithExtensions(extension.Linkify, typographerExtension),
+	)
+
+	var buf bytes.Buffer
+	if err := markdownRenderer.Convert([]byte(s), &buf); err != nil {
+		return template.HTML("An error occurred rendering this field's markdown")
+	}
+
+	return template.HTML(buf.String())
 }
 
 func nl2br(s string) template.HTML {

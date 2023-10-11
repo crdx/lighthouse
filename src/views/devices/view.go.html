@@ -53,7 +53,7 @@
                 {{ if .device.Notes }}
                     <tr>
                         <th>Notes</th>
-                        <td>{{ nl2br .device.Notes }}</td>
+                        <td class="content">{{ renderMarkdown .device.Notes }}</td>
                     </tr>
                 {{ end }}
             </table>

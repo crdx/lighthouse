@@ -53,6 +53,7 @@
                                 <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
                             </div>
                             {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
+                            <p class="help">Markdown supported.</p>
                         </div>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/samber/slog-multi v1.0.1
 	github.com/stretchr/testify v1.8.4
+	github.com/yuin/goldmark v1.5.6
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	gorm.io/gorm v1.25.4
 )
