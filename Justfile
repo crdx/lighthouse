@@ -66,8 +66,17 @@ set dotenv-load := true
     docker-compose logs -f
 
 # run tests
-@test *args:
-    cd src && go test -p 1 -cover ./... {{ args }} | grep -vF '[no test files]' || true
+test *args:
+    #!/bin/bash
+    cd src
+    # This old mess is required to preserve the exit code of "go test" and not have it swallowed up
+    # by grep.
+    OUTPUT=$(mktemp)
+    go test -p 1 -cover ./... {{ args }} > "$OUTPUT"
+    CODE=$?
+    grep -vF '[no test files]' "$OUTPUT"
+    rm "$OUTPUT"
+    exit "$CODE"
 
 # connect to the test db
 @test-db:
