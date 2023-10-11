@@ -65,18 +65,19 @@ func TestEditDevice(t *testing.T) {
 func TestEditDeviceWithErrors(t *testing.T) {
 	app := app()
 
+	nameUUID := helpers.UUID()
 	notesUUID := helpers.UUID()
 	iconUUID := helpers.UUID()
 
 	res, body := helpers.PostForm(app, "/device/1/edit", map[string]string{
-		"name":         "",
+		"name":         nameUUID,
 		"notes":        notesUUID,
 		"icon":         iconUUID,
-		"grace_period": "6",
+		"grace_period": "",
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "Name is a required field")
+	assert.Contains(t, body, "Grace Period is a required field")
 
 	_, body = helpers.Get(app, "/device/1")
 

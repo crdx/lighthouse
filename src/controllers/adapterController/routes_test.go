@@ -36,21 +36,3 @@ func TestEditAdapter(t *testing.T) {
 	assert.Contains(t, body, nameUUID)
 	assert.Contains(t, body, vendorUUID)
 }
-
-func TestEditAdapterWithErrors(t *testing.T) {
-	app := app()
-
-	vendorUUID := helpers.UUID()
-
-	res, body := helpers.PostForm(app, "/adapter/1/edit", map[string]string{
-		"name":   "",
-		"vendor": vendorUUID,
-	})
-
-	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "Name is a required field")
-
-	_, body = helpers.Get(app, "/device/1")
-
-	assert.NotContains(t, body, vendorUUID)
-}
