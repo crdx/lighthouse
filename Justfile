@@ -118,7 +118,7 @@ set dotenv-load := true
     touch src/repos/{{ name }}R/{{ name }}.go
     echo 'package {{ name }}R' > src/repos/{{ name }}R/{{ name }}.go
 
-# scaffold a new controller (name is lowercase e.g. index)
+# scaffold a new controller (name is lowercase e.g. device)
 @new-controller name:
     mkdir -pv src/controllers/{{ name }}Controller
     touch src/controllers/{{ name }}Controller/routes.go
