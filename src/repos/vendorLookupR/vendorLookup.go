@@ -12,5 +12,7 @@ func All() []*m.VendorLookup {
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
 func Unprocessed() []*m.VendorLookup {
+	// Cannot query via m.VendorLookup{Processed: false} because false is the zero value of bool so
+	// it's ignored.
 	return db.B[m.VendorLookup]().Where("processed = 0").Find()
 }
