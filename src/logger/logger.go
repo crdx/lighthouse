@@ -14,7 +14,7 @@ import (
 var logger *slog.Logger
 var mutex sync.Mutex
 
-func New() *slog.Logger {
+func Get() *slog.Logger {
 	mutex.Lock()
 	defer mutex.Unlock()
 
@@ -35,6 +35,10 @@ func New() *slog.Logger {
 
 	logger.Info("logger init complete", "type", env.LogType)
 	return logger
+}
+
+func With(args ...any) *slog.Logger {
+	return Get().With(args...)
 }
 
 func getDiskHandler() slog.Handler {

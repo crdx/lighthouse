@@ -56,7 +56,7 @@ func applyDefaults(config *Config) {
 func Start(name string, config *Config) {
 	applyDefaults(config)
 
-	log := logger.New().With("service", name)
+	log := logger.With("service", name)
 
 	if err := config.Service.Init(&Args{Logger: log}); err != nil {
 		log.Error("service init failed", "msg", err)
