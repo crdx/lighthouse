@@ -8,22 +8,23 @@ import (
 )
 
 // https://gorm.io/docs/models.html
-type DeviceStateLog struct {
+type DeviceStateNotification struct {
 	ID          uint           `gorm:"primarykey"`
 	CreatedAt   time.Time      `gorm:""`
 	UpdatedAt   time.Time      `gorm:""`
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
-	DeviceID    uint           `gorm:"not null"`
-	State       string         `gorm:"size:15;not null"`
+	DeviceID    uint           `gorm:"not null;index"`
+	State       string         `gorm:"size:32;not null"`
 	GracePeriod uint           `gorm:"not null"`
+	Processed   bool           `gorm:"not null;default:false"`
 }
 
-func (self *DeviceStateLog) Update(values ...any) {
-	db.For[DeviceStateLog](self.ID).Update(values...)
+func (self *DeviceStateNotification) Update(values ...any) {
+	db.For[DeviceStateNotification](self.ID).Update(values...)
 }
 
-func (self *DeviceStateLog) Delete() {
-	db.For[DeviceStateLog](self.ID).Delete()
+func (self *DeviceStateNotification) Delete() {
+	db.For[DeviceStateNotification](self.ID).Delete()
 }
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————

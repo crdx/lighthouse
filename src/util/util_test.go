@@ -66,29 +66,30 @@ func TestPluralise(t *testing.T) {
 	}
 }
 
-func TestSendMail(t *testing.T) {
+func TestSendNotification(t *testing.T) {
 	testCases := []struct {
 		inputSubject string
-		inputMessage string
+		inputBody    string
 	}{
 		{"Subject", "Message"},
 	}
 
 	for _, testCase := range testCases {
-		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputMessage), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputBody), func(t *testing.T) {
 			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, msg []byte) error {
 				expectedBody := fmt.Sprintf(
-					"To: %s\nSubject: %s\n\n%s",
-					env.MailTo,
+					"From: lighthouse (dev) <%s>\nTo: %s\nSubject: %s\n\n%s",
+					env.NotificationSender,
+					env.NotificationRecipient,
 					testCase.inputSubject,
-					testCase.inputMessage,
+					testCase.inputBody,
 				)
 
 				assert.Equal(t, expectedBody, string(msg))
 				return nil
 			}
 
-			err := util.SendMailFunc(mockSend, testCase.inputSubject, testCase.inputMessage)
+			err := util.SendNotificationFunc(mockSend, testCase.inputSubject, testCase.inputBody)
 			assert.Nil(t, err)
 		})
 	}

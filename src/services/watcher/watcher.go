@@ -32,37 +32,62 @@ func (self *Watcher) Run() error {
 		log := self.log.With(
 			"name", device.Name,
 			"hostname", device.Hostname,
+			"grace_period", device.GracePeriod,
 			"device_id", device.ID,
 		)
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
 			if device.State == deviceR.StateOnline {
-				newState := deviceR.StateOffline
-
-				db.Create(&m.DeviceStateLog{
-					DeviceID: device.ID,
-					State:    newState,
-				})
-
-				device.Update("state", newState)
-
+				deviceOffline(device)
 				log.Info("device is offline")
 			}
 		} else {
 			if device.State == deviceR.StateOffline {
-				newState := deviceR.StateOnline
-
-				db.Create(&m.DeviceStateLog{
-					DeviceID: device.ID,
-					State:    newState,
-				})
-
-				device.Update("state", newState)
-
+				deviceOnline(device)
 				log.Info("device is online")
 			}
 		}
 	}
 
 	return nil
+}
+
+func deviceOnline(device *m.Device) {
+	state := deviceR.StateOnline
+
+	db.Create(&m.DeviceStateLog{
+		DeviceID:    device.ID,
+		State:       state,
+		GracePeriod: device.GracePeriod,
+	})
+
+	if device.Watch {
+		db.Create(&m.DeviceStateNotification{
+			DeviceID:    device.ID,
+			State:       state,
+			GracePeriod: device.GracePeriod,
+		})
+	}
+
+	device.Update("state", state)
+}
+
+func deviceOffline(device *m.Device) {
+	state := deviceR.StateOffline
+
+	db.Create(&m.DeviceStateLog{
+		DeviceID:    device.ID,
+		State:       state,
+		GracePeriod: device.GracePeriod,
+	})
+
+	if device.Watch {
+		db.Create(&m.DeviceStateNotification{
+			DeviceID:    device.ID,
+			State:       state,
+			GracePeriod: device.GracePeriod,
+		})
+	}
+
+	device.Update("state", state)
 }

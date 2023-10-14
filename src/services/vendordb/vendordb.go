@@ -54,10 +54,8 @@ func (self *VendorDB) Run() error {
 }
 
 func doLookup(lookup *m.VendorLookup, adapter *m.Adapter, log *slog.Logger) error {
-	defer func() {
-		// MacVendors API free plan allows 2 requests per second, so to be safe limit to 1 per second.
-		time.Sleep(time.Second)
-	}()
+	// MacVendors API free plan allows 2 requests per second, so to be safe limit to 1 per second.
+	defer time.Sleep(time.Second)
 
 	update := func(vendor string) {
 		log.Info("lookup complete", "vendor", vendor)

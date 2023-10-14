@@ -21,6 +21,9 @@ const (
 
 	MailTypeSMTP = "smtp"
 	MailTypeNone = "none"
+
+	NotificationTypeMail = "mail"
+	NotificationTypeNone = "none"
 )
 
 var (
@@ -52,8 +55,10 @@ var (
 	SMTPUser = os.Getenv("SMTP_USER")
 	SMTPPass = os.Getenv("SMTP_PASS")
 
-	MailFrom = os.Getenv("MAIL_FROM")
-	MailTo   = os.Getenv("MAIL_TO")
+	NotificationType        = os.Getenv("NOTIFICATION_TYPE")
+	NotificationFromHeader  = os.Getenv("NOTIFICATION_FROM_HEADER")
+	NotificationFromAddress = os.Getenv("NOTIFICATION_FROM_ADDRESS")
+	NotificationToAddress   = os.Getenv("NOTIFICATION_TO_ADDRESS")
 
 	MACVendorsAPIKey = os.Getenv("MACVENDORS_API_KEY")
 
@@ -89,8 +94,6 @@ func Check() {
 		require("SMTP_PORT")
 		require("SMTP_USER")
 		require("SMTP_PASS")
-		require("MAIL_FROM")
-		require("MAIL_TO")
 	}
 
 	requireIn("LOG_TYPE", []string{"all", "disk", "stdout", "none"}, false)
@@ -100,6 +103,14 @@ func Check() {
 	}
 
 	require("LOCAL_TZ")
+
+	requireIn("NOTIFICATION_TYPE", []string{"mail", "none"}, false)
+
+	if NotificationType == NotificationTypeMail {
+		require("NOTIFICATION_FROM_HEADER")
+		require("NOTIFICATION_FROM_ADDRESS")
+		require("NOTIFICATION_TO_ADDRESS")
+	}
 }
 
 func require(name string) {

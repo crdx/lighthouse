@@ -1,6 +1,7 @@
 package m
 
 import (
+	"fmt"
 	"time"
 
 	"crdx.org/db"
@@ -37,6 +38,28 @@ func (self *Device) Delete() {
 }
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————
+
+func (self *Device) DisplayName() string {
+	var s string
+
+	if self.Name == "" {
+		s = "Untitled"
+	} else {
+		s = self.Name
+	}
+
+	// Also show the hostname (if set, otherwise ID) if this device's name is not unique across the
+	// rest of the devices.
+	if db.B(Device{Name: self.Name}).Count() > 1 {
+		if self.Hostname != "" {
+			s += fmt.Sprintf(" (%s)", self.Hostname)
+		} else {
+			s += fmt.Sprintf(" (%d)", self.ID)
+		}
+	}
+
+	return s
+}
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
