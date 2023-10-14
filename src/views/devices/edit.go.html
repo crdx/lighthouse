@@ -4,11 +4,11 @@
             <nav class="breadcrumb has-arrow-separator is-small">
                 <ul>
                     <li><a href="/">devices</a></li>
-                    <li><a href="/device/{{ .device.ID }}">{{ template "partials/device-name" .device.Name }}</a></li>
+                    <li><a href="/device/{{ .device.ID }}">{{ template "p/device-name" .device.Name }}</a></li>
                 </ul>
             </nav>
 
-            {{ template "devices/partials/header" .device }}
+            {{ template "devices/p/header" .device }}
 
             <form method="post">
                 <div class="field is-horizontal">

@@ -11,7 +11,7 @@
 
         {{ range . }}
             <tr>
-                <td>{{ template "partials/time/abs" .CreatedAt }}</td>
+                <td>{{ template "p/time/abs" .CreatedAt }}</td>
                 <td>{{ .State }}</td>
             </tr>
         {{ end }}

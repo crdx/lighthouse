@@ -12,13 +12,13 @@
 
     {{ range . }}
         <tr>
-            <td>{{ template "partials/adapter-name" .Name }}</td>
+            <td>{{ template "p/adapter-name" .Name }}</td>
             <td class="is-hidden-mobile">
                 <span class="is-family-monospace">{{ .MACAddress }}</span>
             </td>
             <td>{{ .IPAddress }}</td>
-            <td class="is-hidden-mobile">{{ template "partials/vendor-name" .Vendor }}</td>
-            <td>{{ template "partials/time/rel" .LastSeen }}</td>
+            <td class="is-hidden-mobile">{{ template "p/vendor-name" .Vendor }}</td>
+            <td>{{ template "p/time/rel" .LastSeen }}</td>
             <td class="min-column">
                 <div class="columns is-variable is-1 is-mobile">
                     <a title="Edit" href="/adapter/{{ .ID }}/edit" class="column has-text-dark">
