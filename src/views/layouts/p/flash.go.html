@@ -1,0 +1,7 @@
+{{ if .i_flash }}
+    <div class="container is-max-widescreen">
+        <div class="notification is-light is-{{ .i_flash.Class }}">
+            {{ .i_flash.Content }}
+        </div>
+    </div>
+{{ end }}
