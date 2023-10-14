@@ -10,3 +10,7 @@ func All() []*m.DeviceStateLog {
 }
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————
+
+func LatestForDevice(deviceID uint) []*m.DeviceStateLog {
+	return db.B(m.DeviceStateLog{DeviceID: deviceID}).Limit(5).Order("created_at DESC").Find()
+}

@@ -3,60 +3,18 @@
         <div class="box">
             {{ template "devices/partials/header" .device }}
 
-            <table class="table">
-                <tr>
-                    <th>State</th>
-                    <td>{{ .device.State }}</td>
-                </tr>
+            <div class="columns">
+                <div class="column">
+                    <h2 class="subtitle">Details</h2>
 
-                <tr>
-                    <th>Hostname</th>
-                    <td>
-                        {{ if ne .device.Hostname "" }}
-                            {{ .device.Hostname }}
-                        {{ else }}
-                            <i>None</i>
-                        {{ end }}
-                    </td>
-                </tr>
+                    {{ template "devices/partials/details" .device }}
+                </div>
 
-                <tr>
-                    <th>Discovered</th>
-                    <td title="{{ formatDateTime .device.CreatedAt }}">
-                        {{ timeAgoVerbose .device.CreatedAt }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Last Seen</th>
-                    <td title="{{ formatDateTime .device.LastSeen }}">
-                        {{ timeAgoVerbose .device.LastSeen }}
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Grace Period</th>
-                    <td>{{ .device.GracePeriod }} mins</td>
-                </tr>
-
-                <tr>
-                    <th>Watching</th>
-                    <td>
-                        {{ if .device.Watch }}
-                            <span class="icon is-small state--checked"><i class="fa-solid fa-check"></i></span>
-                        {{ else }}
-                            <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
-                        {{ end }}
-                    </td>
-                </tr>
-
-                {{ if .device.Notes }}
-                    <tr>
-                        <th>Notes</th>
-                        <td class="content">{{ renderMarkdown .device.Notes }}</td>
-                    </tr>
-                {{ end }}
-            </table>
+                <div class="column">
+                    <h2 class="subtitle">History</h2>
+                    {{ template "devices/partials/history" .history }}
+                </div>
+            </div>
 
             <div class="level">
                 <div class="level-left">

@@ -1,0 +1,19 @@
+{{ if not . }}
+    <div class="content">
+        <p>No activity yet...</p>
+    </div>
+{{ else }}
+    <table class="table is-fullwidth">
+        <tr>
+            <th>Date</th>
+            <th>State</th>
+        </tr>
+
+        {{ range . }}
+            <tr>
+                <td>{{ template "partials/time/abs" .CreatedAt }}</td>
+                <td>{{ .State }}</td>
+            </tr>
+        {{ end }}
+    </table>
+{{ end }}

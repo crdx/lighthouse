@@ -1,0 +1,50 @@
+<table class="table is-fullwidth">
+    <tr>
+        <th>State</th>
+        <td>{{ .State }}</td>
+    </tr>
+
+    <tr>
+        <th>Hostname</th>
+        <td>
+            {{ if ne .Hostname "" }}
+                {{ .Hostname }}
+            {{ else }}
+                <i>None</i>
+            {{ end }}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Discovered</th>
+        <td>{{ template "partials/time/rel" .CreatedAt }}</td>
+    </tr>
+
+    <tr>
+        <th>Last Seen</th>
+        <td>{{ template "partials/time/rel" .LastSeen }}</td>
+    </tr>
+
+    <tr>
+        <th>Grace Period</th>
+        <td>{{ .GracePeriod }} mins</td>
+    </tr>
+
+    <tr>
+        <th>Watching</th>
+        <td>
+            {{ if .Watch }}
+                <span class="icon is-small state--checked"><i class="fa-solid fa-check"></i></span>
+            {{ else }}
+                <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
+            {{ end }}
+        </td>
+    </tr>
+
+    {{ if .Notes }}
+        <tr>
+            <th>Notes</th>
+            <td class="content">{{ renderMarkdown .Notes }}</td>
+        </tr>
+    {{ end }}
+</table>
