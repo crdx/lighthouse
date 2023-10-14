@@ -4,12 +4,12 @@
             <nav class="breadcrumb has-arrow-separator is-small">
                 <ul>
                     <li><a href="/">devices</a></li>
-                    <li><a href="/device/{{ .device.ID }}">{{ template "p/device-name" .device.Name }}</a></li>
-                    <li class="is-active"><a href="/adapter/{{ .adapter.ID }}/edit">{{ template "p/adapter-name" .adapter.Name }}</a></li>
+                    <li><a href="/device/{{ .device.ID }}">{{ template "p/name/device" .device.Name }}</a></li>
+                    <li class="is-active"><a href="/adapter/{{ .adapter.ID }}/edit">{{ template "p/name/adapter" .adapter.Name }}</a></li>
                 </ul>
             </nav>
 
-            <h1 class="title">{{ template "p/adapter-name" .adapter.Name }}</h1>
+            <h1 class="title">{{ template "p/name/adapter" .adapter.Name }}</h1>
             <h2 class="subtitle has-text-grey">{{ .adapter.IPAddress }}</h2>
 
             <form method="post">

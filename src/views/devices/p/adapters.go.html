@@ -12,12 +12,12 @@
 
     {{ range . }}
         <tr>
-            <td>{{ template "p/adapter-name" .Name }}</td>
+            <td>{{ template "p/name/adapter" .Name }}</td>
             <td class="is-hidden-mobile">
                 <span class="is-family-monospace">{{ .MACAddress }}</span>
             </td>
             <td>{{ .IPAddress }}</td>
-            <td class="is-hidden-mobile">{{ template "p/vendor-name" .Vendor }}</td>
+            <td class="is-hidden-mobile">{{ template "p/name/vendor" .Vendor }}</td>
             <td>{{ template "p/time/rel" .LastSeen }}</td>
             <td class="min-column">
                 <div class="columns is-variable is-1 is-mobile">

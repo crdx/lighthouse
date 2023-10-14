@@ -53,7 +53,7 @@
                                             <option value="">Merge with...</option>
                                             {{ range .devices }}
                                                 {{ if ne .ID $.device.ID }}
-                                                    <option value="{{ .ID }}">{{ template "p/device-name" .Name }}</option>
+                                                    <option value="{{ .ID }}">{{ template "p/name/device" .Name }}</option>
                                                 {{ end }}
                                             {{ end }}
                                         </select>
