@@ -11,7 +11,7 @@ import (
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/repos/deviceStateNotificationR"
 	"crdx.org/lighthouse/services"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/util/mailutil"
 	"github.com/samber/lo"
 )
 
@@ -67,8 +67,8 @@ func (*Notifier) Run() error {
 	subject := getSubject(newTransitions)
 	body := getBody(newTransitions, transitions)
 
-	// Panic here as this will probably be a recoverable failure (i.e. intermittent network failure).
-	lo.Must0(util.SendNotification(subject, body))
+	// Panic here as this will probably be a recoverable failure e.g. intermittent network failure.
+	lo.Must0(mailutil.SendNotification(subject, body))
 
 	return nil
 }

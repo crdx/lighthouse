@@ -7,17 +7,12 @@ import (
 	"strings"
 	"time"
 
-	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/util"
-	"github.com/samber/lo"
+	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/util/timeutil"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
 )
-
-func tz() *time.Location {
-	return lo.Must(time.LoadLocation(env.LocalTimeZone))
-}
 
 func GetFuncMap() template.FuncMap {
 	return template.FuncMap{
@@ -28,10 +23,10 @@ func GetFuncMap() template.FuncMap {
 			return timeAgo(int(time.Since(t).Seconds()), false, 1)
 		},
 		"formatDate": func(t time.Time) string {
-			return t.In(tz()).Format("02/01/2006")
+			return timeutil.ToLocal(t).Format("02/01/2006")
 		},
 		"formatDateTime": func(t time.Time) string {
-			return t.In(tz()).Format("02/01/2006 15:04 MST")
+			return timeutil.ToLocal(t).Format("02/01/2006 15:04 MST")
 		},
 		"escape":         escape,
 		"nl2br":          nl2br,
@@ -112,7 +107,7 @@ func timeAgo(n int, verbose bool, precision int) string {
 
 		if x > 0 {
 			if verbose {
-				a = append(a, fmt.Sprintf("%d %s", x, util.Pluralise(x, unit.name)))
+				a = append(a, fmt.Sprintf("%d %s", x, stringutil.Pluralise(x, unit.name)))
 			} else {
 				a = append(a, fmt.Sprintf("%d%s", x, string(unit.name[0])))
 			}
