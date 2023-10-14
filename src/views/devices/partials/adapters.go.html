@@ -22,22 +22,18 @@
                 {{ timeAgoVerbose .LastSeen }}
             </td>
             <td class="min-column">
-                <div class="level is-mobile">
-                    <div class="level-item">
-                        <a title="Edit" href="/adapter/{{ .ID }}/edit" class="has-text-dark">
-                            <span class="icon">
-                                <i class="fa-duotone fa-edit"></i>
+                <div class="columns is-variable is-1 is-mobile">
+                    <a title="Edit" href="/adapter/{{ .ID }}/edit" class="column has-text-dark">
+                        <span class="icon">
+                            <i class="fa-duotone fa-edit"></i>
+                        </span>
+                    </a>
+                    <form class="column" action="/adapter/{{ .ID }}/delete" method="post">
+                        <a title="Delete" onclick="confirm('Are you sure?') && parentNode.submit()" class="has-text-dark">
+                            <span class="icon has-text-danger-dark">
+                                <i class="fa-duotone fa-trash"></i>
                             </span>
                         </a>
-                    </div>
-                    <div class="level-item">
-                        <form action="/adapter/{{ .ID }}/delete" method="post">
-                            <a title="Delete" onclick="confirm('Are you sure?') && parentNode.submit()" class="has-text-dark">
-                                <span class="icon has-text-danger-dark">
-                                    <i class="fa-duotone fa-trash"></i>
-                                </span>
-                            </a>
-                        </form>
                     </div>
                 </div>
             </td>
