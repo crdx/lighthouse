@@ -25,8 +25,11 @@ func GetFuncMap() template.FuncMap {
 		"formatDate": func(t time.Time) string {
 			return timeutil.ToLocal(t).Format("02/01/2006")
 		},
-		"formatDateTime": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("02/01/2006 15:04 MST")
+		"formatDateTimeFull": func(t time.Time) string {
+			return timeutil.ToLocal(t).Format("02/01/2006 15:04:05 MST")
+		},
+		"formatDateTimeShort": func(t time.Time) string {
+			return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2")
 		},
 		"escape":         escape,
 		"nl2br":          nl2br,

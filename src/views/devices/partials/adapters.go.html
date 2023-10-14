@@ -18,9 +18,7 @@
             </td>
             <td>{{ .IPAddress }}</td>
             <td class="is-hidden-mobile">{{ template "partials/vendor-name" .Vendor }}</td>
-            <td title="{{ escape (formatDateTime .LastSeen) }}">
-                {{ timeAgoVerbose .LastSeen }}
-            </td>
+            <td>{{ template "partials/time/rel" .LastSeen }}</td>
             <td class="min-column">
                 <div class="columns is-variable is-1 is-mobile">
                     <a title="Edit" href="/adapter/{{ .ID }}/edit" class="column has-text-dark">

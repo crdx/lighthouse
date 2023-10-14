@@ -49,10 +49,10 @@
                         <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
                         <td class="is-hidden-touch ">{{ template "partials/vendor-name" .Vendor }}</td>
                         <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
-                        <td title="{{ .LastSeen.String }}">
-                            <div class="is-hidden-touch">{{ timeAgoVerbose .LastSeen  }}</div>
+                        <td>
+                            <div class="is-hidden-touch">{{ template "partials/time/rel" .LastSeen }}</div>
                             <div class="is-hidden-desktop">
-                                <div>{{ timeAgo .LastSeen  }}</div>
+                                <div>{{ template "partials/time/rel-short" .LastSeen }}</div>
                             </div>
                         </td>
                         <td class="is-hidden-mobile">
