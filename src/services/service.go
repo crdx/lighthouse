@@ -5,7 +5,6 @@ import (
 
 	"log/slog"
 
-	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/logger"
 	"crdx.org/lighthouse/util"
 )
@@ -89,10 +88,6 @@ func Start(name string, config *Config) {
 					restarting = true
 				}
 			}()
-
-			if env.Verbose {
-				log.Info("service started")
-			}
 
 			restarting = false
 			return config.Service.Run()

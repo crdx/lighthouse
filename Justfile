@@ -18,10 +18,6 @@ set dotenv-load := true
 @devd:
     LIGHTHOUSE_DEBUG=1 just dev
 
-# start development with verbose logging
-@devv:
-    LIGHTHOUSE_VERBOSE=1 just dev
-
 # open the development site in the default browser
 @open:
     xdg-open http://$HOST:$PORT
@@ -29,10 +25,6 @@ set dotenv-load := true
 # build binary
 @make:
     mkif {{ BIN_PATH }} $(find src -type f) -x 'just remake'
-
-# remove build
-@clean:
-    rm -fv {{ BIN_PATH }}
 
 # build the container
 @build:
@@ -58,12 +50,8 @@ set dotenv-load := true
 
 # start a shell in the app container
 @shell: build
-    docker-compose run --service-ports app bash || true
+    docker-compose run app bash || true
     docker-compose down
-
-# watch running container logs
-@logs:
-    docker-compose logs -f
 
 # run tests
 test *args:
@@ -78,36 +66,32 @@ test *args:
     rm "$OUTPUT"
     exit "$CODE"
 
-# connect to the test db
-@test-db:
-    mariadb {{ DB_NAME }}_test
-
 # run linter
 @lint:
     # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
     cd src && go vet -loopclosure=false ./... && golangci-lint run
 
-# fix lint issues
-@fix:
-    cd src && golangci-lint run --fix
-
-# format code
+# run formatter
 @fmt:
     cd src && go fmt ./...
 
-# show code sloc
+# show code stats
 @sloc:
     tokei -tGo,HTML,CSS,JavaScript \
         -e src/assets/alpine.min.js \
         -e src/assets/bulma.min.css
 
-# drop the db
-@drop-db:
-    echo 'drop database if exists {{ DB_NAME }}' | mariadb
-
 # connect to the dev db
 @db:
     mariadb {{ DB_NAME }}
+
+# drop the dev db
+@drop-db:
+    echo 'drop database if exists {{ DB_NAME }}' | mariadb
+
+# connect to the live db
+@live-db:
+    ssh-to s -t mariadb {{ DB_NAME }}
 
 # pull down the live db
 @pull:
@@ -161,3 +145,7 @@ remake-autocap:
 [private]
 @remake: generate
     cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
+
+[private]
+@clean:
+    rm -fv {{ BIN_PATH }}

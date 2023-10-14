@@ -27,8 +27,7 @@ const (
 )
 
 var (
-	Debug   = len(os.Getenv("LIGHTHOUSE_DEBUG")) > 0
-	Verbose = len(os.Getenv("LIGHTHOUSE_VERBOSE")) > 0
+	Debug = len(os.Getenv("LIGHTHOUSE_DEBUG")) > 0
 
 	Production = os.Getenv("MODE") == ModeProduction
 	BindHost   = os.Getenv("HOST")
