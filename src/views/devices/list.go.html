@@ -3,29 +3,14 @@
         <div class="box">
             <table class="table is-fullwidth">
                 <thead>
-                    {{ define "column" }}
-                        <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
-                            {{ .Label }}
-                            {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
-                                <span class="icon">
-                                    {{ if eq .CurrentSortDirection "asc" }}
-                                        <i class="fa-solid fa-arrow-down fa-sm"></i>
-                                    {{ else }}
-                                        <i class="fa-solid fa-arrow-up fa-sm"></i>
-                                    {{ end }}
-                                </span>
-                            {{ end }}
-                        </a>
-                    {{ end }}
-
                     <tr>
-                        <th title="Type">{{ template "column" .columns.type }}</th>
-                        <th>{{ template "column" .columns.name }}</th>
-                        <th class="is-hidden-mobile">{{ template "column" .columns.ip }}</th>
-                        <th class="is-hidden-touch">{{ template "column" .columns.vendor }}</th>
-                        <th class="is-hidden-mobile">{{ template "column" .columns.mac }}</th>
-                        <th>{{ template "column" .columns.seen }}</th>
-                        <th class="is-hidden-mobile" title="Watching">{{ template "column" .columns.watch }}</th>
+                        <th title="Type">{{ template "p/table/column-header" .columns.type }}</th>
+                        <th>{{ template "p/table/column-header" .columns.name }}</th>
+                        <th class="is-hidden-mobile">{{ template "p/table/column-header" .columns.ip }}</th>
+                        <th class="is-hidden-touch">{{ template "p/table/column-header" .columns.vendor }}</th>
+                        <th class="is-hidden-mobile">{{ template "p/table/column-header" .columns.mac }}</th>
+                        <th>{{ template "p/table/column-header" .columns.seen }}</th>
+                        <th class="is-hidden-mobile" title="Watching">{{ template "p/table/column-header" .columns.watch }}</th>
                     </tr>
                 </thead>
                 <tbody>

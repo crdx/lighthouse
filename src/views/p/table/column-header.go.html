@@ -1,0 +1,12 @@
+<a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
+    {{ .Label }}
+    {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
+        <span class="icon">
+            {{ if eq .CurrentSortDirection "asc" }}
+                <i class="fa-solid fa-arrow-down fa-sm"></i>
+            {{ else }}
+                <i class="fa-solid fa-arrow-up fa-sm"></i>
+            {{ end }}
+        </span>
+    {{ end }}
+</a>
