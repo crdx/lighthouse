@@ -51,6 +51,9 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 
 	orderBy := fmt.Sprintf(orderByTemplate, sortDirection)
 
+	// The left join with adapters on last_seen finds the adapter with the newest last_seen date.
+	// This works because the row where there is no newer last_seen date will contain nulls for the
+	// A2 part of the table, and the where clause requires A2.id to be null.
 	return db.Query[[]*ListView](fmt.Sprintf(`
 		SELECT
 			D.id,
