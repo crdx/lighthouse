@@ -1,7 +1,14 @@
-{{ if .i_flash }}
+{{/*
+    Render a flash message.
+
+    Context:
+        .    flash.Message
+*/}}
+
+{{ if . }}
     <div class="container is-max-widescreen">
-        <div class="notification is-light is-{{ .i_flash.Class }}">
-            {{ .i_flash.Content }}
+        <div class="notification is-light is-{{ .Class }}">
+            {{ .Content }}
         </div>
     </div>
 {{ end }}
