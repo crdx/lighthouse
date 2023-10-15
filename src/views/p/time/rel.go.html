@@ -1,3 +1,10 @@
+{{/*
+    Render a time as relative time in verbose form (secs, mins)
+
+    Context:
+        .    time.Time
+*/}}
+
 <span title="{{ formatDateTimeFull . }}">
     {{ timeAgoVerbose . }}
 </span>

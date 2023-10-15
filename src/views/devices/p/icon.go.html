@@ -1,3 +1,10 @@
+{{/*
+    Render a device's icon.
+
+    Context:
+        .    m.Device
+*/}}
+
 {{ if .Icon }}
     <span class="icon">
          {{ if eq .State "online" }}

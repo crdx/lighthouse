@@ -1,3 +1,10 @@
+{{/*
+    Render a column header, along with sorters.
+
+    Context:
+        .    tpl.SortableColumnState
+*/}}
+
 <a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
     {{ .Label }}
     {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
