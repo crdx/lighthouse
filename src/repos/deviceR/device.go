@@ -32,7 +32,7 @@ type ListView struct {
 	LastSeen   time.Time
 }
 
-func GetListView(sortColumn string, sortDirection string) []*ListView {
+func GetListView(sortColumn string, sortDirection string) []ListView {
 	// Ensure sort is stable by appending "D.id ASC" to some of these.
 	orderByTemplates := map[string]string{
 		"name":   "D.name %s, D.id ASC",
@@ -46,7 +46,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 
 	orderByTemplate, ok := orderByTemplates[sortColumn]
 	if !ok {
-		return []*ListView{}
+		return nil
 	}
 
 	orderBy := fmt.Sprintf(orderByTemplate, sortDirection)
@@ -54,7 +54,7 @@ func GetListView(sortColumn string, sortDirection string) []*ListView {
 	// The left join with adapters on last_seen finds the adapter with the newest last_seen date.
 	// This works because the row where there is no newer last_seen date will contain nulls for the
 	// A2 part of the table, and the where clause requires A2.id to be null.
-	return db.Query[[]*ListView](fmt.Sprintf(`
+	return db.Query[[]ListView](fmt.Sprintf(`
 		SELECT
 			D.id,
 			D.name,
