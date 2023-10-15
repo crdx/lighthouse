@@ -19,7 +19,7 @@ func app() *fiber.App {
 	return app
 }
 
-func TestDeviceList(t *testing.T) {
+func TestList(t *testing.T) {
 	app := app()
 	res, body := helpers.Get(app, "/")
 
@@ -29,7 +29,7 @@ func TestDeviceList(t *testing.T) {
 	assert.Contains(t, body, "device1")
 }
 
-func TestViewDevice(t *testing.T) {
+func TestView(t *testing.T) {
 	app := app()
 	res, body := helpers.Get(app, "/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -39,7 +39,7 @@ func TestViewDevice(t *testing.T) {
 	assert.Contains(t, body, "Corp 1")
 }
 
-func TestEditDevice(t *testing.T) {
+func TestEdit(t *testing.T) {
 	app := app()
 
 	nameUUID := helpers.UUID()
@@ -62,7 +62,7 @@ func TestEditDevice(t *testing.T) {
 	assert.Contains(t, body, iconUUID)
 }
 
-func TestEditDeviceWithErrors(t *testing.T) {
+func TestEditWithErrors(t *testing.T) {
 	app := app()
 
 	nameUUID := helpers.UUID()
@@ -85,7 +85,7 @@ func TestEditDeviceWithErrors(t *testing.T) {
 	assert.NotContains(t, body, iconUUID)
 }
 
-func TestMergeDevice(t *testing.T) {
+func TestMerge(t *testing.T) {
 	app := app()
 
 	res, _ := helpers.PostForm(app, "/device/1/merge", map[string]string{
@@ -107,4 +107,17 @@ func TestMergeDevice(t *testing.T) {
 
 	_, found := db.First[m.Device](2)
 	assert.False(t, found)
+}
+
+func TestDelete(t *testing.T) {
+	app := app()
+
+	res, _ := helpers.Get(app, "/device/1")
+	assert.Equal(t, 200, res.StatusCode)
+
+	res, _ = helpers.PostForm(app, "/device/1/delete", nil)
+	assert.Equal(t, 302, res.StatusCode)
+
+	res, _ = helpers.Get(app, "/device/1")
+	assert.Equal(t, 404, res.StatusCode)
 }
