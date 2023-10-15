@@ -1,10 +1,10 @@
 {{/*
-    Render a time as relative time in verbose form (secs, mins)
+    Render a time as relative time in long form (secs, mins)
 
     Context:
         .    time.Time
 */}}
 
-<span title="{{ formatDateTimeFull . }}">
-    {{ timeAgoVerbose . }}
+<span title="{{ formatDateTimeSystem . }}">
+    {{ timeAgoLong . }}
 </span>

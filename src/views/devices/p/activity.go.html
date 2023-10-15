@@ -17,8 +17,8 @@
         {{ range .activity }}
             <tr>
                 <td>{{ template "devices/p/state" .State }}</td>
-                <td>{{ timeAgoVerbose .CreatedAt }}</td>
-                <td class="is-hidden-mobile">{{ formatDateTimeShort .CreatedAt }}</td>
+                <td>{{ timeAgoLong .CreatedAt }}</td>
+                <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
             </tr>
         {{ end }}
     </table>

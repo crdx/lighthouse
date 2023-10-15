@@ -16,20 +16,17 @@ import (
 
 func GetFuncMap() template.FuncMap {
 	return template.FuncMap{
-		"timeAgoVerbose": func(t time.Time) string {
+		"timeAgoLong": func(t time.Time) string {
 			return timeAgo(int(time.Since(t).Seconds()), true, 1)
 		},
-		"timeAgo": func(t time.Time) string {
+		"timeAgoShort": func(t time.Time) string {
 			return timeAgo(int(time.Since(t).Seconds()), false, 1)
 		},
-		"formatDate": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("02/01/2006")
+		"formatDateTimeSystem": func(t time.Time) string {
+			return timeutil.ToLocal(t).Format("2006-01-02 15:04:05 MST")
 		},
-		"formatDateTimeFull": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("02/01/2006 15:04:05 MST")
-		},
-		"formatDateTimeShort": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2")
+		"formatDateTimeReadable": func(t time.Time) string {
+			return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2 2006")
 		},
 		"escape":         escape,
 		"nl2br":          nl2br,

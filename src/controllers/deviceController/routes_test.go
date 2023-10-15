@@ -96,7 +96,7 @@ func TestMergeDevice(t *testing.T) {
 
 	_, body := helpers.Get(app, "/device/1")
 
-	assert.Contains(t, body, "01/10/2023")
+	assert.Contains(t, body, "2023-10-01")
 	assert.Contains(t, body, "adapter1")
 	assert.Contains(t, body, "adapter2")
 
