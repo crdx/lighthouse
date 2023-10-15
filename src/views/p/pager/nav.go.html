@@ -1,0 +1,30 @@
+{{/*
+    Render paging navigation.
+
+    Context:
+        .    pager.State
+*/}}
+
+<div class="columns">
+    <div class="column">
+        <a class="is-pulled-left button"
+            {{ if .PreviousPageURL }}
+                href="{{ .PreviousPageURL }}"
+            {{ else }}
+                disabled
+            {{ end }}>Previous</a>
+    </div>
+
+    <div class="column has-text-centered">
+        Page {{ .CurrentPage }} of {{ .TotalPages }}
+    </div>
+
+    <div class="column">
+        <a class="is-pulled-right button"
+            {{ if .NextPageURL }}
+                href="{{ .NextPageURL }}"
+            {{ else }}
+                disabled
+            {{ end }}>Next</a>
+    </div>
+</div>

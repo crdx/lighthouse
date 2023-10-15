@@ -41,9 +41,20 @@ func createAdapter(id, deviceID uint, name, vendor, macAddress, ipAddress string
 	})
 }
 
+func createDeviceStateLog(id, deviceID uint, state string, createdAt time.Time) {
+	db.Save(&m.DeviceStateLog{
+		ID:          id,
+		DeviceID:    deviceID,
+		State:       state,
+		CreatedAt:   createdAt,
+		GracePeriod: 5,
+	})
+}
+
 func Run() {
-	t1 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
 	t2 := time.Date(2023, time.September, 1, 12, 00, 00, 0, time.UTC)
+	t1 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
+	t3 := time.Date(2023, time.November, 1, 12, 00, 00, 0, time.UTC)
 
 	network1 := createNetwork(1, "network1", "127.0.0.1/24")
 
@@ -52,4 +63,11 @@ func Run() {
 
 	device2 := createDevice(2, network1.ID, "device2", "device2", t2)
 	createAdapter(2, device2.ID, "adapter2", "Corp 2", "BB:BB:BB:BB:BB:BB", "127.0.0.2", t2)
+
+	device3 := createDevice(3, network1.ID, "device3", "device3", t3)
+	createAdapter(3, device3.ID, "adapter3", "Corp 3", "CC:CC:CC:CC:CC:CC", "127.0.0.3", t3)
+
+	createDeviceStateLog(1, device1.ID, deviceR.StateOnline, time.Now().Add(-3*time.Minute))
+	createDeviceStateLog(2, device1.ID, deviceR.StateOffline, time.Now().Add(-2*time.Minute))
+	createDeviceStateLog(3, device2.ID, deviceR.StateOffline, time.Now().Add(-1*time.Minute))
 }

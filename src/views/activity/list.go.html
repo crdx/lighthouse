@@ -1,0 +1,42 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            {{ if .device }}
+                <h1 class="title is-size-4">Activity for {{ template "p/name/device" .device.Name }}</h1>
+            {{ else }}
+                <h1 class="title is-size-4">Activity</h1>
+            {{ end }}
+
+            {{ if not .entries }}
+                {{ template "activity/p/no-activity" .device }}
+            {{ else }}
+                {{ template "p/pager/nav" .pagingState }}
+
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>{{ .typeColumnLabel }}</th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>When</th>
+                            <th class="is-hidden-mobile"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .entries }}
+                            <tr>
+                                <td class="min-column has-text-centered">{{ template "devices/p/icon" . }}</td>
+                                <td><a href="/device/{{ .DeviceID }}">{{ .Name }}</a></td>
+                                <td>{{ template "devices/p/state" .State }}</td>
+                                <td>{{ timeAgoLong .CreatedAt }}</td>
+                                <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+
+                {{ template "p/pager/nav" .pagingState }}
+            {{ end }}
+        </div>
+    </div>
+</div>

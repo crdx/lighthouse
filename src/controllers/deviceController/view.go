@@ -16,10 +16,10 @@ func View(c *fiber.Ctx) error {
 	}
 
 	return c.Render("devices/view", fiber.Map{
-		"device":        device,
-		"devices":       deviceR.All(),
-		"adapters":      device.Adapters(),
-		"history":       deviceStateLogR.LatestForDevice(device.ID),
-		flash.Key:       c.Locals(flash.Key),
+		"device":   device,
+		"devices":  deviceR.All(),
+		"adapters": device.Adapters(),
+		"activity": deviceStateLogR.LatestActivityForDevice(device.ID),
+		flash.Key:  c.Locals(flash.Key),
 	})
 }

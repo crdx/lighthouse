@@ -109,6 +109,7 @@ func TestToString(t *testing.T) {
 		expected string
 	}{
 		{reflect.ValueOf(123), "123"},
+		{reflect.ValueOf(uint(123)), "123"},
 		{reflect.ValueOf(123.456), "123.456"},
 		{reflect.ValueOf("foo"), "foo"},
 	}

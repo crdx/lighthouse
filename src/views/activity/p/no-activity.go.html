@@ -1,0 +1,16 @@
+{{/*
+    Render a message to be shown when a device has no activity.
+
+    Context:
+        .    m.Device
+*/}}
+
+<div class="content">
+    <p>No activity yet.</p>
+
+    {{ if . }}
+        <p>Perhaps <strong>{{ template "p/name/device" .Name }}</strong> is just <em>really</em> reliable?</p>
+    {{ else }}
+        <p>Perhaps your devices are just <em>really</em> reliable?</p>
+    {{ end }}
+</div>
