@@ -1,0 +1,27 @@
+{{/*
+    Render a list of activity logs, possibly for a single device.
+
+    Context:
+        .activity    []m.DeviceStateLog
+        .device      m.Device
+*/}}
+
+{{ if .activity }}
+    <table class="table is-fullwidth">
+        <tr>
+            <th>State</th>
+            <th>When</th>
+            <th class="is-hidden-mobile"></th>
+        </tr>
+
+        {{ range .activity }}
+            <tr>
+                <td>{{ template "devices/p/state" .State }}</td>
+                <td>{{ timeAgoVerbose .CreatedAt }}</td>
+                <td class="is-hidden-mobile">{{ formatDateTimeShort .CreatedAt }}</td>
+            </tr>
+        {{ end }}
+    </table>
+{{ else }}
+    {{ template "activity/p/no-activity" .device }}
+{{ end }}

@@ -11,8 +11,8 @@
                 </div>
 
                 <div class="column">
-                    <h2 class="subtitle">History</h2>
-                    {{ template "devices/p/history" .history }}
+                    <h2 class="subtitle">Activity{{ if .activity }} (<a href="/activity/?device_id={{ .device.ID }}">all</a>){{ end }}</h2>
+                    {{ template "devices/p/activity" . }}
                 </div>
             </div>
 
