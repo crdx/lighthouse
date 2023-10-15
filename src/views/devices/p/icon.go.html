@@ -1,0 +1,9 @@
+{{ if .Icon }}
+    <span class="icon">
+         {{ if eq .State "online" }}
+            <i class="{{ .Icon }} state--online"></i>
+        {{ else }}
+            <i class="{{ .Icon }} state--offline"></i>
+        {{ end }}
+    </span>
+{{ end }}
