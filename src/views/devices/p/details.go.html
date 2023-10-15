@@ -6,13 +6,7 @@
 
     <tr>
         <th>Hostname</th>
-        <td>
-            {{ if ne .Hostname "" }}
-                {{ .Hostname }}
-            {{ else }}
-                <i>None</i>
-            {{ end }}
-        </td>
+        <td>{{ template "p/name/hostname" .Hostname }}</td>
     </tr>
 
     <tr>
