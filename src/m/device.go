@@ -66,5 +66,5 @@ func (self *Device) DisplayName() string {
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
-	return db.B(Adapter{DeviceID: self.ID}).Find()
+	return db.B(Adapter{DeviceID: self.ID}).Order("last_seen DESC").Find()
 }
