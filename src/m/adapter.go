@@ -26,6 +26,8 @@ func (self *Adapter) Update(values ...any) {
 }
 
 func (self *Adapter) Delete() {
+	db.B[VendorLookup]().Where("adapter_id = ?", self.ID).Delete()
+
 	db.For[Adapter](self.ID).Delete()
 }
 
