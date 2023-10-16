@@ -30,5 +30,5 @@ func (self *transition) String() string {
 }
 
 func (self *transition) TimestampedString() string {
-	return fmt.Sprintf("[%s] %s", timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"), self.String())
+	return fmt.Sprintf("%s — %s", timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"), self.String())
 }
