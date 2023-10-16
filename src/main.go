@@ -30,6 +30,12 @@ func main() {
 		return c.SendString("OK")
 	})
 
+	if env.EnableLiveReload {
+		app.Get("/hang", func(c *fiber.Ctx) error {
+			select {}
+		})
+	}
+
 	initMiddleware(app)
 	initRoutes(app)
 

@@ -25,5 +25,9 @@
 
     <script type="text/javascript" src="/assets/main.js"></script>
     <script defer src="/assets/alpine.min.js"></script>
+
+    {{ if enableLiveReload }}
+        {{ template "layouts/p/livereload" }}
+    {{ end }}
 </body>
 </html>

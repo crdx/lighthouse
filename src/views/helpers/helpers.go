@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/util/stringutil"
 	"crdx.org/lighthouse/util/timeutil"
 	"github.com/yuin/goldmark"
@@ -31,6 +32,10 @@ func GetFuncMap() template.FuncMap {
 		"escape":         escape,
 		"nl2br":          nl2br,
 		"renderMarkdown": renderMarkdown,
+
+		"enableLiveReload": func() bool {
+			return env.EnableLiveReload
+		},
 	}
 }
 

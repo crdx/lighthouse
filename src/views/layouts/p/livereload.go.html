@@ -1,0 +1,66 @@
+{{/*
+    Render the livereload snippet.
+*/}}
+
+<style type="text/css">
+    .a5eab416-b1c5-4f51-9feb-dccf69eccd64 {
+        display: none;
+        height: 100vh;
+        width: 100vw;
+        place-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 999; /* the classic */
+    }
+
+    .a5eab416-b1c5-4f51-9feb-dccf69eccd64 svg {
+        width: 100px;
+        height: 100px;
+    }
+
+    .a5eab416-b1c5-4f51-9feb-dccf69eccd64 svg path {
+        fill: #999;
+    }
+</style>
+
+<div class="a5eab416-b1c5-4f51-9feb-dccf69eccd64">
+    <svg class="fa-spin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/>
+    </svg>
+</div>
+
+<script type="text/javascript">
+    (async function() {
+        async function sleep(n) {
+            return new Promise(resolve => setTimeout(resolve, n))
+        }
+
+        async function waitUntilHealthy() {
+            while (true) {
+                try {
+                    await fetch('/health')
+                    break
+                } catch (e) {
+                    await sleep(200)
+                }
+            }
+        }
+
+        try {
+            await fetch('/hang')
+        } catch (e) {
+            // Navigation also breaks the connection to /hang and since the server is still healthy,
+            // there's a chance the reload below will trigger before the navigation completes.
+            // Sleeping for a small amount of time prevents this.
+            await sleep(500)
+
+            document.querySelector('.a5eab416-b1c5-4f51-9feb-dccf69eccd64').style.display = 'grid'
+            await waitUntilHealthy()
+            document.location.reload()
+        }
+    })()
+</script>
