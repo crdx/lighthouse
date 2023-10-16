@@ -2,7 +2,6 @@ package notifier
 
 import (
 	"fmt"
-	"time"
 
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/repos/deviceR"
@@ -31,5 +30,5 @@ func (self *transition) String() string {
 }
 
 func (self *transition) TimestampedString() string {
-	return fmt.Sprintf("[%s] %s", timeutil.ToLocal(self.Notification.CreatedAt).Format(time.Kitchen), self.String())
+	return fmt.Sprintf("[%s] %s", timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"), self.String())
 }
