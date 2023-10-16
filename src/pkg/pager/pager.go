@@ -46,35 +46,34 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 
 	var err error
 
-	if pageNumber < pageCount {
-		qs[queryStringParameter] = fmt.Sprint(pageNumber + 1)
-		state.NextPageURL, err = webutil.BuildURL(basePath, qs)
+	// Removes a lot of the repetitive error handling from the code below using a technique inspired
+	// by https://go.dev/blog/errors-are-values.
+	f := func(n uint) string {
 		if err != nil {
-			return nil, err
+			return ""
 		}
 
-		qs[queryStringParameter] = fmt.Sprint(pageCount)
-		state.LastPageURL, err = webutil.BuildURL(basePath, qs)
-		if err != nil {
-			return nil, err
+		qs[queryStringParameter] = fmt.Sprint(n)
+
+		var url string
+		if url, err = webutil.BuildURL(basePath, qs); err != nil {
+			return ""
 		}
+
+		return url
+	}
+
+	if pageNumber < pageCount {
+		state.NextPageURL = f(pageNumber + 1)
+		state.LastPageURL = f(pageCount)
 	}
 
 	if pageNumber > 1 {
-		qs[queryStringParameter] = fmt.Sprint(pageNumber - 1)
-		state.PreviousPageURL, err = webutil.BuildURL(basePath, qs)
-		if err != nil {
-			return nil, err
-		}
-
-		qs[queryStringParameter] = fmt.Sprint(1)
-		state.FirstPageURL, err = webutil.BuildURL(basePath, qs)
-		if err != nil {
-			return nil, err
-		}
+		state.PreviousPageURL = f(pageNumber - 1)
+		state.FirstPageURL = f(1)
 	}
 
-	return state, nil
+	return state, err
 }
 
 // GetPageCount returns the number of pages needed to fit n items if there are perPage items per

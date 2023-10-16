@@ -16,32 +16,42 @@ func TestGetState(t *testing.T) {
 		path           string
 		qs             map[string]string
 		expectedState  pager.State
+		expectErr      bool
 		expectedCount  uint
 		expectedOffset uint
 	}{
 		{
-			name:          "Case1",
 			currentPage:   1,
 			totalPages:    5,
 			path:          "/example",
 			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 1, TotalPages: 5, NextPageURL: "/example?key=value&page=2"},
+			expectedState: pager.State{CurrentPage: 1, TotalPages: 5, NextPageURL: "/example?key=value&page=2", LastPageURL: "/example?key=value&page=5"},
 		},
 		{
-			name:          "Case2",
 			currentPage:   3,
 			totalPages:    3,
 			path:          "/example",
 			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 3, TotalPages: 3, PreviousPageURL: "/example?key=value&page=2"},
+			expectedState: pager.State{CurrentPage: 3, TotalPages: 3, PreviousPageURL: "/example?key=value&page=2", FirstPageURL: "/example?key=value&page=1"},
+		},
+		{
+			currentPage: 3,
+			totalPages:  9,
+			path:        ":",
+			qs:          map[string]string{"key": "value"},
+			expectErr:   true,
 		},
 	}
 
-	for _, testCase := range testCases {
-		t.Run(testCase.name, func(t *testing.T) {
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
 			state, err := pager.GetState(testCase.currentPage, testCase.totalPages, testCase.path, testCase.qs)
-			assert.Nil(t, err)
-			assert.Equal(t, testCase.expectedState, *state, "state")
+			if testCase.expectErr {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+				assert.Equal(t, testCase.expectedState, *state, "state")
+			}
 		})
 	}
 }
