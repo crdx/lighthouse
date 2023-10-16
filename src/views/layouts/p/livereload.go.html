@@ -59,6 +59,7 @@
             await sleep(500)
 
             document.querySelector('.a5eab416-b1c5-4f51-9feb-dccf69eccd64').style.display = 'grid'
+            document.title = '(...) ' + document.title
             await waitUntilHealthy()
             document.location.reload()
         }
