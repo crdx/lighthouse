@@ -43,7 +43,7 @@ func (self *VendorDB) Run() error {
 			continue
 		}
 
-		log := self.log.With("adapter_id", adapter.ID, "mac", adapter.MACAddress)
+		log := self.log.With(slog.Group("adapter", "id", adapter.ID, "mac", adapter.MACAddress))
 
 		if err := doLookup(lookup, adapter, log); err != nil {
 			return err

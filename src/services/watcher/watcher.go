@@ -29,12 +29,13 @@ func (self *Watcher) Run() error {
 	for _, device := range deviceR.All() {
 		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Minute
 
-		log := self.log.With(
+		log := self.log.With(slog.Group(
+			"device",
+			"id", device.ID,
 			"name", device.Name,
 			"hostname", device.Hostname,
 			"grace_period", device.GracePeriod,
-			"device_id", device.ID,
-		)
+		))
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
 			if device.State == deviceR.StateOnline {

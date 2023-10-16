@@ -233,12 +233,13 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipAddress string) {
 	adapter, adapterFound := adapterR.Upsert(macAddress, ipAddress)
 
-	log := self.log.With(
-		"adapter_id", adapter.ID,
+	log := self.log.With(slog.Group(
+		"adapter",
+		"id", adapter.ID,
 		"mac", adapter.MACAddress,
 		"ip", adapter.IPAddress,
 		"vendor", adapter.Vendor,
-	)
+	))
 
 	var device *m.Device
 	hostname := self.hostnameCache[macAddress]
@@ -267,6 +268,8 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 		}
 	}
 
+	log = log.With(slog.Group("device", "id", device.ID, "name", device.Name))
+
 	device.Update("last_seen", time.Now())
 	populateDeviceName(device, hostname)
 
@@ -275,11 +278,7 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 	}
 
 	if !adapterFound {
-		log.Info(
-			"new device has joined the network",
-			"device_id", device.ID,
-			"name", device.Name,
-		)
+		log.Info("new device has joined the network")
 	}
 }
 
