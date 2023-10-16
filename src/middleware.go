@@ -15,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -24,6 +25,8 @@ import (
 var assets embed.FS
 
 func initMiddleware(app *fiber.App) {
+	app.Use(helmet.New())
+
 	if env.Production {
 		app.Use(etag.New())
 	}
