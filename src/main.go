@@ -53,8 +53,7 @@ func main() {
 
 func initMinifier(app *fiber.App) {
 	app.Use(func(ctx *fiber.Ctx) error {
-		err := ctx.Next()
-		if err != nil {
+		if err := ctx.Next(); err != nil {
 			return err
 		}
 
@@ -72,12 +71,15 @@ func initMinifier(app *fiber.App) {
 		htmlMinifier.KeepQuotes = false              // Preserve quotes around attribute values
 
 		var minifiedBody bytes.Buffer
-		htmlMinifier.Minify(
+
+		if err := htmlMinifier.Minify(
 			minify.New(),
 			&minifiedBody,
 			bytes.NewReader(ctx.Response().Body()),
 			nil,
-		)
+		); err != nil {
+			return err
+		}
 
 		ctx.Response().SetBody(minifiedBody.Bytes())
 
