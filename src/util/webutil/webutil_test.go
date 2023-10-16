@@ -35,3 +35,26 @@ func TestBuildURL(t *testing.T) {
 		})
 	}
 }
+
+func TestIsHTMLContentType(t *testing.T) {
+	testCases := []struct {
+		contentType string
+		expected    bool
+	}{
+		{"text/html", true},
+		{"text/html; charset=utf-8", true},
+		{"charset=utf-8", false},
+		{"  text/html  ", true},
+		{"text/plain", false},
+		{"application/json", false},
+		{"application/json; charset=utf-8", false},
+		{"", false},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.contentType, func(t *testing.T) {
+			actual := webutil.IsHTMLContentType(testCase.contentType)
+			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}
