@@ -13,7 +13,6 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
-	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -34,11 +33,6 @@ func initMiddleware(app *fiber.App) {
 	app.Use("/assets", filesystem.New(filesystem.Config{
 		Root:       http.FS(assets),
 		PathPrefix: "assets",
-	}))
-
-	app.Use(favicon.New(favicon.Config{
-		FileSystem: http.FS(assets),
-		File:       "assets/favicon.svg",
 	}))
 
 	if env.AuthType == env.AuthTypeBasic {
