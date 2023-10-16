@@ -1,11 +1,43 @@
 {{/*
     Render paging navigation.
 
+    A little bit of unfortunate duplication here for the mobile layout because removal of the labels
+    is awkward to do with visibility classes, as bulma uses :last-child() to make some decisions
+    which also includes hidden children.
+
     Context:
         .    pager.State
 */}}
 
-<div class="columns is-mobile">
+<div class="columns is-hidden-tablet is-mobile is-vcentered">
+    <div class="column">
+         <div class="buttons has-addons is-left">
+            <a class="button" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-left-to-line"></i></span>
+            </a>
+            <a class="button" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-left"></i></span>
+            </a>
+        </div>
+    </div>
+
+    <div class="column has-text-centered">
+        Page {{ .CurrentPage }} of {{ .TotalPages }}
+    </div>
+
+    <div class="column">
+        <div class="buttons has-addons is-right">
+            <a class="button" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-right"></i></span>
+            </a>
+            <a class="button" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-right-to-line"></i></span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="columns is-hidden-mobile is-vcentered">
     <div class="column">
          <div class="buttons has-addons is-left">
             <a class="button" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
