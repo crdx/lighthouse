@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/minify"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
@@ -57,6 +59,8 @@ func initMiddleware(app *fiber.App) {
 			Level: compress.LevelBestSpeed,
 		}))
 
+		app.Use(minify.New())
+
 		app.Use(limiter.New(limiter.Config{
 			Max:        300,
 			Expiration: 60 * time.Second,
@@ -67,4 +71,6 @@ func initMiddleware(app *fiber.App) {
 	if !env.Production {
 		app.Use(logger.New())
 	}
+
+	app.Use(flash.New())
 }

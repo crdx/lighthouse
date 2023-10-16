@@ -1,6 +1,8 @@
 package flash
 
 import (
+	"encoding/gob"
+
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
 )
@@ -14,6 +16,20 @@ const (
 type Message struct {
 	Class   string
 	Content string
+}
+
+func init() {
+	gob.Register(Message{})
+}
+
+func New() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		if flashMessage, found := session.GetOnce[Message](c, Key); found {
+			c.Locals(Key, flashMessage)
+		}
+
+		return c.Next()
+	}
 }
 
 func AddSuccess(c *fiber.Ctx, message string) {

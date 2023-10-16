@@ -1,6 +1,7 @@
 package webutil_test
 
 import (
+	"fmt"
 	"testing"
 
 	"crdx.org/lighthouse/util/webutil"
@@ -54,6 +55,32 @@ func TestIsHTMLContentType(t *testing.T) {
 	for _, testCase := range testCases {
 		t.Run(testCase.contentType, func(t *testing.T) {
 			actual := webutil.IsHTMLContentType(testCase.contentType)
+			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}
+
+func TestMinifyHTML(t *testing.T) {
+	testCases := []struct {
+		input     []byte
+		expected  []byte
+		expectErr bool
+	}{
+		{[]byte("<html>  <body>\n   </body>  </html>"), []byte(nil), false},
+		{[]byte("<div>  <p>Text</p>   </div>\n\n"), []byte("<div><p>Text</div>"), false},
+		{[]byte("<div>\n</div><!-- comment -->"), []byte("<div></div>"), false},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			actual, err := webutil.MinifyHTML(testCase.input)
+
+			if testCase.expectErr {
+				assert.NotNil(t, err)
+				return
+			}
+
+			assert.Nil(t, err)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
