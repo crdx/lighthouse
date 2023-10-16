@@ -38,6 +38,9 @@ func Merge(c *fiber.Ctx) error {
 		parent.Update("last_seen", child.LastSeen)
 	}
 
+	db.B[m.DeviceStateLog]().Debug().Where("device_id = ?", child.ID).Update("device_id", parent.ID)
+	db.B[m.DeviceStateNotification]().Debug().Where("device_id = ?", child.ID).Update("device_id", parent.ID)
+
 	child.Delete()
 
 	flash.AddSuccess(c, fmt.Sprintf(
