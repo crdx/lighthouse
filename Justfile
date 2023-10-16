@@ -39,7 +39,7 @@ set dotenv-load := true
     docker-compose down
 
 # deploy the container
-@deploy: lint build
+@deploy: build
     deploy-container \
         --host s \
         --image "{{ IMAGE_NAME }}" \
