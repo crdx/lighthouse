@@ -7,12 +7,14 @@
 
 <div class="columns is-mobile">
     <div class="column">
-        <a class="is-pulled-left button"
-            {{ if .PreviousPageURL }}
-                href="{{ .PreviousPageURL }}"
-            {{ else }}
-                disabled
-            {{ end }}>Previous</a>
+         <div class="buttons has-addons is-left">
+            <a class="button" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
+                First
+            </a>
+            <a class="button" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
+                Previous
+            </a>
+        </div>
     </div>
 
     <div class="column has-text-centered">
@@ -20,11 +22,13 @@
     </div>
 
     <div class="column">
-        <a class="is-pulled-right button"
-            {{ if .NextPageURL }}
-                href="{{ .NextPageURL }}"
-            {{ else }}
-                disabled
-            {{ end }}>Next</a>
+        <div class="buttons has-addons is-right">
+            <a class="button" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
+                Next
+            </a>
+            <a class="button" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
+                Last
+            </a>
+        </div>
     </div>
 </div>

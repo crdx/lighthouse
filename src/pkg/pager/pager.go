@@ -14,8 +14,10 @@ const queryStringParameter = "page"
 type State struct {
 	CurrentPage     uint
 	TotalPages      uint
+	FirstPageURL    string
 	NextPageURL     string
 	PreviousPageURL string
+	LastPageURL     string
 }
 
 // GetCurrentPageNumber returns the page number of the current page, and true if a valid page number
@@ -50,11 +52,23 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 		if err != nil {
 			return nil, err
 		}
+
+		qs[queryStringParameter] = fmt.Sprint(pageCount)
+		state.LastPageURL, err = webutil.BuildURL(basePath, qs)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	if pageNumber > 1 {
 		qs[queryStringParameter] = fmt.Sprint(pageNumber - 1)
 		state.PreviousPageURL, err = webutil.BuildURL(basePath, qs)
+		if err != nil {
+			return nil, err
+		}
+
+		qs[queryStringParameter] = fmt.Sprint(1)
+		state.FirstPageURL, err = webutil.BuildURL(basePath, qs)
 		if err != nil {
 			return nil, err
 		}
