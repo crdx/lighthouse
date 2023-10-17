@@ -43,12 +43,18 @@
         }
 
         async function waitUntilHealthy() {
-            while (true) {
+            // Limit how long we'll wait for the server to come back.
+            const maxSeconds = 60
+
+            const delayMilliseconds = 250
+            const iterations = maxSeconds * (1000 / delayMilliseconds)
+
+            for (var i = 0; i < iterations; i++) {
                 try {
                     await fetch('/health')
                     break
                 } catch (e) {
-                    await sleep(200)
+                    await sleep(delayMilliseconds)
                 }
             }
         }
