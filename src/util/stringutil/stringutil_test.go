@@ -29,3 +29,25 @@ func TestPluralise(t *testing.T) {
 		})
 	}
 }
+
+func TestRenderMarkdown(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected string
+	}{
+		{"**Bold**", "<p><strong>Bold</strong></p>\n"},
+		{"**Bold*", "<p>*<em>Bold</em></p>\n"},
+		{"*Italic*", "<p><em>Italic</em></p>\n"},
+		{"[Link](https://example.com)", "<p><a href=\"https://example.com\">Link</a></p>\n"},
+		{"An error occurred", "<p>An error occurred</p>\n"},
+		{"", ""},
+		{"<script>alert('1')</script>", "<!-- raw HTML omitted -->\n"},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
+			actual := stringutil.RenderMarkdown(testCase.input)
+			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}

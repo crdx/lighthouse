@@ -1,35 +1,12 @@
-package helpers
+package timeutil_test
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"crdx.org/lighthouse/util/timeutil"
+	"github.com/go-playground/assert/v2"
 )
-
-func TestEscape(t *testing.T) {
-	testCases := []struct {
-		input    string
-		expected string
-	}{
-		{`<`, `&lt;`},
-		{`>`, `&gt;`},
-		{`&`, `&amp;`},
-		{`"`, `&#34;`},
-		{`'`, `&#39;`},
-		{`<script>alert('hello')</script>`, `&lt;script&gt;alert(&#39;hello&#39;)&lt;/script&gt;`},
-		{`plain text`, `plain text`},
-		{``, ``},
-	}
-
-	for _, testCase := range testCases {
-		testCase := testCase
-		t.Run(testCase.input, func(t *testing.T) {
-			actual := escape(testCase.input)
-			assert.Equal(t, testCase.expected, actual)
-		})
-	}
-}
 
 func TestTimeAgo(t *testing.T) {
 	testCases := []struct {
@@ -51,9 +28,8 @@ func TestTimeAgo(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		testCase := testCase
 		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputVerbose, testCase.inputPrecision), func(t *testing.T) {
-			actual := timeAgo(testCase.inputN, testCase.inputVerbose, testCase.inputPrecision)
+			actual := timeutil.TimeAgo(testCase.inputN, testCase.inputVerbose, testCase.inputPrecision)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}

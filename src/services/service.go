@@ -6,7 +6,7 @@ import (
 	"log/slog"
 
 	"crdx.org/lighthouse/logger"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/util/runtimeutil"
 )
 
 type Args struct {
@@ -81,7 +81,7 @@ func Start(name string, config *Config) {
 			defer func() {
 				if err := recover(); err != nil {
 					log.Error("service panicked", "msg", err)
-					util.PrintStackTrace(3)
+					runtimeutil.PrintStackTrace(3)
 					log.Error("restarting service", "restart_interval", restartInterval.String())
 					time.Sleep(restartInterval)
 					restartInterval = config.NextRestartInterval(restartInterval)

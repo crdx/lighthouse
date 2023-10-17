@@ -7,7 +7,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/repos/deviceR"
-	"crdx.org/lighthouse/tpl"
+	"crdx.org/lighthouse/util/tplutil"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/exp/maps"
 )
@@ -16,7 +16,7 @@ func List(c *fiber.Ctx) error {
 	watchLabel := template.HTML(constants.WatchColumnLabel)
 	typeLabel := template.HTML(constants.TypeColumnLabel)
 
-	columns := map[string]tpl.SortableColumnConfig{
+	columns := map[string]tplutil.SortableColumnConfig{
 		"name":   {Label: "Name", DefaultSortDirection: "asc"},
 		"ip":     {Label: "IP Address", DefaultSortDirection: "asc"},
 		"vendor": {Label: "Vendor", DefaultSortDirection: "asc"},
@@ -39,7 +39,7 @@ func List(c *fiber.Ctx) error {
 
 	return c.Render("devices/list", fiber.Map{
 		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
-		"columns": tpl.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
+		"columns": tplutil.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
 		flash.Key: c.Locals(flash.Key),
 	})
 }

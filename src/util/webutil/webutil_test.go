@@ -72,7 +72,7 @@ func TestMinifyHTML(t *testing.T) {
 	}
 
 	for i, testCase := range testCases {
-		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
 			actual, err := webutil.MinifyHTML(testCase.input)
 
 			if testCase.expectErr {

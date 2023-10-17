@@ -1,4 +1,4 @@
-package util_test
+package runtimeutil_test
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/util/runtimeutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -26,7 +26,7 @@ func TestPrintStackTrace(t *testing.T) {
 			r, w, _ := os.Pipe()
 			os.Stdout = w
 
-			util.PrintStackTrace(testCase.input)
+			runtimeutil.PrintStackTrace(testCase.input)
 
 			w.Close()
 			os.Stdout = originalStdout

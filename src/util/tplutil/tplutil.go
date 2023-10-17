@@ -1,4 +1,4 @@
-package tpl
+package tplutil
 
 type SortableColumnConfig struct {
 	Label                any

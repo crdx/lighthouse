@@ -55,15 +55,15 @@ func (self *Scanner) Init(args *services.Args) error {
 }
 
 func (self *Scanner) Run() error {
-	iface, found := findInterface()
+	iface, found := netutil.FindInterface()
 	if !found {
 		return errors.New("no interface found")
 	}
 
-	ipNet, found := findIPNet(iface)
+	ipNet, found := netutil.FindIPNet(iface)
 	if !found {
 		return errors.New("no network found")
-	} else if ipNetTooLarge(ipNet) {
+	} else if netutil.IPNetTooLarge(ipNet) {
 		return errors.New("network too large")
 	}
 
@@ -140,7 +140,7 @@ func (*Scanner) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNe
 		ComputeChecksums: true,
 	}
 
-	for _, ip := range expandIPNet(ipNet) {
+	for _, ip := range netutil.ExpandIPNet(ipNet) {
 		arpLayer.DstProtAddress = []byte(ip)
 		lo.Must0(gopacket.SerializeLayers(buffer, options, &ethernetLayer, &arpLayer))
 
