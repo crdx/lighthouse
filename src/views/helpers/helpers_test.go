@@ -38,7 +38,8 @@ func TestTimeAgo(t *testing.T) {
 		inputPrecision int
 		expected       string
 	}{
-		{0, false, 0, "just now"},
+		{0, false, 0, "now"},
+		{0, true, 0, "just now"},
 		{60, false, 0, "1m ago"},
 		{60, true, 0, "1 min ago"},
 		{3600, false, 0, "1h ago"},

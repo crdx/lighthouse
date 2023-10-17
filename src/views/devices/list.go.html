@@ -28,17 +28,12 @@
                         <td class="is-hidden-mobile is-family-monospace">{{ .IPAddress }}</td>
                         <td class="is-hidden-touch ">{{ template "p/name/vendor" .Vendor }}</td>
                         <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
-                        <td>
-                            <div class="is-hidden-touch">{{ template "p/time/rel" .LastSeen }}</div>
-                            <div class="is-hidden-desktop">
-                                <div>{{ template "p/time/rel-short" .LastSeen }}</div>
-                            </div>
-                        </td>
-                        <td class="is-hidden-mobile">
+                        <td>{{ template "p/time/rel" .LastSeen }}</td>
+                        <td class="min-column is-hidden-mobile">
                             {{ if .Watch }}
-                                <span class="icon is-small state--checked"><i class="fa-solid fa-check"></i></span>
+                                <span class="icon state--checked"><i class="fa-solid fa-check"></i></span>
                             {{ else }}
-                                <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
+                                <span class="icon"><i class="fa-solid fa-times"></i></span>
                             {{ end }}
                         </td>
                     </tr>

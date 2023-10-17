@@ -91,7 +91,11 @@ func escape(s string) string {
 
 func timeAgo(n int, verbose bool, precision int) string {
 	if n == 0 {
-		return "just now"
+		if verbose {
+			return "just now"
+		} else {
+			return "now"
+		}
 	}
 
 	units := []struct {
