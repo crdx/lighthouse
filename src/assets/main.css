@@ -37,3 +37,7 @@ code {
     width: 0;
     white-space: nowrap;
 }
+
+.is-strikethrough {
+    text-decoration: line-through;
+}

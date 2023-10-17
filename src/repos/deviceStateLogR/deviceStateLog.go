@@ -1,6 +1,7 @@
 package deviceStateLogR
 
 import (
+	"database/sql"
 	"time"
 
 	"crdx.org/db"
@@ -23,6 +24,7 @@ type ListView struct {
 	CreatedAt time.Time
 	DeviceID  string
 	Name      string
+	DeletedAt sql.NullTime
 	Icon      string
 	State     string
 }
@@ -48,6 +50,7 @@ func GetListView(deviceID uint, page uint, perPage uint) []ListView {
 			DSL.device_id,
 			D.name,
 			D.icon,
+			D.deleted_at,
 			DSL.state
 		FROM device_state_logs DSL
 		INNER JOIN devices D on D.id = DSL.device_id

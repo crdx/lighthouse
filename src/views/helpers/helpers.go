@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/util/reflectutil"
 	"crdx.org/lighthouse/util/stringutil"
 	"crdx.org/lighthouse/util/timeutil"
 	"github.com/yuin/goldmark"
@@ -17,25 +18,35 @@ import (
 
 func GetFuncMap() template.FuncMap {
 	return template.FuncMap{
-		"timeAgoLong": func(t time.Time) string {
-			return timeAgo(int(time.Since(t).Seconds()), true, 1)
+		"timeAgoLong": func(v any) string {
+			if t, found := reflectutil.GetTime(v); found {
+				return timeAgo(int(time.Since(t).Seconds()), true, 1)
+			}
+			return ""
 		},
-		"timeAgoShort": func(t time.Time) string {
-			return timeAgo(int(time.Since(t).Seconds()), false, 1)
+		"timeAgoShort": func(v any) string {
+			if t, found := reflectutil.GetTime(v); found {
+				return timeAgo(int(time.Since(t).Seconds()), false, 1)
+			}
+			return ""
 		},
-		"formatDateTimeSystem": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("2006-01-02 15:04:05 MST")
+		"formatDateTimeSystem": func(v any) string {
+			if t, found := reflectutil.GetTime(v); found {
+				return timeutil.ToLocal(t).Format("2006-01-02 15:04:05 MST")
+			}
+			return ""
 		},
-		"formatDateTimeReadable": func(t time.Time) string {
-			return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2 2006")
+		"formatDateTimeReadable": func(v any) string {
+			if t, found := reflectutil.GetTime(v); found {
+				return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2 2006")
+			}
+			return ""
 		},
-		"escape":         escape,
-		"nl2br":          nl2br,
-		"renderMarkdown": renderMarkdown,
 
-		"enableLiveReload": func() bool {
-			return env.EnableLiveReload
-		},
+		"escape":           escape,
+		"nl2br":            nl2br,
+		"renderMarkdown":   renderMarkdown,
+		"enableLiveReload": func() bool { return env.EnableLiveReload },
 	}
 }
 

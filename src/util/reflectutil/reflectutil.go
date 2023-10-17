@@ -1,9 +1,11 @@
 package reflectutil
 
 import (
+	"database/sql"
 	"fmt"
 	"reflect"
 	"strconv"
+	"time"
 )
 
 // StructToMap converts struct s into a map[string]any with keys taken from the value of the
@@ -60,4 +62,18 @@ func ToString(value reflect.Value) string {
 	default:
 		return fmt.Sprintf("%s", value)
 	}
+}
+
+// GetTime returns the time.Time that corresponds to the passed value. The value must be either
+// time.Time or sql.NullTime.
+func GetTime(v any) (time.Time, bool) {
+	switch t := v.(type) {
+	case sql.NullTime:
+		if t.Valid {
+			return t.Time, true
+		}
+	case time.Time:
+		return t, true
+	}
+	return time.Time{}, false
 }

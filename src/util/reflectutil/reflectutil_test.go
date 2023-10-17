@@ -116,8 +116,42 @@ func TestToString(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input.Interface()), func(t *testing.T) {
-			actual := ToString(testCase.input)
+			actual := reflectutil.ToString(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
+}
+
+func TestGetTime(t *testing.T) {
+    currentTime := time.Now()
+
+    nullTime := sql.NullTime{
+        Time:  currentTime,
+        Valid: true,
+    }
+
+    invalidNullTime := sql.NullTime{
+        Valid: false,
+    }
+
+    testCases := []struct {
+        input     interface{}
+        expected  time.Time
+        expectValid bool
+    }{
+        {currentTime, currentTime, true},
+        {nullTime, currentTime, true},
+        {invalidNullTime, time.Time{}, false},
+        {nil, time.Time{}, false},
+        {123, time.Time{}, false},
+        {"invalid", time.Time{}, false},
+    }
+
+    for _, testCase := range testCases {
+        t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
+            actual, valid := reflectutil.GetTime(testCase.input)
+            assert.Equal(t, testCase.expected, actual)
+            assert.Equal(t, testCase.expectValid, valid)
+        })
+    }
 }
