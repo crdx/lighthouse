@@ -44,7 +44,6 @@ func GetFuncMap() template.FuncMap {
 		},
 
 		"escape":           escape,
-		"nl2br":            nl2br,
 		"renderMarkdown":   renderMarkdown,
 		"enableLiveReload": func() bool { return env.EnableLiveReload },
 	}
@@ -77,12 +76,6 @@ func renderMarkdown(s string) template.HTML {
 	}
 
 	return template.HTML(buf.String())
-}
-
-func nl2br(s string) template.HTML {
-	s = template.HTMLEscapeString(s)
-	s = strings.ReplaceAll(s, "\n", "<br>")
-	return template.HTML(s)
 }
 
 func escape(s string) string {
