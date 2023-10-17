@@ -66,6 +66,9 @@ test *args:
     rm "$OUTPUT"
     exit "$CODE"
 
+# check everything
+@check: lint test
+
 # run linter
 @lint:
     # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
