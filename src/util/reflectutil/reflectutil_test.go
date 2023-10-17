@@ -1,10 +1,13 @@
-package reflectutil
+package reflectutil_test
 
 import (
+	"database/sql"
 	"fmt"
 	"reflect"
 	"testing"
+	"time"
 
+	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +30,7 @@ func TestStructToMap(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v,%s", testCase.inputStruct, testCase.inputTag), func(t *testing.T) {
-			actual := StructToMap(testCase.inputStruct, testCase.inputTag)
+			actual := reflectutil.StructToMap(testCase.inputStruct, testCase.inputTag)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -50,7 +53,7 @@ func TestGetValue(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			actual := GetValue(testCase.input)
+			actual := reflectutil.GetValue(testCase.input)
 			assert.Equal(t, testCase.expected.Interface(), actual.Interface())
 			assert.Equal(t, testCase.expected.Kind(), actual.Kind())
 		})
@@ -74,7 +77,7 @@ func TestGetType(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			actual := GetType(testCase.input)
+			actual := reflectutil.GetType(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -97,7 +100,7 @@ func TestGetName(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			actual := GetName(testCase.input)
+			actual := reflectutil.GetName(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
