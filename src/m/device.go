@@ -44,25 +44,27 @@ func (self *Device) Delete() {
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
 func (self *Device) DisplayName() string {
-	var s string
-
 	if self.Name == "" {
-		s = "Untitled"
+		return "Unknown"
 	} else {
-		s = self.Name
+		return self.Name
 	}
+}
 
-	// Also show the hostname (if set, otherwise ID) if this device's name is not unique across the
-	// rest of the devices.
+// Identifier returns the name of this device and if it's not uniquely named then appends the
+// hostname (if it exists) or the ID.
+func (self *Device) Identifier() string {
+	id := self.DisplayName()
+
 	if self.Name == "" || db.B[Device]().Where("name = ?", self.Name).Count() > 1 {
 		if self.Hostname != "" {
-			s += fmt.Sprintf(" (%s)", self.Hostname)
+			id += fmt.Sprintf(" (%s)", self.Hostname)
 		} else {
-			s += fmt.Sprintf(" (%d)", self.ID)
+			id += fmt.Sprintf(" (%d)", self.ID)
 		}
 	}
 
-	return s
+	return id
 }
 
 func (self *Device) Details() string {

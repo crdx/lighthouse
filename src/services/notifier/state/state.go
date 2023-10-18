@@ -22,13 +22,13 @@ type transition struct {
 
 func (self *transition) String() string {
 	if self.Notification.State == deviceR.StateOnline {
-		return fmt.Sprintf("%s is online", self.Device.DisplayName())
+		return fmt.Sprintf("%s is online", self.Device.Identifier())
 	} else if self.Notification.State == deviceR.StateOffline {
-		return fmt.Sprintf("%s is offline", self.Device.DisplayName())
+		return fmt.Sprintf("%s is offline", self.Device.Identifier())
 	} else {
 		return fmt.Sprintf(
 			"%s transitioned to an unknown state (%s)",
-			self.Device.DisplayName(),
+			self.Device.Identifier(),
 			self.Notification.State,
 		)
 	}
