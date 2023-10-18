@@ -37,6 +37,7 @@ func (self *Device) Delete() {
 
 	db.B[DeviceStateLog]().Where("device_id = ?", self.ID).Delete()
 	db.B[DeviceStateNotification]().Where("device_id = ?", self.ID).Delete()
+	db.B[DeviceDiscoveryNotification]().Where("device_id = ?", self.ID).Delete()
 
 	db.For[Device](self.ID).Delete()
 }
