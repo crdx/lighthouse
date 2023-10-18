@@ -55,7 +55,7 @@ func (self *Device) DisplayName() string {
 
 	// Also show the hostname (if set, otherwise ID) if this device's name is not unique across the
 	// rest of the devices.
-	if db.B[Device]().Where("name = ?", self.Name).Count() > 1 {
+	if self.Name == "" || db.B[Device]().Where("name = ?", self.Name).Count() > 1 {
 		if self.Hostname != "" {
 			s += fmt.Sprintf(" (%s)", self.Hostname)
 		} else {
