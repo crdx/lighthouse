@@ -25,6 +25,9 @@ func TestTimeAgo(t *testing.T) {
 		{3660, true, 2, "1 hour 1 min ago"},
 		{90000, false, 2, "1d 1h ago"},
 		{90000, true, 2, "1 day 1 hour ago"},
+		{1234567, true, 2, "2 weeks 6 hours ago"},
+		{12345678, true, 1, "20 weeks ago"},
+		{123456789, true, 2, "3 years 48 weeks ago"},
 	}
 
 	for _, testCase := range testCases {
