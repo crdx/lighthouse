@@ -14,6 +14,10 @@ set dotenv-load := true
 @dev: make-autocap
     watchexec -w src -i src/conf/models.go -r 'just redev'
 
+# start development without live reload
+@devn: make-autocap
+    LIVE_RELOAD= just dev
+
 # start development with debug logging
 @devd:
     LIGHTHOUSE_DEBUG=1 just dev
