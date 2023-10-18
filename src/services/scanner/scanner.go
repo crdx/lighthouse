@@ -284,6 +284,10 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 			GracePeriod: device.GracePeriod,
 		})
 
+		db.Create(&m.DeviceDiscoveryNotification{
+			DeviceID: device.ID,
+		})
+
 		log.Info("new device has joined the network")
 	}
 }

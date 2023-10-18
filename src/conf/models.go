@@ -10,6 +10,7 @@ import (
 var models = []db.Model{
 	&m.Adapter{},
 	&m.Device{},
+	&m.DeviceDiscoveryNotification{},
 	&m.DeviceStateLog{},
 	&m.DeviceStateNotification{},
 	&m.Network{},

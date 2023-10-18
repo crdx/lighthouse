@@ -2,9 +2,11 @@ package m
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/util/timeutil"
 	"gorm.io/gorm"
 )
 
@@ -62,6 +64,24 @@ func (self *Device) DisplayName() string {
 	}
 
 	return s
+}
+
+func (self *Device) Details() string {
+	var s strings.Builder
+
+	discovered := timeutil.ToLocal(self.CreatedAt).Format("15:04:05 on Mon, Jan _2 2006")
+
+	s.WriteString(fmt.Sprintf("%s:\n", self.DisplayName()))
+	s.WriteString(fmt.Sprintf("    Discovered: %s\n", discovered))
+	s.WriteString(fmt.Sprintf("    Hostname: %s\n", self.Hostname))
+
+	for _, adapter := range self.Adapters() {
+		s.WriteString(fmt.Sprintf("    MAC Address: %s\n", adapter.MACAddress))
+		s.WriteString(fmt.Sprintf("    Vendor: %s\n", adapter.Vendor))
+		s.WriteString(fmt.Sprintf("    IP Address: %s\n", adapter.IPAddress))
+	}
+
+	return s.String()
 }
 
 // Adapters returns all Adapters attached to this Device.
