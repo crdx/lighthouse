@@ -11,7 +11,7 @@ import (
 func TestTimeAgo(t *testing.T) {
 	testCases := []struct {
 		inputN         int
-		inputVerbose   bool
+		inputLong      bool
 		inputPrecision int
 		expected       string
 	}{
@@ -28,8 +28,8 @@ func TestTimeAgo(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
-		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputVerbose, testCase.inputPrecision), func(t *testing.T) {
-			actual := timeutil.TimeAgo(testCase.inputN, testCase.inputVerbose, testCase.inputPrecision)
+		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputLong, testCase.inputPrecision), func(t *testing.T) {
+			actual := timeutil.TimeAgo(testCase.inputN, testCase.inputLong, testCase.inputPrecision)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}

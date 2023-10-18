@@ -19,47 +19,58 @@ func ToLocal(t time.Time) time.Time {
 //
 // Precision is the number of units to include. For example, for 65 seconds a precision of 1 would
 // return "1 min" and a precision of 2 would return "1 min 5 secs".
-func TimeAgo(n int, verbose bool, precision int) string {
-	if n == 0 {
-		if verbose {
+func TimeAgo(seconds int, long bool, precision int) string {
+	if seconds == 0 {
+		if long {
 			return "just now"
 		} else {
 			return "now"
 		}
 	}
 
-	units := []struct {
-		name  string
-		value int
-	}{
-		{"year", 60 * 60 * 24 * 7 * 52},
-		{"week", 60 * 60 * 24 * 7},
-		{"day", 60 * 60 * 24},
-		{"hour", 60 * 60},
-		{"min", 60},
-		{"sec", 0},
+	type Unit struct {
+		longName  string
+		shortName string
+		seconds   int
 	}
 
-	var a []string
+	units := []Unit{
+		{"year", "y", 60 * 60 * 24 * 7 * 52},
+		{"week", "w", 60 * 60 * 24 * 7},
+		{"day", "d", 60 * 60 * 24},
+		{"hour", "h", 60 * 60},
+		{"min", "m", 60},
+		{"sec", "s", 0},
+	}
+
+	var parts []string
 
 	for _, unit := range units {
-		if n < unit.value {
+		if seconds < unit.seconds {
 			continue
 		}
 
-		var x int
-		if unit.value > 0 {
-			x = n / unit.value
-			n %= unit.value
+		var partSeconds int
+		if unit.seconds > 0 {
+			partSeconds = seconds / unit.seconds
+			seconds %= unit.seconds
 		} else {
-			x = n
+			partSeconds = seconds
 		}
 
-		if x > 0 {
-			if verbose {
-				a = append(a, fmt.Sprintf("%d %s", x, stringutil.Pluralise(x, unit.name)))
+		if partSeconds > 0 {
+			if long {
+				parts = append(parts, fmt.Sprintf(
+					"%d %s",
+					partSeconds,
+					stringutil.Pluralise(partSeconds, unit.longName),
+				))
 			} else {
-				a = append(a, fmt.Sprintf("%d%s", x, string(unit.name[0])))
+				parts = append(parts, fmt.Sprintf(
+					"%d%s",
+					partSeconds,
+					unit.shortName,
+				))
 			}
 
 			if precision > 0 {
@@ -71,5 +82,5 @@ func TimeAgo(n int, verbose bool, precision int) string {
 		}
 	}
 
-	return strings.Join(a, " ") + " ago"
+	return strings.Join(parts, " ") + " ago"
 }
