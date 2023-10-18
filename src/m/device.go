@@ -16,7 +16,6 @@ type Device struct {
 	CreatedAt   time.Time      `gorm:""`
 	UpdatedAt   time.Time      `gorm:""`
 	DeletedAt   gorm.DeletedAt `gorm:"index"`
-	NetworkID   uint           `gorm:"not null"`
 	Name        string         `gorm:"size:255;not null"`
 	Hostname    string         `gorm:"size:255;not null"`
 	State       string         `gorm:"size:32;not null"`

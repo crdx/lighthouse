@@ -15,7 +15,6 @@ import (
 	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/repos/adapterR"
 	"crdx.org/lighthouse/repos/deviceR"
-	"crdx.org/lighthouse/repos/networkR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util/netutil"
 
@@ -67,11 +66,6 @@ func (self *Scanner) Run() error {
 		return errors.New("network too large")
 	}
 
-	// Convert e.g. 192.168.1.20/24 to 192.168.1.0/24.
-	_, generalIPNet := lo.Must2(net.ParseCIDR(ipNet.String()))
-
-	network, _ := networkR.Upsert(generalIPNet.String())
-
 	networkMessages := make(chan networkMessage)
 
 	go func() {
@@ -88,7 +82,7 @@ func (self *Scanner) Run() error {
 
 		switch message := networkMessage.(type) {
 		case arpMessage:
-			self.handleARPMessage(network, strings.ToUpper(message.MACAddress), message.IPAddress)
+			self.handleARPMessage(strings.ToUpper(message.MACAddress), message.IPAddress)
 		case dhcpMessage:
 			self.handleDHCPMessage(strings.ToUpper(message.MACAddress), message.Hostname)
 		}
@@ -230,7 +224,7 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 	updateHostname(macAddress, hostname)
 }
 
-func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipAddress string) {
+func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 	adapter, adapterFound := adapterR.Upsert(macAddress, ipAddress)
 
 	log := self.log.With(slog.Group(
@@ -253,9 +247,8 @@ func (self *Scanner) handleARPMessage(network *m.Network, macAddress string, ipA
 		}
 	} else {
 		device = db.Create(&m.Device{
-			NetworkID: network.ID,
-			State:     deviceR.StateOnline,
-			Icon:      constants.DefaultDeviceIconClass,
+			State: deviceR.StateOnline,
+			Icon:  constants.DefaultDeviceIconClass,
 		})
 
 		adapter.Update("device_id", device.ID)

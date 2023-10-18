@@ -13,6 +13,5 @@ var models = []db.Model{
 	&m.DeviceDiscoveryNotification{},
 	&m.DeviceStateLog{},
 	&m.DeviceStateNotification{},
-	&m.Network{},
 	&m.VendorLookup{},
 }
