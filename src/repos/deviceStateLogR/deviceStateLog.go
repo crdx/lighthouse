@@ -17,7 +17,11 @@ func All() []*m.DeviceStateLog {
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
 func LatestActivityForDevice(deviceID uint) []*m.DeviceStateLog {
-	return db.B(m.DeviceStateLog{DeviceID: deviceID}).Limit(5).Order("created_at DESC").Find()
+	return db.B[m.DeviceStateLog]().
+		Where("device_id = ?", deviceID).
+		Limit(5).
+		Order("created_at DESC").
+		Find()
 }
 
 type ListView struct {

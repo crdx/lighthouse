@@ -53,7 +53,7 @@ func (self *Device) DisplayName() string {
 
 	// Also show the hostname (if set, otherwise ID) if this device's name is not unique across the
 	// rest of the devices.
-	if db.B(Device{Name: self.Name}).Count() > 1 {
+	if db.B[Device]().Where("name = ?", self.Name).Count() > 1 {
 		if self.Hostname != "" {
 			s += fmt.Sprintf(" (%s)", self.Hostname)
 		} else {
@@ -66,5 +66,5 @@ func (self *Device) DisplayName() string {
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
-	return db.B(Adapter{DeviceID: self.ID}).Order("last_seen DESC").Find()
+	return db.B[Adapter]().Where("device_id = ?", self.ID).Order("last_seen DESC").Find()
 }
