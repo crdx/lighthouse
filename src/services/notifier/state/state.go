@@ -78,7 +78,7 @@ func ProcessNotifications() {
 	body := getBody(newTransitions, transitions)
 
 	// Panic here as this will probably be a recoverable failure e.g. intermittent network failure.
-	lo.Must0(mailutil.SendNotification(subject, body))
+	lo.Must0(mailutil.Send(subject, body))
 }
 
 func getNewTransitions(transitions []*transition) []*transition {

@@ -20,7 +20,7 @@ func TestSendNotification(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputBody), func(t *testing.T) {
-			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, msg []byte) error {
+			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, message []byte) error {
 				expectedBody := fmt.Sprintf(
 					"From: %s\nTo: %s\nSubject: %s\n\n%s",
 					env.NotificationFromHeader,
@@ -29,11 +29,11 @@ func TestSendNotification(t *testing.T) {
 					testCase.inputBody,
 				)
 
-				assert.Equal(t, expectedBody, string(msg))
+				assert.Equal(t, expectedBody, string(message))
 				return nil
 			}
 
-			err := mailutil.SendNotificationFunc(mockSend, testCase.inputSubject, testCase.inputBody)
+			err := mailutil.SendFunc(mockSend, testCase.inputSubject, testCase.inputBody)
 			assert.Nil(t, err)
 		})
 	}

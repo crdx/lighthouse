@@ -46,7 +46,7 @@ func ProcessNotifications() {
 	body := getBody(discoveries)
 
 	// Panic here as this will probably be a recoverable failure e.g. intermittent network failure.
-	lo.Must0(mailutil.SendNotification(subject, body))
+	lo.Must0(mailutil.Send(subject, body))
 }
 
 func getSubject(discoveries []*discovery) string {
