@@ -75,12 +75,16 @@ func (self *Device) Details() string {
 
 	s.WriteString(fmt.Sprintf("%s:\n", self.DisplayName()))
 	s.WriteString(fmt.Sprintf("    Discovered: %s\n", discovered))
-	s.WriteString(fmt.Sprintf("    Hostname: %s\n", self.Hostname))
+	if self.Hostname != "" {
+		s.WriteString(fmt.Sprintf("    Hostname: %s\n", self.Hostname))
+	}
 
 	for _, adapter := range self.Adapters() {
 		s.WriteString(fmt.Sprintf("    MAC Address: %s\n", adapter.MACAddress))
-		s.WriteString(fmt.Sprintf("    Vendor: %s\n", adapter.Vendor))
 		s.WriteString(fmt.Sprintf("    IP Address: %s\n", adapter.IPAddress))
+		if adapter.Vendor != "" {
+			s.WriteString(fmt.Sprintf("    Vendor: %s\n", adapter.Vendor))
+		}
 	}
 
 	return s.String()
