@@ -41,7 +41,7 @@ func MinifyHTML(s []byte) ([]byte, error) {
 	htmlMinifier.KeepDefaultAttrVals = false     // Preserve default attribute values
 	htmlMinifier.KeepDocumentTags = false        // Preserve html, head and body tags
 	htmlMinifier.KeepEndTags = false             // Preserve all end tags
-	htmlMinifier.KeepWhitespace = false          // Preserve whitespace characters but still collapse multiple into one
+	htmlMinifier.KeepWhitespace = true           // Preserve whitespace characters but still collapse multiple into one
 	htmlMinifier.KeepQuotes = false              // Preserve quotes around attribute values
 
 	var minifiedHTML bytes.Buffer

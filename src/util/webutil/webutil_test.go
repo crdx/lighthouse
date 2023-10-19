@@ -67,8 +67,8 @@ func TestMinifyHTML(t *testing.T) {
 		expectErr bool
 	}{
 		{[]byte("<html>  <body>\n   </body>  </html>"), []byte(nil), false},
-		{[]byte("<div>  <p>Text</p>   </div>\n\n"), []byte("<div><p>Text</div>"), false},
-		{[]byte("<div>\n</div><!-- comment -->"), []byte("<div></div>"), false},
+		{[]byte("<div>  <p>Text</p>   </div>\n\n"), []byte("<div> <p>Text </div>"), false},
+		{[]byte("<div>\n</div><!-- comment -->"), []byte("<div>\n</div>"), false},
 	}
 
 	for i, testCase := range testCases {
