@@ -1,16 +1,30 @@
 <div class="section">
     <div class="container is-max-widescreen">
         <div class="box">
-            <nav class="breadcrumb has-arrow-separator is-small">
-                <ul>
-                    <li><a href="/">devices</a></li>
-                    <li><a href="/device/{{ .device.ID }}">{{ template "p/name/device" .device.Name }}</a></li>
-                    <li class="is-active"><a href="/adapter/{{ .adapter.ID }}/edit">{{ template "p/name/adapter" .adapter.Name }}</a></li>
-                </ul>
-            </nav>
-
-            <h1 class="title is-size-4">{{ template "p/name/adapter" .adapter.Name }}</h1>
-            <h2 class="subtitle has-text-grey">{{ .adapter.IPAddress }}</h2>
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title is-size-4">{{ template "p/name/adapter" .adapter.Name }}</h1>
+                    </div>
+                    <div class="level-item is-hidden-mobile">—</div>
+                    <div class="level-item">
+                        <h2 class="subtitle is-size-5 has-text-grey">
+                            {{ .adapter.IPAddress }}
+                        </h2>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <nav class="breadcrumb has-arrow-separator is-small">
+                            <ul>
+                                <li><a href="/">devices</a></li>
+                                <li><a href="/device/{{ .device.ID }}">{{ template "p/name/device" .device.Name }}</a></li>
+                                <li class="is-active"><a href="/adapter/{{ .adapter.ID }}/edit">{{ template "p/name/adapter" .adapter.Name }}</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
 
             <form method="post">
                 <div class="field is-horizontal">
