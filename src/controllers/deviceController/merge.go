@@ -45,7 +45,7 @@ func Merge(c *fiber.Ctx) error {
 	child.Delete()
 
 	flash.AddSuccess(c, fmt.Sprintf(
-		"Device %s merged into %s",
+		"Device %q merged into %q",
 		child.Identifier(),
 		parent.Identifier(),
 	))
