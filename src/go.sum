@@ -1,7 +1,7 @@
-crdx.org/db v1.4.0 h1:IYQNA969Dpsf1300QRg3JpRyJMpHL/c8/5RBUpuiW9I=
-crdx.org/db v1.4.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
 crdx.org/db v1.5.0 h1:CJnG0d+3HQDfqsVLBHXIMthA9fDkgRxshi+6DwkYPiI=
 crdx.org/db v1.5.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
+crdx.org/db v1.5.2 h1:O8+VLk0dEwnXLMtf7r3OZScp7A3HGj26FPE0QeoFyms=
+crdx.org/db v1.5.2/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
 crdx.org/session v1.0.0 h1:RaLgmZoDFuXWBkavuLJxIioddFUIrkXdJKKQeqJG4Rs=
 crdx.org/session v1.0.0/go.mod h1:HTpBKQa3AH5UY8XUMDCArhnWFuHr+T73QDxxR8DDPtM=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
