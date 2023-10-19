@@ -22,9 +22,9 @@ func TestSendNotification(t *testing.T) {
 		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputBody), func(t *testing.T) {
 			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, msg []byte) error {
 				expectedBody := fmt.Sprintf(
-					"From: lighthouse (dev) <%s>\nTo: %s\nSubject: %s\n\n%s",
-					env.NotificationFromAddress,
-					env.NotificationToAddress,
+					"From: %s\nTo: %s\nSubject: %s\n\n%s",
+					env.NotificationFromHeader,
+					env.NotificationToHeader,
 					testCase.inputSubject,
 					testCase.inputBody,
 				)

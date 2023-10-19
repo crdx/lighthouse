@@ -20,6 +20,16 @@ func SendNotification(subject string, body string) error {
 	return SendNotificationFunc(smtp.SendMail, subject, body)
 }
 
+func buildBody(subject string, body string) string {
+	return fmt.Sprintf(
+		"From: %s\nTo: %s\nSubject: %s\n\n%s",
+		env.NotificationFromHeader,
+		env.NotificationToHeader,
+		subject,
+		body,
+	)
+}
+
 // SendNotificationFunc sends an email using the supplied SendFunc.
 func SendNotificationFunc(send SendFunc, subject string, body string) error {
 	return send(
@@ -27,12 +37,6 @@ func SendNotificationFunc(send SendFunc, subject string, body string) error {
 		smtp.PlainAuth("", env.SMTPUser, env.SMTPPass, env.SMTPHost),
 		env.NotificationFromAddress,
 		[]string{env.NotificationToAddress},
-		[]byte(fmt.Sprintf(
-			"From: %s\nTo: %s\nSubject: %s\n\n%s",
-			env.NotificationFromHeader,
-			env.NotificationToAddress,
-			subject,
-			body,
-		)),
+		[]byte(buildBody(subject, body)),
 	)
 }

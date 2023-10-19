@@ -57,6 +57,7 @@ var (
 	NotificationType        = os.Getenv("NOTIFICATION_TYPE")
 	NotificationFromHeader  = os.Getenv("NOTIFICATION_FROM_HEADER")
 	NotificationFromAddress = os.Getenv("NOTIFICATION_FROM_ADDRESS")
+	NotificationToHeader    = os.Getenv("NOTIFICATION_TO_HEADER")
 	NotificationToAddress   = os.Getenv("NOTIFICATION_TO_ADDRESS")
 
 	MACVendorsAPIKey = os.Getenv("MACVENDORS_API_KEY")
@@ -110,6 +111,7 @@ func Check() {
 	if NotificationType == NotificationTypeMail {
 		require("NOTIFICATION_FROM_HEADER")
 		require("NOTIFICATION_FROM_ADDRESS")
+		require("NOTIFICATION_TO_HEADER")
 		require("NOTIFICATION_TO_ADDRESS")
 	}
 }
