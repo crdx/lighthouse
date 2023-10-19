@@ -19,6 +19,7 @@ func ViewEdit(c *fiber.Ctx) error {
 	}
 
 	return c.Render("devices/edit", fiber.Map{
+		"mode":    "edit",
 		"device":  device,
 		flash.Key: c.Locals(flash.Key),
 	})

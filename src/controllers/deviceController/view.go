@@ -16,6 +16,7 @@ func View(c *fiber.Ctx) error {
 	}
 
 	return c.Render("devices/view", fiber.Map{
+		"mode":     "view",
 		"device":   device,
 		"devices":  deviceR.All(),
 		"adapters": device.Adapters(),

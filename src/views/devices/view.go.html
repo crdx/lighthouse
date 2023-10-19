@@ -1,7 +1,7 @@
 <div class="section">
     <div class="container is-max-widescreen">
         <div class="box">
-            {{ template "devices/p/header" .device }}
+            {{ template "devices/p/header" . }}
 
             <div class="columns">
                 <div class="column">
@@ -11,68 +11,15 @@
                 </div>
 
                 <div class="column">
-                    <h2 class="subtitle">Activity{{ if .activity }} (<a href="/activity/?device_id={{ .device.ID }}">all</a>){{ end }}</h2>
+                    <h2 class="subtitle">
+                        Activity
+                        {{ if .activity }} — <a href="/activity/?device_id={{ .device.ID }}">view all</a>{{ end }}
+                    </h2>
+
                     {{ template "devices/p/activity" . }}
                 </div>
             </div>
 
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="field is-grouped">
-                            <div class="control">
-                                <a href="/device/{{ .device.ID }}/edit" class="button">
-                                    <span class="icon is-small">
-                                        <i class="fa-duotone fa-edit"></i>
-                                    </span>
-                                    <span>Edit</span>
-                                </a>
-                            </div>
-
-                            <div class="control">
-                                <form method="post" onsubmit="return confirm('Are you sure?')" action="/device/{{ .device.ID }}/delete">
-                                    <button class="button is-ghost has-text-danger-dark" type="submit">
-                                        <span class="icon is-small">
-                                            <i class="fa-duotone fa-trash"></i>
-                                        </span>
-                                        <span>Delete</span>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="level-right">
-                    <div class="level-item">
-                        <form method="post" action="/device/{{ .device.ID }}/merge">
-                            <div class="field is-grouped">
-                                <div class="control has-icons-left">
-                                    <div class="select">
-                                        <select name="device_id" required>
-                                            <option value="">Merge with...</option>
-                                            {{ range .devices }}
-                                                {{ if ne .ID $.device.ID }}
-                                                    <option value="{{ .ID }}">{{ template "p/name/device" .Name }}</option>
-                                                {{ end }}
-                                            {{ end }}
-                                        </select>
-                                    </div>
-                                    <div class="icon is-left">
-                                        <i class="fa-duotone fa-merge"></i>
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <button class="button" type="submit">Merge</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="box">
             {{ template "devices/p/adapters" .adapters }}
         </div>
     </div>
