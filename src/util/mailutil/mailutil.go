@@ -3,6 +3,7 @@ package mailutil
 import (
 	"fmt"
 	"net/smtp"
+	"os"
 
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/logger"
@@ -12,7 +13,8 @@ type SendFunc func(string, smtp.Auth, string, []string, []byte) error
 
 func SendNotification(subject string, body string) error {
 	if !env.Production {
-		logger.With("subject", subject, "body", body).Info("notification NOT sent due to non-production environment")
+		logger.Get().Info("notification sent to stderr")
+		fmt.Fprintf(os.Stderr, buildBody(subject, body))
 		return nil
 	}
 
