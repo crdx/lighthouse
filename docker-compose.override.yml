@@ -3,6 +3,6 @@ services:
   app:
     build: .
     environment:
-      LOG_TYPE: stdout
+      LOG_TYPE: stderr
     volumes:
       - /dev/null:/app/logs

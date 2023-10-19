@@ -13,7 +13,7 @@ const (
 
 	LogTypeAll    = "all"
 	LogTypeDisk   = "disk"
-	LogTypeStdout = "stdout"
+	LogTypeStderr = "stderr"
 	LogTypeNone   = "none"
 
 	AuthTypeBasic = "basic"
@@ -98,7 +98,7 @@ func Check() {
 		require("SMTP_PASS")
 	}
 
-	requireIn("LOG_TYPE", []string{"all", "disk", "stdout", "none"}, false)
+	requireIn("LOG_TYPE", []string{"all", "disk", "stderr", "none"}, false)
 
 	if LogType == LogTypeAll || LogType == LogTypeDisk {
 		require("LOG_PATH")

@@ -27,7 +27,7 @@ func Get() *slog.Logger {
 		logger = slog.New(slogmulti.Fanout(getDiskHandler(), getStderrHandler()))
 	case env.LogTypeDisk:
 		logger = slog.New(getDiskHandler())
-	case env.LogTypeStdout:
+	case env.LogTypeStderr:
 		logger = slog.New(getStderrHandler())
 	default:
 		panic("unexpected env.LogType")
