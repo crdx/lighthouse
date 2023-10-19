@@ -15,7 +15,7 @@ type Func func(string, smtp.Auth, string, []string, []byte) error
 func Send(subject string, body string) error {
 	if !env.Production {
 		logger.Get().Info("mail sent to stderr")
-		fmt.Fprintf(os.Stderr, buildBody(subject, body))
+		fmt.Fprintln(os.Stderr, buildBody(subject, body))
 		return nil
 	}
 
