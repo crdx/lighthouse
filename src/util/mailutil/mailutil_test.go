@@ -1,4 +1,7 @@
-package mailutil_test
+package mailutil
+
+// This is one of the rare situations where the test code sits within the same package as the code
+// it's testing. This is so that sendFunc can be tested without it needing to be exported.
 
 import (
 	"fmt"
@@ -6,11 +9,10 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/util/mailutil"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSendNotification(t *testing.T) {
+func TestSendFunc(t *testing.T) {
 	testCases := []struct {
 		inputSubject string
 		inputBody    string
@@ -33,7 +35,7 @@ func TestSendNotification(t *testing.T) {
 				return nil
 			}
 
-			err := mailutil.SendFunc(mockSend, testCase.inputSubject, testCase.inputBody)
+			err := sendFunc(mockSend, testCase.inputSubject, testCase.inputBody)
 			assert.Nil(t, err)
 		})
 	}

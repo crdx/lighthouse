@@ -11,8 +11,12 @@ import (
 
 type Func func(string, smtp.Auth, string, []string, []byte) error
 
-// Send sends an email.
+// Send sends an email if SMTP is enabled.
 func Send(subject string, body string) error {
+	if env.MailType != env.MailTypeSMTP {
+		return nil
+	}
+
 	if !env.Production {
 		logger.Get().Info("mail sent to stderr")
 		fmt.Fprintln(os.Stderr, buildBody(subject, body))
@@ -20,11 +24,10 @@ func Send(subject string, body string) error {
 	}
 
 	defer logger.With("subject", subject).Info("mail sent to configured mailserver")
-	return SendFunc(smtp.SendMail, subject, body)
+	return sendFunc(smtp.SendMail, subject, body)
 }
 
-// SendFunc sends an email using the supplied Func.
-func SendFunc(send Func, subject string, body string) error {
+func sendFunc(send Func, subject string, body string) error {
 	return send(
 		env.SMTPHost+":"+env.SMTPPort,
 		smtp.PlainAuth("", env.SMTPUser, env.SMTPPass, env.SMTPHost),
