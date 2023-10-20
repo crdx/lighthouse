@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/pkg/minify"
+	"crdx.org/lighthouse/middleware/minify"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
