@@ -12,9 +12,9 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/m/repo/adapterR"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util/netutil"
 

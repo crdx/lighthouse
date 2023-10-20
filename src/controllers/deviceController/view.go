@@ -3,9 +3,9 @@ package deviceController
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateLogR"
+	"crdx.org/lighthouse/pkg/globals"
 	"github.com/gofiber/fiber/v2"
 )
 

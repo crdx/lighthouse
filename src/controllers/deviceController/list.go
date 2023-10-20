@@ -5,8 +5,8 @@ import (
 	"slices"
 
 	"crdx.org/lighthouse/constants"
-	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/util/tplutil"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/exp/maps"
