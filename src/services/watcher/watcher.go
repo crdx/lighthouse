@@ -33,8 +33,6 @@ func (self *Watcher) Run() error {
 			"device",
 			"id", device.ID,
 			"name", device.Name,
-			"hostname", device.Hostname,
-			"grace_period", device.GracePeriod,
 		))
 
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
