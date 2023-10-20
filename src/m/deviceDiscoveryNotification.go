@@ -13,8 +13,9 @@ type DeviceDiscoveryNotification struct {
 	CreatedAt time.Time      `gorm:""`
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-	DeviceID  uint           `gorm:"not null;index"`
-	Processed bool           `gorm:"not null;default:false"`
+
+	DeviceID  uint `gorm:"not null;index"`
+	Processed bool `gorm:"not null;default:false"`
 }
 
 func (self *DeviceDiscoveryNotification) Update(values ...any) {

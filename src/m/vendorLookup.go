@@ -13,9 +13,10 @@ type VendorLookup struct {
 	CreatedAt time.Time      `gorm:""`
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
-	AdapterID uint           `gorm:"not null"`
-	Processed bool           `gorm:"not null;index"`
-	Succeeded bool           `gorm:"not null"`
+
+	AdapterID uint `gorm:"not null"`
+	Processed bool `gorm:"not null;index"`
+	Succeeded bool `gorm:"not null"`
 }
 
 func (self *VendorLookup) Update(values ...any) {
