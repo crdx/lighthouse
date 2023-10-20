@@ -41,3 +41,7 @@ code {
 .is-strikethrough {
     text-decoration: line-through;
 }
+
+.pre {
+    white-space: pre;
+}
