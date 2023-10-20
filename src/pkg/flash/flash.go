@@ -8,7 +8,6 @@ import (
 )
 
 const (
-	Key          = "i_flash"
 	SuccessClass = "success"
 	FailureClass = "danger"
 )
@@ -22,34 +21,16 @@ func init() {
 	gob.Register(Message{})
 }
 
-func New() fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		if flashMessage, found := session.GetOnce[Message](c, Key); found {
-			c.Locals(Key, flashMessage)
-		}
-
-		return c.Next()
-	}
-}
-
-func AddSuccess(c *fiber.Ctx, message string) {
+func Success(c *fiber.Ctx, message string) {
 	add(c, SuccessClass, message)
 }
 
-func AddFailure(c *fiber.Ctx, message string) {
+func Failure(c *fiber.Ctx, message string) {
 	add(c, FailureClass, message)
 }
 
-func GetSuccess(message string) Message {
-	return get(SuccessClass, message)
-}
-
-func GetFailure(message string) Message {
-	return get(FailureClass, message)
-}
-
 func add(c *fiber.Ctx, class string, message string) {
-	session.Set(c, Key, get(class, message))
+	session.Set(c, "globals.flash", get(class, message))
 }
 
 func get(class string, message string) Message {

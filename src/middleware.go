@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/minify"
 
 	"github.com/gofiber/fiber/v2"
@@ -68,6 +67,4 @@ func initMiddleware(app *fiber.App) {
 	if !env.Production {
 		app.Use(logger.New())
 	}
-
-	app.Use(flash.New())
 }

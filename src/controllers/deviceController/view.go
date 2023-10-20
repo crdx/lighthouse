@@ -3,7 +3,7 @@ package deviceController
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/repos/deviceStateLogR"
 	"github.com/gofiber/fiber/v2"
@@ -21,6 +21,6 @@ func View(c *fiber.Ctx) error {
 		"devices":  deviceR.All(),
 		"adapters": device.Adapters(),
 		"activity": deviceStateLogR.LatestActivityForDevice(device.ID),
-		flash.Key:  c.Locals(flash.Key),
+		"globals":  globals.Get(c),
 	})
 }

@@ -6,6 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
@@ -26,7 +27,7 @@ func ViewEdit(c *fiber.Ctx) error {
 	return c.Render("adapters/edit", fiber.Map{
 		"adapter": adapter,
 		"device":  device,
-		flash.Key: c.Locals(flash.Key),
+		"globals": globals.Get(c),
 	})
 }
 
@@ -49,16 +50,18 @@ func Edit(c *fiber.Ctx) error {
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err {
+		flash.Failure(c, "Unable to save adapter")
+
 		return c.Render("adapters/edit", fiber.Map{
 			"adapter": adapter,
 			"err":     err,
 			"fields":  fields,
-			flash.Key: flash.GetFailure("Unable to save adapter"),
+			"globals": globals.Get(c),
 		})
 	}
 
 	adapter.Update(reflectutil.StructToMap(form, "form"))
 
-	flash.AddSuccess(c, "Adapter saved")
+	flash.Success(c, "Adapter saved")
 	return c.Redirect(fmt.Sprintf("/device/%d", adapter.DeviceID))
 }

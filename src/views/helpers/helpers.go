@@ -39,5 +39,6 @@ func GetFuncMap() template.FuncMap {
 
 		"renderMarkdown":   func(s string) template.HTML { return template.HTML(stringutil.RenderMarkdown(s)) },
 		"enableLiveReload": func() bool { return env.EnableLiveReload },
+		"isProduction":     func() bool { return env.Production },
 	}
 }

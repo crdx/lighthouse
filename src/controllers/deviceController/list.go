@@ -5,7 +5,7 @@ import (
 	"slices"
 
 	"crdx.org/lighthouse/constants"
-	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/repos/deviceR"
 	"crdx.org/lighthouse/util/tplutil"
 	"github.com/gofiber/fiber/v2"
@@ -40,6 +40,6 @@ func List(c *fiber.Ctx) error {
 	return c.Render("devices/list", fiber.Map{
 		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
 		"columns": tplutil.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
-		flash.Key: c.Locals(flash.Key),
+		"globals": globals.Get(c),
 	})
 }

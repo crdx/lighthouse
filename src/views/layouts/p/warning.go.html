@@ -1,0 +1,22 @@
+{{/*
+    Render a warning flash message to the developer (if not in production) if they've forgotten to assign the globals
+    template variable.
+
+    Context:
+        .    globals.Values
+*/}}
+
+{{ if and (not .) (not isProduction) }}
+    <div class="container is-max-widescreen">
+        <div class="notification is-light is-danger">
+            <div class="content">
+                <p>
+                    <span class="icon"><i class="fa-duotone fa-warning"></i></span>
+                    The global template variable is not set
+                    <span class="icon"><i class="fa-duotone fa-warning"></i></span>
+                </p>
+                <p>Ensure <code>"globals": globals.Get(c)</code> is passed to <code>c.Render</code> in the controller.</p>
+            </div>
+        </div>
+    </div>
+{{ end }}

@@ -16,6 +16,6 @@ func Delete(c *fiber.Ctx) error {
 	}
 
 	adapter.Delete()
-	flash.AddSuccess(c, "Adapter deleted")
+	flash.Success(c, "Adapter deleted")
 	return c.Redirect(fmt.Sprintf("/device/%d", adapter.DeviceID))
 }

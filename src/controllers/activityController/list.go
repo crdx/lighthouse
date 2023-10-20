@@ -7,7 +7,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/pkg/flash"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/pager"
 	"crdx.org/lighthouse/repos/deviceStateLogR"
 	"github.com/gofiber/fiber/v2"
@@ -34,7 +34,7 @@ func List(c *fiber.Ctx) error {
 	templateParams := fiber.Map{
 		"entries":         entries,
 		"typeColumnLabel": template.HTML(constants.TypeColumnLabel),
-		flash.Key:         c.Locals(flash.Key),
+		"globals":         globals.Get(c),
 	}
 
 	queryParams := map[string]string{}

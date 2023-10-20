@@ -19,7 +19,8 @@
 </head>
 <body>
     {{ template "layouts/p/nav" }}
-    {{ template "layouts/p/flash" .i_flash }}
+    {{ template "layouts/p/warning" .globals }}
+    {{ template "layouts/p/flash" .globals.Flash }}
 
     {{ embed }}
 
