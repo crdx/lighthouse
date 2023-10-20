@@ -7,8 +7,6 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceDiscoveryNotificationR"
-	"crdx.org/lighthouse/util/mailutil"
-	"github.com/samber/lo"
 )
 
 type discovery struct {
@@ -16,10 +14,10 @@ type discovery struct {
 	Device       *m.Device
 }
 
-func ProcessNotifications() {
+func Notifications() *m.Notification {
 	notifications := deviceDiscoveryNotificationR.Unprocessed()
 	if len(notifications) == 0 {
-		return
+		return nil
 	}
 
 	var discoveries []*discovery
@@ -45,8 +43,10 @@ func ProcessNotifications() {
 	subject := getSubject(discoveries)
 	body := getBody(discoveries)
 
-	// Panic here as this will probably be a recoverable failure e.g. intermittent network failure.
-	lo.Must0(mailutil.Send(subject, body))
+	return &m.Notification{
+		Subject: subject,
+		Body:    body,
+	}
 }
 
 func getSubject(discoveries []*discovery) string {

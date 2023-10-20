@@ -59,4 +59,9 @@ func Run() {
 	createDeviceStateLog(1, device1.ID, deviceR.StateOnline, time.Now().Add(-3*time.Minute))
 	createDeviceStateLog(2, device1.ID, deviceR.StateOffline, time.Now().Add(-2*time.Minute))
 	createDeviceStateLog(3, device2.ID, deviceR.StateOffline, time.Now().Add(-1*time.Minute))
+
+	db.Save(&m.Notification{
+		Subject: "a thing has happened",
+		Body:    "here are more details about the thing that happened",
+	})
 }

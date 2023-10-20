@@ -8,7 +8,6 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateNotificationR"
-	"crdx.org/lighthouse/util/mailutil"
 	"crdx.org/lighthouse/util/timeutil"
 	"github.com/samber/lo"
 )
@@ -38,10 +37,10 @@ func (self *transition) TimestampedString() string {
 	return fmt.Sprintf("%s — %s", timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"), self.String())
 }
 
-func ProcessNotifications() {
+func Notifications() *m.Notification {
 	notifications := deviceStateNotificationR.Unprocessed()
 	if len(notifications) == 0 {
-		return
+		return nil
 	}
 
 	var transitions []*transition
@@ -65,20 +64,22 @@ func ProcessNotifications() {
 	}()
 
 	if len(transitions) == 0 {
-		return
+		return nil
 	}
 
 	newTransitions := getNewTransitions(transitions)
 
 	if len(newTransitions) == 0 {
-		return
+		return nil
 	}
 
 	subject := getSubject(newTransitions)
 	body := getBody(newTransitions, transitions)
 
-	// Panic here as this will probably be a recoverable failure e.g. intermittent network failure.
-	lo.Must0(mailutil.Send(subject, body))
+	return &m.Notification{
+		Subject: subject,
+		Body:    body,
+	}
 }
 
 func getNewTransitions(transitions []*transition) []*transition {

@@ -35,9 +35,13 @@ func GetCurrentPageNumber(c *fiber.Ctx) (uint, bool) {
 // GetState returns an instance of *State with paging information the template needs to render the
 // paging navigation (p/pager/nav.go.html), or an error if basePath could not be parsed.
 //
-// This method will not modify qs.
+// This method will not modify qs. Pass nil for qs if no additional parameters are needed.
 func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]string) (*State, error) {
-	qs = maps.Clone(qs)
+	if qs == nil {
+		qs = map[string]string{}
+	} else {
+		qs = maps.Clone(qs)
+	}
 
 	state := &State{
 		CurrentPage: pageNumber,

@@ -4,9 +4,13 @@ package notifier
 import (
 	"log/slog"
 
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/state"
+	"crdx.org/lighthouse/util/mailutil"
+	"github.com/samber/lo"
 )
 
 type Notifier struct {
@@ -23,8 +27,17 @@ func (self *Notifier) Init(args *services.Args) error {
 }
 
 func (*Notifier) Run() error {
-	state.ProcessNotifications()
-	discovery.ProcessNotifications()
+	add(state.Notifications())
+	add(discovery.Notifications())
 
 	return nil
+}
+
+func add(notification *m.Notification) {
+	if notification == nil {
+		return
+	}
+
+	db.Save(&notification)
+	lo.Must0(mailutil.Send(notification.Subject, notification.Body))
 }

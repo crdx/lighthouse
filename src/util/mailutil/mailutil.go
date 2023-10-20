@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/smtp"
 	"os"
+	"strings"
 
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/logger"

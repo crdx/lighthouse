@@ -10,3 +10,4 @@ const (
 )
 
 const ActivityRowsPerPage = 100
+const NotificationRowsPerPage = 100
