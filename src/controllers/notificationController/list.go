@@ -20,7 +20,7 @@ func List(c *fiber.Ctx) error {
 	rowCount := notificationR.GetListViewRowCount()
 	pageCount := pager.GetPageCount(rowCount, constants.NotificationRowsPerPage)
 
-	if pageCount > 0 && pageNumber > pageCount {
+	if pageNumber > pageCount {
 		return c.SendStatus(404)
 	}
 

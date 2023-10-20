@@ -81,8 +81,11 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 }
 
 // GetPageCount returns the number of pages needed to fit n items if there are perPage items per
-// page.
+// page. If there are no items then that's still 1 page needed to show nothing.
 func GetPageCount(n uint, perPage uint) uint {
+	if n == 0 {
+		return 1
+	}
 	return uint(math.Ceil(float64(n) / float64(perPage)))
 }
 
