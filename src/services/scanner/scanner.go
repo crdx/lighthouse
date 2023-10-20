@@ -13,8 +13,8 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/cache"
-	"crdx.org/lighthouse/repos/adapterR"
-	"crdx.org/lighthouse/repos/deviceR"
+	"crdx.org/lighthouse/m/repo/adapterR"
+	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util/netutil"
 

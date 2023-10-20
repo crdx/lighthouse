@@ -9,7 +9,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/pager"
-	"crdx.org/lighthouse/repos/deviceStateLogR"
+	"crdx.org/lighthouse/m/repo/deviceStateLogR"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )

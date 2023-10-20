@@ -6,7 +6,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/repos/deviceDiscoveryNotificationR"
+	"crdx.org/lighthouse/m/repo/deviceDiscoveryNotificationR"
 	"crdx.org/lighthouse/util/mailutil"
 	"github.com/samber/lo"
 )

@@ -6,7 +6,7 @@ import (
 
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/globals"
-	"crdx.org/lighthouse/repos/deviceR"
+	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/util/tplutil"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/exp/maps"

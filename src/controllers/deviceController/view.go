@@ -4,8 +4,8 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/globals"
-	"crdx.org/lighthouse/repos/deviceR"
-	"crdx.org/lighthouse/repos/deviceStateLogR"
+	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/m/repo/deviceStateLogR"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -6,7 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/repos/deviceR"
+	"crdx.org/lighthouse/m/repo/deviceR"
 )
 
 func createDevice(id uint, name, hostname string, lastSeen time.Time) *m.Device {

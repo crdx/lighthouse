@@ -6,8 +6,8 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/repos/deviceR"
-	"crdx.org/lighthouse/repos/deviceStateNotificationR"
+	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/m/repo/deviceStateNotificationR"
 	"crdx.org/lighthouse/util/mailutil"
 	"crdx.org/lighthouse/util/timeutil"
 	"github.com/samber/lo"

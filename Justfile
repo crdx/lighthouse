@@ -114,9 +114,9 @@ test *args:
 @new-model name:
     touch src/m/{{ name }}.go
     echo 'package m' > src/m/{{ name }}.go
-    mkdir src/repos/{{ name }}R
-    touch src/repos/{{ name }}R/{{ name }}.go
-    echo 'package {{ name }}R' > src/repos/{{ name }}R/{{ name }}.go
+    mkdir src/m/repo/{{ name }}R
+    touch src/m/repo/{{ name }}R/{{ name }}.go
+    echo 'package {{ name }}R' > src/m/repo/{{ name }}R/{{ name }}.go
 
 # scaffold a new controller (name is lowercase e.g. device)
 @new-controller name:

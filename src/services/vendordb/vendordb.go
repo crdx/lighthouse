@@ -10,7 +10,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/repos/vendorLookupR"
+	"crdx.org/lighthouse/m/repo/vendorLookupR"
 	"crdx.org/lighthouse/services"
 	"github.com/imroc/req/v3"
 )
