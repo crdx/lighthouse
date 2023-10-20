@@ -5,6 +5,7 @@ linters:
     - deadcode
     - depguard
     - exhaustivestruct
+    - exhaustive
     - exhaustruct
     - forbidigo
     - forcetypeassert

@@ -44,13 +44,12 @@ func Struct[T any](s T) (map[string]Field, bool) {
 		errorMessages = unProperCaseMessages(errorMessages)
 
 		fields := map[string]Field{}
-		structName := reflectutil.GetName(s)
+		structName := reflectutil.GetType(s).Name()
+		structValue := reflectutil.GetValue(s)
 
-		value := reflectutil.GetValue(s)
-
-		for i := 0; i < value.NumField(); i++ {
-			submittedValue := reflectutil.ToString(value.Field(i))
-			fieldName := value.Type().Field(i).Name
+		for i := 0; i < structValue.NumField(); i++ {
+			submittedValue := reflectutil.ToString(structValue.Field(i).Interface())
+			fieldName := structValue.Type().Field(i).Name
 
 			fields[fieldName] = Field{
 				Error: errorMessages[structName+"."+fieldName],

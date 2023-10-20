@@ -8,16 +8,15 @@ import (
 
 // Struct transforms a struct's contents according to the rules set in the "transform" tag.
 func Struct[T any](s T) {
-	value := reflectutil.GetValue(s)
-	type_ := reflectutil.GetType(s)
+	structValue := reflectutil.GetValue(s)
 
-	for i := 0; i < value.NumField(); i++ {
-		field := value.Field(i)
+	for i := 0; i < structValue.NumField(); i++ {
+		fieldValue := structValue.Field(i)
 
-		if str, ok := field.Interface().(string); ok {
-			tag := type_.Field(i).Tag.Get("transform")
-			if tag == "trim" {
-				field.SetString(strings.TrimSpace(str))
+		if str, ok := fieldValue.Interface().(string); ok {
+			tagValue := structValue.Type().Field(i).Tag.Get("transform")
+			if tagValue == "trim" {
+				fieldValue.SetString(strings.TrimSpace(str))
 			}
 		}
 	}

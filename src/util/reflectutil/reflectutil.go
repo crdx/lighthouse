@@ -6,21 +6,76 @@ import (
 	"reflect"
 	"strconv"
 	"time"
+
+	"github.com/samber/lo"
 )
 
-// StructToMap converts struct s into a map[string]any with keys taken from the value of the
-// provided tag.
-func StructToMap(s any, tag string) map[string]any {
-	value := GetValue(s)
+// StructToMap converts struct T into a map[string]any using values from tag tagName as the keys.
+func StructToMap[T any](s T, tagName string) map[string]any {
+	structValue := GetValue(s)
 	fields := map[string]any{}
 
-	for i := 0; i < value.NumField(); i++ {
-		field := value.Field(i)
-		tag := value.Type().Field(i).Tag.Get(tag)
-		fields[tag] = field.Interface()
+	for i := 0; i < structValue.NumField(); i++ {
+		tagValue := structValue.Type().Field(i).Tag.Get(tagName)
+
+		fields[tagValue] = structValue.Field(i).Interface()
 	}
 
 	return fields
+}
+
+// MapToStruct converts a map[string]string into a struct T using values from tag tagName as the
+// keys.
+func MapToStruct[T any](m map[string]string, tagName string) T {
+	var s T
+
+	for name, value := range m {
+		fieldValue, ok := GetStructFieldValue(&s, name, tagName)
+		if !ok {
+			continue
+		}
+
+		switch fieldValue.Kind() {
+		case reflect.Int:
+			fieldValue.SetInt(lo.Must(strconv.ParseInt(value, 10, 64)))
+		case reflect.Uint:
+			fieldValue.SetUint(lo.Must(strconv.ParseUint(value, 10, 64)))
+		case reflect.Float64:
+			fieldValue.SetFloat(lo.Must(strconv.ParseFloat(value, 64)))
+		case reflect.Bool:
+			fieldValue.SetBool(value == "1")
+		default:
+			fieldValue.SetString(value)
+		}
+	}
+
+	return s
+}
+
+// GetStructFieldValue returns the reflect.Value corresponding to the field of struct T whose field
+// has a tag tagName with value tagValue.
+//
+// For example, given this struct and var declaration:
+//
+// 	type S struct {
+// 		Foo string `slug:"foo"
+// 		Bar string `slug:"bar"
+// 	}
+// 	var s S
+//
+// GetStructFieldValue(&s, "foo", "slug") will return the reflect.Value corresponding to s.Foo.
+func GetStructFieldValue[T any](s T, tagValue string, tagName string) (reflect.Value, bool) {
+	structValue := GetValue(s)
+
+	for i := 0; i < structValue.NumField(); i++ {
+		actualValue := structValue.Type().Field(i).Tag.Get(tagName)
+
+		if actualValue == tagValue {
+			return structValue.Field(i), true
+		}
+	}
+
+	return reflect.Value{}, false
 }
 
 // GetValue gets the value of s, following pointers.
@@ -41,22 +96,21 @@ func GetType(s any) reflect.Type {
 	return t
 }
 
-// GetName returns the name of s.
-//
-// For example, for a struct named Foo, it returns "Foo".
-func GetName(s any) string {
-	return GetType(s).Name()
-}
-
-// ToString returns a reflect.Value converted into a string.
-func ToString(value reflect.Value) string {
-	switch value := value.Interface().(type) {
+// ToString returns value converted into a string.
+func ToString(value any) string {
+	switch value := value.(type) {
 	case int:
 		return strconv.FormatInt(int64(value), 10)
 	case uint:
 		return strconv.FormatUint(uint64(value), 10)
 	case float64:
 		return strconv.FormatFloat(value, 'f', 3, 64)
+	case bool:
+		if value {
+			return "1"
+		} else {
+			return "0"
+		}
 	case string:
 		return value
 	default:

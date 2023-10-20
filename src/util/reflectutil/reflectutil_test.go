@@ -20,18 +20,112 @@ func TestStructToMap(t *testing.T) {
 
 	testCases := []struct {
 		inputStruct any
-		inputTag    string
 		expected    map[string]any
 	}{
-		{TestStruct{"one", 1, true}, "json", map[string]any{"a": "one", "b": 1, "c": true}},
-		{TestStruct{"two", 2, false}, "json", map[string]any{"a": "two", "b": 2, "c": false}},
-		{TestStruct{"", 0, false}, "json", map[string]any{"a": "", "b": 0, "c": false}},
+		{TestStruct{"one", 1, true}, map[string]any{"a": "one", "b": 1, "c": true}},
+		{TestStruct{"two", 2, false}, map[string]any{"a": "two", "b": 2, "c": false}},
+		{TestStruct{"", 0, false}, map[string]any{"a": "", "b": 0, "c": false}},
 	}
 
 	for _, testCase := range testCases {
-		t.Run(fmt.Sprintf("%v,%s", testCase.inputStruct, testCase.inputTag), func(t *testing.T) {
-			actual := reflectutil.StructToMap(testCase.inputStruct, testCase.inputTag)
+		t.Run(fmt.Sprintf("%v", testCase.inputStruct), func(t *testing.T) {
+			actual := reflectutil.StructToMap(testCase.inputStruct, "json")
 			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}
+
+func TestMapToStruct(t *testing.T) {
+	type Person struct {
+		Name     string `json:"name"`
+		Age      int    `json:"age"`
+		Employed bool   `json:"employed"`
+	}
+
+	testCases := []struct {
+		inputMap map[string]string
+		expected Person
+	}{
+		{
+			map[string]string{"name": "Alice", "age": "30", "employed": "1"},
+			Person{Name: "Alice", Age: 30, Employed: true},
+		},
+		{
+			map[string]string{"name": "Bob", "age": "40", "employed": "0"},
+			Person{Name: "Bob", Age: 40, Employed: false},
+		},
+		{
+			map[string]string{"name": "Charlie", "age": "50"},
+			Person{Name: "Charlie", Age: 50, Employed: false},
+		},
+		{
+			map[string]string{},
+			Person{},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v", testCase.inputMap), func(t *testing.T) {
+			actual := reflectutil.MapToStruct[Person](testCase.inputMap, "json")
+			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}
+
+func TestGetStructFieldValue(t *testing.T) {
+	type S struct {
+		FieldA string `tagA:"FieldA"`
+		FieldB int    `tagA:"FieldB"`
+		FieldC bool   `tagB:"FieldC"`
+	}
+
+	testCases := []struct {
+		inputStruct   S
+		inputTagValue string
+		inputTagName  string
+		expected      any
+		found         bool
+	}{
+		{
+			S{"valueA", 42, true},
+			"FieldA",
+			"tagA",
+			"valueA",
+			true,
+		},
+		{
+			S{"valueA", 42, true},
+			"FieldB",
+			"tagA",
+			42,
+			true,
+		},
+		{
+			S{"valueA", 42, true},
+			"FieldC",
+			"tagB",
+			true,
+			true,
+		},
+		{
+			S{"valueA", 42, true},
+			"InvalidField",
+			"tagA",
+			nil,
+			false,
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%v,%s,%s", testCase.inputStruct, testCase.inputTagValue, testCase.inputTagName), func(t *testing.T) {
+			value, found := reflectutil.GetStructFieldValue(testCase.inputStruct, testCase.inputTagValue, testCase.inputTagName)
+			if found {
+				assert.True(t, found)
+				assert.Equal(t, testCase.expected, value.Interface())
+			} else {
+				assert.False(t, found)
+				assert.False(t, value.IsValid())
+			}
 		})
 	}
 }
@@ -83,29 +177,6 @@ func TestGetType(t *testing.T) {
 	}
 }
 
-func TestGetName(t *testing.T) {
-	type SimpleStruct struct {
-		A int
-	}
-
-	testCases := []struct {
-		input    any
-		expected string
-	}{
-		{123, "int"},
-		{"foo", "string"},
-		{SimpleStruct{A: 1}, "SimpleStruct"},
-		{&SimpleStruct{A: 2}, "SimpleStruct"},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(fmt.Sprintf("%v", testCase.input), func(t *testing.T) {
-			actual := reflectutil.GetName(testCase.input)
-			assert.Equal(t, testCase.expected, actual)
-		})
-	}
-}
-
 func TestToString(t *testing.T) {
 	testCases := []struct {
 		input    reflect.Value
@@ -115,11 +186,13 @@ func TestToString(t *testing.T) {
 		{reflect.ValueOf(uint(123)), "123"},
 		{reflect.ValueOf(123.456), "123.456"},
 		{reflect.ValueOf("foo"), "foo"},
+		{reflect.ValueOf(true), "1"},
+		{reflect.ValueOf(false), "0"},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%v", testCase.input.Interface()), func(t *testing.T) {
-			actual := reflectutil.ToString(testCase.input)
+			actual := reflectutil.ToString(testCase.input.Interface())
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
@@ -138,7 +211,7 @@ func TestGetTime(t *testing.T) {
 	}
 
 	testCases := []struct {
-		input       interface{}
+		input       any
 		expected    time.Time
 		expectValid bool
 	}{
