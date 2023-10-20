@@ -19,7 +19,7 @@ func Send(subject string, body string) error {
 
 	if !env.Production {
 		logger.Get().Info("mail sent to stderr")
-		fmt.Fprintln(os.Stderr, buildBody(subject, body))
+		fmt.Fprintln(os.Stderr, strings.TrimSpace(buildBody(subject, body)))
 		return nil
 	}
 
