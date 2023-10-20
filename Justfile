@@ -12,7 +12,12 @@ set dotenv-load := true
 
 # start development
 @dev: make-autocap
-    watchexec -w src -i src/conf/models.go -r 'just redev'
+    watchexec \
+        --no-vcs-ignore \
+        -w .env \
+        -w src \
+        -i src/conf/models.go \
+        -r 'just redev'
 
 # start development without live reload
 @devn: make-autocap
