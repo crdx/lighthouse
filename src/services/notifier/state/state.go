@@ -114,7 +114,7 @@ func getSubject(newTransitions []*transition) string {
 	}
 
 	if len(newTransitions) == 1 {
-		return newTransitions[0].TimestampedString()
+		return newTransitions[0].String()
 	}
 
 	isOnline := func(t *transition) bool { return t.Notification.State == deviceR.StateOnline }
@@ -139,13 +139,11 @@ func getSubject(newTransitions []*transition) string {
 func getBody(newTransitions []*transition, allTransitions []*transition) string {
 	var s strings.Builder
 
-	if len(newTransitions) > 1 {
-		for _, transition := range newTransitions {
-			s.WriteString(transition.TimestampedString() + "\n")
-		}
+	for _, transition := range newTransitions {
+		s.WriteString(transition.TimestampedString() + "\n")
 	}
 
-	if len(allTransitions) > 0 && len(allTransitions) > len(newTransitions) {
+	if len(allTransitions) > len(newTransitions) {
 		if len(newTransitions) > 0 {
 			s.WriteString("\nAll activity:\n\n")
 		}
