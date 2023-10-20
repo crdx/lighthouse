@@ -25,5 +25,3 @@ func (self *VendorLookup) Update(values ...any) {
 func (self *VendorLookup) Delete() {
 	db.For[VendorLookup](self.ID).Delete()
 }
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————

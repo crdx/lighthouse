@@ -26,5 +26,3 @@ func (self *DeviceStateNotification) Update(values ...any) {
 func (self *DeviceStateNotification) Delete() {
 	db.For[DeviceStateNotification](self.ID).Delete()
 }
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————

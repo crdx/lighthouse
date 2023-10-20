@@ -42,8 +42,6 @@ func (self *Device) Delete() {
 	db.For[Device](self.ID).Delete()
 }
 
-// —————————————————————————————————————————————————————————————————————————————————————————————————
-
 func (self *Device) DisplayName() string {
 	if self.Name == "" {
 		return "Unknown"

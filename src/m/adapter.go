@@ -31,8 +31,6 @@ func (self *Adapter) Delete() {
 	db.For[Adapter](self.ID).Delete()
 }
 
-// —————————————————————————————————————————————————————————————————————————————————————————————————
-
 func (self *Adapter) Fresh() *Adapter {
 	i, _ := db.First[Adapter](self.ID)
 	return i

@@ -25,5 +25,3 @@ func (self *DeviceStateLog) Update(values ...any) {
 func (self *DeviceStateLog) Delete() {
 	db.For[DeviceStateLog](self.ID).Delete()
 }
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————
