@@ -25,14 +25,14 @@ func TestGetState(t *testing.T) {
 			totalPages:    5,
 			path:          "/example",
 			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 1, TotalPages: 5, NextPageURL: "/example?key=value&page=2", LastPageURL: "/example?key=value&page=5"},
+			expectedState: pager.State{CurrentPage: 1, TotalPages: 5, NextPageURL: "/example?key=value&p=2", LastPageURL: "/example?key=value&p=5"},
 		},
 		{
 			currentPage:   3,
 			totalPages:    3,
 			path:          "/example",
 			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 3, TotalPages: 3, PreviousPageURL: "/example?key=value&page=2", FirstPageURL: "/example?key=value&page=1"},
+			expectedState: pager.State{CurrentPage: 3, TotalPages: 3, PreviousPageURL: "/example?key=value&p=2", FirstPageURL: "/example?key=value&p=1"},
 		},
 		{
 			currentPage: 3,

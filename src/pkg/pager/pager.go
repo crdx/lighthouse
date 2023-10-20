@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const queryStringParameter = "page"
+const queryStringParameter = "p"
 
 type State struct {
 	CurrentPage     uint
