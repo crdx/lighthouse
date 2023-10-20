@@ -23,16 +23,16 @@ func List(c *fiber.Ctx) error {
 
 	deviceID := uint(c.QueryInt("device_id", 0))
 
-	entries := deviceStateLogR.GetListView(deviceID, pageNumber, constants.ActivityEntriesPerPage)
-	totalEntries := deviceStateLogR.GetListViewTotal(deviceID)
-	pageCount := pager.GetPageCount(totalEntries, constants.ActivityEntriesPerPage)
+	rows := deviceStateLogR.GetListView(deviceID, pageNumber, constants.ActivityRowsPerPage)
+	rowCount := deviceStateLogR.GetListViewRowCount(deviceID)
+	pageCount := pager.GetPageCount(rowCount, constants.ActivityRowsPerPage)
 
 	if pageCount > 0 && pageNumber > pageCount {
 		return c.SendStatus(404)
 	}
 
 	templateParams := fiber.Map{
-		"entries":         entries,
+		"rows":            rows,
 		"typeColumnLabel": template.HTML(constants.TypeColumnLabel),
 		"globals":         globals.Get(c),
 	}

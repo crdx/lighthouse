@@ -7,7 +7,7 @@
                 <h1 class="title is-size-4">Activity</h1>
             {{ end }}
 
-            {{ if not .entries }}
+            {{ if not .rows }}
                 {{ template "activity/p/no-activity" .device }}
             {{ else }}
                 {{ template "p/pager/nav" .pagingState }}
@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{ range .entries }}
+                        {{ range .rows }}
                             <tr>
                                 <td class="min-column has-text-centered">{{ template "devices/p/icon" . }}</td>
                                 <td>
@@ -49,7 +49,7 @@
                     </tbody>
                 </table>
 
-                {{ if gt (len .entries) 20 }}
+                {{ if gt (len .rows) 20 }}
                     {{ template "p/pager/nav" .pagingState }}
                 {{ end }}
             {{ end }}

@@ -33,7 +33,7 @@ type ListView struct {
 	State     string
 }
 
-func GetListViewTotal(deviceID uint) uint {
+func GetListViewRowCount(deviceID uint) uint {
 	q := dbutil.NewQueryBuilder(`
 		SELECT count(*)
 		FROM device_state_logs DSL

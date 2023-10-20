@@ -9,4 +9,4 @@ const (
 	TypeColumnLabel  = `<span class="icon"><i class="fa-duotone fa-exchange-alt fa-sm"></i></span>`
 )
 
-const ActivityEntriesPerPage = 100
+const ActivityRowsPerPage = 100
