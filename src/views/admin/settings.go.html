@@ -4,57 +4,14 @@
             <h1 class="title is-size-4">Settings</h1>
 
             <form method="post">
-                <div class="field is-horizontal">
-                    <div class="field-label">
-                        <label class="label">Watch for new devices</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <label class="checkbox">
-                                    <input type="checkbox"
-                                           name="{{ .fields.Watch.Name }}"
-                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
-                                           {{ else if .settings.Watch }}checked{{ end }}>
-                                </label>
-                                <p class="help">Receive a notification if any new devices join the network.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="block">
+                    <h2 class="subtitle">General</h2>
+                    {{ template "admin/p/general" . }}
                 </div>
 
-                <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                        <label class="label">MACVendors API key</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <input class="input"
-                                       type="text"
-                                       name="{{ .fields.MACVendorsAPIKey.Name }}"
-                                       value="{{ if .err }}{{ .fields.MACVendorsAPIKey.Value }}{{ else }}{{ .settings.MACVendorsAPIKey }}{{ end }}">
-                            </div>
-                            {{ if .fields.MACVendorsAPIKey.Error }}<p class="help is-danger">{{ .fields.MACVendorsAPIKey.Error }}</p>{{ end }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="field is-horizontal">
-                    <div class="field-label is-normal">
-                        <label class="label">Timezone</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <input class="input"
-                                       type="text"
-                                       name="{{ .fields.Timezone.Name }}"
-                                       value="{{ if .err }}{{ .fields.Timezone.Value }}{{ else }}{{ .settings.Timezone }}{{ end }}">
-                            </div>
-                            {{ if .fields.Timezone.Error }}<p class="help is-danger">{{ .fields.Timezone.Error }}</p>{{ end }}
-                        </div>
-                    </div>
+                <div class="block">
+                    <h2 class="subtitle">System</h2>
+                    {{ template "admin/p/system" . }}
                 </div>
 
                 <div class="field is-horizontal is-grouped">
