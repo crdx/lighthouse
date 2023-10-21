@@ -1,0 +1,44 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            <h1 class="title is-size-4">Settings</h1>
+
+            <form method="post">
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label class="label">Watch for new devices</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox"
+                                           name="watch"
+                                           {{ if .err }}
+                                               {{ if .fields.Watch.Value }}
+                                                   checked
+                                               {{ end }}
+                                           {{ else }}
+                                               {{ if .settings.Watch }}
+                                                   checked
+                                               {{ end }}
+                                           {{ end }}>
+                                </label>
+                                <p class="help">Receive a notification if any new devices join the network.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal is-grouped">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

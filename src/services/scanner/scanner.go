@@ -14,6 +14,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/adapterR"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/util/netutil"
@@ -277,9 +278,11 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 			GracePeriod: device.GracePeriod,
 		})
 
-		db.Create(&m.DeviceDiscoveryNotification{
-			DeviceID: device.ID,
-		})
+		if settingR.GetBool("watch") {
+			db.Create(&m.DeviceDiscoveryNotification{
+				DeviceID: device.ID,
+			})
+		}
 
 		log.Info("new device has joined the network")
 	}

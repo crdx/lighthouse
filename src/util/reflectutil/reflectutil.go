@@ -57,11 +57,11 @@ func MapToStruct[T any](m map[string]string, tagName string) T {
 //
 // For example, given this struct and var declaration:
 //
-// 	type S struct {
-// 		Foo string `slug:"foo"
-// 		Bar string `slug:"bar"
-// 	}
-// 	var s S
+//	type S struct {
+//		Foo string `slug:"foo"
+//		Bar string `slug:"bar"
+//	}
+//	var s S
 //
 // GetStructFieldValue(&s, "foo", "slug") will return the reflect.Value corresponding to s.Foo.
 func GetStructFieldValue[T any](s T, tagValue string, tagName string) (reflect.Value, bool) {
