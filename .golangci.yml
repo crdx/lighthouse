@@ -70,7 +70,6 @@ linters-settings:
       - name: time-naming
       - name: unexported-return
       - name: var-declaration
-      # extras
       - name: atomic
       - name: bool-literal-in-expr
       - name: call-to-gc
@@ -101,11 +100,6 @@ linters-settings:
       - name: unused-receiver
       - name: useless-break
       - name: waitgroup-by-value
-      # disabled
-      # - name: add-constant
-      # - name: deep-exit
-      # - name: flag-parameter
-      # - name: unhandled-error
       - name: receiver-naming
         disabled: true
       - name: indent-error-flow
