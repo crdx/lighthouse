@@ -5,7 +5,16 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/setting"
+	"crdx.org/lighthouse/tests/helpers/seeder"
 )
+
+func seed() error {
+	db.Save(&m.Setting{Name: setting.Timezone, Value: "Europe/London"})
+	db.Save(&m.Setting{Name: setting.Watch, Value: "1"})
+	return nil
+}
 
 func GetDbConfig() *db.Config {
 	return &db.Config{
@@ -21,6 +30,7 @@ func GetDbConfig() *db.Config {
 		Colour:        !env.Production,
 		Debug:         env.Debug,
 		SlowThreshold: 250 * time.Millisecond,
+		Seed:          seed,
 	}
 }
 
@@ -38,5 +48,6 @@ func GetTestDbConfig() *db.Config {
 		Colour:     false,
 		Debug:      false,
 		Fresh:      true,
+		Seed:       seeder.Run,
 	}
 }

@@ -42,7 +42,7 @@ func createDeviceStateLog(id, deviceID uint, state string, createdAt time.Time) 
 	})
 }
 
-func Run() {
+func Run() error {
 	t2 := time.Date(2023, time.September, 1, 12, 00, 00, 0, time.UTC)
 	t1 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
 	t3 := time.Date(2023, time.November, 1, 12, 00, 00, 0, time.UTC)
@@ -64,4 +64,6 @@ func Run() {
 		Subject: "a thing has happened",
 		Body:    "here are more details about the thing that happened",
 	})
+
+	return nil
 }
