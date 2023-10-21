@@ -85,15 +85,8 @@
                                 <label class="checkbox">
                                     <input type="checkbox"
                                            name="{{ .fields.Watch.Name }}"
-                                           {{ if .err }}
-                                               {{ if .fields.Watch.Value }}
-                                                   checked
-                                               {{ end }}
-                                           {{ else }}
-                                               {{ if .device.Watch }}
-                                                   checked
-                                               {{ end }}
-                                           {{ end }}>
+                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
+                                           {{ else if .device.Watch }}checked{{ end }}>
                                 </label>
                                 <p class="help">Receive a notification if this device goes offline or comes online.</p>
                             </div>

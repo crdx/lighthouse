@@ -14,15 +14,8 @@
                                 <label class="checkbox">
                                     <input type="checkbox"
                                            name="{{ .fields.Watch.Name }}"
-                                           {{ if .err }}
-                                               {{ if .fields.Watch.Value }}
-                                                   checked
-                                               {{ end }}
-                                           {{ else }}
-                                               {{ if .settings.Watch }}
-                                                   checked
-                                               {{ end }}
-                                           {{ end }}>
+                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
+                                           {{ else if .settings.Watch }}checked{{ end }}>
                                 </label>
                                 <p class="help">Receive a notification if any new devices join the network.</p>
                             </div>
