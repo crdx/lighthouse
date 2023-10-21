@@ -11,7 +11,8 @@ import (
 )
 
 type Form struct {
-	Watch bool `form:"watch"`
+	Watch            bool   `form:"watch"`
+	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
 }
 
 func Index(c *fiber.Ctx) error {

@@ -60,8 +60,6 @@ var (
 	NotificationToHeader    = os.Getenv("NOTIFICATION_TO_HEADER")
 	NotificationToAddress   = os.Getenv("NOTIFICATION_TO_ADDRESS")
 
-	MACVendorsAPIKey = os.Getenv("MACVENDORS_API_KEY")
-
 	LocalTimeZone = os.Getenv("LOCAL_TZ")
 
 	EnableLiveReload = os.Getenv("LIVE_RELOAD") != ""

@@ -30,6 +30,23 @@
                     </div>
                 </div>
 
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">MACVendors API key</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       type="text"
+                                       name="macvendors_api_key"
+                                       value="{{ if .err }}{{ .fields.MACVendorsAPIKey.Value }}{{ else }}{{ .settings.MACVendorsAPIKey }}{{ end }}">
+                            </div>
+                            {{ if .fields.MACVendorsAPIKey.Error }}<p class="help is-danger">{{ .fields.MACVendorsAPIKey.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
                 <div class="field is-horizontal is-grouped">
                     <div class="field-label"></div>
                     <div class="field-body">

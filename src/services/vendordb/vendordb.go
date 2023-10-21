@@ -8,8 +8,8 @@ import (
 	"log/slog"
 
 	"crdx.org/db"
-	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/m/repo/vendorLookupR"
 	"crdx.org/lighthouse/services"
 	"github.com/imroc/req/v3"
@@ -27,15 +27,14 @@ const backoff = 10 * time.Second
 
 func (self *VendorDB) Init(args *services.Args) error {
 	self.log = args.Logger
-
-	if env.MACVendorsAPIKey == "" {
-		return errors.New("missing API key")
-	}
-
 	return nil
 }
 
 func (self *VendorDB) Run() error {
+	if settingR.Get("macvendors_api_key") == "" {
+		return nil
+	}
+
 	for _, lookup := range vendorLookupR.Unprocessed() {
 		adapter, found := db.First[m.Adapter](lookup.AdapterID)
 		if !found {
@@ -109,7 +108,7 @@ retry:
 
 func getVendor(macAddress string) (*req.Response, error) {
 	return req.C().R().
-		SetBearerAuthToken(env.MACVendorsAPIKey).
+		SetBearerAuthToken(settingR.Get("macvendors_api_key")).
 		SetHeader("Accept", "text/plain").
 		Get("https://api.macvendors.com/v1/lookup/" + macAddress)
 }
