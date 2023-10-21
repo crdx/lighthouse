@@ -1,0 +1,85 @@
+<div class="field is-horizontal">
+    <div class="field-label">
+        <label class="label">Enable</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+             <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox"
+                           name="{{ .fields.EnableSMTP.Name }}"
+                           {{ if .err }}{{ if eq .fields.EnableSMTP.Value "1" }}checked{{ end }}
+                           {{ else if .settings.EnableSMTP }}checked{{ end }}>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Host</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       name="{{ .fields.SMTPHost.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPHost.Value }}{{ else }}{{ .settings.SMTPHost }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPHost.Error }}<p class="help is-danger">{{ .fields.SMTPHost.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Port</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       name="{{ .fields.SMTPPort.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPPort.Value }}{{ else }}{{ .settings.SMTPPort }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPPort.Error }}<p class="help is-danger">{{ .fields.SMTPPort.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">User</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       name="{{ .fields.SMTPUser.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPUser.Value }}{{ else }}{{ .settings.SMTPUser }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPUser.Error }}<p class="help is-danger">{{ .fields.SMTPUser.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Pass</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       name="{{ .fields.SMTPPass.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPPass.Value }}{{ else }}{{ .settings.SMTPPass }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPPass.Error }}<p class="help is-danger">{{ .fields.SMTPPass.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>

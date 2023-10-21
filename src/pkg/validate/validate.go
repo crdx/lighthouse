@@ -3,6 +3,7 @@ package validate
 import (
 	"regexp"
 	"strings"
+	"time"
 
 	"crdx.org/lighthouse/util/reflectutil"
 	enLocale "github.com/go-playground/locales/en"
@@ -31,6 +32,15 @@ func init() {
 	}
 
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
+
+	Register("timezone", "must be valid", func(value string) bool {
+		_, err := time.LoadLocation(value)
+		return err == nil
+	})
+
+	Register("mailaddr", `must be in the format "xxx <yyy>"`, func(value string) bool {
+		return regexp.MustCompile("^.* <.*>$").Match([]byte(value))
+	})
 }
 
 // Register registers a custom validation function.

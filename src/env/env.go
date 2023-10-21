@@ -18,12 +18,6 @@ const (
 
 	AuthTypeBasic = "basic"
 	AuthTypeNone  = "none"
-
-	MailTypeSMTP = "smtp"
-	MailTypeNone = "none"
-
-	NotificationTypeMail = "mail"
-	NotificationTypeNone = "none"
 )
 
 var (
@@ -48,18 +42,6 @@ var (
 	DatabaseCharSet  = os.Getenv("DB_CHARSET")
 	DatabaseTimeZone = os.Getenv("DB_TZ")
 
-	MailType = os.Getenv("MAIL_TYPE")
-	SMTPHost = os.Getenv("SMTP_HOST")
-	SMTPPort = os.Getenv("SMTP_PORT")
-	SMTPUser = os.Getenv("SMTP_USER")
-	SMTPPass = os.Getenv("SMTP_PASS")
-
-	NotificationType        = os.Getenv("NOTIFICATION_TYPE")
-	NotificationFromHeader  = os.Getenv("NOTIFICATION_FROM_HEADER")
-	NotificationFromAddress = os.Getenv("NOTIFICATION_FROM_ADDRESS")
-	NotificationToHeader    = os.Getenv("NOTIFICATION_TO_HEADER")
-	NotificationToAddress   = os.Getenv("NOTIFICATION_TO_ADDRESS")
-
 	EnableLiveReload = os.Getenv("LIVE_RELOAD") != ""
 )
 
@@ -79,34 +61,16 @@ func Check() {
 	}
 
 	if DatabaseSocket == "" && DatabaseHost == "" {
-		panic("database socket (DB_SOCK) or host (DB_HOST) not set")
+		panic("required environment variable DB_SOCK or DB_HOST is not set")
 	}
 
 	require("DB_NAME")
 	require("DB_USER")
 
-	requireIn("MAIL_TYPE", []string{"smtp", "none"}, true)
-
-	if MailType == MailTypeSMTP {
-		require("SMTP_HOST")
-		require("SMTP_PORT")
-		require("SMTP_USER")
-		require("SMTP_PASS")
-	}
-
 	requireIn("LOG_TYPE", []string{"all", "disk", "stderr", "none"}, false)
 
 	if LogType == LogTypeAll || LogType == LogTypeDisk {
 		require("LOG_PATH")
-	}
-
-	requireIn("NOTIFICATION_TYPE", []string{"mail", "none"}, false)
-
-	if NotificationType == NotificationTypeMail {
-		require("NOTIFICATION_FROM_HEADER")
-		require("NOTIFICATION_FROM_ADDRESS")
-		require("NOTIFICATION_TO_HEADER")
-		require("NOTIFICATION_TO_ADDRESS")
 	}
 }
 

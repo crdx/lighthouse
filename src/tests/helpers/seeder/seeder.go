@@ -65,5 +65,8 @@ func Run() error {
 		Body:    "here are more details about the thing that happened",
 	})
 
+	db.Save(&m.Setting{Name: "notification_from_header", Value: "foo <foo@example.com>"})
+	db.Save(&m.Setting{Name: "notification_to_header", Value: "bar <bar@example.com>"})
+
 	return nil
 }

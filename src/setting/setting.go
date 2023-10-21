@@ -8,9 +8,23 @@ import (
 
 var cache map[string]string
 
-const Watch = "watch"
-const MACVendorsAPIKey = "macvendors_api_key"
-const Timezone = "timezone"
+const (
+	Watch            = "watch"
+	MACVendorsAPIKey = "macvendors_api_key"
+	Timezone         = "timezone"
+
+	EnableNotifications     = "enable_notifications"
+	NotificationFromHeader  = "notification_from_header"
+	NotificationFromAddress = "notification_from_address"
+	NotificationToHeader    = "notification_to_header"
+	NotificationToAddress   = "notification_to_address"
+
+	EnableSMTP = "enable_smtp"
+	SMTPHost   = "smtp_host"
+	SMTPPort   = "smtp_port"
+	SMTPUser   = "smtp_user"
+	SMTPPass   = "smtp_pass"
+)
 
 // Update updates the settings cache.
 func Update(settings map[string]string) {

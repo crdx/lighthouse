@@ -9,6 +9,7 @@ import (
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/state"
+	"crdx.org/lighthouse/setting"
 	"crdx.org/lighthouse/util/mailutil"
 	"github.com/samber/lo"
 )
@@ -39,5 +40,10 @@ func add(notification *m.Notification) {
 	}
 
 	db.Save(&notification)
+
+	if !setting.GetBool(setting.EnableNotifications) {
+		return
+	}
+
 	lo.Must0(mailutil.Send(notification.Subject, notification.Body))
 }

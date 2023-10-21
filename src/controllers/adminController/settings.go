@@ -11,9 +11,26 @@ import (
 )
 
 type SettingsForm struct {
-	Watch            bool   `form:"watch"`
-	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
-	Timezone         string `form:"timezone" validate:"required,timezone" transform:"trim"`
+	// General
+	Watch bool `form:"watch"`
+
+	// Notifications
+	EnableNotifications     bool   `form:"enable_notifications"`
+	NotificationFromHeader  string `form:"notification_from_header"  validate:"required_if=EnableNotifications 1,omitempty,mailaddr"`
+	NotificationFromAddress string `form:"notification_from_address" validate:"required_if=EnableNotifications 1,omitempty,email"`
+	NotificationToHeader    string `form:"notification_to_header"    validate:"required_if=EnableNotifications 1,omitempty,mailaddr"`
+	NotificationToAddress   string `form:"notification_to_address"   validate:"required_if=EnableNotifications 1,omitempty,email"`
+
+	// SMTP
+	EnableSMTP bool   `form:"enable_smtp"`
+	SMTPHost   string `form:"smtp_host" validate:"required_if=EnableSMTP 1"`
+	SMTPPort   string `form:"smtp_port" validate:"required_if=EnableSMTP 1,omitempty,numeric"`
+	SMTPUser   string `form:"smtp_user" validate:"required_if=EnableSMTP 1"`
+	SMTPPass   string `form:"smtp_pass" validate:"required_if=EnableSMTP 1"`
+
+	// System
+	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500"           transform:"trim"`
+	Timezone         string `form:"timezone"           validate:"required,timezone" transform:"trim"`
 }
 
 func Index(c *fiber.Ctx) error {
