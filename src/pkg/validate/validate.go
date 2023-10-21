@@ -60,7 +60,7 @@ func Struct[T any](s T) (map[string]Field, bool) {
 	} else {
 		err := err.(validator.ValidationErrors) //nolint
 		errorMessages := err.Translate(translator)
-		errorMessages = unProperCaseMessages(errorMessages)
+		errorMessages = removeFieldName(errorMessages)
 
 		fields := map[string]Field{}
 		structName := reflectutil.GetType(s).Name()
@@ -82,9 +82,9 @@ func Struct[T any](s T) (map[string]Field, bool) {
 	}
 }
 
-// unProperCaseMessages takes a map of error messages and converts ProperCased field names in the
-// message to more readable ones. For example, "GracePeriod" turns into "Grace Period".
-func unProperCaseMessages(messages validator.ValidationErrorsTranslations) validator.ValidationErrorsTranslations {
+// removeFieldName removes the field name from the beginning of messages as it's not necessary and
+// is neater without.
+func removeFieldName(messages validator.ValidationErrorsTranslations) validator.ValidationErrorsTranslations {
 	for key, message := range messages {
 		// Depending on whether an anonymous or named struct was passed in, the field name might
 		// be "StructName.FieldName", or just "FieldName", so check for that.
@@ -93,16 +93,8 @@ func unProperCaseMessages(messages validator.ValidationErrorsTranslations) valid
 			_, fieldName, _ = strings.Cut(key, ".")
 		}
 
-		// Find all propercased words in the field name e.g. GracePeriod is "Grace" and "Period".
-		words := regexp.MustCompile(`([A-Z][a-z]*)`).FindAllString(fieldName, -1)
-
-		if words != nil {
-			// Prepare a regex of the field name where it appears as a whole word, to prevent any
-			// erroneous replacements if the field name is a very simple and common sequence.
-			re := regexp.MustCompile(`\b` + regexp.QuoteMeta(fieldName) + `\b`)
-
-			messages[key] = re.ReplaceAllString(message, strings.Join(words, " "))
-		}
+		re := regexp.MustCompile(`^` + regexp.QuoteMeta(fieldName) + `\s*`)
+		messages[key] = re.ReplaceAllString(message, "")
 	}
 
 	return messages
