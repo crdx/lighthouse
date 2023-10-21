@@ -13,7 +13,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Form struct {
+type EditForm struct {
 	Name   string `form:"name" validate:"max=100" transform:"trim"`
 	Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
 }
@@ -41,7 +41,7 @@ func ViewEdit(c *fiber.Ctx) error {
 	return c.Render("adapters/edit", fiber.Map{
 		"adapter": adapter,
 		"device":  device,
-		"fields":  validate.Fields[Form](),
+		"fields":  validate.Fields[EditForm](),
 		"globals": globals.Get(c),
 	})
 }
@@ -53,7 +53,7 @@ func Edit(c *fiber.Ctx) error {
 		return c.SendStatus(400)
 	}
 
-	form := new(Form)
+	form := new(EditForm)
 	if err := c.BodyParser(form); err != nil {
 		return err
 	}

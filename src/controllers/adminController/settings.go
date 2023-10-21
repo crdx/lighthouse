@@ -10,21 +10,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type Form struct {
+type SettingsForm struct {
 	Watch            bool   `form:"watch"`
 	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
 }
 
 func Index(c *fiber.Ctx) error {
 	return c.Render("admin/settings", fiber.Map{
-		"fields":   validate.Fields[Form](),
-		"settings": reflectutil.MapToStruct[Form](settingR.Map(), "form"),
+		"fields":   validate.Fields[SettingsForm](),
+		"settings": reflectutil.MapToStruct[SettingsForm](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
 	})
 }
 
 func Save(c *fiber.Ctx) error {
-	form := new(Form)
+	form := new(SettingsForm)
 	if err := c.BodyParser(form); err != nil {
 		return err
 	}
