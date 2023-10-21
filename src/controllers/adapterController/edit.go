@@ -13,13 +13,22 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func ViewEdit(c *fiber.Ctx) error {
+func get(c *fiber.Ctx) (*m.Device, *m.Adapter, bool) {
 	adapter, found := db.First[m.Adapter](c.Params("id"))
 	if !found {
-		return c.SendStatus(404)
+		return nil, nil, false
 	}
 
 	device, found := adapter.Device()
+	if !found {
+		return nil, nil, false
+	}
+
+	return device, adapter, true
+}
+
+func ViewEdit(c *fiber.Ctx) error {
+	device, adapter, found := get(c)
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -32,7 +41,8 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	adapter, found := db.First[m.Adapter](c.Params("id"))
+	device, adapter, found := get(c)
+
 	if !found {
 		return c.SendStatus(400)
 	}
@@ -54,6 +64,7 @@ func Edit(c *fiber.Ctx) error {
 
 		return c.Render("adapters/edit", fiber.Map{
 			"adapter": adapter,
+			"device":  device,
 			"err":     err,
 			"fields":  fields,
 			"globals": globals.Get(c),
