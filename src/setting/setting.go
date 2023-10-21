@@ -9,9 +9,7 @@ import (
 var cache map[string]string
 
 const (
-	Watch            = "watch"
-	MACVendorsAPIKey = "macvendors_api_key"
-	Timezone         = "timezone"
+	Watch = "watch"
 
 	EnableNotifications     = "enable_notifications"
 	NotificationFromHeader  = "notification_from_header"
@@ -24,6 +22,9 @@ const (
 	SMTPPort   = "smtp_port"
 	SMTPUser   = "smtp_user"
 	SMTPPass   = "smtp_pass"
+
+	MACVendorsAPIKey = "macvendors_api_key"
+	Timezone         = "timezone"
 )
 
 // Update updates the settings cache.
