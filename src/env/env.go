@@ -60,8 +60,6 @@ var (
 	NotificationToHeader    = os.Getenv("NOTIFICATION_TO_HEADER")
 	NotificationToAddress   = os.Getenv("NOTIFICATION_TO_ADDRESS")
 
-	LocalTimeZone = os.Getenv("LOCAL_TZ")
-
 	EnableLiveReload = os.Getenv("LIVE_RELOAD") != ""
 )
 
@@ -101,8 +99,6 @@ func Check() {
 	if LogType == LogTypeAll || LogType == LogTypeDisk {
 		require("LOG_PATH")
 	}
-
-	require("LOCAL_TZ")
 
 	requireIn("NOTIFICATION_TYPE", []string{"mail", "none"}, false)
 

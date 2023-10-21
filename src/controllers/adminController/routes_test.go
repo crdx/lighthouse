@@ -31,6 +31,7 @@ func TestSave(t *testing.T) {
 
 	res, _ := helpers.PostForm(app, "/admin", map[string]string{
 		"macvendors_api_key": apiKey,
+		"timezone":           "Europe/London",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)

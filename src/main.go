@@ -2,10 +2,12 @@ package main
 
 import (
 	"embed"
+	"time"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/session"
 
 	"github.com/gofiber/fiber/v2"
@@ -45,6 +47,14 @@ func main() {
 	})
 
 	startServices()
+	registerValidators()
 
 	panic(app.Listen(env.BindHost + ":" + env.BindPort))
+}
+
+func registerValidators() {
+	validate.Register("timezone", "invalid timezone", func(value string) bool {
+		_, err := time.LoadLocation(value)
+		return err == nil
+	})
 }

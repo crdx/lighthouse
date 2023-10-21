@@ -33,6 +33,23 @@ func init() {
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
 }
 
+// Register registers a custom validation function.
+func Register(name string, message string, f func(string) bool) {
+	lo.Must0(validate.RegisterValidation(name, func(field validator.FieldLevel) bool {
+		return f(field.Field().String())
+	}, false))
+
+	registerFn := func(translator universalTranslator.Translator) error {
+		return translator.Add(name, message, true)
+	}
+
+	translateFn := func(translator universalTranslator.Translator, _ validator.FieldError) string {
+		return lo.Must(translator.T(name))
+	}
+
+	lo.Must0(validate.RegisterTranslation(name, translator, registerFn, translateFn))
+}
+
 // Fields returns the initial data needed by the template to render the fields: the field names.
 func Fields[T any]() map[string]Field {
 	fields := map[string]Field{}
@@ -60,7 +77,7 @@ func Struct[T any](s T) (map[string]Field, bool) {
 	} else {
 		err := err.(validator.ValidationErrors) //nolint
 		errorMessages := err.Translate(translator)
-		errorMessages = removeFieldName(errorMessages)
+		errorMessages = fixErrorMessages(errorMessages)
 
 		fields := map[string]Field{}
 		structName := reflectutil.GetType(s).Name()
@@ -82,9 +99,9 @@ func Struct[T any](s T) (map[string]Field, bool) {
 	}
 }
 
-// removeFieldName removes the field name from the beginning of messages as it's not necessary and
-// is neater without.
-func removeFieldName(messages validator.ValidationErrorsTranslations) validator.ValidationErrorsTranslations {
+// fixErrorMessages cleans up error messages by removing the field name from the beginning as it's
+// not necessary and is neater without.
+func fixErrorMessages(messages validator.ValidationErrorsTranslations) validator.ValidationErrorsTranslations {
 	for key, message := range messages {
 		// Depending on whether an anonymous or named struct was passed in, the field name might
 		// be "StructName.FieldName", or just "FieldName", so check for that.
@@ -94,7 +111,13 @@ func removeFieldName(messages validator.ValidationErrorsTranslations) validator.
 		}
 
 		re := regexp.MustCompile(`^` + regexp.QuoteMeta(fieldName) + `\s*`)
-		messages[key] = re.ReplaceAllString(message, "")
+		message = re.ReplaceAllString(message, "")
+
+		if message == "is a required field" {
+			message = "required field"
+		}
+
+		messages[key] = message
 	}
 
 	return messages

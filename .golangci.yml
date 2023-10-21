@@ -84,7 +84,6 @@ linters-settings:
       - name: get-return
       - name: identical-branches
       - name: if-return
-      - name: import-shadowing
       - name: imports-blacklist
       - name: modifies-parameter
       - name: modifies-value-receiver

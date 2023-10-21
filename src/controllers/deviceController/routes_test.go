@@ -77,7 +77,7 @@ func TestEditWithErrors(t *testing.T) {
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "is a required field")
+	assert.Contains(t, body, "required field")
 
 	_, body = helpers.Get(app, "/device/1")
 

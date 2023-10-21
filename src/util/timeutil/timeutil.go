@@ -5,14 +5,14 @@ import (
 	"strings"
 	"time"
 
-	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/setting"
 	"crdx.org/lighthouse/util/stringutil"
 	"github.com/samber/lo"
 )
 
 // ToLocal formats a time in the local timezone.
 func ToLocal(t time.Time) time.Time {
-	return t.In(lo.Must(time.LoadLocation(env.LocalTimeZone)))
+	return t.In(lo.Must(time.LoadLocation(setting.Get(setting.Timezone))))
 }
 
 // TimeAgo formats a number of seconds as a relative time in the past.

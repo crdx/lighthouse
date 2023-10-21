@@ -13,6 +13,7 @@ import (
 type SettingsForm struct {
 	Watch            bool   `form:"watch"`
 	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
+	Timezone         string `form:"timezone" validate:"required,timezone" transform:"trim"`
 }
 
 func Index(c *fiber.Ctx) error {
@@ -44,6 +45,7 @@ func Save(c *fiber.Ctx) error {
 	for name, value := range reflectutil.StructToMap(form, "form") {
 		settingR.Set(name, value)
 	}
+	settingR.Invalidate()
 
 	flash.Success(c, "Settings saved")
 	return c.Redirect("/admin")

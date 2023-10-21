@@ -14,9 +14,9 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/adapterR"
 	"crdx.org/lighthouse/m/repo/deviceR"
-	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/pkg/cache"
 	"crdx.org/lighthouse/services"
+	"crdx.org/lighthouse/setting"
 	"crdx.org/lighthouse/util/netutil"
 
 	"github.com/google/gopacket"
@@ -278,7 +278,7 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 			GracePeriod: device.GracePeriod,
 		})
 
-		if settingR.GetBool("watch") {
+		if setting.GetBool(setting.Watch) {
 			db.Create(&m.DeviceDiscoveryNotification{
 				DeviceID: device.ID,
 			})
