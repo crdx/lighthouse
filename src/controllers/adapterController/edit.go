@@ -13,6 +13,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type Form struct {
+	Name   string `form:"name" validate:"max=100" transform:"trim"`
+	Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
+}
+
 func get(c *fiber.Ctx) (*m.Device, *m.Adapter, bool) {
 	adapter, found := db.First[m.Adapter](c.Params("id"))
 	if !found {
@@ -36,6 +41,7 @@ func ViewEdit(c *fiber.Ctx) error {
 	return c.Render("adapters/edit", fiber.Map{
 		"adapter": adapter,
 		"device":  device,
+		"fields":  validate.Fields[Form](),
 		"globals": globals.Get(c),
 	})
 }
@@ -45,11 +51,6 @@ func Edit(c *fiber.Ctx) error {
 
 	if !found {
 		return c.SendStatus(400)
-	}
-
-	type Form struct {
-		Name   string `form:"name" validate:"max=100" transform:"trim"`
-		Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
 	}
 
 	form := new(Form)

@@ -17,6 +17,7 @@ import (
 type Field struct {
 	Error string
 	Value string
+	Name  string
 }
 
 var validate *validator.Validate
@@ -32,9 +33,27 @@ func init() {
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
 }
 
+// Fields returns the initial data needed by the template to render the fields: the field names.
+func Fields[T any]() map[string]Field {
+	fields := map[string]Field{}
+
+	structValue := reflectutil.GetValue(new(T))
+
+	for i := 0; i < structValue.NumField(); i++ {
+		fieldName := structValue.Type().Field(i).Name
+		tagValue := structValue.Type().Field(i).Tag.Get("form")
+
+		fields[fieldName] = Field{
+			Name: tagValue,
+		}
+	}
+
+	return fields
+}
+
 // Struct validates a struct's contents according to the rules set in the "validate" tag, and
-// returns all the data needed by the template to render the form: the original submitted values
-// and any validation error messages.
+// returns all the data needed by the template to render the form: the original submitted values,
+// validation error messages, and the field names.
 func Struct[T any](s T) (map[string]Field, bool) {
 	if err := validate.Struct(s); err == nil {
 		return nil, false
@@ -50,10 +69,12 @@ func Struct[T any](s T) (map[string]Field, bool) {
 		for i := 0; i < structValue.NumField(); i++ {
 			submittedValue := reflectutil.ToString(structValue.Field(i).Interface())
 			fieldName := structValue.Type().Field(i).Name
+			tagValue := structValue.Type().Field(i).Tag.Get("form")
 
 			fields[fieldName] = Field{
 				Error: errorMessages[structName+"."+fieldName],
 				Value: submittedValue,
+				Name:  tagValue,
 			}
 		}
 

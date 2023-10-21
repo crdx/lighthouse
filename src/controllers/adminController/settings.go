@@ -17,6 +17,7 @@ type Form struct {
 
 func Index(c *fiber.Ctx) error {
 	return c.Render("admin/settings", fiber.Map{
+		"fields":   validate.Fields[Form](),
 		"settings": reflectutil.MapToStruct[Form](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
 	})

@@ -36,7 +36,7 @@
                              <div class="control">
                                 <input class="input"
                                        type="text"
-                                       name="name"
+                                       name="{{ .fields.Name.Name }}"
                                        value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .adapter.Name }}{{ end }}">
                             </div>
                             {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
@@ -53,7 +53,7 @@
                              <div class="control">
                                 <input class="input"
                                        type="text"
-                                       name="vendor"
+                                       name="{{ .fields.Vendor.Name }}"
                                        value="{{ if .err }}{{ .fields.Vendor.Value }}{{ else }}{{ .adapter.Vendor }}{{ end }}">
                             </div>
                             {{ if .fields.Vendor.Error }}<p class="help is-danger">{{ .fields.Vendor.Error }}</p>{{ end }}

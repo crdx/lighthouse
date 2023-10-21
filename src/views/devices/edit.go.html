@@ -13,7 +13,7 @@
                              <div class="control">
                                 <input class="input"
                                        type="text"
-                                       name="name"
+                                       name="{{ .fields.Name.Name }}"
                                        value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
                             </div>
                             {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
@@ -30,7 +30,7 @@
                             <div class="control has-icons-left" x-data="{ icon: '{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}' }">
                                 <input class="input"
                                        type="text"
-                                       name="icon"
+                                       name="{{ .fields.Icon.Name }}"
                                        x-model="icon">
                                 <span class="icon is-small is-left">
                                     <i :class="icon"></i>
@@ -49,7 +49,7 @@
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
-                                <textarea class="textarea" name="notes">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                                <textarea class="textarea" name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
                             </div>
                             {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
                             <p class="help">Markdown supported.</p>
@@ -66,7 +66,7 @@
                              <div class="control">
                                 <input class="input"
                                        type="text"
-                                       name="grace_period"
+                                       name="{{ .fields.GracePeriod.Name }}"
                                        value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
                             </div>
                             {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
@@ -84,7 +84,7 @@
                              <div class="control">
                                 <label class="checkbox">
                                     <input type="checkbox"
-                                           name="watch"
+                                           name="{{ .fields.Watch.Name }}"
                                            {{ if .err }}
                                                {{ if .fields.Watch.Value }}
                                                    checked
