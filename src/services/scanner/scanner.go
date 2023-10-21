@@ -257,7 +257,7 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 		if hostname == "" {
 			if names, err := net.LookupAddr(ipAddress); err == nil && len(names) > 0 {
 				hostname = netutil.UnqualifyHostname(names[0])
-				log.Info("found hostname via DNS", "hostname", hostname)
+				log.Info("found hostname via dns", "hostname", hostname)
 			}
 		}
 	}
