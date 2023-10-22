@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/controllers/adminController"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
+	"crdx.org/lighthouse/util/stringutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,7 +28,7 @@ func TestIndex(t *testing.T) {
 func TestSave(t *testing.T) {
 	session := setup()
 
-	apiKey := helpers.UUID()
+	apiKey := stringutil.UUID()
 
 	res, _ := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
@@ -44,7 +45,7 @@ func TestSave(t *testing.T) {
 func TestEditWithErrors(t *testing.T) {
 	session := setup()
 
-	apiKey := strings.Repeat(helpers.UUID(), 100)
+	apiKey := strings.Repeat(stringutil.UUID(), 100)
 
 	res, body := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,

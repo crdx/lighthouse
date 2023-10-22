@@ -8,6 +8,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
+	"crdx.org/lighthouse/util/stringutil"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
@@ -42,9 +43,9 @@ func TestView(t *testing.T) {
 func TestEdit(t *testing.T) {
 	session := setup()
 
-	nameUUID := helpers.UUID()
-	notesUUID := helpers.UUID()
-	iconUUID := helpers.UUID()
+	nameUUID := stringutil.UUID()
+	notesUUID := stringutil.UUID()
+	iconUUID := stringutil.UUID()
 
 	res, _ := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
@@ -65,9 +66,9 @@ func TestEdit(t *testing.T) {
 func TestEditWithErrors(t *testing.T) {
 	session := setup()
 
-	nameUUID := helpers.UUID()
-	notesUUID := helpers.UUID()
-	iconUUID := helpers.UUID()
+	nameUUID := stringutil.UUID()
+	notesUUID := stringutil.UUID()
+	iconUUID := stringutil.UUID()
 
 	res, body := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
