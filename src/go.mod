@@ -19,14 +19,15 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/samber/slog-multi v1.0.2
 	github.com/stretchr/testify v1.8.4
-	github.com/tdewolff/minify/v2 v2.12.9
+	github.com/tdewolff/minify/v2 v2.19.10
 	github.com/yuin/goldmark v1.5.6
+	golang.org/x/crypto v0.14.0
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 	gorm.io/gorm v1.25.5
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
@@ -45,7 +46,7 @@ require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/onsi/ginkgo/v2 v2.13.0 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
@@ -61,12 +62,11 @@ require (
 	github.com/valyala/fasthttp v1.50.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/mock v0.3.0 // indirect
-	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/driver/mysql v1.5.1 // indirect
+	gorm.io/driver/mysql v1.5.2 // indirect
 )
