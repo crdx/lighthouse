@@ -53,6 +53,12 @@
                             <hr class="dropdown-divider">
 
                             <a class="dropdown-item has-text-danger-dark js-form-trigger" data-target="#js-delete-form">
+                                <form class="is-hidden"
+                                      id="js-delete-form"
+                                      method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete this device?')"
+                                      action="/device/{{ .device.ID }}/delete">
+                                </form>
                                 <span class="icon is-small">
                                     <i class="fa-duotone fa-trash"></i>
                                 </span>
@@ -61,13 +67,6 @@
                         </div>
                     </div>
                 </div>
-
-                <form class="is-hidden"
-                      id="js-delete-form"
-                      method="post"
-                      onsubmit="return confirm('Are you sure you want to delete this device?')"
-                      action="/device/{{ .device.ID }}/delete">
-                </form>
 
                 <div class="modal" id="js-merge-modal">
                     <div class="modal-background"></div>
