@@ -257,12 +257,11 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 		if hostname == "" {
 			if names, err := net.LookupAddr(ipAddress); err == nil && len(names) > 0 {
 				hostname = netutil.UnqualifyHostname(names[0])
-				log.Info("found hostname via dns", "hostname", hostname)
 			}
 		}
 	}
 
-	log = log.With(slog.Group("device", "id", device.ID, "name", device.Name))
+	log = log.With(slog.Group("device", "id", device.ID))
 
 	device.Update("last_seen", time.Now())
 	populateDeviceName(device, hostname)
