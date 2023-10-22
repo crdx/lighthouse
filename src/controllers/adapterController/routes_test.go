@@ -5,50 +5,50 @@ import (
 
 	"crdx.org/lighthouse/controllers/adapterController"
 	"crdx.org/lighthouse/controllers/deviceController"
+	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
-func app() *fiber.App {
+func setup() *helpers.Session {
 	helpers.Init()
-	app := helpers.App()
+	app := helpers.App(auth.StateAdmin)
 	adapterController.InitRoutes(app)
 	deviceController.InitRoutes(app)
-	return app
+	return helpers.NewSession(app)
 }
 
 func TestEdit(t *testing.T) {
-	app := app()
+	session := setup()
 
 	nameUUID := helpers.UUID()
 	vendorUUID := helpers.UUID()
 
-	res, _ := helpers.PostForm(app, "/adapter/1/edit", map[string]string{
+	res, _ := session.PostForm("/adapter/1/edit", map[string]string{
 		"name":   nameUUID,
 		"vendor": vendorUUID,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := helpers.Get(app, "/device/1")
+	_, body := session.Get("/device/1")
 
 	assert.Contains(t, body, nameUUID)
 	assert.Contains(t, body, vendorUUID)
 }
 
 func TestDelete(t *testing.T) {
-	app := app()
+	session := setup()
 
-	_, body := helpers.Get(app, "/device/1/")
+	_, body := session.Get("/device/1/")
 	assert.Contains(t, body, "adapter1")
 
-	res, _ := helpers.PostForm(app, "/adapter/1/delete", nil)
+	res, _ := session.PostForm("/adapter/1/delete", nil)
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body = helpers.Get(app, "/device/1")
+	_, body = session.Get("/device/1")
 	assert.NotContains(t, body, "adapter1")
 
-	res, _ = helpers.Get(app, "/adapter/1/edit")
+	res, _ = session.Get("/adapter/1/edit")
 	assert.Equal(t, 404, res.StatusCode)
 }

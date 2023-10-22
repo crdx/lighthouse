@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/util/stringutil"
-	"github.com/go-playground/assert/v2"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPluralise(t *testing.T) {
@@ -48,6 +48,28 @@ func TestRenderMarkdown(t *testing.T) {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
 			actual := stringutil.RenderMarkdown(testCase.input)
 			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}
+
+func TestHashAndVerifyHash(t *testing.T) {
+	testCases := []struct {
+		inputPassword        string
+		expectedVerifyResult bool
+	}{
+		{"hunter2", true},
+		{"password", true},
+		{"foo", true},
+		{"", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.inputPassword, func(t *testing.T) {
+			hashedPassword := stringutil.Hash(testCase.inputPassword)
+
+			assert.NotEqual(t, testCase.inputPassword, hashedPassword)
+			assert.True(t, stringutil.VerifyHashAndPassword(hashedPassword, testCase.inputPassword))
+			assert.False(t, stringutil.VerifyHashAndPassword(hashedPassword, "incorrectPassword"))
 		})
 	}
 }

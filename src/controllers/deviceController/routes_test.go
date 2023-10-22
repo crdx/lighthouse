@@ -6,22 +6,22 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/controllers/deviceController"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )
 
-func app() *fiber.App {
+func setup() *helpers.Session {
 	helpers.Init()
-	app := helpers.App()
+	app := helpers.App(auth.StateAdmin)
 	deviceController.InitRoutes(app)
-	return app
+	return helpers.NewSession(app)
 }
 
 func TestList(t *testing.T) {
-	app := app()
-	res, body := helpers.Get(app, "/")
+	session := setup()
+	res, body := session.Get("/")
 
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
@@ -30,8 +30,8 @@ func TestList(t *testing.T) {
 }
 
 func TestView(t *testing.T) {
-	app := app()
-	res, body := helpers.Get(app, "/device/1")
+	session := setup()
+	res, body := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
 	assert.Contains(t, body, "127.0.0.1")
@@ -40,13 +40,13 @@ func TestView(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	app := app()
+	session := setup()
 
 	nameUUID := helpers.UUID()
 	notesUUID := helpers.UUID()
 	iconUUID := helpers.UUID()
 
-	res, _ := helpers.PostForm(app, "/device/1/edit", map[string]string{
+	res, _ := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
 		"notes":        notesUUID,
 		"icon":         iconUUID,
@@ -55,7 +55,7 @@ func TestEdit(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := helpers.Get(app, "/device/1")
+	_, body := session.Get("/device/1")
 
 	assert.Contains(t, body, nameUUID)
 	assert.Contains(t, body, notesUUID)
@@ -63,13 +63,13 @@ func TestEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	app := app()
+	session := setup()
 
 	nameUUID := helpers.UUID()
 	notesUUID := helpers.UUID()
 	iconUUID := helpers.UUID()
 
-	res, body := helpers.PostForm(app, "/device/1/edit", map[string]string{
+	res, body := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
 		"notes":        notesUUID,
 		"icon":         iconUUID,
@@ -79,22 +79,22 @@ func TestEditWithErrors(t *testing.T) {
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "required field")
 
-	_, body = helpers.Get(app, "/device/1")
+	_, body = session.Get("/device/1")
 
 	assert.NotContains(t, body, notesUUID)
 	assert.NotContains(t, body, iconUUID)
 }
 
 func TestMerge(t *testing.T) {
-	app := app()
+	session := setup()
 
-	res, _ := helpers.PostForm(app, "/device/1/merge", map[string]string{
+	res, _ := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := helpers.Get(app, "/device/1")
+	_, body := session.Get("/device/1")
 
 	assert.Contains(t, body, "2023-10-01")
 	assert.Contains(t, body, "adapter1")
@@ -110,14 +110,14 @@ func TestMerge(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	app := app()
+	session := setup()
 
-	res, _ := helpers.Get(app, "/device/1")
+	res, _ := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
 
-	res, _ = helpers.PostForm(app, "/device/1/delete", nil)
+	res, _ = session.PostForm("/device/1/delete", nil)
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, _ = helpers.Get(app, "/device/1")
+	res, _ = session.Get("/device/1")
 	assert.Equal(t, 404, res.StatusCode)
 }

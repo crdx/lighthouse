@@ -38,9 +38,22 @@
                     <span class="icon"><i class="fas fa-bell"></i></span>
                     <span class="is-hidden-desktop">notifications</span>
                 </a>
-                <a href="/admin" class="navbar-item" title="Administration">
-                    <span class="icon"><i class="fas fa-cog"></i></span>
-                    <span class="is-hidden-desktop">admin</span>
+
+                {{ if .globals.User.Admin }}
+                    <a href="/admin" class="navbar-item" title="Administration">
+                        <span class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="is-hidden-desktop">admin</span>
+                    </a>
+                {{ end }}
+
+                <a class="navbar-item js-form-trigger" data-target="#js-log-out" title="Log out">
+                    <form class="is-hidden"
+                          id="js-log-out"
+                          method="post"
+                          action="/goodbye">
+                    </form>
+                    <span class="icon"><i class="fa-duotone fa-right-from-bracket"></i></span>
+                    <span class="is-hidden-desktop">log out</span>
                 </a>
             </div>
         </div>

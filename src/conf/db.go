@@ -8,11 +8,14 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/setting"
 	"crdx.org/lighthouse/tests/helpers/seeder"
+	"crdx.org/lighthouse/util/stringutil"
 )
 
 func seed() error {
 	db.Save(&m.Setting{Name: setting.Timezone, Value: "Europe/London"})
 	db.Save(&m.Setting{Name: setting.Watch, Value: "1"})
+
+	db.Save(&m.User{Username: "admin", PasswordHash: stringutil.Hash("admin"), Admin: true})
 	return nil
 }
 

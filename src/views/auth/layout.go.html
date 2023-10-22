@@ -9,19 +9,17 @@
 
     <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
     <link rel="stylesheet" href="/assets/bulma.min.css">
-    <link rel="stylesheet" href="/assets/main.css">
 
     <title>lighthouse</title>
+    <style type="text/css">
+        .constrained {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    {{ template "layouts/p/nav" . }}
-    {{ template "layouts/p/warning" .globals }}
-    {{ template "layouts/p/flash" .globals.Flash }}
-
     {{ embed }}
-
-    <script type="text/javascript" src="/assets/main.js"></script>
-    <script defer src="/assets/alpine.min.js"></script>
 
     {{ if enableLiveReload }}
         {{ template "layouts/p/livereload" }}

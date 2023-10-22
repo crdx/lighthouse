@@ -5,48 +5,48 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/controllers/adminController"
+	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
-func app() *fiber.App {
+func setup() *helpers.Session {
 	helpers.Init()
-	app := helpers.App()
+	app := helpers.App(auth.StateAdmin)
 	adminController.InitRoutes(app)
-	return app
+	return helpers.NewSession(app)
 }
 
 func TestIndex(t *testing.T) {
-	app := app()
-	res, body := helpers.Get(app, "/admin")
+	session := setup()
+	res, body := session.Get("/admin")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "MACVendors")
 }
 
 func TestSave(t *testing.T) {
-	app := app()
+	session := setup()
 
 	apiKey := helpers.UUID()
 
-	res, _ := helpers.PostForm(app, "/admin", map[string]string{
+	res, _ := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 		"timezone":           "Europe/London",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := helpers.Get(app, "/admin")
+	_, body := session.Get("/admin")
 
 	assert.Contains(t, body, apiKey)
 }
 
 func TestEditWithErrors(t *testing.T) {
-	app := app()
+	session := setup()
 
 	apiKey := strings.Repeat(helpers.UUID(), 100)
 
-	res, body := helpers.PostForm(app, "/admin", map[string]string{
+	res, body := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 	})
 

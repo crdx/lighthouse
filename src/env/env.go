@@ -15,9 +15,6 @@ const (
 	LogTypeDisk   = "disk"
 	LogTypeStderr = "stderr"
 	LogTypeNone   = "none"
-
-	AuthTypeBasic = "basic"
-	AuthTypeNone  = "none"
 )
 
 var (
@@ -29,10 +26,6 @@ var (
 
 	LogType = os.Getenv("LOG_TYPE")
 	LogPath = os.Getenv("LOG_PATH")
-
-	AuthType = os.Getenv("AUTH_TYPE")
-	AuthUser = os.Getenv("AUTH_USER")
-	AuthPass = os.Getenv("AUTH_PASS")
 
 	DatabaseName     = os.Getenv("DB_NAME")
 	DatabaseUser     = os.Getenv("DB_USER")
@@ -52,13 +45,6 @@ func Check() {
 	}
 
 	require("HOST")
-
-	requireIn("AUTH_TYPE", []string{"none", "basic"}, true)
-
-	if AuthType == AuthTypeBasic {
-		require("AUTH_USER")
-		require("AUTH_PASS")
-	}
 
 	if DatabaseSocket == "" && DatabaseHost == "" {
 		panic("required environment variable DB_SOCK or DB_HOST is not set")

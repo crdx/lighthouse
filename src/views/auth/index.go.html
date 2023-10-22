@@ -1,0 +1,49 @@
+<section class="hero is-fullheight">
+    <div class="hero-body has-text-centered">
+        <div class="container">
+            <div class="constrained">
+                <div class="block">
+                    <div class="icon is-large {{ if .err }}has-text-danger-dark{{ end }}">
+                        <fa class="fa-duotone fa-lighthouse fa-4x"></fa>
+                    </div>
+                </div>
+
+                {{ if .err }}
+                    <div class="block">
+                        <div class="has-text-danger-dark">
+                            Invalid credentials
+                        </div>
+                    </div>
+                {{ end }}
+
+                <form method="post">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <input required class="input" type="text" name="username" placeholder="Username">
+                            <span class="icon is-small is-left">
+                                <i class="fa-duotone fa-user"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <input required class="input" type="password" name="password" placeholder="Password">
+                            <span class="icon is-small is-left">
+                                <i class="fa-duotone fa-lock"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" name="do_login" class="button is-link">
+                                Log in
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

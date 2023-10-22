@@ -27,7 +27,7 @@
 
     <div class="level-right">
         <div class="level-item">
-            {{ if eq .mode "view" }}
+            {{ if and (eq .mode "view") (.globals.User.Admin) }}
                 <div class="dropdown is-right">
                     <div class="js-dropdown-trigger dropdown-trigger">
                         <button class="button">

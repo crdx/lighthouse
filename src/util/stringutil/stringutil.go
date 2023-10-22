@@ -3,9 +3,11 @@ package stringutil
 import (
 	"bytes"
 
+	"github.com/samber/lo"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/renderer/html"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Pluralise(count int, unit string) string {
@@ -43,4 +45,14 @@ func RenderMarkdown(s string) string {
 	}
 
 	return buf.String()
+}
+
+// Hash bcrypt hashes a password using a default cost.
+func Hash(value string) string {
+	return string(lo.Must(bcrypt.GenerateFromPassword([]byte(value), bcrypt.DefaultCost)))
+}
+
+// VerifyHashAndPassword verifies a bcrypt hash against a password.
+func VerifyHashAndPassword(hash string, password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
 }

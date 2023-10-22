@@ -4,21 +4,21 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/controllers/notificationController"
+	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
-func app() *fiber.App {
+func setup() *helpers.Session {
 	helpers.Init()
-	app := helpers.App()
+	app := helpers.App(auth.StateAdmin)
 	notificationController.InitRoutes(app)
-	return app
+	return helpers.NewSession(app)
 }
 
 func TestList(t *testing.T) {
-	app := app()
-	res, body := helpers.Get(app, "/notifications")
+	session := setup()
+	res, body := session.Get("/notifications")
 
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "a thing has happened")

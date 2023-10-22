@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/middleware/minify"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
@@ -33,14 +33,6 @@ func initMiddleware(app *fiber.App) {
 		Root:       http.FS(assets),
 		PathPrefix: "assets",
 	}))
-
-	if env.AuthType == env.AuthTypeBasic {
-		app.Use(basicauth.New(basicauth.Config{
-			Users: map[string]string{
-				env.AuthUser: env.AuthPass,
-			},
-		}))
-	}
 
 	if env.Production {
 		app.Use(recover.New(recover.Config{}))
@@ -67,4 +59,6 @@ func initMiddleware(app *fiber.App) {
 	if !env.Production {
 		app.Use(logger.New())
 	}
+
+	app.Use(auth.New())
 }

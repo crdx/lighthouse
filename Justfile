@@ -75,6 +75,10 @@ test *args:
     rm "$OUTPUT"
     exit "$CODE"
 
+# run a specific test
+@test-file path:
+    cd src && go test -p 1 -cover {{ path }}
+
 # check everything
 @check: lint test
 

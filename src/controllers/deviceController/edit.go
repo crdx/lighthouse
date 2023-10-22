@@ -22,6 +22,10 @@ type EditForm struct {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
+	if !globals.IsAdmin(c) {
+		return c.SendStatus(404)
+	}
+
 	device, found := db.First[m.Device](c.Params("id"))
 	if !found {
 		return c.SendStatus(404)
@@ -36,6 +40,10 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
+	if !globals.IsAdmin(c) {
+		return c.SendStatus(404)
+	}
+
 	device, found := db.First[m.Device](c.Params("id"))
 	if !found {
 		return c.SendStatus(400)

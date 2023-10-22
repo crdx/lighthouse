@@ -33,6 +33,10 @@ func get(c *fiber.Ctx) (*m.Device, *m.Adapter, bool) {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
+	if !globals.IsAdmin(c) {
+		return c.SendStatus(404)
+	}
+
 	device, adapter, found := get(c)
 	if !found {
 		return c.SendStatus(404)
@@ -47,6 +51,10 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
+	if !globals.IsAdmin(c) {
+		return c.SendStatus(404)
+	}
+
 	device, adapter, found := get(c)
 
 	if !found {

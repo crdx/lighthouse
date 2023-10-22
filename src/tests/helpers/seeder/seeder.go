@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/util/stringutil"
 )
 
 func createDevice(id uint, name, hostname string, lastSeen time.Time) *m.Device {
@@ -67,6 +68,9 @@ func Run() error {
 
 	db.Save(&m.Setting{Name: "notification_from_header", Value: "foo <foo@example.com>"})
 	db.Save(&m.Setting{Name: "notification_to_header", Value: "bar <bar@example.com>"})
+
+	db.Save(&m.User{Username: "admin", PasswordHash: stringutil.Hash("admin"), Admin: true})
+	db.Save(&m.User{Username: "user", PasswordHash: stringutil.Hash("user"), Admin: false})
 
 	return nil
 }
