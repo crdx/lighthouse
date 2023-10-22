@@ -3,17 +3,13 @@ package auth_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/controllers/adminController"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func setup() *helpers.Session {
-	helpers.Init()
-	app := helpers.App(auth.StateUnauthenticated)
-	adminController.InitRoutes(app)
-	return helpers.NewSession(app)
+	return helpers.Init(auth.StateUnauthenticated)
 }
 
 func TestLoginPage(t *testing.T) {

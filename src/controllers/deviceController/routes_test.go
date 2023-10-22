@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"crdx.org/db"
-	"crdx.org/lighthouse/controllers/deviceController"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
@@ -14,10 +13,7 @@ import (
 )
 
 func setup() *helpers.Session {
-	helpers.Init()
-	app := helpers.App(auth.StateAdmin)
-	deviceController.InitRoutes(app)
-	return helpers.NewSession(app)
+	return helpers.Init(auth.StateAdmin)
 }
 
 func TestList(t *testing.T) {

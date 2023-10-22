@@ -3,17 +3,13 @@ package activityController_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/controllers/activityController"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func setup() *helpers.Session {
-	helpers.Init()
-	app := helpers.App(auth.StateAdmin)
-	activityController.InitRoutes(app)
-	return helpers.NewSession(app)
+	return helpers.Init(auth.StateAdmin)
 }
 
 func TestList(t *testing.T) {

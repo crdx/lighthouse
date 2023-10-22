@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"crdx.org/lighthouse/controllers/adminController"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"crdx.org/lighthouse/util/stringutil"
@@ -12,10 +11,7 @@ import (
 )
 
 func setup() *helpers.Session {
-	helpers.Init()
-	app := helpers.App(auth.StateAdmin)
-	adminController.InitRoutes(app)
-	return helpers.NewSession(app)
+	return helpers.Init(auth.StateAdmin)
 }
 
 func TestIndex(t *testing.T) {

@@ -37,12 +37,7 @@ func main() {
 	}
 
 	initMiddleware(app)
-	initRoutes(app)
-
-	// Catch all requests not defined in initRoutes above.
-	app.Use(func(c *fiber.Ctx) error {
-		return c.SendStatus(404)
-	})
+	conf.InitRoutes(app)
 
 	startServices()
 

@@ -3,8 +3,6 @@ package adapterController_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/controllers/adapterController"
-	"crdx.org/lighthouse/controllers/deviceController"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"crdx.org/lighthouse/util/stringutil"
@@ -12,11 +10,7 @@ import (
 )
 
 func setup() *helpers.Session {
-	helpers.Init()
-	app := helpers.App(auth.StateAdmin)
-	adapterController.InitRoutes(app)
-	deviceController.InitRoutes(app)
-	return helpers.NewSession(app)
+	return helpers.Init(auth.StateAdmin)
 }
 
 func TestEdit(t *testing.T) {
