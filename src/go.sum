@@ -1,5 +1,5 @@
-crdx.org/db v1.6.0 h1:N1doLYB3Gfvjd5MNZriF04RqvsVO/2+Oe1HfKYHuZ4Y=
-crdx.org/db v1.6.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
+crdx.org/db v1.7.0 h1:sfIC0AhYmeAf05PuRDSvurukQ1069xi0mxLxOE/Bf2E=
+crdx.org/db v1.7.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
 crdx.org/session v1.0.1 h1:0/AgtOZEv7/NX7UQxJCr6hQKZafllMoBCorVLMIQhMs=
 crdx.org/session v1.0.1/go.mod h1:NF/Obven+N2Th8MVYbBOcvhxlYbMbCPt9MIPf6v9bBw=
 crdx.org/session v1.1.0 h1:+Pa8Nl7CLEK7Bpa65gLiMAMvEvwvZmKgIQPpxD6ND6I=

@@ -12,7 +12,5 @@ func All() []*m.VendorLookup {
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
 func Unprocessed() []*m.VendorLookup {
-	return db.B[m.VendorLookup]().
-		Where("processed = 0").
-		Find()
+	return db.B[m.VendorLookup]("processed = 0").Find()
 }

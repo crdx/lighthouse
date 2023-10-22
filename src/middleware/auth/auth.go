@@ -33,7 +33,7 @@ func logOut(c *fiber.Ctx) error {
 }
 
 func logIn(c *fiber.Ctx, username string, password string) error {
-	user, found := db.B[m.User]().Where("username = ?", username).First()
+	user, found := db.B[m.User]("username = ?", username).First()
 
 	if !found {
 		return err(c)
@@ -83,7 +83,7 @@ func New() fiber.Handler {
 // used for tests.
 func AutoLogin(state State) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		user, _ := db.B[m.User]().Where("admin = ?", state == StateAdmin).First()
+		user, _ := db.B[m.User]("admin = ?", state == StateAdmin).First()
 		c.Locals("user", user)
 		return c.Next()
 	}

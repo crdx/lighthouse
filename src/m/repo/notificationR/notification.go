@@ -5,7 +5,6 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/pkg/pager"
-	"crdx.org/lighthouse/util/dbutil"
 )
 
 type ListView struct {
@@ -22,7 +21,7 @@ func GetListViewRowCount() uint {
 }
 
 func GetListView(page uint, perPage uint) []ListView {
-	q := dbutil.NewQueryBuilder(`
+	q := db.Q(`
 		SELECT
 			created_at,
 			subject,

@@ -7,7 +7,6 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/pager"
-	"crdx.org/lighthouse/util/dbutil"
 )
 
 func All() []*m.DeviceStateLog {
@@ -34,7 +33,7 @@ type ListView struct {
 }
 
 func GetListViewRowCount(deviceID uint) uint {
-	q := dbutil.NewQueryBuilder(`
+	q := db.Q(`
 		SELECT count(*)
 		FROM device_state_logs DSL
 		INNER JOIN devices D on D.id = DSL.device_id
@@ -48,7 +47,7 @@ func GetListViewRowCount(deviceID uint) uint {
 }
 
 func GetListView(deviceID uint, page uint, perPage uint) []ListView {
-	q := dbutil.NewQueryBuilder(`
+	q := db.Q(`
 		SELECT
 			DSL.created_at,
 			DSL.device_id,

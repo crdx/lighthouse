@@ -43,9 +43,9 @@ func Merge(c *fiber.Ctx) error {
 		parent.Update("last_seen", child.LastSeen)
 	}
 
-	db.B[m.DeviceStateLog]().Where("device_id = ?", child.ID).Update("device_id", parent.ID)
-	db.B[m.DeviceStateNotification]().Where("device_id = ?", child.ID).Update("device_id", parent.ID)
-	db.B[m.DeviceDiscoveryNotification]().Where("device_id = ?", child.ID).Update("device_id", parent.ID)
+	db.B[m.DeviceStateLog]("device_id = ?", child.ID).Update("device_id", parent.ID)
+	db.B[m.DeviceStateNotification]("device_id = ?", child.ID).Update("device_id", parent.ID)
+	db.B[m.DeviceDiscoveryNotification]("device_id = ?", child.ID).Update("device_id", parent.ID)
 
 	child.Delete()
 

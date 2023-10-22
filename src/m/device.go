@@ -36,9 +36,9 @@ func (self *Device) Delete() {
 		adapter.Delete()
 	}
 
-	db.B[DeviceStateLog]().Where("device_id = ?", self.ID).Delete()
-	db.B[DeviceStateNotification]().Where("device_id = ?", self.ID).Delete()
-	db.B[DeviceDiscoveryNotification]().Where("device_id = ?", self.ID).Delete()
+	db.B[DeviceStateLog]("device_id = ?", self.ID).Delete()
+	db.B[DeviceStateNotification]("device_id = ?", self.ID).Delete()
+	db.B[DeviceDiscoveryNotification]("device_id = ?", self.ID).Delete()
 
 	db.For[Device](self.ID).Delete()
 }
@@ -56,7 +56,7 @@ func (self *Device) DisplayName() string {
 func (self *Device) Identifier() string {
 	id := self.DisplayName()
 
-	if self.Name == "" || db.B[Device]().Where("name = ?", self.Name).Count() > 1 {
+	if self.Name == "" || db.B[Device]("name = ?", self.Name).Count() > 1 {
 		if self.Hostname != "" {
 			id += fmt.Sprintf(" (%s)", self.Hostname)
 		} else {
@@ -91,5 +91,5 @@ func (self *Device) Details() string {
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
-	return db.B[Adapter]().Where("device_id = ?", self.ID).Order("last_seen DESC").Find()
+	return db.B[Adapter]("device_id = ?", self.ID).Order("last_seen DESC").Find()
 }
