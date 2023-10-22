@@ -9,9 +9,9 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/m/repo/vendorLookupR"
 	"crdx.org/lighthouse/services"
-	"crdx.org/lighthouse/setting"
 	"github.com/imroc/req/v3"
 )
 
@@ -31,7 +31,7 @@ func (self *VendorDB) Init(args *services.Args) error {
 }
 
 func (self *VendorDB) Run() error {
-	if setting.Get(setting.MACVendorsAPIKey) == "" {
+	if settingR.Get(settingR.MACVendorsAPIKey) == "" {
 		return nil
 	}
 
@@ -108,7 +108,7 @@ retry:
 
 func getVendor(macAddress string) (*req.Response, error) {
 	return req.C().R().
-		SetBearerAuthToken(setting.Get(setting.MACVendorsAPIKey)).
+		SetBearerAuthToken(settingR.Get(settingR.MACVendorsAPIKey)).
 		SetHeader("Accept", "text/plain").
 		Get("https://api.macvendors.com/v1/lookup/" + macAddress)
 }

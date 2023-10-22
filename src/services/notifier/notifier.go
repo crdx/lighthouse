@@ -6,10 +6,10 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/state"
-	"crdx.org/lighthouse/setting"
 	"crdx.org/lighthouse/util/mailutil"
 	"github.com/samber/lo"
 )
@@ -41,7 +41,7 @@ func add(notification *m.Notification) {
 
 	db.Save(&notification)
 
-	if !setting.GetBool(setting.EnableNotifications) {
+	if !settingR.GetBool(settingR.EnableNotifications) {
 		return
 	}
 

@@ -8,7 +8,6 @@ import (
 	"net/smtp"
 	"testing"
 
-	"crdx.org/lighthouse/setting"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,13 +19,21 @@ func TestSendFunc(t *testing.T) {
 		{"Subject", "Body"},
 	}
 
+	fromHeader := "lighthouse <lighthouse@example.com>"
+	toHeader := "alerts <alerts@example.com>"
+
+	Init(&Config{
+		FromHeader: fromHeader,
+		ToHeader:   toHeader,
+	})
+
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%s", testCase.inputSubject, testCase.inputBody), func(t *testing.T) {
 			mockSend := func(_ string, _ smtp.Auth, _ string, _ []string, message []byte) error {
 				expectedBody := fmt.Sprintf(
 					"From: %s\nTo: %s\nSubject: %s\n\n%s",
-					setting.Get(setting.NotificationFromHeader),
-					setting.Get(setting.NotificationToHeader),
+					fromHeader,
+					toHeader,
 					testCase.inputSubject,
 					testCase.inputBody,
 				)

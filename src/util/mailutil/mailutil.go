@@ -8,14 +8,35 @@ import (
 
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/logger"
-	"crdx.org/lighthouse/setting"
 )
 
 type Func func(string, smtp.Auth, string, []string, []byte) error
 
+type Config struct {
+	Enable      bool
+	Host        string
+	Port        string
+	User        string
+	Pass        string
+	FromAddress string
+	ToAddress   string
+	FromHeader  string
+	ToHeader    string
+}
+
+var packageConfig *Config
+
+func Init(config *Config) {
+	packageConfig = config
+}
+
 // Send sends an email if SMTP is enabled.
 func Send(subject string, body string) error {
-	if !setting.GetBool(setting.EnableSMTP) {
+	if packageConfig == nil {
+		panic("no mail configuration")
+	}
+
+	if !packageConfig.Enable {
 		return nil
 	}
 
@@ -31,10 +52,10 @@ func Send(subject string, body string) error {
 
 func sendFunc(send Func, subject string, body string) error {
 	return send(
-		setting.Get(setting.SMTPHost)+":"+setting.Get(setting.SMTPPort),
-		smtp.PlainAuth("", setting.Get(setting.SMTPUser), setting.Get(setting.SMTPPass), setting.Get(setting.SMTPHost)),
-		setting.Get(setting.NotificationFromAddress),
-		[]string{setting.Get(setting.NotificationToAddress)},
+		packageConfig.Host+":"+packageConfig.Port,
+		smtp.PlainAuth("", packageConfig.User, packageConfig.Pass, packageConfig.Host),
+		packageConfig.FromAddress,
+		[]string{packageConfig.ToAddress},
 		[]byte(buildBody(subject, body)),
 	)
 }
@@ -42,8 +63,8 @@ func sendFunc(send Func, subject string, body string) error {
 func buildBody(subject string, body string) string {
 	return fmt.Sprintf(
 		"From: %s\nTo: %s\nSubject: %s\n\n%s",
-		setting.Get(setting.NotificationFromHeader),
-		setting.Get(setting.NotificationToHeader),
+		packageConfig.FromHeader,
+		packageConfig.ToHeader,
 		subject,
 		body,
 	)

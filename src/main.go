@@ -6,6 +6,9 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/m/repo/settingR"
+	"crdx.org/lighthouse/util/mailutil"
+	"crdx.org/lighthouse/util/timeutil"
 	"crdx.org/session"
 
 	"github.com/gofiber/fiber/v2"
@@ -39,7 +42,30 @@ func main() {
 	initMiddleware(app)
 	conf.InitRoutes(app)
 
+	InitMail()
+	InitTime()
+
 	startServices()
 
 	panic(app.Listen(env.BindHost + ":" + env.BindPort))
+}
+
+func InitTime() {
+	timeutil.Init(&timeutil.Config{
+		Timezone: settingR.Get(settingR.Timezone),
+	})
+}
+
+func InitMail() {
+	mailutil.Init(&mailutil.Config{
+		Enable:      settingR.GetBool(settingR.EnableSMTP),
+		Host:        settingR.Get(settingR.SMTPHost),
+		Port:        settingR.Get(settingR.SMTPPort),
+		User:        settingR.Get(settingR.SMTPUser),
+		Pass:        settingR.Get(settingR.SMTPPass),
+		FromAddress: settingR.Get(settingR.NotificationFromAddress),
+		ToAddress:   settingR.Get(settingR.NotificationToAddress),
+		FromHeader:  settingR.Get(settingR.NotificationFromHeader),
+		ToHeader:    settingR.Get(settingR.NotificationToHeader),
+	})
 }
