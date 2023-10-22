@@ -69,15 +69,19 @@ test *args:
     # This old mess is required to preserve the exit code of "go test" and not have it swallowed up
     # by grep.
     OUTPUT=$(mktemp)
-    go test -p 1 -cover ./... {{ args }} > "$OUTPUT"
+    go test -p 1 -cover -coverprofile=coverage ./... {{ args }} > "$OUTPUT"
     CODE=$?
     grep -vF '[no test files]' "$OUTPUT"
     rm "$OUTPUT"
     exit "$CODE"
 
+# show code coverage
+@coverage:
+    cd src && go tool cover -html=coverage
+
 # run a specific test
 @test-file path:
-    cd src && go test -p 1 -cover {{ path }}
+    cd src && go test -p 1 {{ path }}
 
 # check everything
 @check: lint test
