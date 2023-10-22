@@ -33,7 +33,7 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, body := session.Get("/admin")
+	res, body := session.Get("/admin/settings")
 
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "Settings")
@@ -49,7 +49,7 @@ func TestSuccessfulUserLogin(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, body = session.Get("/admin")
+	res, body = session.Get("/admin/settings")
 	assert.Equal(t, 404, res.StatusCode)
 	assert.NotContains(t, body, "Settings")
 }

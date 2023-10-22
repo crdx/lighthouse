@@ -1,0 +1,20 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            <div class="tabs">
+              <ul>
+                <li class="{{ if eq .mode "settings" }}is-active{{ end }} js-tab-trigger" data-target="#tab-settings">
+                  <a>
+                    <span class="icon is-small"><i class="fa-duotone fa-cog" aria-hidden="true"></i></span>
+                    <span>Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="js-tab" id="tab-settings" {{ if ne .mode "settings" }}style="display: none"{{ end }}>
+                {{ template "admin/p/settings" . }}
+            </div>
+        </div>
+    </div>
+</div>

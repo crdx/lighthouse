@@ -33,12 +33,13 @@ type SettingsForm struct {
 	Timezone         string `form:"timezone"           transform:"trim" validate:"required,timezone"`
 }
 
-func Index(c *fiber.Ctx) error {
+func ListSettings(c *fiber.Ctx) error {
 	if !globals.IsAdmin(c) {
 		return c.SendStatus(404)
 	}
 
-	return c.Render("admin/settings", fiber.Map{
+	return c.Render("admin/index", fiber.Map{
+		"mode":     "settings",
 		"fields":   validate.Fields[SettingsForm](),
 		"settings": reflectutil.MapToStruct[SettingsForm](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
@@ -60,7 +61,7 @@ func SaveSettings(c *fiber.Ctx) error {
 	if fields, err := validate.Struct(form); err {
 		flash.Failure(c, "Unable to save settings")
 
-		return c.Render("admin/settings", fiber.Map{
+		return c.Render("admin/index", fiber.Map{
 			"err":     err,
 			"fields":  fields,
 			"globals": globals.Get(c),
@@ -73,5 +74,5 @@ func SaveSettings(c *fiber.Ctx) error {
 	settingR.Invalidate()
 
 	flash.Success(c, "Settings saved")
-	return c.Redirect("/admin")
+	return c.Redirect("/admin/settings")
 }

@@ -14,14 +14,14 @@ func setup() *helpers.Session {
 	return helpers.Init(auth.StateAdmin)
 }
 
-func TestIndex(t *testing.T) {
+func TestListSettings(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/admin")
+	res, body := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, body, "MACVendors")
 }
 
-func TestSave(t *testing.T) {
+func TestSaveSettings(t *testing.T) {
 	session := setup()
 
 	apiKey := stringutil.UUID()
@@ -33,7 +33,7 @@ func TestSave(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := session.Get("/admin")
+	_, body := session.Get("/admin/settings")
 
 	assert.Contains(t, body, apiKey)
 }
