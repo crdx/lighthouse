@@ -45,3 +45,11 @@ code {
 .pre {
     white-space: pre;
 }
+
+.navbar > .container .navbar-menu {
+    margin-right: 0;
+}
+
+.navbar > .container .navbar-brand {
+    margin-left: 0;
+}
