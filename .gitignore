@@ -2,7 +2,6 @@
 /bin/
 /logs/
 /src/assets/fontawesome/
-/coverage.txt
 
 # sfe: ignore next 3
 /TODO.md
