@@ -45,7 +45,7 @@ func Index(c *fiber.Ctx) error {
 	})
 }
 
-func Save(c *fiber.Ctx) error {
+func SaveSettings(c *fiber.Ctx) error {
 	if !globals.IsAdmin(c) {
 		return c.SendStatus(404)
 	}

@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initModals()
     initDropdowns()
     initForms()
+    initTabs()
 })
 
 function initNav() {
@@ -69,6 +70,19 @@ function initForms() {
         el.addEventListener('click', () => {
             $(el.dataset.target).requestSubmit()
             return false
+        })
+    })
+}
+
+function initTabs() {
+    $$('.js-tab-trigger').forEach(el => {
+        const target = $(el.dataset.target)
+        el.addEventListener('click', () => {
+            $$('.js-tab-trigger').forEach(el => el.classList.remove('is-active'))
+            el.classList.add('is-active')
+
+            $$('.js-tab').forEach(el => el.style.display = 'none')
+            target.style.display = 'block'
         })
     })
 }
