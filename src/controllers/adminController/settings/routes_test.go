@@ -1,4 +1,4 @@
-package adminController_test
+package settings_test
 
 import (
 	"strings"
@@ -14,14 +14,14 @@ func setup() *helpers.Session {
 	return helpers.Init(auth.StateAdmin)
 }
 
-func TestListSettings(t *testing.T) {
+func TestList(t *testing.T) {
 	session := setup()
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "MACVendors")
 }
 
-func TestSaveSettings(t *testing.T) {
+func TestEdit(t *testing.T) {
 	session := setup()
 
 	apiKey := uuid.NewString()
@@ -41,13 +41,15 @@ func TestSaveSettings(t *testing.T) {
 func TestEditWithErrors(t *testing.T) {
 	session := setup()
 
-	apiKey := strings.Repeat(uuid.NewString(), 100)
+	id := uuid.NewString()
+	apiKey := strings.Repeat(id, 100)
 
 	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, id)
 	assert.Contains(t, res.Body, "must be a maximum of")
 	assert.Contains(t, res.Body, "characters in length")
 }

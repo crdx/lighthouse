@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io/fs"
 	"net/http"
+	"os"
 
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/util"
@@ -42,7 +43,7 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 }
 
 func GetTestFiberConfig() fiber.Config {
-	views := html.New("../../views", ".go.html")
+	views := html.New(os.Getenv("VIEWS_DIR"), ".go.html")
 	views.AddFuncMap(helpers.GetFuncMap())
 
 	// https://docs.gofiber.io

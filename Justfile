@@ -64,14 +64,20 @@ set dotenv-load := true
     docker-compose down
 
 # run tests
-@test:
-    cd src && go test -p 1 -cover {{ TESTABLE_PACKAGES }}
+test:
+    #!/bin/bash
+    set -e
+    cd src
+    export VIEWS_DIR=$(realpath views)
+    go test -p 1 -cover {{ TESTABLE_PACKAGES }}
 
 # run tests and show code coverage
 cov:
     #!/bin/bash
+    set -e
     cd src
     FILE=$(mktemp)
+    export VIEWS_DIR=$(realpath views)
     go test -p 1 -cover -coverprofile="$FILE" {{ TESTABLE_PACKAGES }}
     go tool cover -html="$FILE"
     rm -v "$FILE"
