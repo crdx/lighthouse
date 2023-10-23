@@ -69,7 +69,7 @@ func Run() error {
 	db.Save(&m.Setting{Name: "notification_from_header", Value: "foo <foo@example.com>"})
 	db.Save(&m.Setting{Name: "notification_to_header", Value: "bar <bar@example.com>"})
 
-	db.Save(&m.User{Username: "admin", PasswordHash: stringutil.Hash("admin"), Admin: true})
+	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash("root"), Admin: true})
 	db.Save(&m.User{Username: "user", PasswordHash: stringutil.Hash("user"), Admin: false})
 
 	return nil

@@ -26,8 +26,8 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 	session := setup()
 
 	res := session.PostForm("/", map[string]string{
-		"username": "admin",
-		"password": "admin",
+		"username": "root",
+		"password": "root",
 		"id":       auth.ID,
 	})
 
@@ -59,7 +59,7 @@ func TestFailedLogin(t *testing.T) {
 	session := setup()
 
 	res := session.PostForm("/", map[string]string{
-		"username": "admin",
+		"username": "root",
 		"password": "hunter2",
 		"id":       auth.ID,
 	})
