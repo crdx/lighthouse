@@ -6,15 +6,10 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
-	"crdx.org/lighthouse/pkg/globals"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Merge(c *fiber.Ctx) error {
-	if !globals.IsAdmin(c) {
-		return c.SendStatus(404)
-	}
-
 	device1, found := db.First[m.Device](c.Params("id"))
 
 	if !found {

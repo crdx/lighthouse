@@ -8,10 +8,6 @@ import (
 )
 
 func List(c *fiber.Ctx) error {
-	if !globals.IsAdmin(c) {
-		return c.SendStatus(404)
-	}
-
 	return c.Render("admin/index", fiber.Map{
 		"tab":     "users",
 		"mode":    "list",

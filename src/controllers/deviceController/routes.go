@@ -1,16 +1,19 @@
 package deviceController
 
 import (
+	"crdx.org/lighthouse/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoutes(app *fiber.App) {
 	app.Get("/", List)
 
-	deviceGroup := app.Group("/device/:id<int>")
-	deviceGroup.Get("/", View)
-	deviceGroup.Post("/delete", Delete)
-	deviceGroup.Get("/edit", ViewEdit)
-	deviceGroup.Post("/edit", Edit)
-	deviceGroup.Post("/merge", Merge)
+	g := app.Group("/device/:id<int>")
+
+	g.Get("/", View)
+
+	g.Post("/delete", auth.Admin, Delete)
+	g.Get("/edit", auth.Admin, ViewEdit)
+	g.Post("/edit", auth.Admin, Edit)
+	g.Post("/merge", auth.Admin, Merge)
 }

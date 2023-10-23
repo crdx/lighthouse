@@ -6,6 +6,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/util/stringutil"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
@@ -81,6 +82,14 @@ func New() fiber.Handler {
 		c.Locals("user", user)
 		return c.Next()
 	}
+}
+
+// Admin only allows the request to continue if the current user is an admin.
+func Admin(c *fiber.Ctx) error {
+	if !globals.IsAdmin(c) {
+		return c.SendStatus(404)
+	}
+	return c.Next()
 }
 
 // AutoLogin returns a fiber.Handler that simulates the user being authorised as the provided state.

@@ -31,10 +31,6 @@ type SettingsForm struct {
 }
 
 func List(c *fiber.Ctx) error {
-	if !globals.IsAdmin(c) {
-		return c.SendStatus(404)
-	}
-
 	return c.Render("admin/index", fiber.Map{
 		"tab":      "settings",
 		"fields":   validate.Fields[SettingsForm](),
@@ -44,10 +40,6 @@ func List(c *fiber.Ctx) error {
 }
 
 func Save(c *fiber.Ctx) error {
-	if !globals.IsAdmin(c) {
-		return c.SendStatus(404)
-	}
-
 	form := new(SettingsForm)
 	if err := c.BodyParser(form); err != nil {
 		return err
