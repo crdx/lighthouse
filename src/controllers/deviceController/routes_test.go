@@ -18,22 +18,22 @@ func setup() *helpers.Session {
 
 func TestList(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/")
+	res := session.Get("/")
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
-	assert.Contains(t, body, "127.0.0.1")
-	assert.Contains(t, body, "device1")
+	assert.Contains(t, res.Body, "AA:AA:AA:AA:AA:AA")
+	assert.Contains(t, res.Body, "127.0.0.1")
+	assert.Contains(t, res.Body, "device1")
 }
 
 func TestView(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/device/1")
+	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "AA:AA:AA:AA:AA:AA")
-	assert.Contains(t, body, "127.0.0.1")
-	assert.Contains(t, body, "adapter1")
-	assert.Contains(t, body, "Corp 1")
+	assert.Contains(t, res.Body, "AA:AA:AA:AA:AA:AA")
+	assert.Contains(t, res.Body, "127.0.0.1")
+	assert.Contains(t, res.Body, "adapter1")
+	assert.Contains(t, res.Body, "Corp 1")
 }
 
 func TestEdit(t *testing.T) {
@@ -43,7 +43,7 @@ func TestEdit(t *testing.T) {
 	notesUUID := stringutil.UUID()
 	iconUUID := stringutil.UUID()
 
-	res, _ := session.PostForm("/device/1/edit", map[string]string{
+	res := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
 		"notes":        notesUUID,
 		"icon":         iconUUID,
@@ -52,11 +52,11 @@ func TestEdit(t *testing.T) {
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := session.Get("/device/1")
+	res = session.Get("/device/1")
 
-	assert.Contains(t, body, nameUUID)
-	assert.Contains(t, body, notesUUID)
-	assert.Contains(t, body, iconUUID)
+	assert.Contains(t, res.Body, nameUUID)
+	assert.Contains(t, res.Body, notesUUID)
+	assert.Contains(t, res.Body, iconUUID)
 }
 
 func TestEditWithErrors(t *testing.T) {
@@ -66,7 +66,7 @@ func TestEditWithErrors(t *testing.T) {
 	notesUUID := stringutil.UUID()
 	iconUUID := stringutil.UUID()
 
-	res, body := session.PostForm("/device/1/edit", map[string]string{
+	res := session.PostForm("/device/1/edit", map[string]string{
 		"name":         nameUUID,
 		"notes":        notesUUID,
 		"icon":         iconUUID,
@@ -74,28 +74,28 @@ func TestEditWithErrors(t *testing.T) {
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "required field")
+	assert.Contains(t, res.Body, "required field")
 
-	_, body = session.Get("/device/1")
+	res = session.Get("/device/1")
 
-	assert.NotContains(t, body, notesUUID)
-	assert.NotContains(t, body, iconUUID)
+	assert.NotContains(t, res.Body, notesUUID)
+	assert.NotContains(t, res.Body, iconUUID)
 }
 
 func TestMerge(t *testing.T) {
 	session := setup()
 
-	res, _ := session.PostForm("/device/1/merge", map[string]string{
+	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := session.Get("/device/1")
+	res = session.Get("/device/1")
 
-	assert.Contains(t, body, "2023-10-01")
-	assert.Contains(t, body, "adapter1")
-	assert.Contains(t, body, "adapter2")
+	assert.Contains(t, res.Body, "2023-10-01")
+	assert.Contains(t, res.Body, "adapter1")
+	assert.Contains(t, res.Body, "adapter2")
 
 	device := lo.Must(db.First[m.Device](1))
 
@@ -109,12 +109,12 @@ func TestMerge(t *testing.T) {
 func TestDelete(t *testing.T) {
 	session := setup()
 
-	res, _ := session.Get("/device/1")
+	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
 
-	res, _ = session.PostForm("/device/1/delete", nil)
+	res = session.PostForm("/device/1/delete", nil)
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, _ = session.Get("/device/1")
+	res = session.Get("/device/1")
 	assert.Equal(t, 404, res.StatusCode)
 }

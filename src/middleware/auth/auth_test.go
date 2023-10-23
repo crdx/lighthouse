@@ -15,54 +15,53 @@ func setup() *helpers.Session {
 func TestLoginPage(t *testing.T) {
 	session := setup()
 
-	res, body := session.Get("/")
-
+	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "Username")
-	assert.Contains(t, body, "Password")
-	assert.NotContains(t, body, "Devices")
+	assert.Contains(t, res.Body, "Username")
+	assert.Contains(t, res.Body, "Password")
+	assert.NotContains(t, res.Body, "Devices")
 }
 
 func TestSuccessfulAdminLogin(t *testing.T) {
 	session := setup()
 
-	res, _ := session.PostForm("/", map[string]string{
+	res := session.PostForm("/", map[string]string{
 		"username": "admin",
 		"password": "admin",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, body := session.Get("/admin/settings")
+	res = session.Get("/admin/settings")
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "Settings")
+	assert.Contains(t, res.Body, "Settings")
 }
 
 func TestSuccessfulUserLogin(t *testing.T) {
 	session := setup()
 
-	res, body := session.PostForm("/", map[string]string{
+	res := session.PostForm("/", map[string]string{
 		"username": "user",
 		"password": "user",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	res, body = session.Get("/admin/settings")
+	res = session.Get("/admin/settings")
 	assert.Equal(t, 404, res.StatusCode)
-	assert.NotContains(t, body, "Settings")
+	assert.NotContains(t, res.Body, "Settings")
 }
 
 func TestFailedLogin(t *testing.T) {
 	session := setup()
 
-	res, body := session.PostForm("/", map[string]string{
+	res := session.PostForm("/", map[string]string{
 		"username": "admin",
 		"password": "hunter2",
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "Invalid credentials")
-	assert.NotContains(t, body, "Devices")
+	assert.Contains(t, res.Body, "Invalid credentials")
+	assert.NotContains(t, res.Body, "Devices")
 }

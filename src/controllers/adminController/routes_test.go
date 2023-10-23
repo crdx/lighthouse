@@ -16,9 +16,9 @@ func setup() *helpers.Session {
 
 func TestListSettings(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/admin/settings")
+	res := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "MACVendors")
+	assert.Contains(t, res.Body, "MACVendors")
 }
 
 func TestSaveSettings(t *testing.T) {
@@ -26,16 +26,16 @@ func TestSaveSettings(t *testing.T) {
 
 	apiKey := stringutil.UUID()
 
-	res, _ := session.PostForm("/admin/settings", map[string]string{
+	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 		"timezone":           "Europe/London",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := session.Get("/admin/settings")
+	res = session.Get("/admin/settings")
 
-	assert.Contains(t, body, apiKey)
+	assert.Contains(t, res.Body, apiKey)
 }
 
 func TestEditWithErrors(t *testing.T) {
@@ -43,11 +43,11 @@ func TestEditWithErrors(t *testing.T) {
 
 	apiKey := strings.Repeat(stringutil.UUID(), 100)
 
-	res, body := session.PostForm("/admin/settings", map[string]string{
+	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "must be a maximum of")
-	assert.Contains(t, body, "characters in length")
+	assert.Contains(t, res.Body, "must be a maximum of")
+	assert.Contains(t, res.Body, "characters in length")
 }

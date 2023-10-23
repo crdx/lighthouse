@@ -14,9 +14,9 @@ func setup() *helpers.Session {
 
 func TestList(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/notifications")
+	res := session.Get("/notifications")
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "a thing has happened")
-	assert.Contains(t, body, "here are more details about the thing that happened")
+	assert.Contains(t, res.Body, "a thing has happened")
+	assert.Contains(t, res.Body, "here are more details about the thing that happened")
 }

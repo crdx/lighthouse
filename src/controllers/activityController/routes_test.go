@@ -14,12 +14,12 @@ func setup() *helpers.Session {
 
 func TestList(t *testing.T) {
 	session := setup()
-	res, body := session.Get("/activity")
+	res := session.Get("/activity")
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, body, "device1")
-	assert.Contains(t, body, "device2")
-	assert.NotContains(t, body, "device3")
-	assert.Contains(t, body, "online")
-	assert.Contains(t, body, "offline")
+	assert.Contains(t, res.Body, "device1")
+	assert.Contains(t, res.Body, "device2")
+	assert.NotContains(t, res.Body, "device3")
+	assert.Contains(t, res.Body, "online")
+	assert.Contains(t, res.Body, "offline")
 }

@@ -19,31 +19,31 @@ func TestEdit(t *testing.T) {
 	nameUUID := stringutil.UUID()
 	vendorUUID := stringutil.UUID()
 
-	res, _ := session.PostForm("/adapter/1/edit", map[string]string{
+	res := session.PostForm("/adapter/1/edit", map[string]string{
 		"name":   nameUUID,
 		"vendor": vendorUUID,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body := session.Get("/device/1")
+	res = session.Get("/device/1")
 
-	assert.Contains(t, body, nameUUID)
-	assert.Contains(t, body, vendorUUID)
+	assert.Contains(t, res.Body, nameUUID)
+	assert.Contains(t, res.Body, vendorUUID)
 }
 
 func TestDelete(t *testing.T) {
 	session := setup()
 
-	_, body := session.Get("/device/1/")
-	assert.Contains(t, body, "adapter1")
+	res := session.Get("/device/1/")
+	assert.Contains(t, res.Body, "adapter1")
 
-	res, _ := session.PostForm("/adapter/1/delete", nil)
+	res = session.PostForm("/adapter/1/delete", nil)
 	assert.Equal(t, 302, res.StatusCode)
 
-	_, body = session.Get("/device/1")
-	assert.NotContains(t, body, "adapter1")
+	res = session.Get("/device/1")
+	assert.NotContains(t, res.Body, "adapter1")
 
-	res, _ = session.Get("/adapter/1/edit")
+	res = session.Get("/adapter/1/edit")
 	assert.Equal(t, 404, res.StatusCode)
 }

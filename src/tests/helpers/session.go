@@ -18,26 +18,31 @@ type Session struct {
 	app     *fiber.App
 }
 
+type Response struct {
+	*http.Response
+	Body string
+}
+
 func NewSession(app *fiber.App) *Session {
 	return &Session{
 		app: app,
 	}
 }
 
-func (self *Session) Get(path string) (*http.Response, string) {
+func (self *Session) Get(path string) *Response {
 	req := httptest.NewRequest(http.MethodGet, path, nil)
 	return self.send(req)
 }
 
-func (self *Session) PostForm(path string, formData map[string]string) (*http.Response, string) {
+func (self *Session) PostForm(path string, formData map[string]string) *Response {
 	return self.sendForm(http.MethodPost, path, formData)
 }
 
-func (self *Session) PostJSON(path string, jsonData any) (*http.Response, string) {
+func (self *Session) PostJSON(path string, jsonData any) *Response {
 	return self.sendJSON(http.MethodPost, path, jsonData)
 }
 
-func (self *Session) sendJSON(method, path string, jsonData any) (*http.Response, string) {
+func (self *Session) sendJSON(method, path string, jsonData any) *Response {
 	data := lo.Must(json.Marshal(jsonData))
 	payload := bytes.NewBuffer(data)
 
@@ -47,7 +52,7 @@ func (self *Session) sendJSON(method, path string, jsonData any) (*http.Response
 	return self.send(req)
 }
 
-func (self *Session) sendForm(method, path string, formData map[string]string) (*http.Response, string) {
+func (self *Session) sendForm(method, path string, formData map[string]string) *Response {
 	data := url.Values{}
 	for key, value := range formData {
 		data.Set(key, value)
@@ -60,7 +65,7 @@ func (self *Session) sendForm(method, path string, formData map[string]string) (
 	return self.send(req)
 }
 
-func (self *Session) send(req *http.Request) (*http.Response, string) {
+func (self *Session) send(req *http.Request) *Response {
 	for _, cookie := range self.cookies {
 		req.AddCookie(cookie)
 	}
@@ -68,5 +73,8 @@ func (self *Session) send(req *http.Request) (*http.Response, string) {
 	res := lo.Must(self.app.Test(req))
 	self.cookies = res.Cookies()
 
-	return res, string(lo.Must(io.ReadAll(res.Body)))
+	return &Response{
+		Response: res,
+		Body:     string(lo.Must(io.ReadAll(res.Body))),
+	}
 }
