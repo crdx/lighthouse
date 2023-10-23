@@ -5,7 +5,7 @@ import (
 
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"crdx.org/lighthouse/util/stringutil"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -16,8 +16,8 @@ func setup() *helpers.Session {
 func TestEdit(t *testing.T) {
 	session := setup()
 
-	nameUUID := stringutil.UUID()
-	vendorUUID := stringutil.UUID()
+	nameUUID := uuid.NewString()
+	vendorUUID := uuid.NewString()
 
 	res := session.PostForm("/adapter/1/edit", map[string]string{
 		"name":   nameUUID,

@@ -3,7 +3,6 @@ package stringutil
 import (
 	"bytes"
 
-	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
@@ -56,8 +55,4 @@ func Hash(value string) string {
 // VerifyHashAndPassword verifies a bcrypt hash against a password.
 func VerifyHashAndPassword(hash string, password string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
-}
-
-func UUID() string {
-	return uuid.NewString()
 }

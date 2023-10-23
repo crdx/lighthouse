@@ -6,7 +6,7 @@ import (
 
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
-	"crdx.org/lighthouse/util/stringutil"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -24,7 +24,7 @@ func TestListSettings(t *testing.T) {
 func TestSaveSettings(t *testing.T) {
 	session := setup()
 
-	apiKey := stringutil.UUID()
+	apiKey := uuid.NewString()
 
 	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
@@ -41,7 +41,7 @@ func TestSaveSettings(t *testing.T) {
 func TestEditWithErrors(t *testing.T) {
 	session := setup()
 
-	apiKey := strings.Repeat(stringutil.UUID(), 100)
+	apiKey := strings.Repeat(uuid.NewString(), 100)
 
 	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
