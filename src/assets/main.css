@@ -53,3 +53,7 @@ code {
 .navbar > .container .navbar-brand {
     margin-left: 0;
 }
+
+.icon--focus {
+    color: #4a4a4a !important;
+}
