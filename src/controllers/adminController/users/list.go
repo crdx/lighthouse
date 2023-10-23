@@ -11,7 +11,7 @@ func List(c *fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab":     "users",
 		"mode":    "list",
-		"users":   db.B[m.User]().Order("username ASC").Find(),
+		"users":   db.B[m.User]().Order("id ASC").Find(),
 		"globals": globals.Get(c),
 	})
 }
