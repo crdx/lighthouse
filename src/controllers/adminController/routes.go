@@ -9,4 +9,6 @@ func InitRoutes(app *fiber.App) {
 
 	app.Get("/admin/settings", ListSettings)
 	app.Post("/admin/settings", SaveSettings)
+
+	app.Get("/admin/users", ListUsers)
 }

@@ -11,12 +11,22 @@
                     <span>Settings</span>
                   </a>
                 </li>
+                <li{{ if eq .tab "users" }} class="is-active"{{ end }}>
+                  <a href="/admin/users">
+                    <span class="icon is-small">
+                        <i class="fa-duotone fa-user" aria-hidden="true"></i>
+                    </span>
+                    <span>Users</span>
+                  </a>
+                </li>
               </ul>
             </div>
 
             <div>
                 {{ if eq .tab "settings" }}
                     {{ template "admin/p/settings" . }}
+                {{ else if eq .tab "users" }}
+                    {{ template "admin/p/users" . }}
                 {{ end }}
             </div>
         </div>
