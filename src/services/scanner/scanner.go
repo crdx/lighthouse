@@ -214,14 +214,7 @@ func (self *Scanner) handleARPPacket(packet *layers.ARP, messages chan<- network
 }
 
 func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
-	self.log.Info(
-		"device has broadcast its hostname",
-		"mac", macAddress,
-		"hostname", hostname,
-	)
-
 	self.hostnameCache[macAddress] = hostname
-
 	updateHostname(macAddress, hostname)
 }
 
