@@ -28,6 +28,7 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 	res := session.PostForm("/", map[string]string{
 		"username": "admin",
 		"password": "admin",
+		"id":       auth.ID,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -44,6 +45,7 @@ func TestSuccessfulUserLogin(t *testing.T) {
 	res := session.PostForm("/", map[string]string{
 		"username": "user",
 		"password": "user",
+		"id":       auth.ID,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -59,6 +61,7 @@ func TestFailedLogin(t *testing.T) {
 	res := session.PostForm("/", map[string]string{
 		"username": "admin",
 		"password": "hunter2",
+		"id":       auth.ID,
 	})
 
 	assert.Equal(t, 200, res.StatusCode)

@@ -19,12 +19,15 @@ const (
 	StateUnauthenticated
 )
 
+// Used to make sure with no shadow of a doubt that the submitted form is the login form.
+const ID = "afc434ce-bf57-48f7-9844-e9ab4091f19a"
+
 func err(c *fiber.Ctx) error {
-	return c.Render("auth/index", fiber.Map{"err": true}, "auth/layout")
+	return c.Render("auth/index", fiber.Map{"err": true, "id": ID}, "auth/layout")
 }
 
 func needAuth(c *fiber.Ctx) error {
-	return c.Render("auth/index", fiber.Map{}, "auth/layout")
+	return c.Render("auth/index", fiber.Map{"id": ID}, "auth/layout")
 }
 
 func logOut(c *fiber.Ctx) error {
@@ -58,8 +61,9 @@ func New() fiber.Handler {
 
 		username := c.FormValue("username")
 		password := c.FormValue("password")
+		isAuthForm := c.FormValue("id") == ID
 
-		if c.Method() == http.MethodPost && username != "" && password != "" {
+		if isAuthForm && c.Method() == http.MethodPost && username != "" && password != "" {
 			return logIn(c, username, password)
 		}
 
