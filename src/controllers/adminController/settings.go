@@ -39,7 +39,7 @@ func ListSettings(c *fiber.Ctx) error {
 	}
 
 	return c.Render("admin/index", fiber.Map{
-		"mode":     "settings",
+		"tab":      "settings",
 		"fields":   validate.Fields[SettingsForm](),
 		"settings": reflectutil.MapToStruct[SettingsForm](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
@@ -62,6 +62,7 @@ func SaveSettings(c *fiber.Ctx) error {
 		flash.Failure(c, "Unable to save settings")
 
 		return c.Render("admin/index", fiber.Map{
+			"tab":     "settings",
 			"err":     err,
 			"fields":  fields,
 			"globals": globals.Get(c),
