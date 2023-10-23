@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type SettingsForm struct {
+type Form struct {
 	// General
 	Watch bool `form:"watch"`
 
@@ -33,14 +33,14 @@ type SettingsForm struct {
 func List(c *fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab":      "settings",
-		"fields":   validate.Fields[SettingsForm](),
-		"settings": reflectutil.MapToStruct[SettingsForm](settingR.Map(), "form"),
+		"fields":   validate.Fields[Form](),
+		"settings": reflectutil.MapToStruct[Form](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
 	})
 }
 
 func Save(c *fiber.Ctx) error {
-	form := new(SettingsForm)
+	form := new(Form)
 	if err := c.BodyParser(form); err != nil {
 		return err
 	}
