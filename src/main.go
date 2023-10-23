@@ -58,14 +58,14 @@ func InitTime() {
 
 func InitMail() {
 	mailutil.Init(&mailutil.Config{
-		Enable:      settingR.GetBool(settingR.EnableSMTP),
+		Enable:      settingR.GetBool(settingR.EnableMail),
 		Host:        settingR.Get(settingR.SMTPHost),
 		Port:        settingR.Get(settingR.SMTPPort),
 		User:        settingR.Get(settingR.SMTPUser),
 		Pass:        settingR.Get(settingR.SMTPPass),
-		FromAddress: settingR.Get(settingR.NotificationFromAddress),
-		ToAddress:   settingR.Get(settingR.NotificationToAddress),
-		FromHeader:  settingR.Get(settingR.NotificationFromHeader),
-		ToHeader:    settingR.Get(settingR.NotificationToHeader),
+		FromAddress: settingR.Get(settingR.MailFromAddress),
+		ToAddress:   settingR.Get(settingR.MailToAddress),
+		FromHeader:  settingR.Get(settingR.MailFromHeader),
+		ToHeader:    settingR.Get(settingR.MailToHeader),
 	})
 }

@@ -6,7 +6,6 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/state"
@@ -40,10 +39,5 @@ func add(notification *m.Notification) {
 	}
 
 	db.Save(&notification)
-
-	if !settingR.GetBool(settingR.EnableNotifications) {
-		return
-	}
-
 	lo.Must0(mailutil.Send(notification.Subject, notification.Body))
 }

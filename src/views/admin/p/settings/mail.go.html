@@ -1,0 +1,136 @@
+<div class="field is-horizontal">
+    <div class="field-label">
+        <label class="label">Enabled</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+             <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox"
+                           name="{{ .fields.EnableMail.Name }}"
+                           {{ if .err }}{{ if eq .fields.EnableMail.Value "1" }}checked{{ end }}
+                           {{ else if .settings.EnableMail }}checked{{ end }}>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">From</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="lighthouse <lighthouse@example.com>"
+                       name="{{ .fields.MailFromHeader.Name }}"
+                       value="{{ if .err }}{{ .fields.MailFromHeader.Value }}{{ else }}{{ .settings.MailFromHeader }}{{ end }}">
+            </div>
+            {{ if .fields.MailFromHeader.Error }}<p class="help is-danger">{{ .fields.MailFromHeader.Error }}</p>{{ end }}
+            <p class="help">The <code>From</code> header.</p>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="lighthouse@example.com"
+                       name="{{ .fields.MailFromAddress.Name }}"
+                       value="{{ if .err }}{{ .fields.MailFromAddress.Value }}{{ else }}{{ .settings.MailFromAddress }}{{ end }}">
+            </div>
+            {{ if .fields.MailFromAddress.Error }}<p class="help is-danger">{{ .fields.MailFromAddress.Error }}</p>{{ end }}
+            <p class="help">Sender email address.</p>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">To</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="alerts <alerts@example.com>"
+                       name="{{ .fields.MailToHeader.Name }}"
+                       value="{{ if .err }}{{ .fields.MailToHeader.Value }}{{ else }}{{ .settings.MailToHeader }}{{ end }}">
+            </div>
+            {{ if .fields.MailToHeader.Error }}<p class="help is-danger">{{ .fields.MailToHeader.Error }}</p>{{ end }}
+            <p class="help">The <code>To</code> header.</p>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="alerts"
+                       name="{{ .fields.MailToAddress.Name }}"
+                       value="{{ if .err }}{{ .fields.MailToAddress.Value }}{{ else }}{{ .settings.MailToAddress }}{{ end }}">
+            </div>
+            {{ if .fields.MailToAddress.Error }}<p class="help is-danger">{{ .fields.MailToAddress.Error }}</p>{{ end }}
+            <p class="help">Recipient email address.</p>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Server</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="smtp.example.com"
+                       name="{{ .fields.SMTPHost.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPHost.Value }}{{ else }}{{ .settings.SMTPHost }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPHost.Error }}<p class="help is-danger">{{ .fields.SMTPHost.Error }}</p>{{ end }}
+        </div>
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="587"
+                       name="{{ .fields.SMTPPort.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPPort.Value }}{{ else }}{{ .settings.SMTPPort }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPPort.Error }}<p class="help is-danger">{{ .fields.SMTPPort.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">Auth</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="smtpuser"
+                       name="{{ .fields.SMTPUser.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPUser.Value }}{{ else }}{{ .settings.SMTPUser }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPUser.Error }}<p class="help is-danger">{{ .fields.SMTPUser.Error }}</p>{{ end }}
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       placeholder="hunter2"
+                       name="{{ .fields.SMTPPass.Name }}"
+                       value="{{ if .err }}{{ .fields.SMTPPass.Value }}{{ else }}{{ .settings.SMTPPass }}{{ end }}">
+            </div>
+            {{ if .fields.SMTPPass.Error }}<p class="help is-danger">{{ .fields.SMTPPass.Error }}</p>{{ end }}
+        </div>
+    </div>
+</div>

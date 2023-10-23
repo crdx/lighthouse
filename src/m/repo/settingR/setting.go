@@ -11,17 +11,15 @@ import (
 const (
 	Watch = "watch"
 
-	EnableNotifications     = "enable_notifications"
-	NotificationFromHeader  = "notification_from_header"
-	NotificationFromAddress = "notification_from_address"
-	NotificationToHeader    = "notification_to_header"
-	NotificationToAddress   = "notification_to_address"
-
-	EnableSMTP = "enable_smtp"
-	SMTPHost   = "smtp_host"
-	SMTPPort   = "smtp_port"
-	SMTPUser   = "smtp_user"
-	SMTPPass   = "smtp_pass"
+	EnableMail      = "enable_mail"
+	MailFromHeader  = "mail_from_header"
+	MailFromAddress = "mail_from_address"
+	MailToHeader    = "mail_to_header"
+	MailToAddress   = "mail_to_address"
+	SMTPHost        = "smtp_host"
+	SMTPPort        = "smtp_port"
+	SMTPUser        = "smtp_user"
+	SMTPPass        = "smtp_pass"
 
 	MACVendorsAPIKey = "macvendors_api_key"
 	Timezone         = "timezone"

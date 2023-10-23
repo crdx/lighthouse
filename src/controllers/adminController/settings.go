@@ -14,19 +14,16 @@ type SettingsForm struct {
 	// General
 	Watch bool `form:"watch"`
 
-	// Notifications
-	EnableNotifications     bool   `form:"enable_notifications"`
-	NotificationFromHeader  string `form:"notification_from_header"  transform:"trim" validate:"required_if=EnableNotifications 1,omitempty,mailaddr"`
-	NotificationFromAddress string `form:"notification_from_address" transform:"trim" validate:"required_if=EnableNotifications 1,omitempty,email"`
-	NotificationToHeader    string `form:"notification_to_header"    transform:"trim" validate:"required_if=EnableNotifications 1,omitempty,mailaddr"`
-	NotificationToAddress   string `form:"notification_to_address"   transform:"trim" validate:"required_if=EnableNotifications 1,omitempty,email"`
-
-	// SMTP
-	EnableSMTP bool   `form:"enable_smtp"`
-	SMTPHost   string `form:"smtp_host" transform:"trim" validate:"required_if=EnableSMTP 1"`
-	SMTPPort   string `form:"smtp_port" transform:"trim" validate:"required_if=EnableSMTP 1,omitempty,numeric,excludesall=-."`
-	SMTPUser   string `form:"smtp_user" transform:"trim" validate:"required_if=EnableSMTP 1"`
-	SMTPPass   string `form:"smtp_pass" transform:"trim" validate:"required_if=EnableSMTP 1"`
+	// Mail
+	EnableMail      bool   `form:"enable_mail"`
+	MailFromHeader  string `form:"mail_from_header"  transform:"trim" validate:"required_if=EnableMail 1,omitempty,mailaddr"`
+	MailFromAddress string `form:"mail_from_address" transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
+	MailToHeader    string `form:"mail_to_header"    transform:"trim" validate:"required_if=EnableMail 1,omitempty,mailaddr"`
+	MailToAddress   string `form:"mail_to_address"   transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
+	SMTPHost        string `form:"smtp_host" transform:"trim" validate:"required_if=EnableMail 1"`
+	SMTPPort        string `form:"smtp_port" transform:"trim" validate:"required_if=EnableMail 1,omitempty,number,excludesall=-."`
+	SMTPUser        string `form:"smtp_user" transform:"trim" validate:"required_if=EnableMail 1"`
+	SMTPPass        string `form:"smtp_pass" transform:"trim" validate:"required_if=EnableMail 1"`
 
 	// System
 	MACVendorsAPIKey string `form:"macvendors_api_key" transform:"trim" validate:"max=500"`
