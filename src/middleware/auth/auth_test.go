@@ -43,8 +43,8 @@ func TestSuccessfulUserLogin(t *testing.T) {
 	session := setup()
 
 	res := session.PostForm("/", map[string]string{
-		"username": "user",
-		"password": "user",
+		"username": "anon",
+		"password": "anon",
 		"id":       auth.ID,
 	})
 
