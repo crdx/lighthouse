@@ -4,14 +4,15 @@
             {{ template "devices/p/header" . }}
 
             <form method="post">
-                <div class="field is-horizontal">
+                <div class="field is-horizontal" x-data="{ id: id() }">
                     <div class="field-label is-normal">
-                        <label class="label">Name</label>
+                        <label class="label" :for="id" :for="id">Name</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
                                 <input class="input"
+                                       :id="id"
                                        type="text"
                                        name="{{ .fields.Name.Name }}"
                                        value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
@@ -21,14 +22,15 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal">
+                <div class="field is-horizontal" x-data="{ id: id() }">
                     <div class="field-label is-normal">
-                        <label class="label">Icon</label>
+                        <label class="label" :for="id">Icon</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                             <div class="control has-icons-left" x-data="{ icon: '{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}' }">
                                 <input class="input"
+                                       :id="id"
                                        type="text"
                                        name="{{ .fields.Icon.Name }}"
                                        x-model="icon">
@@ -42,14 +44,14 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal">
+                <div class="field is-horizontal" x-data="{ id: id() }">
                     <div class="field-label is-normal">
-                        <label class="label">Notes</label>
+                        <label class="label" :for="id">Notes</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
-                                <textarea class="textarea" name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                                <textarea :id="id" class="textarea" name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
                             </div>
                             {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
                             <p class="help">Markdown supported.</p>
@@ -57,14 +59,15 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal">
+                <div class="field is-horizontal" x-data="{ id: id() }">
                     <div class="field-label is-normal">
-                        <label class="label">Grace Period</label>
+                        <label class="label" :for="id">Grace Period</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
                                 <input class="input"
+                                       :id="id"
                                        type="text"
                                        name="{{ .fields.GracePeriod.Name }}"
                                        value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
@@ -75,15 +78,16 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal">
+                <div class="field is-horizontal" x-data="{ id: id() }">
                     <div class="field-label">
-                        <label class="label">Watch</label>
+                        <label class="label" :for="id">Watch</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
                                 <label class="checkbox">
                                     <input type="checkbox"
+                                           :id="id"
                                            name="{{ .fields.Watch.Name }}"
                                            {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
                                            {{ else if .device.Watch }}checked{{ end }}>

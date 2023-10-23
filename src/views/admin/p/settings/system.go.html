@@ -1,12 +1,13 @@
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">Timezone</label>
+        <label class="label" :for="id">Timezone</label>
     </div>
     <div class="field-body">
         <div class="field">
              <div class="control">
                 <input class="input"
                        type="text"
+                       :id="id"
                        name="{{ .fields.Timezone.Name }}"
                        value="{{ if .err }}{{ .fields.Timezone.Value }}{{ else }}{{ .settings.Timezone }}{{ end }}">
             </div>
@@ -15,14 +16,15 @@
     </div>
 </div>
 
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">MACVendors API key</label>
+        <label class="label" :for="id">MACVendors API key</label>
     </div>
     <div class="field-body">
         <div class="field">
              <div class="control">
                 <input class="input"
+                       :id="id"
                        type="text"
                        name="{{ .fields.MACVendorsAPIKey.Name }}"
                        value="{{ if .err }}{{ .fields.MACVendorsAPIKey.Value }}{{ else }}{{ .settings.MACVendorsAPIKey }}{{ end }}">

@@ -75,15 +75,15 @@
                             <form method="post" onsubmit="return confirm('Are you sure you want to merge these devices?')" action="/device/{{ .device.ID }}/merge">
                                 <h2 class="subtitle has-text-centered mb-5">Merge</h2>
 
-                                <div class="field is-horizontal">
+                                <div class="field is-horizontal" x-data="{ id: id() }">
                                     <div class="field-label is-normal">
-                                        <label class="label">Device</label>
+                                        <label class="label" :for="id">Device</label>
                                     </div>
                                     <div class="field-body">
                                         <div class="field is-grouped">
                                             <div class="control is-expanded">
                                                 <div class="select is-fullwidth">
-                                                    <select name="device_id" required>
+                                                    <select name="device_id" required :id="id">
                                                         {{ range .devices }}
                                                             {{ if ne .ID $.device.ID }}
                                                                 <option value="{{ .ID }}">{{ template "p/name/device" .Name }}</option>

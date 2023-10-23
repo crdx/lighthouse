@@ -1,12 +1,13 @@
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label">
-        <label class="label">Enabled</label>
+        <label class="label" :for="id">Enabled</label>
     </div>
     <div class="field-body">
         <div class="field">
              <div class="control">
                 <label class="checkbox">
                     <input type="checkbox"
+                           :id="id"
                            name="{{ .fields.EnableMail.Name }}"
                            {{ if .err }}{{ if eq .fields.EnableMail.Value "1" }}checked{{ end }}
                            {{ else if .settings.EnableMail }}checked{{ end }}>
@@ -16,14 +17,15 @@
     </div>
 </div>
 
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">From</label>
+        <label class="label" :for="id">From</label>
     </div>
     <div class="field-body">
         <div class="field">
             <div class="control">
                 <input class="input"
+                       :id="id"
                        type="text"
                        placeholder="lighthouse <lighthouse@example.com>"
                        name="{{ .fields.MailFromHeader.Name }}"
@@ -47,14 +49,15 @@
     </div>
 </div>
 
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">To</label>
+        <label class="label" :for="id">To</label>
     </div>
     <div class="field-body">
         <div class="field">
             <div class="control">
                 <input class="input"
+                       :id="id"
                        type="text"
                        placeholder="alerts <alerts@example.com>"
                        name="{{ .fields.MailToHeader.Name }}"
@@ -78,14 +81,15 @@
     </div>
 </div>
 
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">Server</label>
+        <label class="label" :for="id">Server</label>
     </div>
     <div class="field-body">
         <div class="field">
             <div class="control">
                 <input class="input"
+                       :id="id"
                        type="text"
                        placeholder="smtp.example.com"
                        name="{{ .fields.SMTPHost.Name }}"
@@ -106,14 +110,15 @@
     </div>
 </div>
 
-<div class="field is-horizontal">
+<div class="field is-horizontal" x-data="{ id: id() }">
     <div class="field-label is-normal">
-        <label class="label">Auth</label>
+        <label class="label" :for="id">Auth</label>
     </div>
     <div class="field-body">
         <div class="field">
             <div class="control">
                 <input class="input"
+                       :id="id"
                        type="text"
                        placeholder="smtpuser"
                        name="{{ .fields.SMTPUser.Name }}"
