@@ -23,8 +23,15 @@ func TestSendFunc(t *testing.T) {
 	toHeader := "alerts <alerts@example.com>"
 
 	Init(&Config{
-		FromHeader: fromHeader,
-		ToHeader:   toHeader,
+		Enabled:     func() bool { return true },
+		Host:        func() string { return "smtp.example.com" },
+		Port:        func() string { return "587" },
+		User:        func() string { return "username" },
+		Pass:        func() string { return "hunter2" },
+		FromAddress: func() string { return "lighthouse@example.com" },
+		ToAddress:   func() string { return "alerts@example.com" },
+		FromHeader:  func() string { return fromHeader },
+		ToHeader:    func() string { return toHeader },
 	})
 
 	for _, testCase := range testCases {

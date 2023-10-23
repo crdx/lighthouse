@@ -52,20 +52,20 @@ func main() {
 
 func InitTime() {
 	timeutil.Init(&timeutil.Config{
-		Timezone: settingR.Get(settingR.Timezone),
+		Timezone: func() string { return settingR.Get(settingR.Timezone) },
 	})
 }
 
 func InitMail() {
 	mailutil.Init(&mailutil.Config{
-		Enable:      settingR.GetBool(settingR.EnableMail),
-		Host:        settingR.Get(settingR.SMTPHost),
-		Port:        settingR.Get(settingR.SMTPPort),
-		User:        settingR.Get(settingR.SMTPUser),
-		Pass:        settingR.Get(settingR.SMTPPass),
-		FromAddress: settingR.Get(settingR.MailFromAddress),
-		ToAddress:   settingR.Get(settingR.MailToAddress),
-		FromHeader:  settingR.Get(settingR.MailFromHeader),
-		ToHeader:    settingR.Get(settingR.MailToHeader),
+		Enabled:     func() bool { return settingR.GetBool(settingR.EnableMail) },
+		Host:        func() string { return settingR.Get(settingR.SMTPHost) },
+		Port:        func() string { return settingR.Get(settingR.SMTPPort) },
+		User:        func() string { return settingR.Get(settingR.SMTPUser) },
+		Pass:        func() string { return settingR.Get(settingR.SMTPPass) },
+		FromAddress: func() string { return settingR.Get(settingR.MailFromAddress) },
+		ToAddress:   func() string { return settingR.Get(settingR.MailToAddress) },
+		FromHeader:  func() string { return settingR.Get(settingR.MailFromHeader) },
+		ToHeader:    func() string { return settingR.Get(settingR.MailToHeader) },
 	})
 }

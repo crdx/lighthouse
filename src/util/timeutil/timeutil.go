@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	Timezone string
+	Timezone func() string
 }
 
 var packageConfig *Config
@@ -21,11 +21,11 @@ func Init(config *Config) {
 
 // ToLocal converts a time to the local timezone.
 func ToLocal(t time.Time) time.Time {
-	if packageConfig.Timezone == "" {
+	if packageConfig.Timezone() == "" {
 		panic("no local timezone")
 	}
 
-	return t.In(lo.Must(time.LoadLocation(packageConfig.Timezone)))
+	return t.In(lo.Must(time.LoadLocation(packageConfig.Timezone())))
 }
 
 // TimeAgo formats a number of seconds as a relative time in the past.

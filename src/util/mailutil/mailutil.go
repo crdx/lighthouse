@@ -13,15 +13,15 @@ import (
 type Func func(string, smtp.Auth, string, []string, []byte) error
 
 type Config struct {
-	Enable      bool
-	Host        string
-	Port        string
-	User        string
-	Pass        string
-	FromAddress string
-	ToAddress   string
-	FromHeader  string
-	ToHeader    string
+	Enabled     func() bool
+	Host        func() string
+	Port        func() string
+	User        func() string
+	Pass        func() string
+	FromAddress func() string
+	ToAddress   func() string
+	FromHeader  func() string
+	ToHeader    func() string
 }
 
 var packageConfig *Config
@@ -36,7 +36,7 @@ func Send(subject string, body string) error {
 		panic("no mail configuration")
 	}
 
-	if !packageConfig.Enable {
+	if packageConfig.Enabled == nil || !packageConfig.Enabled() {
 		return nil
 	}
 
@@ -52,10 +52,10 @@ func Send(subject string, body string) error {
 
 func sendFunc(send Func, subject string, body string) error {
 	return send(
-		packageConfig.Host+":"+packageConfig.Port,
-		smtp.PlainAuth("", packageConfig.User, packageConfig.Pass, packageConfig.Host),
-		packageConfig.FromAddress,
-		[]string{packageConfig.ToAddress},
+		packageConfig.Host()+":"+packageConfig.Port(),
+		smtp.PlainAuth("", packageConfig.User(), packageConfig.Pass(), packageConfig.Host()),
+		packageConfig.FromAddress(),
+		[]string{packageConfig.ToAddress()},
 		[]byte(buildBody(subject, body)),
 	)
 }
@@ -63,8 +63,8 @@ func sendFunc(send Func, subject string, body string) error {
 func buildBody(subject string, body string) string {
 	return fmt.Sprintf(
 		"From: %s\nTo: %s\nSubject: %s\n\n%s",
-		packageConfig.FromHeader,
-		packageConfig.ToHeader,
+		packageConfig.FromHeader(),
+		packageConfig.ToHeader(),
 		subject,
 		body,
 	)

@@ -16,7 +16,7 @@ func Init(state auth.State) *Session {
 	lo.Must0(db.Init(dbConfig))
 	session.Init(conf.GetTestSessionConfig(), dbConfig)
 
-	timeutil.Init(&timeutil.Config{Timezone: "Europe/London"})
+	timeutil.Init(&timeutil.Config{Timezone: func() string { return "Europe/London" }})
 	mailutil.Init(&mailutil.Config{})
 
 	app := fiber.New(conf.GetTestFiberConfig())
