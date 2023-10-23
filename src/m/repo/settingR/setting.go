@@ -29,7 +29,7 @@ var cache map[string]string
 
 // Invalidate invalidates the settings cache.
 func Invalidate() {
-	cache = map[string]string{}
+	cache = nil
 }
 
 // Map returns all settings as a map[string]string.
