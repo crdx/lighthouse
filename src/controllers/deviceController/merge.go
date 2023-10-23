@@ -10,12 +10,7 @@ import (
 )
 
 func Merge(c *fiber.Ctx) error {
-	device1, found := db.First[m.Device](c.Params("id"))
-
-	if !found {
-		return c.SendStatus(400)
-	}
-
+	device1 := c.Locals("device").(*m.Device)
 	device2, found := db.First[m.Device](c.FormValue("device_id"))
 
 	if !found {

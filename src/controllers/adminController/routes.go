@@ -3,20 +3,27 @@ package adminController
 import (
 	"crdx.org/lighthouse/controllers/adminController/settings"
 	"crdx.org/lighthouse/controllers/adminController/users"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
+	"crdx.org/lighthouse/middleware/util"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoutes(app *fiber.App) {
-	g := app.Group("/admin").Use(auth.Admin)
+	adminGroup := app.Group("/admin").
+		Use(auth.Admin)
 
-	g.Get("/", Index)
+	adminGroup.Get("/", Index)
 
-	g.Get("/settings", settings.List)
-	g.Post("/settings", settings.Save)
+	adminGroup.Get("/settings", settings.List)
+	adminGroup.Post("/settings", settings.Save)
 
-	g.Get("/users", users.List)
-	g.Get("/users/:id<int>/edit", users.ViewEdit)
-	g.Post("/users/:id<int>/edit", users.Edit)
-	g.Post("/users/:id<int>/delete", users.Delete)
+	adminGroup.Get("/users", users.List)
+
+	userGroup := adminGroup.Group("/users/:id<int>").
+		Use(util.NewParseParam[m.User]("id", "user"))
+
+	userGroup.Get("/edit", users.ViewEdit)
+	userGroup.Post("/edit", users.Edit)
+	userGroup.Post("/delete", users.Delete)
 }

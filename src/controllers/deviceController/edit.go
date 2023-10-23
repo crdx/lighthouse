@@ -22,10 +22,7 @@ type EditForm struct {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
-	device, found := db.First[m.Device](c.Params("id"))
-	if !found {
-		return c.SendStatus(404)
-	}
+	device := c.Locals("device").(*m.Device)
 
 	return c.Render("devices/edit", fiber.Map{
 		"mode":    "edit",

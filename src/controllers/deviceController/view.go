@@ -1,7 +1,6 @@
 package deviceController
 
 import (
-	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateLogR"
@@ -10,10 +9,7 @@ import (
 )
 
 func View(c *fiber.Ctx) error {
-	device, found := db.First[m.Device](c.Params("id"))
-	if !found {
-		return c.SendStatus(404)
-	}
+	device := c.Locals("device").(*m.Device)
 
 	return c.Render("devices/view", fiber.Map{
 		"mode":     "view",

@@ -1,7 +1,6 @@
 package users
 
 import (
-	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -19,10 +18,7 @@ type EditForm struct {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
-	user, found := db.First[m.User](c.Params("id"))
-	if !found {
-		return c.SendStatus(404)
-	}
+	user := c.Locals("user").(*m.User)
 
 	return c.Render("admin/index", fiber.Map{
 		"tab":     "users",
@@ -34,10 +30,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	user, found := db.First[m.User](c.Params("id"))
-	if !found {
-		return c.SendStatus(404)
-	}
+	user := c.Locals("user").(*m.User)
 
 	form := new(EditForm)
 	if err := c.BodyParser(form); err != nil {

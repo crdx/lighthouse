@@ -3,7 +3,6 @@ package adapterController
 import (
 	"fmt"
 
-	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -18,22 +17,10 @@ type EditForm struct {
 	Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
 }
 
-func get(c *fiber.Ctx) (*m.Device, *m.Adapter, bool) {
-	adapter, found := db.First[m.Adapter](c.Params("id"))
-	if !found {
-		return nil, nil, false
-	}
+func ViewEdit(c *fiber.Ctx) error {
+	adapter := c.Locals("adapter").(*m.Adapter)
 
 	device, found := adapter.Device()
-	if !found {
-		return nil, nil, false
-	}
-
-	return device, adapter, true
-}
-
-func ViewEdit(c *fiber.Ctx) error {
-	device, adapter, found := get(c)
 	if !found {
 		return c.SendStatus(404)
 	}
@@ -47,8 +34,9 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	device, adapter, found := get(c)
+	adapter := c.Locals("adapter").(*m.Adapter)
 
+	device, found := adapter.Device()
 	if !found {
 		return c.SendStatus(400)
 	}

@@ -1,7 +1,6 @@
 package users
 
 import (
-	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -9,10 +8,7 @@ import (
 )
 
 func Delete(c *fiber.Ctx) error {
-	user, found := db.First[m.User](c.Params("id"))
-	if !found {
-		return c.SendStatus(400)
-	}
+	user := c.Locals("user").(*m.User)
 
 	// Current user can't delete themselves.
 	if globals.User(c).ID == user.ID {
