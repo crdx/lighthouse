@@ -32,7 +32,6 @@
                        value="{{ if .err }}{{ .fields.MailFromHeader.Value }}{{ else }}{{ .settings.MailFromHeader }}{{ end }}">
             </div>
             {{ if .fields.MailFromHeader.Error }}<p class="help is-danger">{{ .fields.MailFromHeader.Error }}</p>{{ end }}
-            <p class="help">The <code>From</code> header.</p>
         </div>
 
         <div class="field">
@@ -44,7 +43,6 @@
                        value="{{ if .err }}{{ .fields.MailFromAddress.Value }}{{ else }}{{ .settings.MailFromAddress }}{{ end }}">
             </div>
             {{ if .fields.MailFromAddress.Error }}<p class="help is-danger">{{ .fields.MailFromAddress.Error }}</p>{{ end }}
-            <p class="help">Sender email address.</p>
         </div>
     </div>
 </div>
@@ -64,19 +62,17 @@
                        value="{{ if .err }}{{ .fields.MailToHeader.Value }}{{ else }}{{ .settings.MailToHeader }}{{ end }}">
             </div>
             {{ if .fields.MailToHeader.Error }}<p class="help is-danger">{{ .fields.MailToHeader.Error }}</p>{{ end }}
-            <p class="help">The <code>To</code> header.</p>
         </div>
 
         <div class="field">
             <div class="control">
                 <input class="input"
                        type="text"
-                       placeholder="alerts"
+                       placeholder="alerts@example.com"
                        name="{{ .fields.MailToAddress.Name }}"
                        value="{{ if .err }}{{ .fields.MailToAddress.Value }}{{ else }}{{ .settings.MailToAddress }}{{ end }}">
             </div>
             {{ if .fields.MailToAddress.Error }}<p class="help is-danger">{{ .fields.MailToAddress.Error }}</p>{{ end }}
-            <p class="help">Recipient email address.</p>
         </div>
     </div>
 </div>
