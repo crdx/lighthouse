@@ -71,7 +71,6 @@ func SaveSettings(c *fiber.Ctx) error {
 	for name, value := range reflectutil.StructToMap(form, "form") {
 		settingR.Set(name, value)
 	}
-	settingR.Invalidate()
 
 	flash.Success(c, "Settings saved")
 	return c.Redirect("/admin/settings")

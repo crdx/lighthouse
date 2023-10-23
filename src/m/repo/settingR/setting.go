@@ -49,6 +49,7 @@ func Map() map[string]string {
 func Set(name string, value any) {
 	setting, _ := db.FirstOrCreate(m.Setting{Name: name})
 	setting.Update("value", value)
+	Invalidate()
 }
 
 // Get returns a setting as a string.
