@@ -17,18 +17,6 @@ code {
     font-size: 0.9em;
 }
 
-.state--online {
-    color: green;
-}
-
-.state--checked {
-    color: green;
-}
-
-.state--offline {
-    color: #999;
-}
-
 .notification {
     margin-top: 1rem;
 }

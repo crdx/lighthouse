@@ -1,0 +1,12 @@
+{{/*
+    Render a state depending on a boolean value.
+
+    Context:
+        .    bool
+*/}}
+
+{{ if . }}
+    <span class="icon is-small has-text-success-dark"><i class="fa-solid fa-check"></i></span>
+{{ else }}
+    <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
+{{ end }}

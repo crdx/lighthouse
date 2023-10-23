@@ -33,13 +33,7 @@
 
     <tr>
         <th>Watching</th>
-        <td>
-            {{ if .Watch }}
-                <span class="icon is-small state--checked"><i class="fa-solid fa-check"></i></span>
-            {{ else }}
-                <span class="icon is-small"><i class="fa-solid fa-times"></i></span>
-            {{ end }}
-        </td>
+        <td>{{ template "p/state/bool" .Watch }}</td>
     </tr>
 
     {{ if .Notes }}

@@ -2,7 +2,11 @@
     Render a device's state.
 
     Context:
-        .    m.Device
+        .    string
 */}}
 
-<span class="state--{{ . }}">{{ . }}</span>
+{{ if eq . "online" }}
+    <span class="has-text-success-dark">{{ . }}</span>
+{{ else }}
+    <span class="has-text-grey">{{ . }}</span>
+{{ end }}

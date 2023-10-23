@@ -17,7 +17,7 @@
                 </thead>
                 <tbody>
                     {{ range .devices }}
-                    <tr {{ if ne .State "online" }}class="state--offline"{{ end }}>
+                    <tr {{ if ne .State "online" }}class="has-text-grey"{{ end }}>
                         <td class="min-column">
                             {{ template "devices/p/icon" . }}
                         </td>
@@ -29,13 +29,7 @@
                         <td class="is-hidden-touch ">{{ template "p/name/vendor" .Vendor }}</td>
                         <td class="is-hidden-mobile is-family-monospace">{{ .MACAddress }}</td>
                         <td>{{ template "p/time/rel" .LastSeen }}</td>
-                        <td class="min-column is-hidden-mobile">
-                            {{ if .Watch }}
-                                <span class="icon state--checked"><i class="fa-solid fa-check"></i></span>
-                            {{ else }}
-                                <span class="icon"><i class="fa-solid fa-times"></i></span>
-                            {{ end }}
-                        </td>
+                        <td class="min-column is-hidden-mobile">{{ template "p/state/bool" .Watch }}</td>
                     </tr>
                     {{ end }}
                 </tbody>

@@ -12,9 +12,9 @@
         <div class="level-item">
             <span class="icon is-medium mr-2 ml-1">
                 {{ if eq .device.State "online" }}
-                    <i class="fa-2x {{ .device.Icon }} state--online"></i>
+                    <i class="fa-2x {{ .device.Icon }} has-text-success-dark"></i>
                 {{ else }}
-                    <i class="fa-2x {{ .device.Icon }} state--offline"></i>
+                    <i class="fa-2x {{ .device.Icon }} has-text-grey"></i>
                 {{ end }}
             </span>
         </div>
