@@ -54,7 +54,7 @@ func logIn(c *fiber.Ctx, username string, password string) error {
 	return c.Redirect(c.Path())
 }
 
-// New returns a fiber.Handler that handles authentication.
+// New returns middleware that handles authentication.
 func New() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		if c.Method() == http.MethodPost && c.Path() == "/goodbye" {
@@ -84,7 +84,7 @@ func New() fiber.Handler {
 	}
 }
 
-// Admin only allows the request to continue if the current user is an admin.
+// Admin is middleware that only allows the request to continue if the current user is an admin.
 func Admin(c *fiber.Ctx) error {
 	if !globals.IsAdmin(c) {
 		return c.SendStatus(404)
@@ -92,9 +92,9 @@ func Admin(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-// AutoLogin returns a fiber.Handler that simulates the user being authorised as the provided state.
-// The first user in the db with the required authorisation will be picked. This is designed to be
-// used for tests.
+// AutoLogin returns middleware that simulates the user being authorised as the provided state. The
+// first user in the db with the required authorisation will be picked. This is designed to be used
+// for tests.
 func AutoLogin(state State) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		user, _ := db.B[m.User]("admin = ?", state == StateAdmin).First()
