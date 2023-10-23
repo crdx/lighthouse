@@ -1,1 +1,5 @@
-TODO
+{{ if eq .mode "list" }}
+    {{ template "admin/p/users/list" . }}
+{{ else if eq .mode "edit" }}
+    {{ template "admin/p/users/edit" . }}
+{{ end }}

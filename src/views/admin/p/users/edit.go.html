@@ -1,0 +1,86 @@
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <h1 class="title is-size-4">{{ .user.Username }}</h1>
+        </div>
+    </div>
+    <div class="level-right">
+    </div>
+</div>
+
+<form method="post">
+    <div class="field is-horizontal" x-data="{ id: id() }">
+        <div class="field-label is-normal">
+            <label class="label" :for="id">Username</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                 <div class="control">
+                    <input class="input"
+                           :id="id"
+                           type="text"
+                           name="{{ .fields.Username.Name }}"
+                           value="{{ if .err }}{{ .fields.Username.Value }}{{ else }}{{ .user.Username }}{{ end }}">
+                </div>
+                {{ if .fields.Username.Error }}<p class="help is-danger">{{ .fields.Username.Error }}</p>{{ end }}
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal" x-data="{ id: id() }">
+        <div class="field-label is-normal">
+            <label class="label" :for="id">Password</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                 <div class="control">
+                    <input class="input"
+                           :id="id"
+                           autocomplete="new-password"
+                           type="password"
+                           name="{{ .fields.Password.Name }}"
+                           value="{{ if .err }}{{ .fields.Password.Value }}{{ end }}">
+                </div>
+                {{ if .fields.Password.Error }}<p class="help is-danger">{{ .fields.Password.Error }}</p>{{ end }}
+                <p class="help">Leave blank to not update. Minimum length 10 characters.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal" x-data="{ id: id() }">
+        <div class="field-label">
+            <label class="label" :for="id">Admin</label>
+        </div>
+        <div class="field-body">
+            {{ if eq .user.ID .globals.User.ID }}<fieldset disabled>{{ end }}
+            <div class="field">
+                 <div class="control">
+                    <label class="checkbox">
+                        <input type="checkbox"
+                               :id="id"
+                               name="{{ .fields.Admin.Name }}"
+                               {{ if .err }}{{ if eq .fields.Admin.Value "1" }}checked{{ end }}
+                               {{ else if .user.Admin }}checked{{ end }}>
+                    </label>
+                    {{ if eq .user.ID .globals.User.ID }}
+                        <p class="help has-text-warning-dark">
+                            <span class="icon"><i class="fa-duotone fa-warning"></i></span>
+                            You can't modify your own admin access.
+                        </p>
+                    {{ end }}
+                    <p class="help">Admins have edit capabilities, while non-admins have read-only access.</p>
+                </div>
+            </div>
+            {{ if eq .user.ID .globals.User.ID }}</fieldset>{{ end }}
+        </div>
+    </div>
+
+    <div class="field is-horizontal is-grouped">
+        <div class="field-label"></div>
+        <div class="field-body">
+            <div class="control">
+                <button type="submit" class="button is-link">Save</button>
+            </div>
+        </div>
+    </div>
+</form>

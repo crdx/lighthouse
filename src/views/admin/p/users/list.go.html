@@ -1,0 +1,46 @@
+<table class="table is-fullwidth">
+    <tr>
+        <th>Username</th>
+        <th>Admin</th>
+        <th>Last Login</th>
+        <th>Created</th>
+        <th></th>
+    </tr>
+
+    {{ range .users }}
+        <tr>
+            <td>{{ .Username }}</td>
+            <td>{{ template "p/state/bool" .Admin }}</td>
+            <td>
+                {{ if .LastLogin.Valid }}
+                    {{ template "p/time/rel" .LastLogin }}
+                {{ else }}
+                    Never
+                {{ end }}
+            </td>
+            <td>{{ formatDateTimeReadable .CreatedAt }}</td>
+            <td class="min-column">
+                <div class="columns is-variable is-1 is-mobile">
+                    <a title="Edit" href="/admin/users/{{ .ID }}/edit" class="column has-text-dark">
+                        <span class="icon">
+                            <i class="fa-duotone fa-edit"></i>
+                        </span>
+                    </a>
+                    {{ if and (gt (len $.users) 1) (ne .ID $.globals.User.ID) }}
+                        <form class="column" action="/admin/users/{{ .ID }}/delete" method="post">
+                            <a title="Delete" onclick="confirm('Are you sure you want to delete this user?') && parentNode.submit()" class="has-text-dark">
+                                <span class="icon has-text-danger-dark">
+                                    <i class="fa-duotone fa-trash"></i>
+                                </span>
+                            </a>
+                        </form>
+                    {{ end }}
+                </div>
+            </td>
+        </tr>
+    {{ else }}
+        <tr>
+            <td colspan="6"><i>No users found</i></td>
+        </tr>
+    {{ end }}
+</table>

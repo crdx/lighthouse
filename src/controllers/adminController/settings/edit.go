@@ -1,4 +1,4 @@
-package adminController
+package settings
 
 import (
 	"crdx.org/lighthouse/m/repo/settingR"
@@ -30,7 +30,7 @@ type SettingsForm struct {
 	Timezone         string `form:"timezone"           transform:"trim" validate:"required,timezone"`
 }
 
-func ListSettings(c *fiber.Ctx) error {
+func List(c *fiber.Ctx) error {
 	if !globals.IsAdmin(c) {
 		return c.SendStatus(404)
 	}
@@ -43,7 +43,7 @@ func ListSettings(c *fiber.Ctx) error {
 	})
 }
 
-func SaveSettings(c *fiber.Ctx) error {
+func Save(c *fiber.Ctx) error {
 	if !globals.IsAdmin(c) {
 		return c.SendStatus(404)
 	}
