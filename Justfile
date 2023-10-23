@@ -3,6 +3,7 @@ IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
+TESTABLE_PACKAGES := './{controllers,middleware,pkg,util}/...'
 
 set dotenv-load := true
 
@@ -64,14 +65,14 @@ set dotenv-load := true
 
 # run tests
 @test:
-    cd src && go test -p 1 -cover ./...
+    cd src && go test -p 1 -cover {{ TESTABLE_PACKAGES }}
 
 # run tests and show code coverage
 cov:
     #!/bin/bash
     cd src
     FILE=$(mktemp)
-    go test -p 1 -cover -coverprofile="$FILE" ./...
+    go test -p 1 -cover -coverprofile="$FILE" {{ TESTABLE_PACKAGES }}
     go tool cover -html="$FILE"
     rm -v "$FILE"
 
