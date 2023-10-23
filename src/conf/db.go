@@ -16,6 +16,7 @@ func seed() error {
 	db.Save(&m.Setting{Name: settingR.Watch, Value: "1"})
 
 	db.Save(&m.User{Username: "admin", PasswordHash: stringutil.Hash("admin"), Admin: true})
+	db.Save(&m.User{Username: "user", PasswordHash: stringutil.Hash("user"), Admin: false})
 	return nil
 }
 
