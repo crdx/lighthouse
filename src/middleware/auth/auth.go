@@ -23,6 +23,7 @@ const (
 const ID = "afc434ce-bf57-48f7-9844-e9ab4091f19a"
 
 func err(c *fiber.Ctx) error {
+	time.Sleep(100 * time.Millisecond)
 	return c.Render("auth/index", fiber.Map{"err": true, "id": ID}, "auth/layout")
 }
 
