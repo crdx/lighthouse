@@ -13,19 +13,19 @@ type Config struct {
 	Timezone func() string
 }
 
-var packageConfig *Config
+var pkgConfig *Config
 
 func Init(config *Config) {
-	packageConfig = config
+	pkgConfig = config
 }
 
 // ToLocal converts a time to the local timezone.
 func ToLocal(t time.Time) time.Time {
-	if packageConfig.Timezone() == "" {
+	if pkgConfig.Timezone() == "" {
 		panic("no local timezone")
 	}
 
-	return t.In(lo.Must(time.LoadLocation(packageConfig.Timezone())))
+	return t.In(lo.Must(time.LoadLocation(pkgConfig.Timezone())))
 }
 
 // TimeAgo formats a number of seconds as a relative time in the past.

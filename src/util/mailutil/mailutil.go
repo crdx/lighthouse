@@ -24,19 +24,19 @@ type Config struct {
 	ToHeader    func() string
 }
 
-var packageConfig *Config
+var pkgConfig *Config
 
 func Init(config *Config) {
-	packageConfig = config
+	pkgConfig = config
 }
 
 // Send sends an email if SMTP is enabled.
 func Send(subject string, body string) error {
-	if packageConfig == nil {
+	if pkgConfig == nil {
 		panic("no mail configuration")
 	}
 
-	if packageConfig.Enabled == nil || !packageConfig.Enabled() {
+	if pkgConfig.Enabled == nil || !pkgConfig.Enabled() {
 		return nil
 	}
 
@@ -52,10 +52,10 @@ func Send(subject string, body string) error {
 
 func sendFunc(send Func, subject string, body string) error {
 	return send(
-		packageConfig.Host()+":"+packageConfig.Port(),
-		smtp.PlainAuth("", packageConfig.User(), packageConfig.Pass(), packageConfig.Host()),
-		packageConfig.FromAddress(),
-		[]string{packageConfig.ToAddress()},
+		pkgConfig.Host()+":"+pkgConfig.Port(),
+		smtp.PlainAuth("", pkgConfig.User(), pkgConfig.Pass(), pkgConfig.Host()),
+		pkgConfig.FromAddress(),
+		[]string{pkgConfig.ToAddress()},
 		[]byte(buildBody(subject, body)),
 	)
 }
@@ -63,8 +63,8 @@ func sendFunc(send Func, subject string, body string) error {
 func buildBody(subject string, body string) string {
 	return fmt.Sprintf(
 		"From: %s\nTo: %s\nSubject: %s\n\n%s",
-		packageConfig.FromHeader(),
-		packageConfig.ToHeader(),
+		pkgConfig.FromHeader(),
+		pkgConfig.ToHeader(),
 		subject,
 		body,
 	)
