@@ -36,6 +36,9 @@ var (
 	DatabaseTimeZone = os.Getenv("DB_TZ")
 
 	EnableLiveReload = os.Getenv("LIVE_RELOAD") != ""
+
+	DefaultRootPassword = envOrDefault("DEFAULT_ROOT_PASSWORD", "root")
+	DefaultAnonPassword = envOrDefault("DEFAULT_ANON_PASSWORD", "anon")
 )
 
 func Check() {
@@ -89,5 +92,15 @@ func requireIn(name string, values []string, canBeEmpty bool) {
 			strings.Join(values, `", "`),
 			s,
 		))
+	}
+}
+
+func envOrDefault(key string, default_ string) string {
+	value := os.Getenv(key)
+
+	if value != "" {
+		return value
+	} else {
+		return default_
 	}
 }
