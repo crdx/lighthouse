@@ -3,7 +3,7 @@
         <th>Username</th>
         <th>Admin</th>
         <th>Last Login</th>
-        <th>Created</th>
+        <th class="is-hidden-mobile">Created</th>
         <th></th>
     </tr>
 
@@ -18,7 +18,7 @@
                     Never
                 {{ end }}
             </td>
-            <td>{{ formatDateTimeReadable .CreatedAt }}</td>
+            <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
             <td class="min-column">
                 <div class="columns is-variable is-1 is-mobile">
                     <a title="Edit" href="/admin/users/{{ .ID }}/edit" class="column has-text-dark">
