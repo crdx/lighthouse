@@ -79,14 +79,14 @@ func New() fiber.Handler {
 			return needAuth(c)
 		}
 
-		c.Locals("user", user)
+		c.Locals(globals.CurrentUserKey, user)
 		return c.Next()
 	}
 }
 
 // Admin is middleware that only allows the request to continue if the current user is an admin.
 func Admin(c *fiber.Ctx) error {
-	if !globals.IsAdmin(c) {
+	if !globals.CurrentUser(c).Admin {
 		return c.SendStatus(404)
 	}
 	return c.Next()
@@ -98,7 +98,7 @@ func Admin(c *fiber.Ctx) error {
 func AutoLogin(state State) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		user, _ := db.B[m.User]("admin = ?", state == StateAdmin).First()
-		c.Locals("user", user)
+		c.Locals(globals.CurrentUserKey, user)
 		return c.Next()
 	}
 }

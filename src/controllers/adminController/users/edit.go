@@ -39,7 +39,7 @@ func Edit(c *fiber.Ctx) error {
 
 	// Current user can't edit their own admin access so the disabled form field doesn't come
 	// through in the request. Set it here to make the form object valid.
-	if globals.User(c).ID == user.ID {
+	if globals.IsCurrentUser(c, user) {
 		form.Admin = user.Admin
 	}
 
@@ -68,7 +68,7 @@ func Edit(c *fiber.Ctx) error {
 	delete(values, "password")
 
 	// Current user can't edit their own admin access.
-	if globals.User(c).ID == user.ID {
+	if globals.IsCurrentUser(c, user) {
 		delete(values, "admin")
 	}
 

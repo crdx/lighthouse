@@ -12,14 +12,19 @@ type Values struct {
 	User  *m.User
 }
 
-func User(c *fiber.Ctx) *m.User {
-	return c.Locals("user").(*m.User)
+const CurrentUserKey = "globals.current_user"
+
+// CurrentUser returns the current user from the session.
+func CurrentUser(c *fiber.Ctx) *m.User {
+	return c.Locals(CurrentUserKey).(*m.User)
 }
 
-func IsAdmin(c *fiber.Ctx) bool {
-	return User(c).Admin
+// IsCurrentUser returns whether user is the current user.
+func IsCurrentUser(c *fiber.Ctx, user *m.User) bool {
+	return CurrentUser(c).ID == user.ID
 }
 
+// Get returns the encapsulated globals to be referenced from templates.
 func Get(c *fiber.Ctx) *Values {
 	values := Values{}
 
@@ -27,7 +32,7 @@ func Get(c *fiber.Ctx) *Values {
 		values.Flash = &flashMessage
 	}
 
-	values.User = User(c)
+	values.User = CurrentUser(c)
 
 	return &values
 }

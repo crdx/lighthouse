@@ -11,7 +11,7 @@ func Delete(c *fiber.Ctx) error {
 	user := c.Locals("user").(*m.User)
 
 	// Current user can't delete themselves.
-	if globals.User(c).ID == user.ID {
+	if globals.IsCurrentUser(c, user) {
 		return c.SendStatus(400)
 	}
 
