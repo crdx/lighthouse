@@ -1,77 +1,80 @@
-// jQuery-inspired aliases.
-const $$ = s => document.querySelectorAll(s)
-const $ = s => document.querySelector(s)
+document.addEventListener('alpine:init', function() {
+    // Save CPU cycles by reusing the same UUID across multiple calls to id(), yielding unique id
+    // values that start with an alpha character.
+    let prefix
+    let counter = 1
 
-document.addEventListener('DOMContentLoaded', function() {
-    initNav()
-    initModals()
-    initDropdowns()
-    initForms()
-})
-
-function initNav() {
-    $$('.navbar-burger').forEach(el => {
-        el.addEventListener('click', function() {
-            const target = $(el.dataset.target)
-            el.classList.toggle('is-active')
-            target.classList.toggle('is-active')
-        })
-    })
-}
-
-function initModals() {
-    function open(el) {
-        el.classList.add('is-active')
-        $('html').classList.add('is-clipped')
+    function id() {
+        if (!prefix) {
+            prefix = uuid()
+        }
+        return 'i_' + prefix + '_' + counter++
     }
 
-    function close(el) {
-        el.classList.remove('is-active')
-        $('html').classList.remove('is-clipped')
-    }
-
-    function closeAll() {
-        $$('.modal').forEach(close)
-    }
-
-    $$('.js-modal-trigger').forEach(el => {
-        const target = $(el.dataset.target)
-        el.addEventListener('click', () => {
-            open(target)
-        })
-    })
-
-    $$('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button').forEach(el => {
-        const target = el.closest('.modal')
-        el.addEventListener('click', () => {
-            close(target)
-        })
-    })
-
-    document.addEventListener('keydown', event => {
-        if (event.code === 'Escape') {
-            closeAll()
+    Alpine.data('id', function() {
+        return {
+            id: id()
         }
     })
-}
 
-function initDropdowns() {
-    $$('.js-dropdown-trigger').forEach(el => {
-        const target = el.closest('.dropdown')
-        el.addEventListener('click', () => {
-            target.classList.toggle('is-active')
-        })
-    })
-}
+    Alpine.data('nav', function() {
+        return {
+            navOpen: false,
 
-function initForms() {
-    $$('.js-form-trigger').forEach(el => {
-        el.addEventListener('click', () => {
-            $(el.dataset.target).requestSubmit()
-            return false
-        })
+            toggleNav() {
+                this.navOpen = !this.navOpen
+            },
+
+            navClass() {
+                return this.navOpen && 'is-active'
+            },
+        }
     })
-}
+
+    Alpine.data('dropdown', function() {
+        return {
+            dropdownOpen: false,
+
+            closeDropdown() {
+                this.dropdownOpen = false
+            },
+
+            toggleDropdown() {
+                this.dropdownOpen = !this.dropdownOpen
+            },
+
+            dropdownClass() {
+                return this.dropdownOpen && 'is-active'
+            },
+        }
+    })
+
+    Alpine.data('form', function() {
+        return {
+            submitForm() {
+                this.$el.querySelector('form').requestSubmit()
+            },
+        }
+    })
+
+    Alpine.data('modal', function() {
+        return {
+            modalOpen: false,
+
+            modalClass() {
+                return this.modalOpen && 'is-active'
+            },
+
+            openModal() {
+                this.modalOpen = true
+            },
+
+            closeModal() {
+                this.modalOpen = false
+            },
+        }
+    })
+})
 
 function uuid() {
     const a = new Uint8Array(16)
@@ -91,17 +94,3 @@ function uuid() {
     const f = bytes => [...bytes].map(b => b.toString(16).padStart(2, '0')).join('')
     return segments.map(f).join('')
 }
-
-const id = (function() {
-    // Save CPU cycles by reusing the same UUID across multiple calls to id(), yielding unique id
-    // values that start with an alpha character.
-    let prefix
-    let counter = 1
-
-    return function() {
-        if (!prefix) {
-            prefix = uuid()
-        }
-        return 'i_' + prefix + '_' + counter++
-    }
-})()

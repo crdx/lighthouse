@@ -1,0 +1,56 @@
+<a class="dropdown-item" x-data="modal" @click="openModal">
+    <span class="icon is-small">
+        <i class="fa-duotone fa-merge"></i>
+    </span>
+    <span>Merge...</span>
+
+    <template x-teleport="body">
+        <div class="modal" :class="modalClass()" @keyup.escape.window="closeModal">
+            <div class="modal-background" @click="closeModal"></div>
+            <div class="modal-content">
+                <div class="box">
+                    <form method="post" onsubmit="return confirm('Are you sure you want to merge these devices?')" action="/device/{{ .device.ID }}/merge">
+                        <h2 class="subtitle has-text-centered mb-5">Merge</h2>
+
+                        <div class="field is-horizontal" x-data="id">
+                            <div class="field-label is-normal">
+                                <label class="label" :for="id">Device</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field is-grouped">
+                                    <div class="control is-expanded">
+                                        <div class="select is-fullwidth">
+                                            <select name="device_id" required :id="id">
+                                                {{ range .devices }}
+                                                    {{ if ne .ID $.device.ID }}
+                                                        <option value="{{ .ID }}">{{ template "p/name/device" .Name }}</option>
+                                                    {{ end }}
+                                                {{ end }}
+                                            </select>
+                                        </div>
+                                        <p class="help">The device that was discovered first will be the one that the other device is merged into.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level">
+                            <div class="level-left"></div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <button class="button is-link" type="submit">
+                                        <div class="icon is-left">
+                                            <i class="fa-duotone fa-merge"></i>
+                                        </div>
+                                        <span>Merge</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+</a>
+

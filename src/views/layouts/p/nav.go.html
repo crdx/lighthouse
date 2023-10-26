@@ -6,7 +6,7 @@
 */}}
 
 <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
-    <div class="container is-max-widescreen">
+    <div class="container is-max-widescreen" x-data="nav">
         <div class="navbar-brand">
             <a class="navbar-item" href="/" title="Home">
                 <span class="icon is-medium">
@@ -22,14 +22,14 @@
                 <span>activity</span>
             </a>
 
-             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="#js-navbar">
+             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" @click="toggleNav" :class="navClass()">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
 
-        <div id="js-navbar" class="navbar-menu">
+        <div class="navbar-menu" :class="navClass()">
             <div class="navbar-start">
             </div>
 
@@ -46,9 +46,8 @@
                     </a>
                 {{ end }}
 
-                <a class="navbar-item js-form-trigger" data-target="#js-log-out" title="Log out">
+                <a class="navbar-item" x-data="form" @click="submitForm" title="Log out">
                     <form class="is-hidden"
-                          id="js-log-out"
                           method="post"
                           action="/bye">
                     </form>

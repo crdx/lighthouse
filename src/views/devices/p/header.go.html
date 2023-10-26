@@ -28,8 +28,8 @@
     <div class="level-right">
         <div class="level-item">
             {{ if and (eq .mode "view") (.globals.User.Admin) }}
-                <div class="dropdown is-right">
-                    <div class="js-dropdown-trigger dropdown-trigger">
+                <div class="dropdown is-right" x-data="dropdown" :class="dropdownClass()" @click.outside="closeDropdown">
+                    <div class="dropdown-trigger" @click="toggleDropdown">
                         <button class="button">
                             <span class="icon is-small"><i class="fa-solid fa-bars"></i></span>
                         </button>
@@ -43,18 +43,12 @@
                                 <span>Edit</span>
                             </a>
 
-                            <a class="dropdown-item js-modal-trigger" data-target="#js-merge-modal">
-                                <span class="icon is-small">
-                                    <i class="fa-duotone fa-merge"></i>
-                                </span>
-                                <span>Merge...</span>
-                            </a>
+                            {{ template "devices/p/merge-button" . }}
 
                             <hr class="dropdown-divider">
 
-                            <a class="dropdown-item has-text-danger-dark js-form-trigger" data-target="#js-delete-form">
+                            <a class="dropdown-item has-text-danger-dark" x-data="form" @click="submitForm">
                                 <form class="is-hidden"
-                                      id="js-delete-form"
                                       method="post"
                                       onsubmit="return confirm('Are you sure you want to delete this device?')"
                                       action="/device/{{ .device.ID }}/delete">
@@ -66,54 +60,6 @@
                             </a>
                         </div>
                     </div>
-                </div>
-
-                <div class="modal" id="js-merge-modal">
-                    <div class="modal-background"></div>
-                    <div class="modal-content">
-                        <div class="box">
-                            <form method="post" onsubmit="return confirm('Are you sure you want to merge these devices?')" action="/device/{{ .device.ID }}/merge">
-                                <h2 class="subtitle has-text-centered mb-5">Merge</h2>
-
-                                <div class="field is-horizontal" x-data="{ id: id() }">
-                                    <div class="field-label is-normal">
-                                        <label class="label" :for="id">Device</label>
-                                    </div>
-                                    <div class="field-body">
-                                        <div class="field is-grouped">
-                                            <div class="control is-expanded">
-                                                <div class="select is-fullwidth">
-                                                    <select name="device_id" required :id="id">
-                                                        {{ range .devices }}
-                                                            {{ if ne .ID $.device.ID }}
-                                                                <option value="{{ .ID }}">{{ template "p/name/device" .Name }}</option>
-                                                            {{ end }}
-                                                        {{ end }}
-                                                    </select>
-                                                </div>
-                                                <p class="help">The device that was discovered first will be the one that the other device is merged into.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="level">
-                                    <div class="level-left"></div>
-                                    <div class="level-right">
-                                        <div class="level-item">
-                                            <button class="button is-link" type="submit">
-                                                <div class="icon is-left">
-                                                    <i class="fa-duotone fa-merge"></i>
-                                                </div>
-                                                <span>Merge</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <button class="modal-close is-large" aria-label="close"></button>
                 </div>
             {{ end }}
 

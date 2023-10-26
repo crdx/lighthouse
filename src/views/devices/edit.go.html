@@ -4,7 +4,7 @@
             {{ template "devices/p/header" . }}
 
             <form method="post">
-                <div class="field is-horizontal" x-data="{ id: id() }">
+                <div class="field is-horizontal" x-data="id">
                     <div class="field-label is-normal">
                         <label class="label" :for="id" :for="id">Name</label>
                     </div>
@@ -20,11 +20,12 @@
                             {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
                         </div>
                         <div class="field">
-                            <div class="control has-icons-left" x-data="{ icon: '{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}' }">
+                            <div class="control has-icons-left" x-data="{ icon: null }">
                                 <input class="input"
                                        type="text"
                                        name="{{ .fields.Icon.Name }}"
-                                       x-model="icon">
+                                       x-model.fill="icon"
+                                       value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
                                 <span class="icon is-small is-left icon--focus">
                                     <i :class="icon"></i>
                                 </span>
@@ -35,7 +36,7 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal" x-data="{ id: id() }">
+                <div class="field is-horizontal" x-data="id">
                     <div class="field-label is-normal">
                         <label class="label" :for="id">Notes</label>
                     </div>
@@ -50,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal" x-data="{ id: id() }">
+                <div class="field is-horizontal" x-data="id">
                     <div class="field-label is-normal">
                         <label class="label" :for="id">Grace Period</label>
                     </div>
@@ -69,7 +70,7 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal" x-data="{ id: id() }">
+                <div class="field is-horizontal" x-data="id">
                     <div class="field-label">
                         <label class="label" :for="id">Watch</label>
                     </div>
