@@ -9,6 +9,8 @@ import (
 	"net/url"
 	"strings"
 
+	"crdx.org/lighthouse/conf"
+	"crdx.org/lighthouse/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )
@@ -23,7 +25,22 @@ type Response struct {
 	Body string
 }
 
-func NewSession(app *fiber.App) *Session {
+// NewSession returns a new session with the requested auth state.
+func NewSession(state auth.State, handlers ...func(c *fiber.Ctx) error) *Session {
+	app := fiber.New(conf.GetTestFiberConfig())
+
+	if state == auth.StateUnauthenticated {
+		app.Use(auth.New())
+	} else {
+		app.Use(AutoLogin(state))
+	}
+
+	for _, handler := range handlers {
+		app.Use(handler)
+	}
+
+	conf.InitRoutes(app)
+
 	return &Session{
 		app: app,
 	}

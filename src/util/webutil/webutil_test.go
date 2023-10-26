@@ -6,38 +6,45 @@ import (
 
 	"crdx.org/lighthouse/util/webutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestBuildURL(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		basePath    string
 		queryParams map[string]string
 		expected    string
 		expectError bool
 	}{
-		{"http://example.com", map[string]string{"key1": "value1"}, "http://example.com?key1=value1", false},
-		{"http://example.com", map[string]string{"key1": "value1", "key2": "value2"}, "http://example.com?key1=value1&key2=value2", false},
-		{"http://example.com", map[string]string{}, "http://example.com", false},
-		{"http://example.com", nil, "http://example.com", false},
+		{"https://example.com", map[string]string{"key1": "value1"}, "https://example.com?key1=value1", false},
+		{"https://example.com", map[string]string{"key1": "value1", "key2": "value2"}, "https://example.com?key1=value1&key2=value2", false},
+		{"https://example.com", map[string]string{}, "https://example.com", false},
+		{"https://example.com", nil, "https://example.com", false},
 		{":", map[string]string{"key1": "value1"}, "", true},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.basePath, func(t *testing.T) {
+			t.Parallel()
+
 			actual, err := webutil.BuildURL(testCase.basePath, testCase.queryParams)
 
 			if testCase.expectError {
-				assert.NotNil(t, err)
+				require.Error(t, err)
 				return
 			}
 
-			assert.Nil(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
 }
 
 func TestIsHTMLContentType(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		contentType string
 		expected    bool
@@ -54,6 +61,8 @@ func TestIsHTMLContentType(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.contentType, func(t *testing.T) {
+			t.Parallel()
+
 			actual := webutil.IsHTMLContentType(testCase.contentType)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -61,6 +70,8 @@ func TestIsHTMLContentType(t *testing.T) {
 }
 
 func TestMinifyHTML(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		input     []byte
 		expected  []byte
@@ -73,14 +84,16 @@ func TestMinifyHTML(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
+			t.Parallel()
+
 			actual, err := webutil.MinifyHTML(testCase.input)
 
 			if testCase.expectErr {
-				assert.NotNil(t, err)
+				require.Error(t, err)
 				return
 			}
 
-			assert.Nil(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}

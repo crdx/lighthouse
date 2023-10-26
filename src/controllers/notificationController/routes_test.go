@@ -8,15 +8,21 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setup() *helpers.Session {
-	return helpers.Init(auth.StateAdmin)
+func TestList(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.Get("/notifications")
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, "subject-8f3fdfea-f39c-427f-b8f5-0155119975ff")
+	assert.Contains(t, res.Body, "body-be67c77f-595c-4c91-8d24-99c829de1bbe")
 }
 
-func TestList(t *testing.T) {
-	session := setup()
-	res := session.Get("/notifications")
+func TestListBadPageNumber(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
 
-	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, res.Body, "a thing has happened")
-	assert.Contains(t, res.Body, "here are more details about the thing that happened")
+	res := session.Get("/notifications/?p=100")
+	assert.Equal(t, 404, res.StatusCode)
+
+	res = session.Get("/notifications/?p=0")
+	assert.Equal(t, 404, res.StatusCode)
 }

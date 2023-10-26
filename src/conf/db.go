@@ -17,6 +17,7 @@ func seed() error {
 
 	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPassword), Admin: true})
 	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPassword), Admin: false})
+
 	return nil
 }
 

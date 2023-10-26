@@ -6,10 +6,9 @@ import (
 	"math"
 
 	"crdx.org/lighthouse/util/webutil"
-	"github.com/gofiber/fiber/v2"
 )
 
-const queryStringParameter = "p"
+const Key = "p"
 
 type State struct {
 	CurrentPage     uint
@@ -22,9 +21,7 @@ type State struct {
 
 // GetCurrentPageNumber returns the page number of the current page, and true if a valid page number
 // was provided.
-func GetCurrentPageNumber(c *fiber.Ctx) (uint, bool) {
-	pageNumber := uint(c.QueryInt(queryStringParameter, 1))
-
+func GetCurrentPageNumber(pageNumber uint) (uint, bool) {
 	if pageNumber < 1 {
 		return 0, false
 	}
@@ -57,7 +54,7 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 			return ""
 		}
 
-		qs[queryStringParameter] = fmt.Sprint(n)
+		qs[Key] = fmt.Sprint(n)
 
 		var url string
 		if url, err = webutil.BuildURL(basePath, qs); err != nil {

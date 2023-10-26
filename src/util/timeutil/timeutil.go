@@ -76,7 +76,7 @@ func TimeAgo(seconds int, long bool, precision int) string {
 				parts = append(parts, fmt.Sprintf(
 					"%d %s",
 					partSeconds,
-					stringutil.Pluralise(partSeconds, unit.longName),
+					stringutil.Pluralise(partSeconds, unit.longName, unit.longName+"s"),
 				))
 			} else {
 				parts = append(parts, fmt.Sprintf(

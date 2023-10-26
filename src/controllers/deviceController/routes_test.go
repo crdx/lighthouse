@@ -12,64 +12,93 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func setup() *helpers.Session {
-	return helpers.Init(auth.StateAdmin)
-}
-
 func TestList(t *testing.T) {
-	session := setup()
-	res := session.Get("/")
+	session := helpers.Init(auth.StateAdmin)
 
+	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "AA:AA:AA:AA:AA:AA")
 	assert.Contains(t, res.Body, "127.0.0.1")
-	assert.Contains(t, res.Body, "device1")
+	assert.Contains(t, res.Body, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041")
+}
+
+func TestListSort(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.Get("/?sc=seen&sd=asc")
+	assert.Equal(t, 200, res.StatusCode)
+}
+
+func TestListBadSort(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.Get("/?sd=foo")
+	assert.Equal(t, 400, res.StatusCode)
+
+	res = session.Get("/?sc=foo")
+	assert.Equal(t, 400, res.StatusCode)
 }
 
 func TestView(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
+
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "AA:AA:AA:AA:AA:AA")
 	assert.Contains(t, res.Body, "127.0.0.1")
-	assert.Contains(t, res.Body, "adapter1")
-	assert.Contains(t, res.Body, "Corp 1")
+	assert.Contains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")
+	assert.Contains(t, res.Body, "Vendor 1")
+}
+
+func TestViewEdit(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.Get("/device/1/edit")
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041")
+}
+
+func TestUserCannotViewEdit(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.Get("/device/1/edit")
+	assert.Equal(t, 404, res.StatusCode)
+	assert.NotContains(t, res.Body, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041")
 }
 
 func TestEdit(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
 
-	nameUUID := uuid.NewString()
-	notesUUID := uuid.NewString()
-	iconUUID := uuid.NewString()
+	name := uuid.NewString()
+	notes := uuid.NewString()
+	icon := uuid.NewString()
 
 	res := session.PostForm("/device/1/edit", map[string]string{
-		"name":         nameUUID,
-		"notes":        notesUUID,
-		"icon":         iconUUID,
+		"name":         name,
+		"notes":        notes,
+		"icon":         icon,
 		"grace_period": "6",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
 
 	res = session.Get("/device/1")
-
-	assert.Contains(t, res.Body, nameUUID)
-	assert.Contains(t, res.Body, notesUUID)
-	assert.Contains(t, res.Body, iconUUID)
+	assert.Contains(t, res.Body, name)
+	assert.Contains(t, res.Body, notes)
+	assert.Contains(t, res.Body, icon)
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
 
-	nameUUID := uuid.NewString()
-	notesUUID := uuid.NewString()
-	iconUUID := uuid.NewString()
+	name := uuid.NewString()
+	notes := uuid.NewString()
+	icon := uuid.NewString()
 
 	res := session.PostForm("/device/1/edit", map[string]string{
-		"name":         nameUUID,
-		"notes":        notesUUID,
-		"icon":         iconUUID,
+		"name":         name,
+		"notes":        notes,
+		"icon":         icon,
 		"grace_period": "",
 	})
 
@@ -77,13 +106,22 @@ func TestEditWithErrors(t *testing.T) {
 	assert.Contains(t, res.Body, "required field")
 
 	res = session.Get("/device/1")
-
-	assert.NotContains(t, res.Body, notesUUID)
-	assert.NotContains(t, res.Body, iconUUID)
+	assert.NotContains(t, res.Body, notes)
+	assert.NotContains(t, res.Body, icon)
 }
 
-func TestMerge(t *testing.T) {
-	session := setup()
+func TestUserCannotEdit(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.PostForm("/device/1/edit", map[string]string{
+		"name": uuid.NewString(),
+	})
+
+	assert.Equal(t, 404, res.StatusCode)
+}
+
+func TestMerge1(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
@@ -92,10 +130,9 @@ func TestMerge(t *testing.T) {
 	assert.Equal(t, 302, res.StatusCode)
 
 	res = session.Get("/device/1")
-
 	assert.Contains(t, res.Body, "2023-10-01")
-	assert.Contains(t, res.Body, "adapter1")
-	assert.Contains(t, res.Body, "adapter2")
+	assert.Contains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")
+	assert.Contains(t, res.Body, "adapter2-c71739fd-d6f2-44e8-966f-fc5cdf2eec59")
 
 	device := lo.Must(db.First[m.Device](1))
 
@@ -106,8 +143,51 @@ func TestMerge(t *testing.T) {
 	assert.False(t, found)
 }
 
+func TestMerge2(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.PostForm("/device/2/merge", map[string]string{
+		"device_id": "1",
+	})
+
+	assert.Equal(t, 302, res.StatusCode)
+
+	res = session.Get("/device/1")
+	assert.Contains(t, res.Body, "2023-10-01")
+	assert.Contains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")
+	assert.Contains(t, res.Body, "adapter2-c71739fd-d6f2-44e8-966f-fc5cdf2eec59")
+
+	device := lo.Must(db.First[m.Device](1))
+
+	assert.Len(t, device.Adapters(), 2)
+	assert.NotNil(t, device.DeletedAt)
+
+	_, found := db.First[m.Device](2)
+	assert.False(t, found)
+}
+
+func TestMergeBadDevice(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	res := session.PostForm("/device/1/merge", map[string]string{
+		"device_id": "100",
+	})
+
+	assert.Equal(t, 400, res.StatusCode)
+}
+
+func TestUserCannotMerge(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.PostForm("/device/1/merge", map[string]string{
+		"device_id": "2",
+	})
+
+	assert.Equal(t, 404, res.StatusCode)
+}
+
 func TestDelete(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
 
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -116,5 +196,12 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, 302, res.StatusCode)
 
 	res = session.Get("/device/1")
+	assert.Equal(t, 404, res.StatusCode)
+}
+
+func TestUserCannotDelete(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.PostForm("/device/1/delete", nil)
 	assert.Equal(t, 404, res.StatusCode)
 }

@@ -4,25 +4,31 @@ import (
 	"strings"
 	"testing"
 
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
-func setup() *helpers.Session {
-	return helpers.Init(auth.StateAdmin)
-}
-
 func TestList(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
+
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "MACVendors")
+	assert.Contains(t, res.Body, "Settings")
+}
+
+func TestUserCannotList(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.Get("/admin/settings")
+	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestEdit(t *testing.T) {
-	session := setup()
+	session := helpers.Init(auth.StateAdmin)
 
 	apiKey := uuid.NewString()
 
@@ -34,22 +40,49 @@ func TestEdit(t *testing.T) {
 	assert.Equal(t, 302, res.StatusCode)
 
 	res = session.Get("/admin/settings")
-
 	assert.Contains(t, res.Body, apiKey)
 }
 
-func TestEditWithErrors(t *testing.T) {
-	session := setup()
+func TestUserCannotEdit(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
 
-	id := uuid.NewString()
-	apiKey := strings.Repeat(id, 100)
+	apiKey := uuid.NewString()
+
+	res := session.PostForm("/admin/settings", map[string]string{
+		"macvendors_api_key": apiKey,
+		"timezone":           "Europe/London",
+	})
+
+	assert.Equal(t, 404, res.StatusCode)
+	assert.NotContains(t, res.Body, apiKey)
+}
+
+func TestEditWithErrors(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	apiKey := strings.Repeat(uuid.NewString(), 20)
 
 	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, res.Body, id)
+	assert.Contains(t, res.Body, apiKey)
 	assert.Contains(t, res.Body, "must be a maximum of")
 	assert.Contains(t, res.Body, "characters in length")
+}
+
+func TestCacheInvalidation(t *testing.T) {
+	session := helpers.Init(auth.StateAdmin)
+
+	currentTimezone := settingR.Get("timezone")
+
+	session.PostForm("/admin/settings", map[string]string{
+		"timezone": "America/New_York",
+	})
+
+	timezone := settingR.Get("timezone")
+
+	assert.NotEqual(t, timezone, currentTimezone)
+	assert.Equal(t, "America/New_York", timezone)
 }

@@ -3,7 +3,6 @@ package deviceController
 import (
 	"fmt"
 
-	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -11,6 +10,7 @@ import (
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 type EditForm struct {
@@ -33,15 +33,10 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	device, found := db.First[m.Device](c.Params("id"))
-	if !found {
-		return c.SendStatus(400)
-	}
+	device := c.Locals("device").(*m.Device)
 
 	form := new(EditForm)
-	if err := c.BodyParser(form); err != nil {
-		return err
-	}
+	lo.Must0(c.BodyParser(form))
 
 	transform.Struct(form)
 

@@ -6,13 +6,14 @@ import (
 	"os"
 	"strings"
 
-	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/logger"
 )
 
 type Func func(string, smtp.Auth, string, []string, []byte) error
 
 type Config struct {
+	SendToStdErr bool
+
 	Enabled     func() bool
 	Host        func() string
 	Port        func() string
@@ -33,14 +34,14 @@ func Init(config *Config) {
 // Send sends an email if SMTP is enabled.
 func Send(subject string, body string) error {
 	if pkgConfig == nil {
-		panic("no mail configuration")
+		return fmt.Errorf("no mail configuration")
 	}
 
 	if pkgConfig.Enabled == nil || !pkgConfig.Enabled() {
 		return nil
 	}
 
-	if !env.Production {
+	if pkgConfig.SendToStdErr {
 		logger.Get().Info("mail sent to stderr")
 		fmt.Fprintln(os.Stderr, strings.TrimSpace(buildBody(subject, body)))
 		return nil

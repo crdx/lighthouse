@@ -9,6 +9,7 @@ import (
 	"crdx.org/lighthouse/util/reflectutil"
 	"crdx.org/lighthouse/util/stringutil"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 type EditForm struct {
@@ -33,9 +34,7 @@ func Edit(c *fiber.Ctx) error {
 	user := c.Locals("user").(*m.User)
 
 	form := new(EditForm)
-	if err := c.BodyParser(form); err != nil {
-		return err
-	}
+	lo.Must0(c.BodyParser(form))
 
 	// Current user can't edit their own admin access so the disabled form field doesn't come
 	// through in the request. Set it here to make the form object valid.

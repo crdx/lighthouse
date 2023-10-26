@@ -7,14 +7,12 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
-	"crdx.org/lighthouse/util/stringutil"
 )
 
-func createDevice(id uint, name, hostname string, lastSeen time.Time) *m.Device {
+func createDevice(id uint, name string, lastSeen time.Time) *m.Device {
 	return db.Save(&m.Device{
 		ID:       id,
 		Name:     name,
-		Hostname: hostname,
 		State:    deviceR.StateOnline,
 		Icon:     constants.DefaultDeviceIconClass,
 		LastSeen: lastSeen,
@@ -44,33 +42,34 @@ func createDeviceStateLog(id, deviceID uint, state string, createdAt time.Time) 
 }
 
 func Run() error {
-	t2 := time.Date(2023, time.September, 1, 12, 00, 00, 0, time.UTC)
-	t1 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
+	t1 := time.Date(2023, time.September, 1, 12, 00, 00, 0, time.UTC)
+	t2 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
 	t3 := time.Date(2023, time.November, 1, 12, 00, 00, 0, time.UTC)
 
-	device1 := createDevice(1, "device1", "device1", t1)
-	createAdapter(1, device1.ID, "adapter1", "Corp 1", "AA:AA:AA:AA:AA:AA", "127.0.0.1", t1)
+	device1 := createDevice(1, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041", t1)
+	createAdapter(1, device1.ID, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25", "Vendor 1", "AA:AA:AA:AA:AA:AA", "127.0.0.1", t1)
 
-	device2 := createDevice(2, "device2", "device2", t2)
-	createAdapter(2, device2.ID, "adapter2", "Corp 2", "BB:BB:BB:BB:BB:BB", "127.0.0.2", t2)
+	device2 := createDevice(2, "device2-64774746-5937-412c-9aa4-f262d990cc7d", t2)
+	createAdapter(2, device2.ID, "adapter2-c71739fd-d6f2-44e8-966f-fc5cdf2eec59", "Vendor 2", "BB:BB:BB:BB:BB:BB", "127.0.0.2", t2)
 
-	device3 := createDevice(3, "device3", "device3", t3)
-	createAdapter(3, device3.ID, "adapter3", "Corp 3", "CC:CC:CC:CC:CC:CC", "127.0.0.3", t3)
+	device3 := createDevice(3, "device3-5acf7b73-b02c-4fe5-a63e-869f8bfc329e", t3)
+	createAdapter(3, device3.ID, "adapter3-5b083c73-f92b-4890-811a-eed7bdca99c6", "Vendor 3", "CC:CC:CC:CC:CC:CC", "127.0.0.3", t3)
 
 	createDeviceStateLog(1, device1.ID, deviceR.StateOnline, time.Now().Add(-3*time.Minute))
 	createDeviceStateLog(2, device1.ID, deviceR.StateOffline, time.Now().Add(-2*time.Minute))
 	createDeviceStateLog(3, device2.ID, deviceR.StateOffline, time.Now().Add(-1*time.Minute))
 
 	db.Save(&m.Notification{
-		Subject: "a thing has happened",
-		Body:    "here are more details about the thing that happened",
+		Subject: "subject-8f3fdfea-f39c-427f-b8f5-0155119975ff",
+		Body:    "body-be67c77f-595c-4c91-8d24-99c829de1bbe",
 	})
 
-	db.Save(&m.Setting{Name: "notification_from_header", Value: "foo <foo@example.com>"})
-	db.Save(&m.Setting{Name: "notification_to_header", Value: "bar <bar@example.com>"})
+	// bcrypt is expensive, and this runs for every test, so pregenerate the hashes.
+	rootHash := `$2a$10$Mjxj19.2lGTooLqwxi6MQeCukr7lZFyODKSFCIRR2aldNg/oTov.K`
+	anonHash := `$2a$10$mnYikOcNhl.Kr4bzShVIne4vywF9zRw967qOBQpaGpbTl2HRBoCPm`
 
-	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash("root"), Admin: true})
-	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash("anon"), Admin: false})
+	db.Save(&m.User{ID: 1, Username: "root", PasswordHash: rootHash, Admin: true})
+	db.Save(&m.User{ID: 2, Username: "anon", PasswordHash: anonHash, Admin: false})
 
 	return nil
 }

@@ -4,8 +4,8 @@ linters:
     - cyclop
     - deadcode
     - depguard
-    - exhaustivestruct
     - exhaustive
+    - exhaustivestruct
     - exhaustruct
     - forbidigo
     - forcetypeassert
@@ -33,16 +33,17 @@ linters:
     - nonamedreturns
     - nosnakecase
     - paralleltest
+    - perfsprint
     - prealloc
     - scopelint
     - structcheck
+    - tagalign
     - tagliatelle
     - testpackage
     - varcheck
     - varnamelen
     - wrapcheck
     - wsl
-    - tagalign
 
 linters-settings:
   gocritic:

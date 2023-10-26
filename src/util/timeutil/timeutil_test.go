@@ -3,12 +3,70 @@ package timeutil_test
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"crdx.org/lighthouse/util/timeutil"
-	"github.com/go-playground/assert/v2"
+	"github.com/samber/lo"
+	"github.com/stretchr/testify/assert"
 )
 
+func TestToLocal(t *testing.T) {
+	testTime := time.Date(2023, 10, 20, 0, 0, 0, 0, time.UTC)
+
+	testCases := []struct {
+		inputConfig *timeutil.Config
+		inputTime   time.Time
+		expected    time.Time
+		shouldPanic bool
+	}{
+		{
+			&timeutil.Config{Timezone: func() string { return "America/New_York" }},
+			testTime,
+			testTime.In(lo.Must(time.LoadLocation("America/New_York"))),
+			false,
+		},
+		{
+			&timeutil.Config{Timezone: func() string { return "Europe/London" }},
+			testTime,
+			testTime.In(lo.Must(time.LoadLocation("Europe/London"))),
+			false,
+		},
+		{
+			&timeutil.Config{Timezone: func() string { return "" }},
+			testTime,
+			time.Time{},
+			true,
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.inputConfig.Timezone(), func(t *testing.T) {
+			var actual time.Time
+			var panicValue any
+
+			timeutil.Init(testCase.inputConfig)
+
+			func() {
+				defer func() {
+					if r := recover(); r != nil {
+						panicValue = r
+					}
+				}()
+				actual = timeutil.ToLocal(testCase.inputTime)
+			}()
+
+			if testCase.shouldPanic {
+				assert.NotNil(t, panicValue)
+			} else {
+				assert.Equal(t, testCase.expected, actual)
+			}
+		})
+	}
+}
+
 func TestTimeAgo(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		inputN         int
 		inputLong      bool
@@ -32,6 +90,8 @@ func TestTimeAgo(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputLong, testCase.inputPrecision), func(t *testing.T) {
+			t.Parallel()
+
 			actual := timeutil.TimeAgo(testCase.inputN, testCase.inputLong, testCase.inputPrecision)
 			assert.Equal(t, testCase.expected, actual)
 		})

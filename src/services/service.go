@@ -16,7 +16,7 @@ type Args struct {
 type Service interface {
 	// Init initialises the service and returns an error if init failed. If an error is returned
 	// then the service will not run.
-	Init(*Args) error
+	Init(args *Args) error
 
 	// Run runs the service and returns an error for an unrecoverable failure.
 	Run() error

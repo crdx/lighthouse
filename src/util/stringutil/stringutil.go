@@ -10,13 +10,16 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func Pluralise(count int, unit string) string {
+// Pluralise pluralises a string based on count.
+func Pluralise(count int, singular, plural string) string {
 	if count == 1 {
-		return unit
+		return singular
+	} else {
+		return plural
 	}
-	return unit + "s"
 }
 
+// RenderMarkdown renders some markdown.
 func RenderMarkdown(s string) string {
 	// Use the typographer extension, but disable some unwanted substitutions.
 	// https://github.com/yuin/goldmark#typographerExtension-extension
@@ -41,7 +44,7 @@ func RenderMarkdown(s string) string {
 
 	var buf bytes.Buffer
 	if err := markdownRenderer.Convert([]byte(s), &buf); err != nil {
-		return "An error occurred rendering this field's markdown"
+		return "An error occurred rendering this markdown"
 	}
 
 	return buf.String()

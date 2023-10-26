@@ -57,7 +57,7 @@ func logIn(c *fiber.Ctx, username string, password string) error {
 // New returns middleware that handles authentication.
 func New() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		if c.Method() == http.MethodPost && c.Path() == "/goodbye" {
+		if c.Method() == http.MethodPost && c.Path() == "/bye" {
 			return logOut(c)
 		}
 
@@ -90,15 +90,4 @@ func Admin(c *fiber.Ctx) error {
 		return c.SendStatus(404)
 	}
 	return c.Next()
-}
-
-// AutoLogin returns middleware that simulates the user being authorised as the provided state. The
-// first user in the db with the required authorisation will be picked. This is designed to be used
-// for tests.
-func AutoLogin(state State) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		user, _ := db.B[m.User]("admin = ?", state == StateAdmin).First()
-		c.Locals(globals.CurrentUserKey, user)
-		return c.Next()
-	}
 }

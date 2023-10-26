@@ -27,9 +27,6 @@ var translator universalTranslator.Translator
 func init() {
 	translator, _ = universalTranslator.New(enLocale.New()).GetTranslator("en")
 	validate = validator.New(validator.WithRequiredStructEnabled())
-	if validate == nil {
-		panic("unable to build validator")
-	}
 
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
 

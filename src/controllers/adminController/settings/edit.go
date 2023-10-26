@@ -8,6 +8,7 @@ import (
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 type Form struct {
@@ -41,9 +42,7 @@ func List(c *fiber.Ctx) error {
 
 func Save(c *fiber.Ctx) error {
 	form := new(Form)
-	if err := c.BodyParser(form); err != nil {
-		return err
-	}
+	lo.Must0(c.BodyParser(form))
 
 	transform.Struct(form)
 

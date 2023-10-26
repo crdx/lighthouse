@@ -42,30 +42,27 @@ func main() {
 	initMiddleware(app)
 	conf.InitRoutes(app)
 
-	InitMail()
-	InitTime()
-
+	initPackages()
 	startServices()
 
 	panic(app.Listen(env.BindHost + ":" + env.BindPort))
 }
 
-func InitTime() {
+func initPackages() {
 	timeutil.Init(&timeutil.Config{
 		Timezone: func() string { return settingR.Get(settingR.Timezone) },
 	})
-}
 
-func InitMail() {
 	mailutil.Init(&mailutil.Config{
-		Enabled:     func() bool { return settingR.GetBool(settingR.EnableMail) },
-		Host:        func() string { return settingR.Get(settingR.SMTPHost) },
-		Port:        func() string { return settingR.Get(settingR.SMTPPort) },
-		User:        func() string { return settingR.Get(settingR.SMTPUser) },
-		Pass:        func() string { return settingR.Get(settingR.SMTPPass) },
-		FromAddress: func() string { return settingR.Get(settingR.MailFromAddress) },
-		ToAddress:   func() string { return settingR.Get(settingR.MailToAddress) },
-		FromHeader:  func() string { return settingR.Get(settingR.MailFromHeader) },
-		ToHeader:    func() string { return settingR.Get(settingR.MailToHeader) },
+		SendToStdErr: !env.Production,
+		Enabled:      func() bool { return settingR.GetBool(settingR.EnableMail) },
+		Host:         func() string { return settingR.Get(settingR.SMTPHost) },
+		Port:         func() string { return settingR.Get(settingR.SMTPPort) },
+		User:         func() string { return settingR.Get(settingR.SMTPUser) },
+		Pass:         func() string { return settingR.Get(settingR.SMTPPass) },
+		FromAddress:  func() string { return settingR.Get(settingR.MailFromAddress) },
+		ToAddress:    func() string { return settingR.Get(settingR.MailToAddress) },
+		FromHeader:   func() string { return settingR.Get(settingR.MailFromHeader) },
+		ToHeader:     func() string { return settingR.Get(settingR.MailToHeader) },
 	})
 }

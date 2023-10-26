@@ -3,7 +3,6 @@ IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
-TESTABLE_PACKAGES := './{controllers,middleware,pkg,util}/...'
 
 set dotenv-load := true
 
@@ -69,7 +68,8 @@ test:
     set -e
     cd src
     export VIEWS_DIR=$(realpath views)
-    go test -p 1 -cover {{ TESTABLE_PACKAGES }}
+    go test -p 1 -cover ./... | grep -vF '[no test files]'
+    exit ${PIPESTATUS[0]}
 
 # run tests and show code coverage
 cov:
@@ -78,13 +78,20 @@ cov:
     cd src
     FILE=$(mktemp)
     export VIEWS_DIR=$(realpath views)
-    go test -p 1 -cover -coverprofile="$FILE" {{ TESTABLE_PACKAGES }}
+    go test -p 1 -cover -coverprofile="$FILE" ./...
     go tool cover -html="$FILE"
-    rm -v "$FILE"
+    rm "$FILE"
 
 # run a specific test
-@test-file path:
-    cd src && go test -p 1 {{ path }}
+test-file path:
+    #!/bin/bash
+    set -e
+    cd src
+    FILE="{{ path }}"
+    export VIEWS_DIR=$(realpath views)
+    go test -p 1 -cover "${FILE#src/}"
+    # go test -p 1 -cover -cpuprofile ../cpu.prof "${FILE#src/}"
+    # go tool pprof -png -output ../cpu.png ../cpu.prof
 
 # check everything
 @check: lint test

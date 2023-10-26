@@ -1,8 +1,6 @@
-/* TODO: Build bulma from SCSS and move some of these to variables. */
-
 .section {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 th {

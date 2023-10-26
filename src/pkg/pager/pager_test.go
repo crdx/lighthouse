@@ -6,9 +6,37 @@ import (
 
 	"crdx.org/lighthouse/pkg/pager"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
+func TestGetCurrentPageNumber(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		inputPageNumber    uint
+		expectedPageNumber uint
+		expectOK           bool
+	}{
+		{5, 5, true},
+		{1, 1, true},
+		{0, 0, false},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%d", testCase.inputPageNumber), func(t *testing.T) {
+			t.Parallel()
+
+			pageNumber, ok := pager.GetCurrentPageNumber(testCase.inputPageNumber)
+
+			assert.Equal(t, testCase.expectedPageNumber, pageNumber)
+			assert.Equal(t, testCase.expectOK, ok)
+		})
+	}
+}
+
 func TestGetState(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		name           string
 		currentPage    uint
@@ -21,18 +49,28 @@ func TestGetState(t *testing.T) {
 		expectedOffset uint
 	}{
 		{
-			currentPage:   1,
-			totalPages:    5,
-			path:          "/example",
-			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 1, TotalPages: 5, NextPageURL: "/example?key=value&p=2", LastPageURL: "/example?key=value&p=5"},
+			currentPage: 1,
+			totalPages:  5,
+			path:        "/example",
+			qs:          map[string]string{"key": "value"},
+			expectedState: pager.State{
+				CurrentPage: 1,
+				TotalPages:  5,
+				NextPageURL: "/example?key=value&p=2",
+				LastPageURL: "/example?key=value&p=5",
+			},
 		},
 		{
-			currentPage:   3,
-			totalPages:    3,
-			path:          "/example",
-			qs:            map[string]string{"key": "value"},
-			expectedState: pager.State{CurrentPage: 3, TotalPages: 3, PreviousPageURL: "/example?key=value&p=2", FirstPageURL: "/example?key=value&p=1"},
+			currentPage: 3,
+			totalPages:  3,
+			path:        "/example",
+			qs:          map[string]string{"key": "value"},
+			expectedState: pager.State{
+				CurrentPage:     3,
+				TotalPages:      3,
+				PreviousPageURL: "/example?key=value&p=2",
+				FirstPageURL:    "/example?key=value&p=1",
+			},
 		},
 		{
 			currentPage: 3,
@@ -41,15 +79,29 @@ func TestGetState(t *testing.T) {
 			qs:          map[string]string{"key": "value"},
 			expectErr:   true,
 		},
+		{
+			currentPage: 3,
+			totalPages:  3,
+			path:        "/example",
+			qs:          nil,
+			expectedState: pager.State{
+				CurrentPage:     3,
+				TotalPages:      3,
+				PreviousPageURL: "/example?p=2",
+				FirstPageURL:    "/example?p=1",
+			},
+		},
 	}
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
+			t.Parallel()
+
 			state, err := pager.GetState(testCase.currentPage, testCase.totalPages, testCase.path, testCase.qs)
 			if testCase.expectErr {
-				assert.NotNil(t, err)
+				require.Error(t, err)
 			} else {
-				assert.Nil(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, testCase.expectedState, *state, "state")
 			}
 		})
@@ -57,6 +109,8 @@ func TestGetState(t *testing.T) {
 }
 
 func TestGetPageCount(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		total    uint
 		perPage  uint
@@ -73,6 +127,8 @@ func TestGetPageCount(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d,%d", testCase.total, testCase.perPage), func(t *testing.T) {
+			t.Parallel()
+
 			actual := pager.GetPageCount(testCase.total, testCase.perPage)
 			assert.Equal(t, testCase.expected, actual)
 		})
@@ -80,6 +136,8 @@ func TestGetPageCount(t *testing.T) {
 }
 
 func TestGetOffset(t *testing.T) {
+	t.Parallel()
+
 	testCases := []struct {
 		pageNumber uint
 		perPage    uint
@@ -95,6 +153,8 @@ func TestGetOffset(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d,%d", testCase.pageNumber, testCase.perPage), func(t *testing.T) {
+			t.Parallel()
+
 			actual := pager.GetOffset(testCase.pageNumber, testCase.perPage)
 			assert.Equal(t, testCase.expected, actual)
 		})

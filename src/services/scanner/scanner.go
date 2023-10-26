@@ -55,12 +55,12 @@ func (self *Scanner) Init(args *services.Args) error {
 }
 
 func (self *Scanner) Run() error {
-	iface, found := netutil.FindInterface()
+	iface, found := findInterface()
 	if !found {
 		return errors.New("no interface found")
 	}
 
-	ipNet, found := netutil.FindIPNet(iface)
+	ipNet, found := findIPNet(iface)
 	if !found {
 		return errors.New("no network found")
 	} else if netutil.IPNetTooLarge(ipNet) {
@@ -297,4 +297,39 @@ func populateDeviceName(device *m.Device, hostname string) {
 		device.Update("name", hostname)
 		return
 	}
+}
+
+// findInterface returns the first interface that is considered "up" and is not the loopback
+// interface.
+func findInterface() (*net.Interface, bool) {
+	interfaces := lo.Must(net.Interfaces())
+
+	for _, iface := range interfaces {
+		isRunning := iface.Flags&net.FlagRunning == net.FlagRunning
+		hasAssignedIps := lo.Must(iface.Addrs()) != nil
+
+		if iface.Name != "lo" && isRunning && hasAssignedIps {
+			return &iface, true
+		}
+	}
+
+	return nil, false
+}
+
+// findIPNet returns the first IPv4 network for an interface.
+func findIPNet(iface *net.Interface) (*net.IPNet, bool) {
+	addresses := lo.Must(iface.Addrs())
+
+	for _, address := range addresses {
+		if network, ok := address.(*net.IPNet); ok {
+			if ip := network.IP.To4(); ip != nil {
+				return &net.IPNet{
+					IP:   ip,
+					Mask: network.Mask[len(network.Mask)-4:],
+				}, true
+			}
+		}
+	}
+
+	return nil, false
 }
