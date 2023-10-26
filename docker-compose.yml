@@ -6,7 +6,6 @@ services:
     env_file: .env.prod
     network_mode: host
     volumes:
-      - /run/mysqld/mysqld.sock:/run/mysqld/mysqld.sock:ro
       - ./logs:/app/logs
     healthcheck:
       test: /app/healthcheck
