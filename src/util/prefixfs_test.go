@@ -43,7 +43,7 @@ func TestPrefixFS(t *testing.T) {
 				require.Error(t, err)
 			} else {
 				require.NoError(t, err)
-				assert.Equal(t, testCase.expected, file.(*mockFile).Name())
+				assert.Equal(t, testCase.expected, file.(*mockFile).Name)
 			}
 		})
 	}
@@ -58,15 +58,11 @@ func (m *mockFS) Open(name string) (fs.File, error) {
 		return nil, &fs.PathError{Op: "open", Path: name, Err: errors.New("file does not exist")}
 	}
 
-	return &mockFile{name: name}, nil
+	return &mockFile{Name: name}, nil
 }
 
 type mockFile struct {
-	name string
-}
-
-func (m *mockFile) Name() string {
-	return m.name
+	Name string
 }
 
 func (*mockFile) Stat() (fs.FileInfo, error) {
