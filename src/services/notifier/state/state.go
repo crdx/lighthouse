@@ -20,24 +20,23 @@ type transition struct {
 }
 
 func (self *transition) String() string {
-	if self.Notification.State == deviceR.StateOnline {
-		return fmt.Sprintf("%s is online", self.Device.Identifier())
-	} else if self.Notification.State == deviceR.StateOffline {
-		return fmt.Sprintf("%s is offline", self.Device.Identifier())
-	} else {
-		return fmt.Sprintf(
-			"%s transitioned to an unknown state (%s)",
-			self.Device.Identifier(),
-			self.Notification.State,
-		)
-	}
+	return fmt.Sprintf("%s is %s", self.Device.Identifier(), self.Notification.State)
+}
+
+func (self *transition) Verb() string {
+	return map[string]string{
+		deviceR.StateOnline:  "came",
+		deviceR.StateOffline: "went",
+	}[self.Notification.State]
 }
 
 func (self *transition) TimestampedString() string {
 	return fmt.Sprintf(
-		"%s — %s",
+		"%s %s %s at %s",
+		self.Device.Identifier(),
+		self.Verb(),
+		self.Notification.State,
 		timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"),
-		self.String(),
 	)
 }
 
