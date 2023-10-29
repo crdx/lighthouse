@@ -62,5 +62,5 @@ func getBody(discoveries []*discovery) string {
 	for _, discovery := range discoveries {
 		s.WriteString(fmt.Sprintf("%s\n", discovery.Device.Details()))
 	}
-	return s.String()
+	return strings.TrimSpace(s.String())
 }

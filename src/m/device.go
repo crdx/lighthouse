@@ -91,7 +91,7 @@ func (self *Device) Details() string {
 		}
 	}
 
-	return s.String()
+	return strings.TrimSpace(s.String())
 }
 
 // Adapters returns all Adapters attached to this Device.
