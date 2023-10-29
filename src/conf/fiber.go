@@ -29,7 +29,7 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 		Immutable:   true, // https://docs.gofiber.io/#zero-allocation
 	}
 
-	if env.Production {
+	if env.Production() {
 		config.ErrorHandler = func(c *fiber.Ctx, err error) error {
 			if e := new(fiber.Error); errors.As(err, &e) {
 				return c.SendStatus(e.Code)

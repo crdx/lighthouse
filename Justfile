@@ -21,7 +21,7 @@ set dotenv-load := true
 
 # start development without live reload
 @devn: make-autocap
-    LIVE_RELOAD= just dev
+    LIVE_RELOAD=0 just dev
 
 # start development with debug logging
 @devd:

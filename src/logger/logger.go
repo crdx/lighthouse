@@ -22,7 +22,7 @@ func Get() *slog.Logger {
 		return logger
 	}
 
-	switch env.LogType {
+	switch env.LogType() {
 	case env.LogTypeAll:
 		logger = slog.New(slogmulti.Fanout(getDiskHandler(), getStderrHandler()))
 	case env.LogTypeDisk:
@@ -30,10 +30,10 @@ func Get() *slog.Logger {
 	case env.LogTypeStderr:
 		logger = slog.New(getStderrHandler())
 	default:
-		panic("unexpected env.LogType")
+		panic("unexpected env.LogType()")
 	}
 
-	logger.Info("logger init complete", "type", env.LogType)
+	logger.Info("logger init complete", "type", env.LogType())
 	return logger
 }
 
@@ -42,7 +42,7 @@ func With(args ...any) *slog.Logger {
 }
 
 func getDiskHandler() slog.Handler {
-	file := lo.Must(os.OpenFile(env.LogPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644))
+	file := lo.Must(os.OpenFile(env.LogPath(), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644))
 	lo.Must0(os.MkdirAll("logs", 0755))
 	return slog.NewJSONHandler(file, nil)
 }

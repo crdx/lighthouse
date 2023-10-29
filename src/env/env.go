@@ -1,6 +1,7 @@
 package env
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"slices"
@@ -17,67 +18,136 @@ const (
 	LogTypeNone   = "none"
 )
 
+var env map[string]string
+
 var (
-	Debug = len(os.Getenv("LIGHTHOUSE_DEBUG")) > 0
+	mode = func() string { return env["MODE"] }
 
-	Production = os.Getenv("MODE") == ModeProduction
-	BindHost   = os.Getenv("HOST")
-	BindPort   = os.Getenv("PORT")
+	Debug      = func() bool { return truthy(env["LIGHTHOUSE_DEBUG"]) }
+	Production = func() bool { return env["MODE"] == ModeProduction }
 
-	LogType = os.Getenv("LOG_TYPE")
-	LogPath = os.Getenv("LOG_PATH")
+	Host = func() string { return env["HOST"] }
+	Port = func() string { return env["PORT"] }
 
-	DatabaseName     = os.Getenv("DB_NAME")
-	DatabaseUser     = os.Getenv("DB_USER")
-	DatabasePass     = os.Getenv("DB_PASS")
-	DatabaseSocket   = os.Getenv("DB_SOCK")
-	DatabaseHost     = os.Getenv("DB_HOST")
-	DatabaseCharSet  = os.Getenv("DB_CHARSET")
-	DatabaseTimeZone = os.Getenv("DB_TZ")
+	LogType = func() string { return env["LOG_TYPE"] }
+	LogPath = func() string { return env["LOG_PATH"] }
 
-	EnableLiveReload = os.Getenv("LIVE_RELOAD") != ""
+	DatabaseName     = func() string { return env["DB_NAME"] }
+	DatabaseUser     = func() string { return env["DB_USER"] }
+	DatabasePass     = func() string { return env["DB_PASS"] }
+	DatabaseSocket   = func() string { return env["DB_SOCK"] }
+	DatabaseHost     = func() string { return env["DB_HOST"] }
+	DatabaseCharset  = func() string { return env["DB_CHARSET"] }
+	DatabaseTimezone = func() string { return env["DB_TZ"] }
 
-	DefaultRootPassword = envOrDefault("DEFAULT_ROOT_PASSWORD", "root")
-	DefaultAnonPassword = envOrDefault("DEFAULT_ANON_PASSWORD", "anon")
+	LiveReload = func() bool { return truthy(env["LIVE_RELOAD"]) }
+
+	DefaultRootPass = func() string { return or("DEFAULT_ROOT_PASS", "root") }
+	DefaultAnonPass = func() string { return or("DEFAULT_ANON_PASS", "anon") }
 )
 
-func Check() {
-	// In development no port means use a random port, but this will never be correct for production.
-	if Production && BindPort == "" {
-		panic("running in production (MODE=production) but no port set")
-	}
+func Init() {
+	env = map[string]string{}
 
-	require("HOST")
+	for _, v := range os.Environ() {
+		name, value, ok := strings.Cut(v, "=")
+		if !ok {
+			continue
+		}
 
-	if DatabaseSocket == "" && DatabaseHost == "" {
-		panic("required environment variable DB_SOCK or DB_HOST is not set")
-	}
-
-	require("DB_NAME")
-	require("DB_USER")
-
-	requireIn("LOG_TYPE", []string{"all", "disk", "stderr", "none"}, false)
-
-	if LogType == LogTypeAll || LogType == LogTypeDisk {
-		require("LOG_PATH")
+		env[name] = value
 	}
 }
 
-func require(name string) {
-	if os.Getenv(name) == "" {
-		panic(fmt.Sprintf("required environment variable %s is not set", name))
+func InitFrom(path string) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
 	}
+
+	env = parse(string(b))
+	return nil
 }
 
-func requireIn(name string, values []string, canBeEmpty bool) {
+func Validate() error {
+	var errs []error
+	e := func(err error) {
+		errs = append(errs, err)
+	}
+
+	e(require(mode, "MODE"))
+
+	if Production() && Port() == "" {
+		// In development no port means use a random port, but this will never be correct for production.
+		return fmt.Errorf("running in production but no port set")
+	}
+
+	e(require(Host, "HOST"))
+
+	if DatabaseSocket() == "" && DatabaseHost() == "" {
+		e(fmt.Errorf("DB_SOCK or DB_HOST required"))
+	}
+
+	e(require(DatabaseName, "DB_NAME"))
+	e(require(DatabaseUser, "DB_USER"))
+	e(require(DatabaseCharset, "DB_CHARSET"))
+	e(require(DatabaseTimezone, "DB_TZ"))
+
+	e(requireIn(LogType, "LOG_TYPE", []string{"all", "disk", "stderr", "none"}, false))
+
+	if LogType() == LogTypeAll || LogType() == LogTypeDisk {
+		e(require(LogPath, "LOG_PATH"))
+	}
+
+	return errors.Join(errs...)
+}
+
+func parse(s string) map[string]string {
+	m := map[string]string{}
+
+	for _, line := range strings.Split(s, "\n") {
+		line := strings.TrimSpace(line)
+
+		if strings.HasPrefix(line, "#") || line == "" {
+			continue
+		}
+
+		name, value, ok := strings.Cut(line, "=")
+		if !ok {
+			continue
+		}
+
+		if len(value) > 0 {
+			n := len(value) - 1
+			if value[0] == '"' && value[n] == '"' {
+				value = value[1:n]
+			}
+		}
+
+		m[name] = value
+	}
+
+	return m
+}
+
+func require(f func() string, name string) error {
+	if f() == "" {
+		return fmt.Errorf("%s required", name)
+	}
+	return nil
+}
+
+func requireIn(f func() string, name string, values []string, canBeEmpty bool) error {
 	if !canBeEmpty {
-		require(name)
+		if err := require(f, name); err != nil {
+			return err
+		}
 	}
 
-	value := os.Getenv(name)
+	value := f()
 
 	if canBeEmpty && value == "" {
-		return
+		return nil
 	}
 
 	if !slices.Contains(values, value) {
@@ -86,21 +156,27 @@ func requireIn(name string, values []string, canBeEmpty bool) {
 			s = `, or the empty string ("")`
 		}
 
-		panic(fmt.Sprintf(
-			`required environment variable %s contains an invalid value (must be one of: "%s"%s)`,
+		return fmt.Errorf(
+			`%s contains an invalid value (must be one of: "%s"%s)`,
 			name,
 			strings.Join(values, `", "`),
 			s,
-		))
+		)
 	}
+
+	return nil
 }
 
-func envOrDefault(key string, default_ string) string {
-	value := os.Getenv(key)
+func or(name string, default_ string) string {
+	value := env[name]
 
 	if value != "" {
 		return value
 	} else {
 		return default_
 	}
+}
+
+func truthy(s string) bool {
+	return slices.Contains([]string{"true", "1", "yes"}, s)
 }

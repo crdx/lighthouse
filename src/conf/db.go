@@ -15,25 +15,25 @@ func seed() error {
 	db.Save(&m.Setting{Name: settingR.Timezone, Value: "Europe/London"})
 	db.Save(&m.Setting{Name: settingR.Watch, Value: "1"})
 
-	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPassword), Admin: true})
-	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPassword), Admin: false})
+	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPass()), Admin: true})
+	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPass()), Admin: false})
 
 	return nil
 }
 
 func GetDbConfig() *db.Config {
 	return &db.Config{
-		Name:          env.DatabaseName,
-		User:          env.DatabaseUser,
-		Pass:          env.DatabasePass,
-		Host:          env.DatabaseHost,
-		Socket:        env.DatabaseSocket,
-		TimeZone:      env.DatabaseTimeZone,
-		CharSet:       env.DatabaseCharSet,
+		Name:          env.DatabaseName(),
+		User:          env.DatabaseUser(),
+		Pass:          env.DatabasePass(),
+		Host:          env.DatabaseHost(),
+		Socket:        env.DatabaseSocket(),
+		TimeZone:      env.DatabaseTimezone(),
+		CharSet:       env.DatabaseCharset(),
 		Models:        models,
 		Migrations:    migrations,
-		Colour:        !env.Production,
-		Debug:         env.Debug,
+		Colour:        !env.Production(),
+		Debug:         env.Debug(),
 		SlowThreshold: 250 * time.Millisecond,
 		Seed:          seed,
 	}
@@ -41,13 +41,13 @@ func GetDbConfig() *db.Config {
 
 func GetTestDbConfig() *db.Config {
 	return &db.Config{
-		Name:       env.DatabaseName + "_test",
-		User:       env.DatabaseUser,
-		Pass:       env.DatabasePass,
-		Host:       env.DatabaseHost,
-		Socket:     env.DatabaseSocket,
-		TimeZone:   env.DatabaseTimeZone,
-		CharSet:    env.DatabaseCharSet,
+		Name:       env.DatabaseName() + "_test",
+		User:       env.DatabaseUser(),
+		Pass:       env.DatabasePass(),
+		Host:       env.DatabaseHost(),
+		Socket:     env.DatabaseSocket(),
+		TimeZone:   env.DatabaseTimezone(),
+		CharSet:    env.DatabaseCharset(),
 		Models:     models,
 		Migrations: migrations,
 		Colour:     false,

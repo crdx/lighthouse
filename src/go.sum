@@ -1,5 +1,9 @@
 crdx.org/db v1.7.0 h1:sfIC0AhYmeAf05PuRDSvurukQ1069xi0mxLxOE/Bf2E=
 crdx.org/db v1.7.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
+crdx.org/duckopt/v2 v2.0.1 h1:1Fon0xO1Le6jTumpoQWXHuG0il/th0ESQpVXNNL/bCs=
+crdx.org/duckopt/v2 v2.0.1/go.mod h1:vSD5bx/4+OweUIhBOMVZX0vfr6VOT8hWE3B4RR/4DP0=
+crdx.org/hereduck v1.0.3 h1:37t7wJpTFyZOl8nnYR/O2BdlLAcbl5G15tL1KQSCuxs=
+crdx.org/hereduck v1.0.3/go.mod h1:vIszV0JCDqAt3yEkNDxi4VWqNT9zc3ZfhNnzB5rfn90=
 crdx.org/session v1.1.0 h1:+Pa8Nl7CLEK7Bpa65gLiMAMvEvwvZmKgIQPpxD6ND6I=
 crdx.org/session v1.1.0/go.mod h1:NF/Obven+N2Th8MVYbBOcvhxlYbMbCPt9MIPf6v9bBw=
 github.com/andybalholm/brotli v1.0.6 h1:Yf9fFpf49Zrxb9NlQaluyE92/+X7UVHlhMNJN2sxfOI=
@@ -10,6 +14,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815 h1:bWDMxwH3px2JBh6AyO7hdCn/PkvCZXii8TGj7sbtEbQ=
+github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
 github.com/gabriel-vasile/mimetype v1.4.2 h1:w5qFW6JKBz9Y393Y4q372O9A7cUSequkh1Q7OhCmWKU=
 github.com/gabriel-vasile/mimetype v1.4.2/go.mod h1:zApsH/mKG4w07erKIaJPFiX0Tsq9BFQgN3qGY5GnNgA=
 github.com/gaukas/godicttls v0.0.4 h1:NlRaXb3J6hAnTmWdsEKb9bcSBD6BvcIjdGdeb0zfXbk=
@@ -111,6 +117,7 @@ github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpE
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
+github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=

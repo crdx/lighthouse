@@ -4,8 +4,10 @@ go 1.21.0
 
 require (
 	crdx.org/db v1.7.0
+	crdx.org/duckopt/v2 v2.0.1
 	crdx.org/session v1.1.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.1
+	github.com/go-playground/assert/v2 v2.2.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.15.5
@@ -26,9 +28,11 @@ require (
 )
 
 require (
+	crdx.org/hereduck v1.0.3 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/gaukas/godicttls v0.0.4 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect

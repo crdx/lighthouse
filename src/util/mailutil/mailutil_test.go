@@ -8,11 +8,14 @@ import (
 	"net/smtp"
 	"testing"
 
+	"crdx.org/lighthouse/env"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSend(t *testing.T) {
+	env.Init()
+
 	testCases := []struct {
 		inputConfig *Config
 		expectErr   bool

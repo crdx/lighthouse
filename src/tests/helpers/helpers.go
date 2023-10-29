@@ -3,6 +3,7 @@ package helpers
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
+	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/pkg/globals"
@@ -15,6 +16,8 @@ import (
 
 // Init initialises the database and r etuns a new session with the requested auth state.
 func Init(state auth.State, handlers ...func(c *fiber.Ctx) error) *Session {
+	env.Init()
+
 	dbConfig := conf.GetTestDbConfig()
 	lo.Must0(db.Init(dbConfig))
 	session.Init(conf.GetTestSessionConfig(), dbConfig)
