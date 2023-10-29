@@ -32,8 +32,6 @@ func Get() *slog.Logger {
 		logger = slog.New(getStderrHandler())
 	case env.LogTypeNone:
 		logger = slog.New(getNilHandler())
-	default:
-		panic("unexpected env.LogType()")
 	}
 
 	logger.Info("logger init complete", "type", env.LogType())
