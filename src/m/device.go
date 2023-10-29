@@ -74,17 +74,20 @@ func (self *Device) Details() string {
 
 	discovered := timeutil.ToLocal(self.CreatedAt).Format("15:04:05 on Mon, Jan _2 2006")
 
+	// Ensure HTML minification can't strip these spaces.
+	indent := "\u00A0\u00A0\u00A0\u00A0"
+
 	s.WriteString(fmt.Sprintf("%s:\n", self.DisplayName()))
-	s.WriteString(fmt.Sprintf("    Discovered: %s\n", discovered))
+	s.WriteString(fmt.Sprintf(indent+"Discovered: %s\n", discovered))
 	if self.Hostname != "" {
-		s.WriteString(fmt.Sprintf("    Hostname: %s\n", self.Hostname))
+		s.WriteString(fmt.Sprintf(indent+"Hostname: %s\n", self.Hostname))
 	}
 
 	for _, adapter := range self.Adapters() {
-		s.WriteString(fmt.Sprintf("    MAC Address: %s\n", adapter.MACAddress))
-		s.WriteString(fmt.Sprintf("    IP Address: %s\n", adapter.IPAddress))
+		s.WriteString(fmt.Sprintf(indent+"MAC Address: %s\n", adapter.MACAddress))
+		s.WriteString(fmt.Sprintf(indent+"IP Address: %s\n", adapter.IPAddress))
 		if adapter.Vendor != "" {
-			s.WriteString(fmt.Sprintf("    Vendor: %s\n", adapter.Vendor))
+			s.WriteString(fmt.Sprintf(indent+"Vendor: %s\n", adapter.Vendor))
 		}
 	}
 
