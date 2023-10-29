@@ -13,7 +13,14 @@
 
     <tr>
         <th>Hostname</th>
-        <td>{{ template "p/name/hostname" .Hostname }}</td>
+        <td>
+            {{ template "p/name/hostname" .Hostname }}
+            {{ if .HostnameAnnouncedAt.Valid }}
+                <div class="icon is-pulled-right">
+                    <i class="fa-duotone fa-clock" title="announced {{ timeAgoLong .HostnameAnnouncedAt }}"></i>
+                </div>
+            {{ end }}
+        </td>
     </tr>
 
     <tr>

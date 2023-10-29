@@ -1,6 +1,7 @@
 package m
 
 import (
+	"database/sql"
 	"fmt"
 	"strings"
 	"time"
@@ -17,14 +18,15 @@ type Device struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	Name        string    `gorm:"size:255;not null"`
-	Hostname    string    `gorm:"size:255;not null"`
-	State       string    `gorm:"size:32;not null"`
-	Icon        string    `gorm:"size:255;not null"`
-	Notes       string    `gorm:"not null"`
-	LastSeen    time.Time `gorm:""`
-	Watch       bool      `gorm:"not null;default:false"`
-	GracePeriod uint      `gorm:"not null;default:5"`
+	Name                string       `gorm:"size:255;not null"`
+	Hostname            string       `gorm:"size:255;not null"`
+	HostnameAnnouncedAt sql.NullTime `gorm:""`
+	State               string       `gorm:"size:32;not null"`
+	Icon                string       `gorm:"size:255;not null"`
+	Notes               string       `gorm:"not null"`
+	LastSeen            time.Time    `gorm:""`
+	Watch               bool         `gorm:"not null;default:false"`
+	GracePeriod         uint         `gorm:"not null;default:5"`
 }
 
 func (self *Device) Update(values ...any) {

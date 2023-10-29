@@ -284,6 +284,7 @@ func updateHostname(macAddress string, hostname string) {
 	if adapter, found := adapterR.FindByMACAddress(macAddress); found {
 		if device, found := db.First[m.Device](adapter.DeviceID); found {
 			device.Update("hostname", hostname)
+			device.Update("hostname_announced_at", time.Now())
 		}
 	}
 }
