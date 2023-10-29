@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"io"
 	"log/slog"
 	"os"
 	"sync"
@@ -29,6 +30,8 @@ func Get() *slog.Logger {
 		logger = slog.New(getDiskHandler())
 	case env.LogTypeStderr:
 		logger = slog.New(getStderrHandler())
+	case env.LogTypeNone:
+		logger = slog.New(getNilHandler())
 	default:
 		panic("unexpected env.LogType()")
 	}
@@ -51,4 +54,8 @@ func getStderrHandler() slog.Handler {
 	return tint.NewHandler(os.Stderr, &tint.Options{
 		TimeFormat: "15:04:05 |", // Closer in style to fiber's debug output.
 	})
+}
+
+func getNilHandler() slog.Handler {
+	return slog.NewTextHandler(io.Discard, nil)
 }
