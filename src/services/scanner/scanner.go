@@ -103,7 +103,7 @@ func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<
 	defer close(stop)
 
 	for {
-		if !settingR.GetBool(settingR.Passive) {
+		if !settingR.Passive() {
 			if err := self.write(handle, iface, ipNet); err != nil {
 				return err
 			}
@@ -272,7 +272,7 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 			GracePeriod: device.GracePeriod,
 		})
 
-		if settingR.GetBool(settingR.Watch) {
+		if settingR.Watch() {
 			db.Create(&m.DeviceDiscoveryNotification{
 				DeviceID: device.ID,
 			})

@@ -31,7 +31,7 @@ func (self *VendorDB) Init(args *services.Args) error {
 }
 
 func (self *VendorDB) Run() error {
-	if settingR.Get(settingR.MACVendorsAPIKey) == "" {
+	if settingR.MACVendorsAPIKey() == "" {
 		return nil
 	}
 
@@ -108,7 +108,7 @@ retry:
 
 func getVendor(macAddress string) (*req.Response, error) {
 	return req.C().R().
-		SetBearerAuthToken(settingR.Get(settingR.MACVendorsAPIKey)).
+		SetBearerAuthToken(settingR.MACVendorsAPIKey()).
 		SetHeader("Accept", "text/plain").
 		Get("https://api.macvendors.com/v1/lookup/" + macAddress)
 }

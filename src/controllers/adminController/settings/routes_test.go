@@ -75,13 +75,13 @@ func TestEditWithErrors(t *testing.T) {
 func TestCacheInvalidation(t *testing.T) {
 	session := helpers.Init(auth.StateAdmin)
 
-	currentTimezone := settingR.Get("timezone")
+	currentTimezone := settingR.Timezone()
 
 	session.PostForm("/admin/settings", map[string]string{
 		"timezone": "America/New_York",
 	})
 
-	timezone := settingR.Get("timezone")
+	timezone := settingR.Timezone()
 
 	assert.NotEqual(t, timezone, currentTimezone)
 	assert.Equal(t, "America/New_York", timezone)

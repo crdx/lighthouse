@@ -6,14 +6,13 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/tests/helpers/seeder"
 	"crdx.org/lighthouse/util/stringutil"
 )
 
 func seed() error {
-	db.Save(&m.Setting{Name: settingR.Timezone, Value: "Europe/London"})
-	db.Save(&m.Setting{Name: settingR.Watch, Value: "1"})
+	db.Save(&m.Setting{Name: "timezone", Value: "Europe/London"})
+	db.Save(&m.Setting{Name: "watch", Value: "1"})
 
 	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPass()), Admin: true})
 	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPass()), Admin: false})

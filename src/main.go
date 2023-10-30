@@ -85,19 +85,19 @@ func initEnvironment(envFile string) {
 
 func initPackages() {
 	timeutil.Init(&timeutil.Config{
-		Timezone: func() string { return settingR.Get(settingR.Timezone) },
+		Timezone: settingR.Timezone,
 	})
 
 	mailutil.Init(&mailutil.Config{
 		SendToStdErr: !env.Production(),
-		Enabled:      func() bool { return settingR.GetBool(settingR.EnableMail) },
-		Host:         func() string { return settingR.Get(settingR.SMTPHost) },
-		Port:         func() string { return settingR.Get(settingR.SMTPPort) },
-		User:         func() string { return settingR.Get(settingR.SMTPUser) },
-		Pass:         func() string { return settingR.Get(settingR.SMTPPass) },
-		FromAddress:  func() string { return settingR.Get(settingR.MailFromAddress) },
-		ToAddress:    func() string { return settingR.Get(settingR.MailToAddress) },
-		FromHeader:   func() string { return settingR.Get(settingR.MailFromHeader) },
-		ToHeader:     func() string { return settingR.Get(settingR.MailToHeader) },
+		Enabled:      settingR.EnableMail,
+		Host:         settingR.SMTPHost,
+		Port:         settingR.SMTPPort,
+		User:         settingR.SMTPUser,
+		Pass:         settingR.SMTPPass,
+		FromAddress:  settingR.MailFromAddress,
+		ToAddress:    settingR.MailToAddress,
+		FromHeader:   settingR.MailFromHeader,
+		ToHeader:     settingR.MailToHeader,
 	})
 }

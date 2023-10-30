@@ -8,28 +8,24 @@ import (
 	"github.com/samber/lo"
 )
 
-const (
-	Watch = "watch"
-
-	EnableMail      = "enable_mail"
-	MailFromHeader  = "mail_from_header"
-	MailFromAddress = "mail_from_address"
-	MailToHeader    = "mail_to_header"
-	MailToAddress   = "mail_to_address"
-	SMTPHost        = "smtp_host"
-	SMTPPort        = "smtp_port"
-	SMTPUser        = "smtp_user"
-	SMTPPass        = "smtp_pass"
-
-	MACVendorsAPIKey = "macvendors_api_key"
-	Timezone         = "timezone"
-	Passive          = "passive"
-)
+func Watch() bool              { return getBool("watch") }
+func EnableMail() bool         { return getBool("enable_mail") }
+func MailFromHeader() string   { return get("mail_from_header") }
+func MailFromAddress() string  { return get("mail_from_address") }
+func MailToHeader() string     { return get("mail_to_header") }
+func MailToAddress() string    { return get("mail_to_address") }
+func SMTPHost() string         { return get("smtp_host") }
+func SMTPPort() string         { return get("smtp_port") }
+func SMTPUser() string         { return get("smtp_user") }
+func SMTPPass() string         { return get("smtp_pass") }
+func MACVendorsAPIKey() string { return get("macvendors_api_key") }
+func Timezone() string         { return get("timezone") }
+func Passive() bool            { return getBool("passive") }
 
 var cache map[string]string
 
-// Invalidate invalidates the settings cache.
-func Invalidate() {
+// invalidate invalidates the settings cache.
+func invalidate() {
 	cache = nil
 }
 
@@ -48,11 +44,11 @@ func Map() map[string]string {
 func Set(name string, value any) {
 	setting, _ := db.FirstOrCreate(m.Setting{Name: name})
 	setting.Update("value", value)
-	Invalidate()
+	invalidate()
 }
 
 // Get returns a setting as a string.
-func Get(name string) string {
+func get(name string) string {
 	if cache == nil {
 		cache = Map()
 	}
@@ -60,22 +56,22 @@ func Get(name string) string {
 	return cache[name]
 }
 
-// Get returns a setting as an int.
-func GetInt(name string) int {
-	return int(lo.Must(strconv.ParseInt(Get(name), 10, 64)))
-}
+// // Get returns a setting as an int.
+// func getInt(name string) int {
+// 	return int(lo.Must(strconv.ParseInt(get(name), 10, 64)))
+// }
 
-// Get returns a setting as a uint.
-func GetUint(name string) uint {
-	return uint(lo.Must(strconv.ParseUint(Get(name), 10, 64)))
-}
+// // Get returns a setting as a uint.
+// func getUint(name string) uint {
+// 	return uint(lo.Must(strconv.ParseUint(get(name), 10, 64)))
+// }
 
-// Get returns a setting as a float.
-func GetFloat(name string) float64 {
-	return lo.Must(strconv.ParseFloat(Get(name), 64))
-}
+// // Get returns a setting as a float.
+// func getFloat(name string) float64 {
+// 	return lo.Must(strconv.ParseFloat(get(name), 64))
+// }
 
 // Get returns a setting as a bool.
-func GetBool(name string) bool {
-	return Get(name) == "1"
+func getBool(name string) bool {
+	return get(name) == "1"
 }
