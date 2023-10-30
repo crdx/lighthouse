@@ -103,8 +103,10 @@ func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<
 	defer close(stop)
 
 	for {
-		if err := self.write(handle, iface, ipNet); err != nil {
-			return err
+		if !settingR.GetBool(settingR.Passive) {
+			if err := self.write(handle, iface, ipNet); err != nil {
+				return err
+			}
 		}
 
 		time.Sleep(scanInterval)

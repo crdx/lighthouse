@@ -23,6 +23,7 @@ const (
 
 	MACVendorsAPIKey = "macvendors_api_key"
 	Timezone         = "timezone"
+	Passive          = "passive"
 )
 
 var cache map[string]string

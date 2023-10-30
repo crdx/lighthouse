@@ -29,6 +29,7 @@ type Form struct {
 	// System
 	MACVendorsAPIKey string `form:"macvendors_api_key" transform:"trim" validate:"max=500"`
 	Timezone         string `form:"timezone"           transform:"trim" validate:"required,timezone"`
+	Passive          bool   `form:"passive"`
 }
 
 func List(c *fiber.Ctx) error {
