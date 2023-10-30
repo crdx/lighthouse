@@ -2,25 +2,34 @@ package settingR
 
 import (
 	"strconv"
+	"time"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"github.com/samber/lo"
 )
 
-func Watch() bool              { return getBool("watch") }
-func EnableMail() bool         { return getBool("enable_mail") }
-func MailFromHeader() string   { return get("mail_from_header") }
-func MailFromAddress() string  { return get("mail_from_address") }
-func MailToHeader() string     { return get("mail_to_header") }
-func MailToAddress() string    { return get("mail_to_address") }
-func SMTPHost() string         { return get("smtp_host") }
-func SMTPPort() string         { return get("smtp_port") }
-func SMTPUser() string         { return get("smtp_user") }
-func SMTPPass() string         { return get("smtp_pass") }
+// General
+func Watch() bool { return getBool("watch") }
+
+// Mail
+func EnableMail() bool        { return getBool("enable_mail") }
+func MailFromHeader() string  { return get("mail_from_header") }
+func MailFromAddress() string { return get("mail_from_address") }
+func MailToHeader() string    { return get("mail_to_header") }
+func MailToAddress() string   { return get("mail_to_address") }
+func SMTPHost() string        { return get("smtp_host") }
+func SMTPPort() string        { return get("smtp_port") }
+func SMTPUser() string        { return get("smtp_user") }
+func SMTPPass() string        { return get("smtp_pass") }
+
+// Scanning
+func Passive() bool               { return getBool("passive") }
+func ScanInterval() time.Duration { return time.Duration(getInt("scan_interval")) * time.Minute }
+
+// System
 func MACVendorsAPIKey() string { return get("macvendors_api_key") }
 func Timezone() string         { return get("timezone") }
-func Passive() bool            { return getBool("passive") }
 
 var cache map[string]string
 
@@ -56,10 +65,10 @@ func get(name string) string {
 	return cache[name]
 }
 
-// // Get returns a setting as an int.
-// func getInt(name string) int {
-// 	return int(lo.Must(strconv.ParseInt(get(name), 10, 64)))
-// }
+// Get returns a setting as an int.
+func getInt(name string) int {
+	return int(lo.Must(strconv.ParseInt(get(name), 10, 64)))
+}
 
 // // Get returns a setting as a uint.
 // func getUint(name string) uint {

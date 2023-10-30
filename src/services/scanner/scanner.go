@@ -28,9 +28,6 @@ import (
 // Interval between ARP request packets. 50ms means on a /24 a full scan takes about 10 seconds.
 const arpPacketInterval = 50 * time.Millisecond
 
-// Interval between scans.
-const scanInterval = 60 * time.Second
-
 type Scanner struct {
 	log             *slog.Logger
 	macAddressCache *cache.TemporalCache[string]
@@ -109,7 +106,7 @@ func (self *Scanner) scan(iface *net.Interface, ipNet *net.IPNet, messages chan<
 			}
 		}
 
-		time.Sleep(scanInterval)
+		time.Sleep(settingR.ScanInterval())
 	}
 }
 

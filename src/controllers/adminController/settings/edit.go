@@ -21,15 +21,18 @@ type Form struct {
 	MailFromAddress string `form:"mail_from_address" transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
 	MailToHeader    string `form:"mail_to_header"    transform:"trim" validate:"required_if=EnableMail 1,omitempty,mailaddr"`
 	MailToAddress   string `form:"mail_to_address"   transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
-	SMTPHost        string `form:"smtp_host" transform:"trim" validate:"required_if=EnableMail 1"`
-	SMTPPort        string `form:"smtp_port" transform:"trim" validate:"required_if=EnableMail 1,omitempty,number,excludesall=-."`
-	SMTPUser        string `form:"smtp_user" transform:"trim" validate:"required_if=EnableMail 1"`
-	SMTPPass        string `form:"smtp_pass" transform:"trim" validate:"required_if=EnableMail 1"`
+	SMTPHost        string `form:"smtp_host"         transform:"trim" validate:"required_if=EnableMail 1"`
+	SMTPPort        string `form:"smtp_port"         transform:"trim" validate:"required_if=EnableMail 1,omitempty,number,excludesall=-."`
+	SMTPUser        string `form:"smtp_user"         transform:"trim" validate:"required_if=EnableMail 1"`
+	SMTPPass        string `form:"smtp_pass"         transform:"trim" validate:"required_if=EnableMail 1"`
 
 	// System
 	MACVendorsAPIKey string `form:"macvendors_api_key" transform:"trim" validate:"max=500"`
 	Timezone         string `form:"timezone"           transform:"trim" validate:"required,timezone"`
-	Passive          bool   `form:"passive"`
+
+	// Scanning
+	Passive      bool   `form:"passive"`
+	ScanInterval string `form:"scan_interval" transform:"trim" validate:"required,number,scan_interval"`
 }
 
 func List(c *fiber.Ctx) error {

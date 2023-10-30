@@ -13,6 +13,7 @@ linters:
     - gci
     - gochecknoglobals
     - gochecknoinits
+    - godot
     - godox
     - goerr113
     - gofmt

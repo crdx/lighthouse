@@ -2,6 +2,7 @@ package validate
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -37,6 +38,14 @@ func init() {
 
 	Register("mailaddr", `must be in the format "xxx <yyy>"`, func(value string) bool {
 		return regexp.MustCompile("^.* <.*>$").Match([]byte(value))
+	})
+
+	Register("scan_interval", `must be between 1 and 30 minutes`, func(value string) bool {
+		n, err := strconv.Atoi(value)
+		if err != nil {
+			return false
+		}
+		return n >= 1 && n <= 30
 	})
 }
 
