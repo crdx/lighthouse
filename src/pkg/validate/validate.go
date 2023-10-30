@@ -47,6 +47,14 @@ func init() {
 		}
 		return n >= 1 && n <= 30
 	})
+
+	Register("grace_period", `must be between 1 and 60 minutes`, func(value string) bool {
+		n, err := strconv.Atoi(value)
+		if err != nil {
+			return false
+		}
+		return n >= 1 && n <= 60
+	})
 }
 
 // Register registers a custom validation function.
