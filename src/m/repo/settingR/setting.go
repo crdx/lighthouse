@@ -10,7 +10,8 @@ import (
 )
 
 // General
-func Watch() bool { return getBool("watch") }
+func Watch() bool    { return getBool("watch") }
+func WatchNew() bool { return getBool("watch_new") }
 
 // Mail
 func EnableMail() bool        { return getBool("enable_mail") }

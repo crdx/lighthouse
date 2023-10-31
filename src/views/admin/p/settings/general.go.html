@@ -1,6 +1,8 @@
+
+
 <div class="field is-horizontal" x-data="id">
     <div class="field-label">
-        <label class="label">Notify for new devices</label>
+        <label class="label">Watch new devices</label>
     </div>
     <div class="field-body">
         <div class="field">
@@ -8,11 +10,11 @@
                 <input type="checkbox"
                        class="toggle"
                        :id="id"
-                       name="{{ .fields.Watch.Name }}"
-                       {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
-                       {{ else if .settings.Watch }}checked{{ end }}>
+                       name="{{ .fields.WatchNew.Name }}"
+                       {{ if .err }}{{ if eq .fields.WatchNew.Value "1" }}checked{{ end }}
+                       {{ else if .settings.WatchNew }}checked{{ end }}>
                 <label :for="id"></label>
-                <p class="help">Receive a notification if any new devices join the network.</p>
+                <p class="help">Automatically watch any new devices that join the network.</p>
             </div>
         </div>
     </div>

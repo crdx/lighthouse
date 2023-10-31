@@ -275,6 +275,10 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 			})
 		}
 
+		if settingR.WatchNew() {
+			device.Update("watch", true)
+		}
+
 		log.Info("new device has joined the network")
 	}
 }

@@ -13,7 +13,8 @@ import (
 
 type Form struct {
 	// General
-	Watch bool `form:"watch"`
+	Watch    bool `form:"watch"`
+	WatchNew bool `form:"watch_new"`
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
