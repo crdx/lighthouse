@@ -60,5 +60,9 @@ func initMiddleware(app *fiber.App) {
 		app.Use(logger.New())
 	}
 
-	app.Use(auth.New())
+	if env.DisableAuth() {
+		app.Use(auth.AutoLogin(auth.StateAdmin))
+	} else {
+		app.Use(auth.New())
+	}
 }

@@ -40,10 +40,11 @@ var (
 	DatabaseCharset  = func() string { return env["DB_CHARSET"] }
 	DatabaseTimezone = func() string { return env["DB_TZ"] }
 
-	LiveReload = func() bool { return truthy(env["LIVE_RELOAD"]) }
-
 	DefaultRootPass = func() string { return or("DEFAULT_ROOT_PASS", "root") }
 	DefaultAnonPass = func() string { return or("DEFAULT_ANON_PASS", "anon") }
+
+	LiveReload  = func() bool { return truthy(env["LIVE_RELOAD"]) }
+	DisableAuth = func() bool { return truthy(env["DISABLE_AUTH"]) }
 )
 
 func Init() {

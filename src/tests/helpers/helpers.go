@@ -4,9 +4,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
-	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/util/mailutil"
 	"crdx.org/lighthouse/util/timeutil"
 	"crdx.org/session"
@@ -26,15 +24,4 @@ func Init(state auth.State, handlers ...func(c *fiber.Ctx) error) *Session {
 	mailutil.Init(&mailutil.Config{Enabled: func() bool { return false }})
 
 	return NewSession(state, handlers...)
-}
-
-// AutoLogin returns middleware that simulates the user being authorised as the provided state. The
-// first user in the db with the required authorisation will be picked. This is designed to be used
-// for tests.
-func AutoLogin(state auth.State) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		user, _ := db.B[m.User]("admin = ?", state == auth.StateAdmin).First()
-		c.Locals(globals.CurrentUserKey, user)
-		return c.Next()
-	}
 }

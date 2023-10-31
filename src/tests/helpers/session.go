@@ -32,7 +32,7 @@ func NewSession(state auth.State, handlers ...func(c *fiber.Ctx) error) *Session
 	if state == auth.StateUnauthenticated {
 		app.Use(auth.New())
 	} else {
-		app.Use(AutoLogin(state))
+		app.Use(auth.AutoLogin(state))
 	}
 
 	for _, handler := range handlers {
