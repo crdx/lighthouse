@@ -43,3 +43,56 @@ code {
 .icon--focus {
     color: #4a4a4a !important;
 }
+
+/* —————————————————————————————————————————————————————————————————————————————————————————————— */
+
+.toggle {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    float: left;
+}
+
+.toggle + label {
+    cursor: pointer;
+    width: 55px;
+    height: 28px;
+    background: grey;
+    display: block;
+    border-radius: 28px;
+    position: relative;
+    transition: 0.3s;
+}
+
+fieldset[disabled] .toggle + label {
+    cursor: not-allowed;
+}
+
+.toggle + label:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 25px;
+    height: 24px;
+    background: #fff;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.toggle:checked + label {
+    background: hsl(141, 53%, 31%);
+}
+
+.toggle:checked + label:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+.toggle + label:active:after {
+    width: 32px;
+}
+
+fieldset[disabled] .toggle + label:active:after {
+    width: 25px;
+}

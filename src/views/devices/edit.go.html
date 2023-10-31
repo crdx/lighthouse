@@ -72,18 +72,18 @@
 
                 <div class="field is-horizontal" x-data="id">
                     <div class="field-label">
-                        <label class="label" :for="id">Watch</label>
+                        <label class="label">Watch</label>
                     </div>
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
-                                <label class="checkbox">
-                                    <input type="checkbox"
-                                           :id="id"
-                                           name="{{ .fields.Watch.Name }}"
-                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
-                                           {{ else if .device.Watch }}checked{{ end }}>
-                                </label>
+                                <input type="checkbox"
+                                       class="toggle"
+                                       :id="id"
+                                       name="{{ .fields.Watch.Name }}"
+                                       {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
+                                       {{ else if .device.Watch }}checked{{ end }}>
+                                <label :for="id"></label>
                                 <p class="help">Receive a notification if this device goes offline or comes online.</p>
                             </div>
                         </div>
