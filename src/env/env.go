@@ -67,6 +67,8 @@ func InitFrom(path string) error {
 	}
 
 	env = parse(string(b))
+	Init()
+
 	return nil
 }
 
