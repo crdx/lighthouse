@@ -26,7 +26,7 @@ type Device struct {
 	StateUpdatedAt      time.Time    `gorm:"not null"`
 	Icon                string       `gorm:"size:255;not null"`
 	Notes               string       `gorm:"not null"`
-	LastSeen            time.Time    `gorm:""`
+	LastSeen            time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null;default:false"`
 	GracePeriod         uint         `gorm:"not null;default:5"`
 }
