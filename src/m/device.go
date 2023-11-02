@@ -104,6 +104,6 @@ func (self *Device) Adapters() []*Adapter {
 func (self *Device) UpdateState(state string) {
 	self.Update(
 		"state", state,
-		"state_changed_at", time.Now(),
+		"state_updated_at", time.Now(),
 	)
 }
