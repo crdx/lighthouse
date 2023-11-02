@@ -35,6 +35,10 @@ func (self *Watcher) Run() error {
 			"name", device.Name,
 		))
 
+		if device.Origin {
+			continue
+		}
+
 		if device.LastSeen.Before(time.Now().Add(-gracePeriod)) {
 			if device.State == deviceR.StateOnline {
 				deviceOffline(device)

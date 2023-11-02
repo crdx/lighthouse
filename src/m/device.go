@@ -18,6 +18,7 @@ type Device struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
+	Origin              bool         `gorm:"not null;default:false"`
 	Name                string       `gorm:"size:255;not null"`
 	Hostname            string       `gorm:"size:255;not null"`
 	HostnameAnnouncedAt sql.NullTime `gorm:""`

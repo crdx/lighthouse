@@ -80,7 +80,7 @@ func (self *Scanner) Run() error {
 
 		switch message := networkMessage.(type) {
 		case arpMessage:
-			self.handleARPMessage(strings.ToUpper(message.MACAddress), message.IPAddress)
+			self.handleARPMessage(strings.ToUpper(message.MACAddress), message.IPAddress, ipNet.IP.String())
 		case dhcpMessage:
 			self.handleDHCPMessage(strings.ToUpper(message.MACAddress), message.Hostname)
 		}
@@ -217,7 +217,7 @@ func (self *Scanner) handleDHCPMessage(macAddress string, hostname string) {
 	updateHostname(macAddress, hostname)
 }
 
-func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
+func (self *Scanner) handleARPMessage(macAddress string, ipAddress, originIPAddress string) {
 	adapter, adapterFound := adapterR.Upsert(macAddress, ipAddress)
 
 	log := self.log.With(slog.Group(
@@ -256,6 +256,12 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress string) {
 	log = log.With(slog.Group("device", "id", device.ID))
 
 	device.Update("last_seen", time.Now())
+
+	if ipAddress == originIPAddress {
+		db.B[m.Device]().Update("origin", false)
+		device.Update("origin", true)
+	}
+
 	populateDeviceName(device, hostname)
 
 	if hostname != "" {
