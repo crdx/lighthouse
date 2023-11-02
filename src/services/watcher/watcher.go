@@ -72,7 +72,7 @@ func deviceOnline(device *m.Device) {
 		})
 	}
 
-	device.Update("state", state)
+	device.UpdateState(state)
 }
 
 func deviceOffline(device *m.Device) {
@@ -92,5 +92,5 @@ func deviceOffline(device *m.Device) {
 		})
 	}
 
-	device.Update("state", state)
+	device.UpdateState(state)
 }

@@ -23,6 +23,7 @@ type Device struct {
 	Hostname            string       `gorm:"size:255;not null"`
 	HostnameAnnouncedAt sql.NullTime `gorm:""`
 	State               string       `gorm:"size:32;not null"`
+	StateUpdatedAt      time.Time    `gorm:"not null"`
 	Icon                string       `gorm:"size:255;not null"`
 	Notes               string       `gorm:"not null"`
 	LastSeen            time.Time    `gorm:""`
@@ -98,4 +99,11 @@ func (self *Device) Details() string {
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
 	return db.B[Adapter]("device_id = ?", self.ID).Order("last_seen DESC").Find()
+}
+
+func (self *Device) UpdateState(state string) {
+	self.Update(
+		"state", state,
+		"state_changed_at", time.Now(),
+	)
 }

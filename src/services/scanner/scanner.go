@@ -240,8 +240,9 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress, originIPAddr
 		}
 	} else {
 		device = db.Create(&m.Device{
-			State: deviceR.StateOnline,
-			Icon:  constants.DefaultDeviceIconClass,
+			State:          deviceR.StateOnline,
+			StateUpdatedAt: time.Now(),
+			Icon:           constants.DefaultDeviceIconClass,
 		})
 
 		adapter.Update("device_id", device.ID)
