@@ -1,14 +1,15 @@
 package conf
 
 import (
-	"github.com/go-gormigrate/gormigrate/v2"
+	"crdx.org/db"
 	"gorm.io/gorm"
 )
 
-var migrations = []*gormigrate.Migration{
+var migrations = []*db.Migration{
 	{
-		ID: "AddDefaultScanInterval",
-		Migrate: func(db *gorm.DB) error {
+		ID:   "AddDefaultScanInterval",
+		Type: db.MigrationTypePre,
+		Run: func(db *gorm.DB) error {
 			return db.Exec(`INSERT INTO settings (name, value) VALUES ('scan_interval', '1')`).Error
 		},
 	},

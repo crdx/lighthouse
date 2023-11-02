@@ -3,10 +3,9 @@ module crdx.org/lighthouse
 go 1.21.0
 
 require (
-	crdx.org/db v1.7.0
+	crdx.org/db v1.8.0
 	crdx.org/duckopt/v2 v2.0.1
-	crdx.org/session v1.1.0
-	github.com/go-gormigrate/gormigrate/v2 v2.1.1
+	crdx.org/session v1.1.1
 	github.com/go-playground/assert/v2 v2.2.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1

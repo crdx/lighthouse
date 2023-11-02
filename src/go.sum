@@ -1,11 +1,11 @@
-crdx.org/db v1.7.0 h1:sfIC0AhYmeAf05PuRDSvurukQ1069xi0mxLxOE/Bf2E=
-crdx.org/db v1.7.0/go.mod h1:Kk6eVo59EGa4gha7JT2LgGVvWYAUr+UNsoQSQm6zBYc=
+crdx.org/db v1.8.0 h1:HxQptsro+l0QjJNMs86PBxM2Ew3FzUkohMz+WlJ4AiA=
+crdx.org/db v1.8.0/go.mod h1:QNP4WN/pTdWuHaxoRDHx5l1jSjJi4MTLTH6AHa+kvng=
 crdx.org/duckopt/v2 v2.0.1 h1:1Fon0xO1Le6jTumpoQWXHuG0il/th0ESQpVXNNL/bCs=
 crdx.org/duckopt/v2 v2.0.1/go.mod h1:vSD5bx/4+OweUIhBOMVZX0vfr6VOT8hWE3B4RR/4DP0=
 crdx.org/hereduck v1.0.3 h1:37t7wJpTFyZOl8nnYR/O2BdlLAcbl5G15tL1KQSCuxs=
 crdx.org/hereduck v1.0.3/go.mod h1:vIszV0JCDqAt3yEkNDxi4VWqNT9zc3ZfhNnzB5rfn90=
-crdx.org/session v1.1.0 h1:+Pa8Nl7CLEK7Bpa65gLiMAMvEvwvZmKgIQPpxD6ND6I=
-crdx.org/session v1.1.0/go.mod h1:NF/Obven+N2Th8MVYbBOcvhxlYbMbCPt9MIPf6v9bBw=
+crdx.org/session v1.1.1 h1:Y/vQdaEatydU1cRMKl3u0yKvLjpW1gZiy7t0NaJtxy4=
+crdx.org/session v1.1.1/go.mod h1:Gaj0wIf3Lnhyv6t5pseqIZoTKg9VH3QZggEjMbHq3UE=
 github.com/andybalholm/brotli v1.0.6 h1:Yf9fFpf49Zrxb9NlQaluyE92/+X7UVHlhMNJN2sxfOI=
 github.com/andybalholm/brotli v1.0.6/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
 github.com/cloudflare/circl v1.3.3 h1:fE/Qz0QdIGqeWfnwq0RE0R7MI51s0M2E4Ga9kq5AEMs=
@@ -20,8 +20,6 @@ github.com/gabriel-vasile/mimetype v1.4.2 h1:w5qFW6JKBz9Y393Y4q372O9A7cUSequkh1Q
 github.com/gabriel-vasile/mimetype v1.4.2/go.mod h1:zApsH/mKG4w07erKIaJPFiX0Tsq9BFQgN3qGY5GnNgA=
 github.com/gaukas/godicttls v0.0.4 h1:NlRaXb3J6hAnTmWdsEKb9bcSBD6BvcIjdGdeb0zfXbk=
 github.com/gaukas/godicttls v0.0.4/go.mod h1:l6EenT4TLWgTdwslVb4sEMOCf7Bv0JAK67deKr9/NCI=
-github.com/go-gormigrate/gormigrate/v2 v2.1.1 h1:eGS0WTFRV30r103lU8JNXY27KbviRnqqIDobW3EV3iY=
-github.com/go-gormigrate/gormigrate/v2 v2.1.1/go.mod h1:L7nJ620PFDKei9QOhJzqA8kRCk+E3UbV2f5gv+1ndLc=
 github.com/go-logr/logr v1.2.4 h1:g01GSCwiDw2xSZfjJ2/T9M+S6pFdcNtFYsp+Y43HYDQ=
 github.com/go-logr/logr v1.2.4/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-playground/assert/v2 v2.2.0 h1:JvknZsQTYeFEAhQwI4qEt9cyV5ONwRHC+lYKSsYSR8s=
