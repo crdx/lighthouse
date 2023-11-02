@@ -29,8 +29,8 @@ func Merge(c *fiber.Ctx) error {
 		adapter.Update("device_id", parent.ID)
 	}
 
-	if child.LastSeen.After(parent.LastSeen) {
-		parent.Update("last_seen", child.LastSeen)
+	if child.LastSeenAt.After(parent.LastSeenAt) {
+		parent.Update("last_seen_at", child.LastSeenAt)
 	}
 
 	db.B[m.DeviceStateLog]("device_id = ?", child.ID).Update("device_id", parent.ID)

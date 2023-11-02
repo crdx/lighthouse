@@ -11,11 +11,11 @@ import (
 
 func createDevice(id uint, name string, lastSeen time.Time) *m.Device {
 	return db.Save(&m.Device{
-		ID:       id,
-		Name:     name,
-		State:    deviceR.StateOnline,
-		Icon:     constants.DefaultDeviceIconClass,
-		LastSeen: lastSeen,
+		ID:         id,
+		Name:       name,
+		State:      deviceR.StateOnline,
+		Icon:       constants.DefaultDeviceIconClass,
+		LastSeenAt: lastSeen,
 	})
 }
 
@@ -27,7 +27,7 @@ func createAdapter(id, deviceID uint, name, vendor, macAddress, ipAddress string
 		Vendor:     vendor,
 		MACAddress: macAddress,
 		IPAddress:  ipAddress,
-		LastSeen:   lastSeen,
+		LastSeenAt: lastSeen,
 	})
 }
 

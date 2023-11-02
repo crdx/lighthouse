@@ -24,8 +24,8 @@ func Upsert(macAddress string, ipAddress string) (*m.Adapter, bool) {
 	})
 
 	columns := db.Map{
-		"last_seen":  time.Now(),
-		"ip_address": ipAddress,
+		"last_seen_at": time.Now(),
+		"ip_address":   ipAddress,
 	}
 
 	if adapter.Vendor == "" {

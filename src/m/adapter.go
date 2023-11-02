@@ -19,7 +19,7 @@ type Adapter struct {
 	MACAddress string    `gorm:"size:17;not null;index"`
 	Vendor     string    `gorm:"size:255;not null"`
 	IPAddress  string    `gorm:"size:15;not null"`
-	LastSeen   time.Time `gorm:"not null"`
+	LastSeenAt time.Time `gorm:"not null"`
 }
 
 func (self *Adapter) Update(values ...any) {

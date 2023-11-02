@@ -26,7 +26,7 @@ type Device struct {
 	StateUpdatedAt      time.Time    `gorm:"not null"`
 	Icon                string       `gorm:"size:255;not null"`
 	Notes               string       `gorm:"not null"`
-	LastSeen            time.Time    `gorm:"not null"`
+	LastSeenAt          time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null;default:false"`
 	GracePeriod         uint         `gorm:"not null;default:5"`
 }
@@ -98,7 +98,7 @@ func (self *Device) Details() string {
 
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
-	return db.B[Adapter]("device_id = ?", self.ID).Order("last_seen DESC").Find()
+	return db.B[Adapter]("device_id = ?", self.ID).Order("last_seen_at DESC").Find()
 }
 
 func (self *Device) UpdateState(state string) {

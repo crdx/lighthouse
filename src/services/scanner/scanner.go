@@ -256,7 +256,7 @@ func (self *Scanner) handleARPMessage(macAddress string, ipAddress, originIPAddr
 
 	log = log.With(slog.Group("device", "id", device.ID))
 
-	device.Update("last_seen", time.Now())
+	device.Update("last_seen_at", time.Now())
 
 	if ipAddress == originIPAddress {
 		db.B[m.Device]().Update("origin", false)
