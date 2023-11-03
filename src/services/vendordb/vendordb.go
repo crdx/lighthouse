@@ -2,10 +2,9 @@ package vendordb
 
 import (
 	"errors"
+	"log/slog"
 	"net/http"
 	"time"
-
-	"log/slog"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"

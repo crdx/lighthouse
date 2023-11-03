@@ -42,9 +42,9 @@ func createDeviceStateLog(id, deviceID uint, state string, createdAt time.Time) 
 }
 
 func Run() error {
-	t1 := time.Date(2023, time.September, 1, 12, 00, 00, 0, time.UTC)
-	t2 := time.Date(2023, time.October, 1, 12, 00, 00, 0, time.UTC)
-	t3 := time.Date(2023, time.November, 1, 12, 00, 00, 0, time.UTC)
+	t1 := time.Date(2023, time.September, 1, 12, 0, 0, 0, time.UTC)
+	t2 := time.Date(2023, time.October, 1, 12, 0, 0, 0, time.UTC)
+	t3 := time.Date(2023, time.November, 1, 12, 0, 0, 0, time.UTC)
 
 	device1 := createDevice(1, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041", t1)
 	createAdapter(1, device1.ID, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25", "Vendor 1", "AA:AA:AA:AA:AA:AA", "127.0.0.1", t1)

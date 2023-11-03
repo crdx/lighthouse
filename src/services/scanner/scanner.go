@@ -3,11 +3,10 @@ package scanner
 
 import (
 	"errors"
+	"log/slog"
 	"net"
 	"strings"
 	"time"
-
-	"log/slog"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"

@@ -1,9 +1,8 @@
 package services
 
 import (
-	"time"
-
 	"log/slog"
+	"time"
 
 	"crdx.org/lighthouse/logger"
 	"crdx.org/lighthouse/util/runtimeutil"

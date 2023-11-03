@@ -22,8 +22,10 @@ type Field struct {
 	Name  string
 }
 
-var validate *validator.Validate
-var translator universalTranslator.Translator
+var (
+	validate   *validator.Validate
+	translator universalTranslator.Translator
+)
 
 func init() {
 	translator, _ = universalTranslator.New(enLocale.New()).GetTranslator("en")

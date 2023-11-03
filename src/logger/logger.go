@@ -12,8 +12,10 @@ import (
 	slogmulti "github.com/samber/slog-multi"
 )
 
-var logger *slog.Logger
-var mutex sync.Mutex
+var (
+	logger *slog.Logger
+	mutex  sync.Mutex
+)
 
 func Get() *slog.Logger {
 	mutex.Lock()
@@ -43,8 +45,8 @@ func With(args ...any) *slog.Logger {
 }
 
 func getDiskHandler() slog.Handler {
-	file := lo.Must(os.OpenFile(env.LogPath(), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644))
-	lo.Must0(os.MkdirAll("logs", 0755))
+	file := lo.Must(os.OpenFile(env.LogPath(), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644))
+	lo.Must0(os.MkdirAll("logs", 0o755))
 	return slog.NewJSONHandler(file, nil)
 }
 

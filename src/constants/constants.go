@@ -9,5 +9,7 @@ const (
 	TypeColumnLabel  = `<span class="icon"><i class="fa-duotone fa-exchange-alt fa-sm"></i></span>`
 )
 
-const ActivityRowsPerPage = 100
-const NotificationRowsPerPage = 100
+const (
+	ActivityRowsPerPage     = 100
+	NotificationRowsPerPage = 100
+)

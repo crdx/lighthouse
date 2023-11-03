@@ -15,7 +15,6 @@ func main() {
 	}
 
 	output, err := exec.Command("setcap", "cap_net_raw+eip", os.Args[1]).CombinedOutput()
-
 	if err != nil {
 		fmt.Println(string(output))
 		log.Fatal(err)

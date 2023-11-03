@@ -33,14 +33,16 @@ func TestAddSortMetadata(t *testing.T) {
 				},
 			},
 			map[string]tplutil.SortableColumnState{
-				"column1": {Label: "Column 1",
+				"column1": {
+					Label:                "Column 1",
 					CurrentSortColumn:    "column1",
 					CurrentSortDirection: "asc",
 					SortColumn:           "column1",
 					SortDirection:        "desc",
 					Minimal:              false,
 				},
-				"column2": {Label: "Column 2",
+				"column2": {
+					Label:                "Column 2",
 					CurrentSortColumn:    "column1",
 					CurrentSortDirection: "asc",
 					SortColumn:           "column2",
@@ -73,7 +75,8 @@ func TestAddSortMetadata(t *testing.T) {
 					SortDirection:        "asc",
 					Minimal:              true,
 				},
-				"column2": {Label: "Column 2",
+				"column2": {
+					Label:                "Column 2",
 					CurrentSortColumn:    "column2",
 					CurrentSortDirection: "desc",
 					SortColumn:           "column2",

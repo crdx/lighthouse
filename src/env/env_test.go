@@ -56,6 +56,7 @@ func TestRequire(t *testing.T) {
 		})
 	}
 }
+
 func TestRequireIn(t *testing.T) {
 	t.Parallel()
 

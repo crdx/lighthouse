@@ -2,9 +2,8 @@
 package watcher
 
 import (
-	"time"
-
 	"log/slog"
+	"time"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
