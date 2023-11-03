@@ -20,18 +20,15 @@
                             {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
                         </div>
                         <div class="field">
-                            <div class="control has-icons-left" x-data="{ icon: null }">
-                                <input class="input"
-                                       type="text"
-                                       name="{{ .fields.Icon.Name }}"
-                                       x-model.fill="icon"
-                                       value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
-                                <span class="icon is-small is-left icon--focus">
-                                    <i :class="icon"></i>
-                                </span>
+                            <div class="control">
+                                {{ template "devices/p/icon-search" . }}
                             </div>
+
                             {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
-                            <p class="help">The classes for any <a href="https://fontawesome.com/search">font awesome</a> icon.</p>
+                            <p class="help">
+                                <a href="https://fontawesome.com/search">Font Awesome</a> icon in the format <code>style:name</code>.
+                                Supported styles are duotone, solid, and brands.
+                            </p>
                         </div>
                     </div>
                 </div>

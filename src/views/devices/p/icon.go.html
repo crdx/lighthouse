@@ -8,9 +8,9 @@
 {{ if .Icon }}
     <span class="icon">
          {{ if eq .State "online" }}
-            <i class="{{ .Icon }} has-text-success-dark"></i>
+            <i class="{{ .IconClass }} has-text-success-dark"></i>
         {{ else }}
-            <i class="{{ .Icon }} has-text-grey"></i>
+            <i class="{{ .IconClass }} has-text-grey"></i>
         {{ end }}
     </span>
 {{ end }}

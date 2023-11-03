@@ -71,12 +71,11 @@ func TestEdit(t *testing.T) {
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
-	icon := uuid.NewString()
 
 	res := session.PostForm("/device/1/edit", map[string]string{
 		"name":         name,
 		"notes":        notes,
-		"icon":         icon,
+		"icon":         "solid:vials",
 		"grace_period": "6",
 	})
 
@@ -85,7 +84,7 @@ func TestEdit(t *testing.T) {
 	res = session.Get("/device/1")
 	assert.Contains(t, res.Body, name)
 	assert.Contains(t, res.Body, notes)
-	assert.Contains(t, res.Body, icon)
+	assert.Contains(t, res.Body, "fa-solid fa-vials")
 }
 
 func TestEditWithErrors(t *testing.T) {

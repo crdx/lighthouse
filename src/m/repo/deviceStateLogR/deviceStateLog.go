@@ -7,6 +7,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/pager"
+	"crdx.org/lighthouse/util"
 )
 
 func All() []*m.DeviceStateLog {
@@ -30,6 +31,10 @@ type ListView struct {
 	DeletedAt sql.NullTime
 	Icon      string
 	State     string
+}
+
+func (self ListView) IconClass() string {
+	return util.IconToClass(self.Icon)
 }
 
 func GetListViewRowCount(deviceID uint) uint {

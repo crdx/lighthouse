@@ -2,7 +2,9 @@ package util
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"strings"
 )
 
 func PathExists(str string) bool {
@@ -20,4 +22,12 @@ func Chain(fs ...func() error) error {
 	}
 
 	return nil
+}
+
+func IconToClass(icon string) string {
+	if style, name, ok := strings.Cut(icon, ":"); ok {
+		return fmt.Sprintf("fa-%s fa-%s", style, name) //nolint
+	} else {
+		return ""
+	}
 }

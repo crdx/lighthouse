@@ -96,3 +96,23 @@ fieldset[disabled] .toggle + label {
 fieldset[disabled] .toggle + label:active:after {
     width: 25px;
 }
+
+.dropdown-icon-search {
+    display: flex;
+}
+
+.dropdown-icon-search .dropdown-trigger {
+    flex-grow: 1;
+}
+
+.dropdown-icon-search .dropdown-item {
+    padding-right: 1.5em;
+}
+
+.dropdown-icon-search .dropdown-menu {
+    min-width: 19rem;
+}
+
+.dropdown-icon-search .dropdown-icon {
+    font-size: 1rem;
+}

@@ -6,6 +6,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/util"
 )
 
 func All() []*m.Device {
@@ -30,6 +31,10 @@ type ListView struct {
 	Vendor     string
 	IPAddress  string
 	LastSeenAt time.Time
+}
+
+func (self ListView) IconClass() string {
+	return util.IconToClass(self.Icon)
 }
 
 func GetListView(sortColumn string, sortDirection string) []ListView {

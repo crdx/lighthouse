@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/util"
 	"crdx.org/lighthouse/util/timeutil"
 	"gorm.io/gorm"
 )
@@ -106,4 +107,8 @@ func (self *Device) UpdateState(state string) {
 		"state", state,
 		"state_updated_at", time.Now(),
 	)
+}
+
+func (self *Device) IconClass() string {
+	return util.IconToClass(self.Icon)
 }

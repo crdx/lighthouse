@@ -74,6 +74,81 @@ document.addEventListener('alpine:init', function() {
             },
         }
     })
+
+    Alpine.data('iconSearch', function() {
+        return {
+            icon: null,
+            isOpen: false,
+            results: [],
+            // -1 means the search box is selected rather than a dropdown item.
+            selectedIndex: -1,
+
+            iconClass() {
+                if (this.icon) {
+                    let [style, name] = this.icon.split(':', 2)
+                    if (style && name) {
+                        return this.iconToClass(style, name)
+                    }
+                }
+            },
+
+            iconToClass(style, name) {
+                return `fa-${style} fa-${name}`
+            },
+
+            async search() {
+                this.selectedIndex = -1
+
+                if (this.icon) {
+                    this.results = (await (await fetch('/api/icon/search?q=' + this.icon)).json())
+                }
+
+                this.isOpen = !!this.icon
+            },
+
+            setIcon(icon) {
+                this.icon = icon.style + ':' + icon.name
+                this.isOpen = false
+                this.$refs.input.focus()
+            },
+
+            closeDropdown() {
+                this.isOpen = false
+                this.$refs.input.focus()
+            },
+
+            moveSelectionUp() {
+                if (this.selectedIndex == 0) {
+                    this.selectedIndex = -1
+                    this.$refs.input.focus()
+                    return
+                }
+
+                if (this.selectedIndex > -1) {
+                    this.selectedIndex--
+                }
+
+                this.dropdownItems()[this.selectedIndex].focus()
+            },
+
+            moveSelectionDown() {
+                if (!this.isOpen) {
+                    this.search()
+                    return
+                }
+
+                if (this.selectedIndex < this.dropdownItems().length - 1) {
+                    this.selectedIndex++
+                }
+
+                this.dropdownItems()[this.selectedIndex].focus()
+            },
+
+            dropdownItems() {
+                return this.$refs.content.querySelectorAll('a')
+            },
+        }
+    })
 })
 
 function uuid() {

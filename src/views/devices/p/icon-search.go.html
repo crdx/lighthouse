@@ -1,0 +1,62 @@
+<div class="dropdown dropdown-icon-search"
+     x-data="iconSearch"
+     @click.outside="closeDropdown"
+     @keyup.escape.window="closeDropdown"
+     @keydown.down.throttle.25ms="moveSelectionDown"
+     @keydown.up.throttle.25ms="moveSelectionUp"
+     :class="{ 'is-active': isOpen }">
+
+    <div class="dropdown-trigger">
+        <div class="field">
+            <div class="control is-expanded has-icons-left">
+                <span class="icon is-small is-left icon--focus">
+                    <i :class="iconClass()"></i>
+                </span>
+                <input class="input"
+                       autocomplete="off"
+                       type="text"
+                       x-ref="input"
+                       name="{{ .fields.Icon.Name }}"
+                       x-model.fill="icon"
+                       @input.debounce.200ms="search"
+                       value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+        <div class="dropdown-content" x-ref="content">
+            <template x-for="i in results.icons">
+                <a href="#" class="dropdown-item" @click.prevent="setIcon(i)" :title="`${i.style}:${i.name}`">
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <span class="icon dropdown-icon is-medium">
+                                    <i :class="iconToClass(i.style, i.name)"></i>
+                                </span>
+                                <span x-text="i.label"></span>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item has-text-grey">
+                                <span x-text="i.style"></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </template>
+
+            <template x-if="results.hasMore">
+                <a :href="'https://fontawesome.com/search?q=' + icon" target="_blank" class="dropdown-item">
+                    View all...
+                </a>
+            </template>
+
+            <template x-if="results.icons && results.icons.length == 0">
+                <p class="dropdown-item">
+                    No results.
+                </p>
+            </template>
+        </div>
+    </div>
+</div>
