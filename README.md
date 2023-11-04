@@ -16,7 +16,7 @@ Permission is needed to send raw packets so lighthouse needs to run either as ro
 
 ```bash
 just make
-sudo setcap cap_net_raw+eip dist/lighthouse
+sudo setcap cap_net_raw+ep dist/lighthouse
 ```
 
 Set up the `.env` file (see [Configuration](#configuration)), then run lighthouse with `--env`.

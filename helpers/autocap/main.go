@@ -14,7 +14,7 @@ func main() {
 		log.Fatal("Usage: autocap <path>")
 	}
 
-	output, err := exec.Command("setcap", "cap_net_raw+eip", os.Args[1]).CombinedOutput()
+	output, err := exec.Command("setcap", "cap_net_raw+ep", os.Args[1]).CombinedOutput()
 	if err != nil {
 		fmt.Println(string(output))
 		log.Fatal(err)
