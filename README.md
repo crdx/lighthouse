@@ -27,7 +27,7 @@ dist/lighthouse --env .env
 
 ## Deployment (docker)
 
-Deployment via docker is also an option. In this case you'll need the built image, a `.env` file, and a local MySQL or MariaDB database. Because lighthouse needs to run with `network_mode: host` (to be able to monitor the host network) the local database server can be installed directly on the host or as an additional service placed in `docker-compose.yml` (which should also be `network_mode: host`).
+Deployment with docker is also an option. In this case you'll need the built image, a `.env` file, and a local MySQL or MariaDB database. Because lighthouse needs to run with `network_mode: host` (to be able to monitor the host network) the local database server can be installed directly on the host or as an additional service placed in `docker-compose.yml` (which should also be `network_mode: host`).
 
 ```yaml
   db:
@@ -56,7 +56,6 @@ Note: The `docker-compose.yml` file references `.env.prod` instead of `.env`.
 Build the image and run it.
 
 ```bash
-just build
 just up
 ```
 
@@ -66,7 +65,7 @@ The default credentials if `DEFAULT_ROOT_PASS` or `DEFAULT_ANON_PASS` is not set
 
 ## Configuration
 
-lighthouse is configured with a `.env` file. Only the options necessary for startup are configured via the environment, and the rest are configured via the web interface.
+lighthouse is configured with a `.env` file. Only the options necessary for startup are configured via the environment, and the rest are configured with the web interface.
 
 Check out `.env.example` for a quick reference or continue reading for a more comprehensive rundown.
 
@@ -84,7 +83,9 @@ The execution mode. Unless you're working on lighthouse, this should always be s
 
 The interface to bind to.
 
-`0.0.0.0` binds to all interfaces making lighthouse accessible to all hosts, while `127.0.0.1` will bind to the loopback interface and restrict it to the local system. The exact value will depend on your network configuration.
+`0.0.0.0` binds to all interfaces making lighthouse accessible to all hosts, while `127.0.0.1` will bind to the loopback interface and restrict it to the local system. Other values will bind to that specific interface.
+
+The exact value to set here will depend on your network configuration.
 
 ### PORT
 
@@ -136,13 +137,13 @@ The port to listen on. If not specified in development mode then lighthouse will
 ### DB_TZ
 
 - Required: yes
-- Value: timezone e.g., `UTC`, `Europe/London`, etc
+- Value: timezone e.g., `UTC`, `Europe/London`
 
 ### LIVE_RELOAD
 
 - Required: no
 - Value: `true`, `1`, or `yes` to enable, anything else to disable
-- Default: false
+- Default: `false`
 
 ### DEFAULT_ROOT_PASS
 
@@ -158,7 +159,7 @@ The port to listen on. If not specified in development mode then lighthouse will
 
 ## Mail
 
-Mail is optional, but without it the only way to see notifications is to manually check them via the web interface. Once lighthouse is up and running go to settings and configure the SMTP settings.
+Mail is optional, but without it the only way to see notifications is to manually check using the web interface. Once lighthouse is up and running go to settings and configure the SMTP settings.
 
 ## Tests
 
