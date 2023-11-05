@@ -109,11 +109,11 @@ document.addEventListener('alpine:init', function() {
             setIcon(icon) {
                 this.icon = icon.style + ':' + icon.name
                 this.closeDropdown()
+                this.$refs.input.focus()
             },
 
             closeDropdown() {
                 this.isOpen = false
-                this.$refs.input.focus()
             },
 
             moveSelectionUp() {
