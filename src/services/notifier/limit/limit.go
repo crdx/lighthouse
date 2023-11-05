@@ -22,7 +22,7 @@ func (self *trespasser) String() string {
 		"%s is still online since %s (%s)",
 		self.Device.Identifier(),
 		timeutil.ToLocal(self.Notification.StateUpdatedAt).Format(constants.TimeFormatReadable),
-		timeutil.TimeAgo(int(time.Now().Sub(self.Notification.StateUpdatedAt).Seconds()), true, 1),
+		timeutil.TimeAgo(int(time.Since(self.Notification.StateUpdatedAt).Seconds()), true, 1),
 	)
 }
 
