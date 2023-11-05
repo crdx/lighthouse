@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceLimitNotificationR"
 	"crdx.org/lighthouse/util/timeutil"
@@ -20,7 +21,7 @@ func (self *trespasser) String() string {
 	return fmt.Sprintf(
 		"%s is still online since %s (%s)",
 		self.Device.Identifier(),
-		timeutil.ToLocal(self.Notification.StateUpdatedAt).Format("15:04 on Mon, Jan _2 2006"),
+		timeutil.ToLocal(self.Notification.StateUpdatedAt).Format(constants.TimeFormatReadable),
 		timeutil.TimeAgo(int(time.Now().Sub(self.Notification.StateUpdatedAt).Seconds()), true, 1),
 	)
 }

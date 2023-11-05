@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateNotificationR"
@@ -36,7 +37,7 @@ func (self *transition) TimestampedString() string {
 		self.Device.Identifier(),
 		self.Verb(),
 		self.Notification.State,
-		timeutil.ToLocal(self.Notification.CreatedAt).Format("15:04"),
+		timeutil.ToLocal(self.Notification.CreatedAt).Format(constants.TimeFormatEuropeanKitchen),
 	)
 }
 

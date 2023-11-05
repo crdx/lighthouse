@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"crdx.org/db"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/util"
 	"crdx.org/lighthouse/util/timeutil"
 	"gorm.io/gorm"
@@ -76,7 +77,7 @@ func (self *Device) Identifier() string {
 func (self *Device) Details() string {
 	var s strings.Builder
 
-	discovered := timeutil.ToLocal(self.CreatedAt).Format("15:04:05 on Mon, Jan 2 2006")
+	discovered := timeutil.ToLocal(self.CreatedAt).Format(constants.TimeFormatReadablePrecise)
 
 	// Ensure HTML minification can't strip these spaces.
 	indent := "\u00A0\u00A0\u00A0\u00A0"

@@ -13,3 +13,10 @@ const (
 	ActivityRowsPerPage     = 100
 	NotificationRowsPerPage = 100
 )
+
+const (
+	TimeFormatReadablePrecise = "15:04:05 on Mon, Jan 2 2006"
+	TimeFormatReadable        = "15:04 on Mon, Jan 2 2006"
+	TimeFormatSystem          = "2006-01-02 15:04:05 MST"
+	TimeFormatEuropeanKitchen = "15:04"
+)
