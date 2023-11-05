@@ -32,7 +32,7 @@ func GetFuncMap() template.FuncMap {
 		},
 		"formatDateTimeReadable": func(v any) string {
 			if t, found := reflectutil.GetTime(v); found {
-				return timeutil.ToLocal(t).Format("15:04 on Mon, Jan _2 2006")
+				return timeutil.ToLocal(t).Format("15:04 on Mon, Jan 2 2006")
 			}
 			return ""
 		},
