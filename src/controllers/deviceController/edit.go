@@ -19,6 +19,7 @@ type EditForm struct {
 	Notes       string `form:"notes" validate:"max=5000" transform:"trim"`
 	GracePeriod string `form:"grace_period" validate:"required,number,grace_period" transform:"trim"`
 	Watch       bool   `form:"watch"`
+	Limit       string `form:"limit" validate:"required,number" transform:"trim"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {

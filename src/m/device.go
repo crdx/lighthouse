@@ -29,6 +29,7 @@ type Device struct {
 	Notes               string       `gorm:"not null"`
 	LastSeenAt          time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null;default:false"`
+	Limit               uint         `gorm:"not null;default:0"`
 	GracePeriod         uint         `gorm:"not null;default:5"`
 }
 

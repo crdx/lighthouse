@@ -87,6 +87,25 @@
                     </div>
                 </div>
 
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">Limit</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       :id="id"
+                                       type="text"
+                                       name="{{ .fields.Limit.Name }}"
+                                       value="{{ if .err }}{{ .fields.Limit.Value }}{{ else }}{{ .device.Limit }}{{ end }}">
+                            </div>
+                            {{ if .fields.Limit.Error }}<p class="help is-danger">{{ .fields.Limit.Error }}</p>{{ end }}
+                            <p class="help">The number of minutes this device can remain online until a notification is generated. Set to 0 to disable.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="field is-horizontal is-grouped">
                     <div class="field-label"></div>
                     <div class="field-body">

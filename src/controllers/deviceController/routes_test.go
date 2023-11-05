@@ -77,6 +77,7 @@ func TestEdit(t *testing.T) {
 		"notes":        notes,
 		"icon":         "solid:vials",
 		"grace_period": "6",
+		"limit":        "0",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -99,6 +100,7 @@ func TestEditWithErrors(t *testing.T) {
 		"notes":        notes,
 		"icon":         icon,
 		"grace_period": "",
+		"limit":        "",
 	})
 
 	assert.Equal(t, 200, res.StatusCode)

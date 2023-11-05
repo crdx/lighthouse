@@ -39,6 +39,17 @@
     </tr>
 
     <tr>
+        <th>Limit</th>
+        <td>
+            {{ if eq .Limit 0 }}
+                None
+            {{ else }}
+                {{ .Limit }} mins
+            {{ end }}
+        </td>
+    </tr>
+
+    <tr>
         <th>Watching</th>
         <td>{{ template "p/state/bool" .Watch }}</td>
     </tr>

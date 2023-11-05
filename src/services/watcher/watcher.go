@@ -12,7 +12,8 @@ import (
 )
 
 type Watcher struct {
-	log *slog.Logger
+	log                    *slog.Logger
+	limitNotificationCache map[uint]time.Time
 }
 
 func New() *Watcher {
@@ -21,6 +22,8 @@ func New() *Watcher {
 
 func (self *Watcher) Init(args *services.Args) error {
 	self.log = args.Logger
+	self.limitNotificationCache = map[uint]time.Time{}
+
 	return nil
 }
 
@@ -48,6 +51,32 @@ func (self *Watcher) Run() error {
 				deviceOnline(device)
 				log.Info("device is online")
 			}
+		}
+
+		if device.Limit == 0 {
+			continue
+		}
+
+		limit := time.Duration(int64(device.Limit)) * time.Minute
+
+		if device.State == deviceR.StateOnline && device.StateUpdatedAt.Before(time.Now().Add(-limit)) {
+			if self.limitNotificationCache[device.ID] == device.StateUpdatedAt {
+				continue
+			}
+
+			if db.B[m.DeviceLimitNotification]("device_id = ? and processed = 0", device.ID).Exists() {
+				continue
+			}
+
+			self.limitNotificationCache[device.ID] = device.StateUpdatedAt
+
+			db.Create(&m.DeviceLimitNotification{
+				DeviceID:       device.ID,
+				StateUpdatedAt: device.StateUpdatedAt,
+				Limit:          device.Limit,
+			})
+
+			log.Info("device overstayed its welcome", "limit", limit)
 		}
 	}
 

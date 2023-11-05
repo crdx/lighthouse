@@ -19,7 +19,7 @@ func All() []*m.DeviceStateLog {
 func LatestActivityForDevice(deviceID uint) []*m.DeviceStateLog {
 	return db.B[m.DeviceStateLog]().
 		Where("device_id = ?", deviceID).
-		Limit(5).
+		Limit(6).
 		Order("created_at DESC").
 		Find()
 }
