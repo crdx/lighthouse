@@ -11,12 +11,17 @@ import (
 func View(c *fiber.Ctx) error {
 	device := c.Locals("device").(*m.Device)
 
+	rows := 6
+	if device.Notes != "" {
+		rows++
+	}
+
 	return c.Render("devices/view", fiber.Map{
 		"mode":     "view",
 		"device":   device,
 		"devices":  deviceR.All(),
 		"adapters": device.Adapters(),
-		"activity": deviceStateLogR.LatestActivityForDevice(device.ID),
+		"activity": deviceStateLogR.LatestActivityForDevice(device.ID, rows),
 		"globals":  globals.Get(c),
 	})
 }

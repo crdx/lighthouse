@@ -16,10 +16,10 @@ func All() []*m.DeviceStateLog {
 
 // —————————————————————————————————————————————————————————————————————————————————————————————————
 
-func LatestActivityForDevice(deviceID uint) []*m.DeviceStateLog {
+func LatestActivityForDevice(deviceID uint, n int) []*m.DeviceStateLog {
 	return db.B[m.DeviceStateLog]().
 		Where("device_id = ?", deviceID).
-		Limit(6).
+		Limit(n).
 		Order("created_at DESC").
 		Find()
 }
