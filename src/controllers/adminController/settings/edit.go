@@ -18,22 +18,22 @@ type Form struct {
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
-	MailFromHeader  string `form:"mail_from_header"  transform:"trim" validate:"required_if=EnableMail 1,omitempty,mailaddr"`
-	MailFromAddress string `form:"mail_from_address" transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
-	MailToHeader    string `form:"mail_to_header"    transform:"trim" validate:"required_if=EnableMail 1,omitempty,mailaddr"`
-	MailToAddress   string `form:"mail_to_address"   transform:"trim" validate:"required_if=EnableMail 1,omitempty,email"`
-	SMTPHost        string `form:"smtp_host"         transform:"trim" validate:"required_if=EnableMail 1"`
-	SMTPPort        string `form:"smtp_port"         transform:"trim" validate:"required_if=EnableMail 1,omitempty,number,excludesall=-."`
-	SMTPUser        string `form:"smtp_user"         transform:"trim" validate:"required_if=EnableMail 1"`
-	SMTPPass        string `form:"smtp_pass"         transform:"trim" validate:"required_if=EnableMail 1"`
+	MailFromHeader  string `form:"mail_from_header"  validate:"required_if=EnableMail 1,omitempty,mailaddr" transform:"trim"`
+	MailFromAddress string `form:"mail_from_address" validate:"required_if=EnableMail 1,omitempty,email" transform:"trim"`
+	MailToHeader    string `form:"mail_to_header"    validate:"required_if=EnableMail 1,omitempty,mailaddr" transform:"trim"`
+	MailToAddress   string `form:"mail_to_address"   validate:"required_if=EnableMail 1,omitempty,email" transform:"trim"`
+	SMTPHost        string `form:"smtp_host"         validate:"required_if=EnableMail 1" transform:"trim"`
+	SMTPPort        string `form:"smtp_port"         validate:"required_if=EnableMail 1,omitempty,number,excludesall=-." transform:"trim"`
+	SMTPUser        string `form:"smtp_user"         validate:"required_if=EnableMail 1" transform:"trim"`
+	SMTPPass        string `form:"smtp_pass"         validate:"required_if=EnableMail 1" transform:"trim"`
 
 	// System
-	MACVendorsAPIKey string `form:"macvendors_api_key" transform:"trim" validate:"max=500"`
-	Timezone         string `form:"timezone"           transform:"trim" validate:"required,timezone"`
+	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
+	Timezone         string `form:"timezone"           validate:"required,timezone" transform:"trim"`
 
 	// Scanning
 	Passive      bool   `form:"passive"`
-	ScanInterval string `form:"scan_interval" transform:"trim" validate:"required,duration=1 min:30 mins"`
+	ScanInterval string `form:"scan_interval" validate:"required,duration=1 min:30 mins" transform:"trim"`
 }
 
 func List(c *fiber.Ctx) error {
