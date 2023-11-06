@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"errors"
 	"regexp"
 
 	"crdx.org/db"
@@ -41,6 +42,18 @@ var migrations = []*db.Migration{
 				}
 			}
 			return nil
+		},
+	},
+	{
+		ID:   "ConvertDurations",
+		Type: db.MigrationTypePost,
+		Run: func(db *gorm.DB) error {
+			return errors.Join(
+				db.Exec(`UPDATE devices SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+				db.Exec(`UPDATE device_state_logs SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+				db.Exec(`UPDATE device_state_notifications SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+				db.Exec(`UPDATE settings SET value = CONCAT(value, ' min') where name = 'scan_interval'`).Error,
+			)
 		},
 	},
 }

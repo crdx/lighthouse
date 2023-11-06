@@ -44,7 +44,7 @@ func Edit(c *fiber.Ctx) error {
 
 	transform.Struct(form)
 
-	if fields, err := validate.Struct(form); err {
+	if fields, err := validate.Struct(form); err != nil {
 		flash.Failure(c, "Unable to save user")
 
 		return c.Render("admin/index", fiber.Map{

@@ -32,7 +32,7 @@
                        value="{{ if .err }}{{ .fields.ScanInterval.Value }}{{ else }}{{ .settings.ScanInterval }}{{ end }}">
             </div>
             {{ if .fields.ScanInterval.Error }}<p class="help is-danger">{{ .fields.ScanInterval.Error }}</p>{{ end }}
-            <p class="help">The number of minutes to wait between network scans.</p>
+            <p class="help">How long to wait between network scans.</p>
         </div>
     </div>
 </div>

@@ -16,7 +16,7 @@ type DeviceStateNotification struct {
 
 	DeviceID    uint   `gorm:"not null;index"`
 	State       string `gorm:"size:32;not null"`
-	GracePeriod uint   `gorm:"not null"`
+	GracePeriod string `gorm:"not null"`
 	Processed   bool   `gorm:"not null;default:false"`
 }
 

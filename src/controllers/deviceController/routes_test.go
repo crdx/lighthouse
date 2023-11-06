@@ -76,8 +76,8 @@ func TestEdit(t *testing.T) {
 		"name":         name,
 		"notes":        notes,
 		"icon":         "solid:vials",
-		"grace_period": "6",
-		"limit":        "0",
+		"grace_period": "5 mins",
+		"limit":        "1 hour",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)

@@ -8,8 +8,10 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
+	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/util"
 	"crdx.org/lighthouse/util/timeutil"
+	"github.com/samber/lo"
 	"gorm.io/gorm"
 )
 
@@ -30,8 +32,8 @@ type Device struct {
 	Notes               string       `gorm:"not null"`
 	LastSeenAt          time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null;default:false"`
-	Limit               uint         `gorm:"not null;default:0"`
-	GracePeriod         uint         `gorm:"not null;default:5"`
+	Limit               string       `gorm:"not null"`
+	GracePeriod         string       `gorm:"not null;default:5 mins"`
 }
 
 func (self *Device) Update(values ...any) {
@@ -113,4 +115,12 @@ func (self *Device) UpdateState(state string) {
 
 func (self *Device) IconClass() string {
 	return util.IconToClass(self.Icon)
+}
+
+func (self *Device) LimitDuration() time.Duration {
+	return lo.Must(duration.Parse(self.Limit))
+}
+
+func (self *Device) GracePeriodDuration() time.Duration {
+	return lo.Must(duration.Parse(self.GracePeriod))
 }

@@ -37,7 +37,7 @@ func createDeviceStateLog(id, deviceID uint, state string, createdAt time.Time) 
 		DeviceID:    deviceID,
 		State:       state,
 		CreatedAt:   createdAt,
-		GracePeriod: 5,
+		GracePeriod: "5 mins",
 	})
 }
 

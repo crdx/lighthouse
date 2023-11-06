@@ -6,21 +6,25 @@ import (
 
 	"crdx.org/lighthouse/pkg/validate"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestStruct(t *testing.T) {
-	t.Parallel()
-
 	type S struct {
 		Email    string `form:"email" validate:"required,email"`
 		Password string `form:"password" validate:"required"`
 	}
 
 	testCases := []struct {
-		input    S
-		expected map[string]validate.Field
-		err      bool
+		input     S
+		expected  map[string]validate.Field
+		expectErr bool
 	}{
+		{
+			S{"test@example.com", "password"},
+			map[string]validate.Field{},
+			false,
+		},
 		{
 			S{"", ""},
 			map[string]validate.Field{
@@ -37,30 +41,22 @@ func TestStruct(t *testing.T) {
 			},
 			true,
 		},
-		{
-			S{"test@example.com", "password"},
-			nil,
-			false,
-		},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s_%s", testCase.input.Email, testCase.input.Password), func(t *testing.T) {
-			t.Parallel()
-
 			actual, err := validate.Struct(testCase.input)
-			assert.Equal(t, testCase.err, err)
-
-			if !err {
-				assert.Equal(t, testCase.expected, actual)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
 			}
+			assert.Equal(t, testCase.expected, actual)
 		})
 	}
 }
 
 func TestRegister(t *testing.T) {
-	t.Parallel()
-
 	type S struct {
 		Field string `validate:"is-odd"`
 	}
@@ -70,29 +66,61 @@ func TestRegister(t *testing.T) {
 	})
 
 	testCases := []struct {
-		input    string
-		expected string
-		err      bool
+		input     string
+		expected  string
+		expectErr bool
 	}{
+		{"odd", "", false},
 		{"", "must be an odd-length string", true},
 		{"even", "must be an odd-length string", true},
-		{"odd", "", false},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.input, func(t *testing.T) {
-			t.Parallel()
-
 			fields, err := validate.Struct(S{Field: testCase.input})
-			assert.Equal(t, testCase.err, err)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field"].Error)
+		})
+	}
+}
+
+func TestRegisterWithParam(t *testing.T) {
+	type S struct {
+		Field string `validate:"is=odd"`
+	}
+
+	validate.RegisterWithParam("is", "must be an {0} string", func(value string, param string) bool {
+		return len(value)%2 == 1
+	})
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"odd", "", false},
+		{"", "must be an odd string", true},
+		{"even", "must be an odd string", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			fields, err := validate.Struct(S{Field: testCase.input})
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
 			assert.Equal(t, testCase.expected, fields["Field"].Error)
 		})
 	}
 }
 
 func TestFields(t *testing.T) {
-	t.Parallel()
-
 	type S struct {
 		Field1 string `form:"field_1"`
 		Field2 string `form:"field_2"`
@@ -109,37 +137,35 @@ func TestFields(t *testing.T) {
 }
 
 func TestMailAddrValidator(t *testing.T) {
-	t.Parallel()
-
 	type S struct {
 		Field1 string `validate:"mailaddr"`
 	}
 
 	testCases := []struct {
-		input    string
-		expected string
-		err      bool
+		input     string
+		expected  string
+		expectErr bool
 	}{
-		{"", `must be in the format "xxx <yyy>"`, true},
-		{"John", `must be in the format "xxx <yyy>"`, true},
 		{"John <john@example.com>", "", false},
+		{"", `must be in the format "name <email>"`, true},
+		{"John", `must be in the format "name <email>"`, true},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.input, func(t *testing.T) {
-			t.Parallel()
-
 			testStruct := S{Field1: testCase.input}
 			fields, err := validate.Struct(testStruct)
-			assert.Equal(t, testCase.err, err)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
 			assert.Equal(t, testCase.expected, fields["Field1"].Error)
 		})
 	}
 }
 
 func TestTimezoneValidator(t *testing.T) {
-	t.Parallel()
-
 	type S struct {
 		Field1 string `validate:"timezone"`
 	}
@@ -149,19 +175,107 @@ func TestTimezoneValidator(t *testing.T) {
 		expected  string
 		expectErr bool
 	}{
-		{"foo", "must be valid", true},
-		{"Invalid/Zone", "must be valid", true},
 		{"UTC", "", false},
 		{"Europe/London", "", false},
+		{"foo", "must be a valid timezone", true},
+		{"Invalid/Zone", "must be a valid timezone", true},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(testCase.input, func(t *testing.T) {
-			t.Parallel()
-
 			testStruct := S{Field1: testCase.input}
 			fields, err := validate.Struct(testStruct)
-			assert.Equal(t, testCase.expectErr, err)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
+func TestDurationValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"duration"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"1 hour", "", false},
+		{"invalid", "must be a valid duration", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
+func TestMaxDurationValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"dmax=1 hour"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"1 hour", "", false},
+		{"1 min", "", false},
+		{"2 hours", "must be at most 1 hour", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
+func TestMinDurationValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"dmin=1 hour"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"2 hours", "", false},
+		{"1 hour", "", false},
+		{"1 min", "must be at least 1 hour", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
 			assert.Equal(t, testCase.expected, fields["Field1"].Error)
 		})
 	}

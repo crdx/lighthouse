@@ -16,7 +16,7 @@ type DeviceStateLog struct {
 
 	DeviceID    uint   `gorm:"not null"`
 	State       string `gorm:"size:15;not null"`
-	GracePeriod uint   `gorm:"not null"`
+	GracePeriod string `gorm:"not null"`
 }
 
 func (self *DeviceStateLog) Update(values ...any) {

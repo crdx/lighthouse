@@ -39,7 +39,7 @@ func Edit(c *fiber.Ctx) error {
 
 	transform.Struct(form)
 
-	if fields, err := validate.Struct(form); err {
+	if fields, err := validate.Struct(form); err != nil {
 		flash.Failure(c, "Unable to save adapter")
 
 		return c.Render("adapters/edit", fiber.Map{

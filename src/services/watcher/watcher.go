@@ -29,7 +29,7 @@ func (self *Watcher) Init(args *services.Args) error {
 
 func (self *Watcher) Run() error {
 	for _, device := range deviceR.All() {
-		gracePeriod := time.Duration(int64(device.GracePeriod)) * time.Minute
+		gracePeriod := device.GracePeriodDuration()
 
 		log := self.log.With(slog.Group(
 			"device",
@@ -53,22 +53,22 @@ func (self *Watcher) Run() error {
 			}
 		}
 
-		if device.Limit == 0 {
+		limit := device.LimitDuration()
+
+		if limit == 0 {
 			continue
 		}
-
-		limit := time.Duration(int64(device.Limit)) * time.Minute
 
 		if device.State == deviceR.StateOnline && device.StateUpdatedAt.Before(time.Now().Add(-limit)) {
 			if self.limitNotificationCache[device.ID] == device.StateUpdatedAt {
 				continue
 			}
 
+			self.limitNotificationCache[device.ID] = device.StateUpdatedAt
+
 			if db.B[m.DeviceLimitNotification]("device_id = ? and processed = 0", device.ID).Exists() {
 				continue
 			}
-
-			self.limitNotificationCache[device.ID] = device.StateUpdatedAt
 
 			db.Create(&m.DeviceLimitNotification{
 				DeviceID:       device.ID,

@@ -1,11 +1,12 @@
 package validate
 
 import (
+	"errors"
 	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
+	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/util/reflectutil"
 	enLocale "github.com/go-playground/locales/en"
 	universalTranslator "github.com/go-playground/universal-translator"
@@ -33,44 +34,57 @@ func init() {
 
 	lo.Must0(enTranslations.RegisterDefaultTranslations(validate, translator))
 
-	Register("timezone", "must be valid", func(value string) bool {
+	Register("timezone", "must be a valid timezone", func(value string) bool {
 		_, err := time.LoadLocation(value)
 		return err == nil
 	})
 
-	Register("mailaddr", `must be in the format "xxx <yyy>"`, func(value string) bool {
+	Register("mailaddr", `must be in the format "name <email>"`, func(value string) bool {
 		return regexp.MustCompile("^.* <.*>$").Match([]byte(value))
 	})
 
-	Register("scan_interval", `must be between 1 and 30 minutes`, func(value string) bool {
-		n, err := strconv.Atoi(value)
-		if err != nil {
-			return false
-		}
-		return n >= 1 && n <= 30
+	Register("duration", "must be a valid duration", duration.Valid)
+
+	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {
+		minDuration, ok := duration.Parse(min)
+		return ok && lo.Must(duration.Parse(value)) >= minDuration
 	})
 
-	Register("grace_period", `must be between 1 and 60 minutes`, func(value string) bool {
-		n, err := strconv.Atoi(value)
-		if err != nil {
-			return false
-		}
-		return n >= 1 && n <= 60
+	RegisterWithParam("dmax", "must be at most {0}", func(value string, max string) bool {
+		maxDuration, ok := duration.Parse(max)
+		return ok && lo.Must(duration.Parse(value)) <= maxDuration
 	})
 }
 
 // Register registers a custom validation function.
-func Register(name string, message string, f func(string) bool) {
+func Register(name string, err string, f func(string) bool) {
 	lo.Must0(validate.RegisterValidation(name, func(field validator.FieldLevel) bool {
 		return f(field.Field().String())
 	}, false))
 
 	registerFn := func(translator universalTranslator.Translator) error {
-		return translator.Add(name, message, true)
+		return translator.Add(name, err, true)
 	}
 
 	translateFn := func(translator universalTranslator.Translator, _ validator.FieldError) string {
 		return lo.Must(translator.T(name))
+	}
+
+	lo.Must0(validate.RegisterTranslation(name, translator, registerFn, translateFn))
+}
+
+// RegisterWithParam registers a custom validation function that takes a parameter.
+func RegisterWithParam(name string, err string, f func(value string, param string) bool) {
+	lo.Must0(validate.RegisterValidation(name, func(field validator.FieldLevel) bool {
+		return f(field.Field().String(), field.Param())
+	}, false))
+
+	registerFn := func(translator universalTranslator.Translator) error {
+		return translator.Add(name, err, true)
+	}
+
+	translateFn := func(translator universalTranslator.Translator, e validator.FieldError) string {
+		return lo.Must(translator.T(name, e.Param()))
 	}
 
 	lo.Must0(validate.RegisterTranslation(name, translator, registerFn, translateFn))
@@ -97,9 +111,9 @@ func Fields[T any]() map[string]Field {
 // Struct validates a struct's contents according to the rules set in the "validate" tag, and
 // returns all the data needed by the template to render the form: the original submitted values,
 // validation error messages, and the field names.
-func Struct[T any](s T) (map[string]Field, bool) {
+func Struct[T any](s T) (map[string]Field, error) {
 	if err := validate.Struct(s); err == nil {
-		return nil, false
+		return map[string]Field{}, nil
 	} else {
 		err := err.(validator.ValidationErrors) //nolint
 		errorMessages := err.Translate(translator)
@@ -121,7 +135,7 @@ func Struct[T any](s T) (map[string]Field, bool) {
 			}
 		}
 
-		return fields, true
+		return fields, errors.New("validation failed")
 	}
 }
 

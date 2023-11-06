@@ -1,11 +1,11 @@
 package settingR
 
 import (
-	"strconv"
 	"time"
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/pkg/duration"
 	"github.com/samber/lo"
 )
 
@@ -26,7 +26,7 @@ func SMTPPass() string        { return get("smtp_pass") }
 
 // Scanning
 func Passive() bool               { return getBool("passive") }
-func ScanInterval() time.Duration { return time.Duration(getInt("scan_interval")) * time.Minute }
+func ScanInterval() time.Duration { return lo.Must(duration.Parse(get("scan_interval"))) }
 
 // System
 func MACVendorsAPIKey() string { return get("macvendors_api_key") }
@@ -66,10 +66,10 @@ func get(name string) string {
 	return cache[name]
 }
 
-// Get returns a setting as an int.
-func getInt(name string) int {
-	return int(lo.Must(strconv.ParseInt(get(name), 10, 64)))
-}
+// // Get returns a setting as an int.
+// func getInt(name string) int {
+// 	return int(lo.Must(strconv.ParseInt(get(name), 10, 64)))
+// }
 
 // // Get returns a setting as a uint.
 // func getUint(name string) uint {

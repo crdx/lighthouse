@@ -33,7 +33,7 @@ type Form struct {
 
 	// Scanning
 	Passive      bool   `form:"passive"`
-	ScanInterval string `form:"scan_interval" transform:"trim" validate:"required,number,scan_interval"`
+	ScanInterval string `form:"scan_interval" transform:"trim" validate:"required,duration=1 min:30 mins"`
 }
 
 func List(c *fiber.Ctx) error {
@@ -51,7 +51,7 @@ func Save(c *fiber.Ctx) error {
 
 	transform.Struct(form)
 
-	if fields, err := validate.Struct(form); err {
+	if fields, err := validate.Struct(form); err != nil {
 		flash.Failure(c, "Unable to save settings")
 
 		return c.Render("admin/index", fiber.Map{

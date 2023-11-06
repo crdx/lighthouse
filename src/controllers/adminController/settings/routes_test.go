@@ -35,7 +35,7 @@ func TestEdit(t *testing.T) {
 	res := session.PostForm("/admin/settings", map[string]string{
 		"macvendors_api_key": apiKey,
 		"timezone":           "Europe/London",
-		"scan_interval":      "1",
+		"scan_interval":      "1 min",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -80,7 +80,7 @@ func TestCacheInvalidation(t *testing.T) {
 
 	session.PostForm("/admin/settings", map[string]string{
 		"timezone":      "America/New_York",
-		"scan_interval": "1",
+		"scan_interval": "1 min",
 	})
 
 	timezone := settingR.Timezone()

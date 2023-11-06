@@ -35,16 +35,16 @@
 
     <tr>
         <th>Grace Period</th>
-        <td>{{ .GracePeriod }} mins</td>
+        <td>{{ .GracePeriod }}</td>
     </tr>
 
     <tr>
         <th>Limit</th>
         <td>
-            {{ if eq .Limit 0 }}
+            {{ if not .Limit }}
                 None
             {{ else }}
-                {{ .Limit }} mins
+                {{ .Limit }}
             {{ end }}
         </td>
     </tr>
