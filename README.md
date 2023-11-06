@@ -2,9 +2,9 @@
 
 **lighthouse** is a network monitor designed keep you aware of what's happening on your home network.
 
-In a nutshell, lighthouse periodically sends out [ARP](https://en.wikipedia.org/wiki/Address_Resolution_Protocol) requests to all hosts within a subnet and waits for responses. A responding host is considered online, and a non-responsive host is considered offline after a (configurable) amount of time has passed.
+In a nutshell, lighthouse periodically sends out [ARP](https://en.wikipedia.org/wiki/Address_Resolution_Protocol) requests to all hosts within a subnet and waits for responses. A responsive host is considered online, and a non-responsive host is considered offline after a (configurable) amount of time has passed.
 
-Devices can be watched so a notification is sent to a preconfigured email address when they go offline or come online, and the whole network can be watched so notifications are sent when a new device joins the network.
+Devices can be configured so a notification is triggered when they go offline or come online, and the whole network can be watched so notifications are sent when a new device joins the network.
 
 lighthouse was born out of frustration with the [Fingbox](https://www.fing.com)'s increasing tendency to gate new features behind their premium offering while consistently upgrade-nagging whenever the app is opened.
 
