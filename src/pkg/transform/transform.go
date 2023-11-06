@@ -15,8 +15,12 @@ func Struct[T any](s T) {
 
 		if str, ok := fieldValue.Interface().(string); ok {
 			tagValue := structValue.Type().Field(i).Tag.Get("transform")
-			if tagValue == "trim" {
-				fieldValue.SetString(strings.TrimSpace(str))
+			for _, transformation := range strings.Split(tagValue, ",") {
+				if transformation == "trim" {
+					str = strings.TrimSpace(str)
+				}
+
+				fieldValue.SetString(str)
 			}
 		}
 	}
