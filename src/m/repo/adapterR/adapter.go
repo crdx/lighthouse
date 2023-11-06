@@ -8,12 +8,6 @@ import (
 	"crdx.org/lighthouse/util/netutil"
 )
 
-func All() []*m.Adapter {
-	return db.B[m.Adapter]().Find()
-}
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————
-
 func FindByMACAddress(macAddress string) (*m.Adapter, bool) {
 	return db.B[m.Adapter]("mac_address = ?", macAddress).First()
 }

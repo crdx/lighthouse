@@ -9,16 +9,14 @@ import (
 	"crdx.org/lighthouse/util"
 )
 
-func All() []*m.Device {
-	return db.B[m.Device]().Order("name ASC").Find()
-}
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————
-
 const (
 	StateOnline  = "online"
 	StateOffline = "offline"
 )
+
+func All() []*m.Device {
+	return db.B[m.Device]().Order("name ASC").Find()
+}
 
 type ListView struct {
 	ID         uint

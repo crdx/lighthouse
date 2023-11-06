@@ -10,12 +10,6 @@ import (
 	"crdx.org/lighthouse/util"
 )
 
-func All() []*m.DeviceStateLog {
-	return db.B[m.DeviceStateLog]().Find()
-}
-
-// —————————————————————————————————————————————————————————————————————————————————————————————————
-
 func LatestActivityForDevice(deviceID uint, n int) []*m.DeviceStateLog {
 	return db.B[m.DeviceStateLog]().
 		Where("device_id = ?", deviceID).
