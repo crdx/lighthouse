@@ -7,8 +7,9 @@ import (
 	"strings"
 )
 
-func PathExists(str string) bool {
-	_, err := os.Stat(str)
+// PathExists returns true if a path exiss.
+func PathExists(s string) bool {
+	_, err := os.Stat(s)
 	return !errors.Is(err, os.ErrNotExist)
 }
 
