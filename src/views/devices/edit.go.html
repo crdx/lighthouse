@@ -82,7 +82,10 @@
                                        value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
                             </div>
                             {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
-                            <p class="help">How long to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.</p>
+                            <p class="help">
+                                How long to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.
+                                {{ template "p/help/duration" }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -101,7 +104,10 @@
                                        value="{{ if .err }}{{ .fields.Limit.Value }}{{ else }}{{ .device.Limit }}{{ end }}">
                             </div>
                             {{ if .fields.Limit.Error }}<p class="help is-danger">{{ .fields.Limit.Error }}</p>{{ end }}
-                            <p class="help">How long this device can remain online until a notification is generated. Leave blank to disable.</p>
+                            <p class="help">
+                                How long this device can remain online until a notification is generated. Leave blank to disable.
+                                {{ template "p/help/duration" }}
+                            </p>
                         </div>
                     </div>
                 </div>
