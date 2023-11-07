@@ -2,7 +2,7 @@ package constants
 
 const UnknownVendorLabel = "Unknown"
 
-const DefaultDeviceIconClass = "fa-duotone fa-question"
+const DefaultDeviceIconClass = "duotone:question"
 
 const (
 	WatchColumnLabel = `<span class="icon"><i class="fa-duotone fa-eye"></i></span>`
