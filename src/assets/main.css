@@ -57,7 +57,7 @@ code {
     cursor: pointer;
     width: 55px;
     height: 28px;
-    background: grey;
+    background: #bbb;
     display: block;
     border-radius: 28px;
     position: relative;
