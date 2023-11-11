@@ -133,18 +133,21 @@ func (*Scanner) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNe
 		ComputeChecksums: true,
 	}
 
-	for _, ip := range netutil.ExpandIPNet(ipNet) {
-		arpLayer.DstProtAddress = []byte(ip)
-		lo.Must0(gopacket.SerializeLayers(buffer, options, &ethernetLayer, &arpLayer))
+	scan := func() error {
+		for _, ip := range netutil.ExpandIPNet(ipNet) {
+			arpLayer.DstProtAddress = []byte(ip)
+			lo.Must0(gopacket.SerializeLayers(buffer, options, &ethernetLayer, &arpLayer))
 
-		if err := handle.WritePacketData(buffer.Bytes()); err != nil {
-			return err
+			if err := handle.WritePacketData(buffer.Bytes()); err != nil {
+				return err
+			}
+
+			time.Sleep(arpPacketInterval)
 		}
-
-		time.Sleep(arpPacketInterval)
+		return nil
 	}
 
-	return nil
+	return errors.Join(scan(), scan())
 }
 
 func (self *Scanner) read(handle *pcap.Handle, stop chan struct{}, messages chan<- networkMessage) {
