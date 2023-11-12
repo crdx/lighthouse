@@ -13,7 +13,6 @@ import (
 )
 
 type EditForm struct {
-	Username string `form:"username" validate:"required,max=20" transform:"trim"`
 	Password string `form:"password" transform:"trim"`
 	Admin    bool   `form:"admin"`
 }

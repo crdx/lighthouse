@@ -26,15 +26,17 @@ func TestViewEditPage(t *testing.T) {
 	assert.Contains(t, res.Body, "root")
 }
 
-func TestEditUserWithErrors(t *testing.T) {
+func TestCannotEditUsername(t *testing.T) {
 	session := helpers.Init(auth.StateAdmin)
 
 	res := session.PostForm("/admin/users/1/edit", map[string]string{
 		"username": "",
 	})
 
-	assert.Equal(t, 200, res.StatusCode)
-	assert.Contains(t, res.Body, "required field")
+	assert.Equal(t, 302, res.StatusCode)
+
+	res = session.Get("/admin/users")
+	assert.Contains(t, res.Body, "root")
 }
 
 func TestChangePassword(t *testing.T) {

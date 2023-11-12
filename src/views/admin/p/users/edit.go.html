@@ -11,24 +11,6 @@
 <form method="post">
     <div class="field is-horizontal" x-data="id">
         <div class="field-label is-normal">
-            <label class="label" :for="id">Username</label>
-        </div>
-        <div class="field-body">
-            <div class="field">
-                 <div class="control">
-                    <input class="input"
-                           :id="id"
-                           type="text"
-                           name="{{ .fields.Username.Name }}"
-                           value="{{ if .err }}{{ .fields.Username.Value }}{{ else }}{{ .user.Username }}{{ end }}">
-                </div>
-                {{ if .fields.Username.Error }}<p class="help is-danger">{{ .fields.Username.Error }}</p>{{ end }}
-            </div>
-        </div>
-    </div>
-
-    <div class="field is-horizontal" x-data="id">
-        <div class="field-label is-normal">
             <label class="label" :for="id">Password</label>
         </div>
         <div class="field-body">
