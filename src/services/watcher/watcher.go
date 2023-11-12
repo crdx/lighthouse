@@ -40,10 +40,11 @@ func (self *Watcher) Run() error {
 		if device.Origin {
 			continue
 		}
+		threshold := time.Now().Add(-gracePeriod)
 
-		if device.LastSeenAt.Before(time.Now().Add(-gracePeriod)) {
+		if device.LastSeenAt.Before(threshold) {
 			if device.State == deviceR.StateOnline {
-				deviceOffline(device)
+				deviceOffline(device, threshold)
 				log.Info("device is offline")
 			}
 		} else {
@@ -103,13 +104,15 @@ func deviceOnline(device *m.Device) {
 	device.UpdateState(state)
 }
 
-func deviceOffline(device *m.Device) {
+func deviceOffline(device *m.Device, transitionedAt time.Time) {
 	state := deviceR.StateOffline
 
 	db.Create(&m.DeviceStateLog{
 		DeviceID:    device.ID,
 		State:       state,
 		GracePeriod: device.GracePeriod,
+		CreatedAt:   transitionedAt,
+		UpdatedAt:   transitionedAt,
 	})
 
 	if device.Watch {
@@ -117,6 +120,8 @@ func deviceOffline(device *m.Device) {
 			DeviceID:    device.ID,
 			State:       state,
 			GracePeriod: device.GracePeriod,
+			CreatedAt:   transitionedAt,
+			UpdatedAt:   transitionedAt,
 		})
 	}
 
