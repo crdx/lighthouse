@@ -51,75 +51,82 @@
                     </div>
                 </div>
 
-                <div class="field is-horizontal" x-data="id">
-                    <div class="field-label">
-                        <label class="label">Watch</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <input type="checkbox"
-                                       class="toggle"
-                                       :id="id"
-                                       name="{{ .fields.Watch.Name }}"
-                                       {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
-                                       {{ else if .device.Watch }}checked{{ end }}>
-                                <label :for="id"></label>
-                                <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                {{ if not .device.Origin }}
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label">
+                            <label class="label">Watch</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                 <div class="control">
+                                    <input type="checkbox"
+                                           class="toggle"
+                                           :id="id"
+                                           name="{{ .fields.Watch.Name }}"
+                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
+                                           {{ else if .device.Watch }}checked{{ end }}>
+                                    <label :for="id"></label>
+                                    <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="field is-horizontal" x-data="id">
-                    <div class="field-label is-normal">
-                        <label class="label" :for="id">Grace Period</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <input class="input"
-                                       :id="id"
-                                       type="text"
-                                       name="{{ .fields.GracePeriod.Name }}"
-                                       value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label is-normal">
+                            <label class="label" :for="id">Grace Period</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                 <div class="control">
+                                    <input class="input"
+                                           :id="id"
+                                           type="text"
+                                           name="{{ .fields.GracePeriod.Name }}"
+                                           value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
+                                </div>
+                                {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
+                                <p class="help">
+                                    How long to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.
+                                    {{ template "p/help/duration" }}
+                                </p>
                             </div>
-                            {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
-                            <p class="help">
-                                How long to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.
-                                {{ template "p/help/duration" }}
-                            </p>
                         </div>
                     </div>
-                </div>
 
-                <div class="field is-horizontal" x-data="id">
-                    <div class="field-label is-normal">
-                        <label class="label" :for="id">Limit</label>
-                    </div>
-                    <div class="field-body">
-                        <div class="field">
-                             <div class="control">
-                                <input class="input"
-                                       :id="id"
-                                       type="text"
-                                       name="{{ .fields.Limit.Name }}"
-                                       value="{{ if .err }}{{ .fields.Limit.Value }}{{ else }}{{ .device.Limit }}{{ end }}">
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label is-normal">
+                            <label class="label" :for="id">Limit</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                 <div class="control">
+                                    <input class="input"
+                                           :id="id"
+                                           type="text"
+                                           name="{{ .fields.Limit.Name }}"
+                                           value="{{ if .err }}{{ .fields.Limit.Value }}{{ else }}{{ .device.Limit }}{{ end }}">
+                                </div>
+                                {{ if .fields.Limit.Error }}<p class="help is-danger">{{ .fields.Limit.Error }}</p>{{ end }}
+                                <p class="help">
+                                    How long this device can remain online until a notification is generated. Leave blank to disable.
+                                    {{ template "p/help/duration" }}
+                                </p>
                             </div>
-                            {{ if .fields.Limit.Error }}<p class="help is-danger">{{ .fields.Limit.Error }}</p>{{ end }}
-                            <p class="help">
-                                How long this device can remain online until a notification is generated. Leave blank to disable.
-                                {{ template "p/help/duration" }}
-                            </p>
                         </div>
                     </div>
-                </div>
+                {{ end }}
 
                 <div class="field is-horizontal is-grouped">
                     <div class="field-label"></div>
                     <div class="field-body">
-                        <div class="control">
-                            <button type="submit" class="button is-link">Save</button>
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-link">Save</button>
+                            </div>
+                            {{ if .device.Origin }}
+                                <p class="help"><em>Additional fields cannot be configured because this is the device that is running lighthouse.</em></p>
+                            {{ end }}
                         </div>
                     </div>
                 </div>

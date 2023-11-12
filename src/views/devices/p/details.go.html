@@ -33,26 +33,28 @@
         <td>{{ template "p/time/rel" .LastSeenAt }}</td>
     </tr>
 
-    <tr>
-        <th>Watching</th>
-        <td>{{ template "p/state/bool" .Watch }}</td>
-    </tr>
+    {{ if not .Origin }}
+        <tr>
+            <th>Watching</th>
+            <td>{{ template "p/state/bool" .Watch }}</td>
+        </tr>
 
-    <tr>
-        <th>Grace Period</th>
-        <td>{{ .GracePeriod }}</td>
-    </tr>
+        <tr>
+            <th>Grace Period</th>
+            <td>{{ .GracePeriod }}</td>
+        </tr>
 
-    <tr>
-        <th>Limit</th>
-        <td>
-            {{ if not .Limit }}
-                None
-            {{ else }}
-                {{ .Limit }}
-            {{ end }}
-        </td>
-    </tr>
+        <tr>
+            <th>Limit</th>
+            <td>
+                {{ if not .Limit }}
+                    None
+                {{ else }}
+                    {{ .Limit }}
+                {{ end }}
+            </td>
+        </tr>
+    {{ end }}
 
     {{ if .Notes }}
         <tr>
