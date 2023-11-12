@@ -48,7 +48,9 @@ var (
 )
 
 func Init() {
-	env = map[string]string{}
+	if env == nil {
+		env = map[string]string{}
+	}
 
 	for _, v := range os.Environ() {
 		name, value, ok := strings.Cut(v, "=")
