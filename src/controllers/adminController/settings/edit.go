@@ -33,7 +33,7 @@ type Form struct {
 
 	// Scanning
 	Passive      bool   `form:"passive"`
-	ScanInterval string `form:"scan_interval" validate:"required,duration=1 min:30 mins" transform:"trim"`
+	ScanInterval string `form:"scan_interval" validate:"required,duration,dmin=1 min,dmax=30 mins" transform:"trim"`
 }
 
 func List(c *fiber.Ctx) error {
