@@ -13,7 +13,7 @@ import (
 func seed() error {
 	db.Save(&m.Setting{Name: "timezone", Value: "Europe/London"})
 	db.Save(&m.Setting{Name: "watch", Value: "1"})
-	db.Save(&m.Setting{Name: "scan_interval", Value: "1"})
+	db.Save(&m.Setting{Name: "scan_interval", Value: "1 min"})
 
 	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPass()), Admin: true})
 	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPass()), Admin: false})
