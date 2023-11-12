@@ -5,7 +5,7 @@ const UnknownVendorLabel = "Unknown"
 const DefaultDeviceIconClass = "duotone:question"
 
 const (
-	WatchColumnLabel = `<span class="icon"><i class="fa-duotone fa-eye"></i></span>`
+	WatchColumnLabel = `<span class="icon is-small"><i class="fa-duotone fa-eye"></i></span>`
 	TypeColumnLabel  = `<span class="icon"><i class="fa-duotone fa-exchange-alt fa-sm"></i></span>`
 )
 
