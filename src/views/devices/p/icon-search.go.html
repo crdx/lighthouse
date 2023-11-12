@@ -2,8 +2,10 @@
      x-data="iconSearch"
      @click.outside="closeDropdown"
      @keyup.escape.window="closeDropdown"
-     @keydown.down.throttle.25ms="moveSelectionDown"
-     @keydown.up.throttle.25ms="moveSelectionUp"
+     @keydown.down.throttle.25ms.prevent="moveSelectionDown"
+     @keydown.tab.throttle.25ms.prevent="moveSelectionDown"
+     @keydown.up.throttle.25ms.prevent="moveSelectionUp"
+     @keydown.shift.tab.throttle.25ms.prevent="moveSelectionUp"
      :class="{ 'is-active': isOpen }">
 
     <div class="dropdown-trigger">
