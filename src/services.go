@@ -3,17 +3,24 @@ package main
 import (
 	"time"
 
+	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier"
-	"crdx.org/lighthouse/services/scanner"
+	"crdx.org/lighthouse/services/reader"
 	"crdx.org/lighthouse/services/vendordb"
 	"crdx.org/lighthouse/services/watcher"
+	"crdx.org/lighthouse/services/writer"
 )
 
 func startServices() {
-	services.Start("scanner", &services.Config{
-		Service:     scanner.New(),
+	services.Start("reader", &services.Config{
+		Service:     reader.New(),
 		RunInterval: 0,
+	})
+
+	services.Start("writer", &services.Config{
+		Service:     writer.New(),
+		RunInterval: settingR.ScanInterval(),
 	})
 
 	services.Start("vendordb", &services.Config{
