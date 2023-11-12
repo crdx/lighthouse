@@ -40,7 +40,10 @@
                     <div class="field-body">
                         <div class="field">
                              <div class="control">
-                                <textarea :id="id" class="textarea" name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                                <textarea :id="id"
+                                          class="textarea"
+                                          @keydown.ctrl.enter="$el.closest('form').requestSubmit()"
+                                          name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
                             </div>
                             {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
                             <p class="help">Markdown supported.</p>
