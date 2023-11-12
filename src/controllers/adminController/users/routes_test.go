@@ -18,6 +18,13 @@ func TestList(t *testing.T) {
 	assert.Contains(t, res.Body, "anon")
 }
 
+func TestUserCannotList(t *testing.T) {
+	session := helpers.Init(auth.StateUser)
+
+	res := session.Get("/admin/users")
+	assert.Equal(t, 404, res.StatusCode)
+}
+
 func TestViewEditPage(t *testing.T) {
 	session := helpers.Init(auth.StateAdmin)
 
