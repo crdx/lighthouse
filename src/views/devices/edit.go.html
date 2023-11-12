@@ -27,7 +27,7 @@
                             {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
                             <p class="help">
                                 <a href="https://fontawesome.com/search">Font Awesome</a> icon.
-                                Supported styles are duotone, solid, and brands.
+                                {{ template "p/help/icon" }}
                             </p>
                         </div>
                     </div>
