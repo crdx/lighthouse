@@ -86,3 +86,26 @@ func TestRequireIn(t *testing.T) {
 		})
 	}
 }
+
+func TestTruthy(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		input    string
+		expected bool
+	}{
+		{"true", true},
+		{"yes", true},
+		{"1", true},
+		{"no", false},
+		{"nah", false},
+	}
+
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
+			t.Parallel()
+
+			assert.Equal(t, testCase.expected, truthy(testCase.input))
+		})
+	}
+}
