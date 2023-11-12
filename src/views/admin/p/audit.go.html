@@ -1,0 +1,23 @@
+{{ if .log }}
+    <table class="table is-fullwidth">
+        <tr>
+            <th>User</th>
+            <th>Action</th>
+            <th>Taken</th>
+            <th class="is-hidden-mobile">Date</th>
+        </tr>
+
+        {{ range .log }}
+            <tr>
+                <td>{{ (index $.users .UserID).Username }}</td>
+                <td>{{ .Message }}</td>
+                <td>{{ template "p/time/rel" .CreatedAt }}</td>
+                <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
+            </tr>
+        {{ end }}
+    </table>
+{{ else }}
+    <div class="content">
+        <p>No audit logs yet.</p>
+    </div>
+{{ end }}

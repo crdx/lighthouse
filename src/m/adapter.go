@@ -1,9 +1,11 @@
 package m
 
 import (
+	"fmt"
 	"time"
 
 	"crdx.org/db"
+	"github.com/samber/lo"
 	"gorm.io/gorm"
 )
 
@@ -33,11 +35,14 @@ func (self *Adapter) Delete() {
 }
 
 func (self *Adapter) Fresh() *Adapter {
-	i, _ := db.First[Adapter](self.ID)
-	return i
+	return lo.Must(db.First[Adapter](self.ID))
 }
 
 // Device returns the Device for this Adapter, and true if it has one associated.
 func (self *Adapter) Device() (*Device, bool) {
 	return db.First[Device](self.DeviceID)
+}
+
+func (self *Adapter) AuditName() string {
+	return fmt.Sprintf("%s (ID: %d) from device %s", self.Name, self.ID, lo.Must(self.Device()).AuditName())
 }

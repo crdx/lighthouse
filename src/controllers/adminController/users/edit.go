@@ -2,6 +2,7 @@ package users
 
 import (
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
@@ -72,6 +73,7 @@ func Edit(c *fiber.Ctx) error {
 
 	user.Update(values)
 
+	auditLogR.Add(c, "Edited user %s", user.Fresh().AuditName())
 	flash.Success(c, "User saved")
 	return c.Redirect("/admin/users")
 }

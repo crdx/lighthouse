@@ -1,6 +1,7 @@
 package settings
 
 import (
+	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -66,6 +67,7 @@ func Save(c *fiber.Ctx) error {
 		settingR.Set(name, value)
 	}
 
+	auditLogR.Add(c, "Saved settings")
 	flash.Success(c, "Settings saved")
 	return c.Redirect("/admin/settings")
 }

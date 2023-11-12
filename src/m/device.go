@@ -52,6 +52,10 @@ func (self *Device) Delete() {
 	db.For[Device](self.ID).Delete()
 }
 
+func (self *Device) Fresh() *Device {
+	return lo.Must(db.First[Device](self.ID))
+}
+
 func (self *Device) DisplayName() string {
 	if self.Name == "" {
 		return "Unknown"
@@ -123,4 +127,8 @@ func (self *Device) LimitDuration() time.Duration {
 
 func (self *Device) GracePeriodDuration() time.Duration {
 	return lo.Must(duration.Parse(self.GracePeriod))
+}
+
+func (self *Device) AuditName() string {
+	return fmt.Sprintf("%s (ID: %d)", self.DisplayName(), self.ID)
 }

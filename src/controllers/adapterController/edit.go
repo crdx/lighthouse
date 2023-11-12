@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
@@ -53,6 +54,7 @@ func Edit(c *fiber.Ctx) error {
 
 	adapter.Update(reflectutil.StructToMap(form, "form"))
 
+	auditLogR.Add(c, "Edited adapter %s", adapter.Fresh().AuditName())
 	flash.Success(c, "Adapter saved")
 	return c.Redirect(fmt.Sprintf("/device/%d", adapter.DeviceID))
 }

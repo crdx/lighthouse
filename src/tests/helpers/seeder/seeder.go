@@ -71,5 +71,7 @@ func Run() error {
 	db.Save(&m.User{ID: 1, Username: "root", PasswordHash: rootHash, Admin: true})
 	db.Save(&m.User{ID: 2, Username: "anon", PasswordHash: anonHash, Admin: false})
 
+	db.Save(&m.AuditLog{ID: 1, UserID: 1, Message: "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041"})
+
 	return nil
 }

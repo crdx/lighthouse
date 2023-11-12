@@ -5,6 +5,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"github.com/gofiber/fiber/v2"
 )
@@ -38,6 +39,8 @@ func Merge(c *fiber.Ctx) error {
 	db.B[m.DeviceDiscoveryNotification]("device_id = ?", child.ID).Update("device_id", parent.ID)
 
 	child.Delete()
+
+	auditLogR.Add(c, "Merged device %s into %s", child.AuditName(), parent.AuditName())
 
 	flash.Success(c, fmt.Sprintf(
 		"Device %s merged into %s",

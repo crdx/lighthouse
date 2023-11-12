@@ -2,9 +2,11 @@ package m
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"crdx.org/db"
+	"github.com/samber/lo"
 	"gorm.io/gorm"
 )
 
@@ -27,4 +29,12 @@ func (self *User) Update(values ...any) {
 
 func (self *User) Delete() {
 	db.For[User](self.ID).Delete()
+}
+
+func (self *User) Fresh() *User {
+	return lo.Must(db.First[User](self.ID))
+}
+
+func (self *User) AuditName() string {
+	return fmt.Sprintf("%s (ID: %d)", self.Username, self.ID)
 }

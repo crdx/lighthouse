@@ -4,20 +4,30 @@
             <div class="tabs">
               <ul>
                 <li{{ if eq .tab "settings" }} class="is-active"{{ end }}>
-                  <a href="/admin/settings">
-                    <span class="icon is-small">
-                        <i class="fa-duotone fa-cog" aria-hidden="true"></i>
-                    </span>
-                    <span>Settings</span>
-                  </a>
+                    <a href="/admin/settings">
+                        <span class="icon is-small">
+                            <i class="fa-duotone fa-cog" aria-hidden="true"></i>
+                        </span>
+                        <span>Settings</span>
+                    </a>
                 </li>
+
                 <li{{ if eq .tab "users" }} class="is-active"{{ end }}>
-                  <a href="/admin/users">
-                    <span class="icon is-small">
-                        <i class="fa-duotone fa-user" aria-hidden="true"></i>
-                    </span>
-                    <span>Users</span>
-                  </a>
+                    <a href="/admin/users">
+                        <span class="icon is-small">
+                            <i class="fa-duotone fa-user" aria-hidden="true"></i>
+                        </span>
+                        <span>Users</span>
+                    </a>
+                </li>
+
+                <li{{ if eq .tab "audit" }} class="is-active"{{ end }}>
+                    <a href="/admin/audit">
+                        <span class="icon is-small">
+                            <i class="fa-duotone fa-user" aria-hidden="true"></i>
+                        </span>
+                        <span>Audit</span>
+                    </a>
                 </li>
               </ul>
             </div>
@@ -27,6 +37,8 @@
                     {{ template "admin/p/settings" . }}
                 {{ else if eq .tab "users" }}
                     {{ template "admin/p/users" . }}
+                {{ else if eq .tab "audit" }}
+                    {{ template "admin/p/audit" . }}
                 {{ end }}
             </div>
         </div>

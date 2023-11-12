@@ -9,6 +9,7 @@ import (
 
 var models = []db.Model{
 	&m.Adapter{},
+	&m.AuditLog{},
 	&m.Device{},
 	&m.DeviceDiscoveryNotification{},
 	&m.DeviceLimitNotification{},
