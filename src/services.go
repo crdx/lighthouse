@@ -41,7 +41,7 @@ func startServices() {
 		RunInterval: 1 * time.Minute,
 
 		// Give the watcher time to establish the new state of devices.
-		StartDelay: watcherStartDelay * 2,
+		StartDelay: watcherStartDelay + (30 * time.Second),
 
 		// A fairly high initial restart interval should be used, as we don't want to risk spamming
 		// notifications.
