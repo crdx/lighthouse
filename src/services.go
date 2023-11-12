@@ -7,7 +7,7 @@ import (
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier"
 	"crdx.org/lighthouse/services/reader"
-	"crdx.org/lighthouse/services/vendordb"
+	"crdx.org/lighthouse/services/vendor"
 	"crdx.org/lighthouse/services/watcher"
 	"crdx.org/lighthouse/services/writer"
 )
@@ -23,8 +23,8 @@ func startServices() {
 		RunInterval: settingR.ScanInterval(),
 	})
 
-	services.Start("vendordb", &services.Config{
-		Service:     vendordb.New(),
+	services.Start("vendor", &services.Config{
+		Service:     vendor.New(),
 		RunInterval: 5 * time.Second,
 	})
 

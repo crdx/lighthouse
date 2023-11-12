@@ -1,4 +1,4 @@
-package vendordb
+package vendor
 
 import (
 	"errors"
@@ -14,22 +14,22 @@ import (
 	"github.com/imroc/req/v3"
 )
 
-type VendorDB struct {
+type Vendor struct {
 	log *slog.Logger
 }
 
-func New() *VendorDB {
-	return &VendorDB{}
+func New() *Vendor {
+	return &Vendor{}
 }
 
 const backoff = 10 * time.Second
 
-func (self *VendorDB) Init(args *services.Args) error {
+func (self *Vendor) Init(args *services.Args) error {
 	self.log = args.Logger
 	return nil
 }
 
-func (self *VendorDB) Run() error {
+func (self *Vendor) Run() error {
 	if settingR.MACVendorsAPIKey() == "" {
 		return nil
 	}
