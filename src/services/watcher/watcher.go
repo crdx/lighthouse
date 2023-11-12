@@ -29,6 +29,10 @@ func (self *Watcher) Init(args *services.Args) error {
 
 func (self *Watcher) Run() error {
 	for _, device := range deviceR.All() {
+		if device.Origin {
+			continue
+		}
+
 		gracePeriod := device.GracePeriodDuration()
 
 		log := self.log.With(slog.Group(
@@ -37,9 +41,6 @@ func (self *Watcher) Run() error {
 			"name", device.Name,
 		))
 
-		if device.Origin {
-			continue
-		}
 		threshold := time.Now().Add(-gracePeriod)
 
 		if device.LastSeenAt.Before(threshold) {
