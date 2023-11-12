@@ -1,7 +1,6 @@
 /dist/
 /bin/
 /logs/
-/src/assets/fontawesome/
 
 # sfe: ignore next 3
 /TODO.md
