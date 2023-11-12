@@ -63,7 +63,7 @@ func (self *Reader) handleARP(macAddress string, ipAddress, originIPAddress stri
 	))
 
 	var device *m.Device
-	hostname := self.hostnameCache[macAddress]
+	hostname, hostnameFromDHCP := self.hostnameCache[macAddress]
 
 	// If an adapter was found, then we know it must have an attached device.
 	if adapterFound {
@@ -103,6 +103,9 @@ func (self *Reader) handleARP(macAddress string, ipAddress, originIPAddress stri
 
 	if hostname != "" {
 		device.Update("hostname", hostname)
+		if hostnameFromDHCP {
+			device.Update("hostname_announced_at", time.Now())
+		}
 	}
 
 	if !adapterFound {
