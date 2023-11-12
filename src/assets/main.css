@@ -116,3 +116,13 @@ fieldset[disabled] .toggle + label:active:after {
 .dropdown-icon-search .dropdown-icon {
     font-size: 1rem;
 }
+
+.dropdown-icon-search .dropdown-content {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.dropdown-icon-search .dropdown-content a:focus {
+    outline: 1px solid #485fc7;
+    border-radius: 5px;
+}
