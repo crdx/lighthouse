@@ -12,25 +12,25 @@
 <div class="columns is-hidden-tablet is-mobile is-vcentered">
     <div class="column">
          <div class="buttons has-addons is-left">
-            <a class="button" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left-to-line"></i></span>
             </a>
-            <a class="button" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left"></i></span>
             </a>
         </div>
     </div>
 
-    <div class="column has-text-centered">
+    <div class="column has-text-centered is-size-7">
         Page {{ .CurrentPage }} of {{ .TotalPages }}
     </div>
 
     <div class="column">
         <div class="buttons has-addons is-right">
-            <a class="button" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-right"></i></span>
             </a>
-            <a class="button" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-right-to-line"></i></span>
             </a>
         </div>
@@ -40,28 +40,28 @@
 <div class="columns is-hidden-mobile is-vcentered">
     <div class="column">
          <div class="buttons has-addons is-left">
-            <a class="button" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left-to-line"></i></span>
                 <span>First</span>
             </a>
-            <a class="button" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left"></i></span>
                 <span>Previous</span>
             </a>
         </div>
     </div>
 
-    <div class="column has-text-centered">
+    <div class="column has-text-centered is-size-7">
         Page {{ .CurrentPage }} of {{ .TotalPages }}
     </div>
 
     <div class="column">
         <div class="buttons has-addons is-right">
-            <a class="button" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-right"></i></span>
                 <span>Next</span>
             </a>
-            <a class="button" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-small" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-right-to-line"></i></span>
                 <span>Last</span>
             </a>
