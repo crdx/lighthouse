@@ -14,7 +14,7 @@
         <th>IP Address</th>
         <th class="is-hidden-mobile">Vendor</th>
         <th>Last Seen</th>
-        {{ if $.globals.UserIsEditor }}
+        {{ if $.globals.User.IsEditor }}
             <th></th>
         {{ end }}
     </tr>
@@ -28,7 +28,7 @@
             <td>{{ .IPAddress }}</td>
             <td class="is-hidden-mobile">{{ template "p/name/vendor" .Vendor }}</td>
             <td>{{ template "p/time/rel" .LastSeenAt }}</td>
-            {{ if $.globals.UserIsEditor }}
+            {{ if $.globals.User.IsEditor }}
                 <td class="min-column">
                     <div class="columns is-variable is-1 is-mobile">
                         <a title="Edit" href="/adapter/{{ .ID }}/edit" class="column has-text-dark">

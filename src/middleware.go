@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/middleware/minify"
 
@@ -62,7 +62,7 @@ func initMiddleware(app *fiber.App) {
 	}
 
 	if env.DisableAuth() {
-		app.Use(auth.AutoLogin(userR.RoleAdmin))
+		app.Use(auth.AutoLogin(constants.RoleAdmin))
 	} else {
 		app.Use(auth.New())
 	}

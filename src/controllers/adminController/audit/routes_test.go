@@ -3,13 +3,13 @@ package audit_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -22,7 +22,7 @@ func TestList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 404, res.StatusCode)

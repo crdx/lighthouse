@@ -4,14 +4,14 @@ import (
 	"strings"
 	"testing"
 
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestViewEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/adapter/1/edit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -19,14 +19,14 @@ func TestViewEdit(t *testing.T) {
 }
 
 func TestViewEditBadDevice(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/adapter/100/edit")
 	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestViewerCannotViewEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	res := session.Get("/adapter/1/edit")
 	assert.Equal(t, 404, res.StatusCode)
@@ -34,7 +34,7 @@ func TestViewerCannotViewEdit(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	name := uuid.NewString()
 	vendor := uuid.NewString()
@@ -52,7 +52,7 @@ func TestEdit(t *testing.T) {
 }
 
 func TestViewerCannotEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	name := uuid.NewString()
 	vendor := uuid.NewString()
@@ -68,7 +68,7 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	name := strings.Repeat(uuid.NewString(), 100)
 	vendor := uuid.NewString()
@@ -87,7 +87,7 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/device/1/")
 	assert.Contains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")
@@ -103,7 +103,7 @@ func TestDelete(t *testing.T) {
 }
 
 func TestViewerCannotDelete(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	res := session.PostForm("/adapter/1/delete", nil)
 	assert.Equal(t, 404, res.StatusCode)

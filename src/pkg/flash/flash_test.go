@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/gofiber/fiber/v2"
@@ -24,7 +24,7 @@ func TestFlash(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%v", testCase.message, testCase.success), func(t *testing.T) {
-			session := helpers.Init(userR.RoleAdmin, func(c *fiber.Ctx) error {
+			session := helpers.Init(constants.RoleAdmin, func(c *fiber.Ctx) error {
 				if testCase.success {
 					flash.Success(c, testCase.message)
 				} else {

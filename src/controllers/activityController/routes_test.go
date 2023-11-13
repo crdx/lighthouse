@@ -3,13 +3,13 @@ package activityController_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/activity")
 	assert.Equal(t, 200, res.StatusCode)
@@ -21,7 +21,7 @@ func TestList(t *testing.T) {
 }
 
 func TestListDevice(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/activity/?device_id=2")
 	assert.Equal(t, 200, res.StatusCode)
@@ -31,14 +31,14 @@ func TestListDevice(t *testing.T) {
 }
 
 func TestListBadDevice(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/activity/?device_id=100")
 	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestListBadPageNumber(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/activity/?p=100")
 	assert.Equal(t, 404, res.StatusCode)

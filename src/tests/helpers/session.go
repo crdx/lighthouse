@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"crdx.org/lighthouse/conf"
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
@@ -30,7 +30,7 @@ type Response struct {
 func NewSession(role uint, handlers ...func(c *fiber.Ctx) error) *Session {
 	app := fiber.New(conf.GetTestFiberConfig())
 
-	if role == userR.RoleNone {
+	if role == constants.RoleNone {
 		app.Use(auth.New())
 	} else {
 		app.Use(auth.AutoLogin(role))

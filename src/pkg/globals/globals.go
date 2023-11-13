@@ -2,7 +2,6 @@ package globals
 
 import (
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
@@ -11,10 +10,6 @@ import (
 type Values struct {
 	Flash *flash.Message
 	User  *m.User
-
-	UserIsViewer bool
-	UserIsEditor bool
-	UserIsAdmin  bool
 }
 
 const CurrentUserKey = "globals.current_user"
@@ -38,14 +33,7 @@ func Get(c *fiber.Ctx) *Values {
 		values.Flash = &flashMessage
 	}
 
-	user := CurrentUser(c)
-	values.User = user
-
-	if user != nil {
-		values.UserIsAdmin = user.Role >= userR.RoleAdmin
-		values.UserIsEditor = user.Role >= userR.RoleEditor
-		values.UserIsViewer = user.Role >= userR.RoleViewer
-	}
+	values.User = CurrentUser(c)
 
 	return &values
 }

@@ -20,3 +20,10 @@ const (
 	TimeFormatSystem          = "2006-01-02 15:04:05 MST"
 	TimeFormatEuropeanKitchen = "15:04"
 )
+
+const (
+	RoleNone   uint = 0
+	RoleViewer uint = 1
+	RoleEditor uint = 2
+	RoleAdmin  uint = 3
+)

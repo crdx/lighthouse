@@ -4,15 +4,15 @@ import (
 	"strings"
 	"testing"
 
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m/repo/settingR"
-	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
@@ -21,14 +21,14 @@ func TestList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	apiKey := uuid.NewString()
 
@@ -45,7 +45,7 @@ func TestEdit(t *testing.T) {
 }
 
 func TestViewerCannotEdit(t *testing.T) {
-	session := helpers.Init(userR.RoleViewer)
+	session := helpers.Init(constants.RoleViewer)
 
 	apiKey := uuid.NewString()
 
@@ -59,7 +59,7 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	apiKey := strings.Repeat(uuid.NewString(), 20)
 
@@ -74,7 +74,7 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestCacheInvalidation(t *testing.T) {
-	session := helpers.Init(userR.RoleAdmin)
+	session := helpers.Init(constants.RoleAdmin)
 
 	currentTimezone := settingR.Timezone()
 

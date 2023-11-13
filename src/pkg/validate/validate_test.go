@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"crdx.org/lighthouse/m/repo/userR"
+	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
@@ -315,7 +315,7 @@ func TestRoleValidator(t *testing.T) {
 }
 
 func TestAvailableUsernameValidator(t *testing.T) {
-	helpers.Init(userR.RoleAdmin)
+	helpers.Init(constants.RoleAdmin)
 
 	type S struct {
 		Field1 string `validate:"available_username"`
