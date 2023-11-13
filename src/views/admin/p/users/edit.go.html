@@ -34,7 +34,7 @@
             <label class="label">Admin</label>
         </div>
         <div class="field-body">
-            {{ if eq .user.ID .globals.User.ID }}<fieldset disabled>{{ end }}
+            {{ if eq .user.ID $.globals.User.ID }}<fieldset disabled>{{ end }}
             <div class="field">
                  <div class="control">
                     <input type="checkbox"
@@ -53,7 +53,7 @@
                     <p class="help">Admins have edit capabilities, while non-admins have read-only access.</p>
                 </div>
             </div>
-            {{ if eq .user.ID .globals.User.ID }}</fieldset>{{ end }}
+            {{ if eq .user.ID $.globals.User.ID }}</fieldset>{{ end }}
         </div>
     </div>
 
