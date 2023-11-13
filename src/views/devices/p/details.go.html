@@ -63,3 +63,7 @@
         </tr>
     {{ end }}
 </table>
+
+{{ if .Origin }}
+    <p class="help">Additional fields are not shown because this is the device that is running lighthouse.</p>
+{{ end }}
