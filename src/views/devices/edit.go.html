@@ -65,7 +65,7 @@
                                            name="{{ .fields.Watch.Name }}"
                                            {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
                                            {{ else if .device.Watch }}checked{{ end }}>
-                                    <label :for="id"></label>
+                                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
                                     <p class="help">Receive a notification if this device goes offline or comes online.</p>
                                 </div>
                             </div>

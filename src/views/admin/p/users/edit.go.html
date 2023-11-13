@@ -43,7 +43,7 @@
                            name="{{ .fields.Admin.Name }}"
                            {{ if .err }}{{ if eq .fields.Admin.Value "1" }}checked{{ end }}
                            {{ else if .user.Admin }}checked{{ end }}>
-                    <label :for="id"></label>
+                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
                     {{ if eq .user.ID .globals.User.ID }}
                         <p class="help has-text-warning-dark">
                             <span class="icon"><i class="fa-duotone fa-warning"></i></span>

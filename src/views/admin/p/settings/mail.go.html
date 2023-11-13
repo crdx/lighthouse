@@ -11,7 +11,7 @@
                        name="{{ .fields.EnableMail.Name }}"
                        {{ if .err }}{{ if eq .fields.EnableMail.Value "1" }}checked{{ end }}
                        {{ else if .settings.EnableMail }}checked{{ end }}>
-                <label :for="id"></label>
+                <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
             </div>
         </div>
     </div>
