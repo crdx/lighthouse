@@ -44,5 +44,5 @@ func (self *Adapter) Device() (*Device, bool) {
 }
 
 func (self *Adapter) AuditName() string {
-	return fmt.Sprintf("%s (ID: %d) from device %s", self.Name, self.ID, lo.Must(self.Device()).AuditName())
+	return fmt.Sprintf("%s (ID: %d) of device %s", self.Name, self.ID, lo.Must(self.Device()).AuditName())
 }
