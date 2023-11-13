@@ -14,8 +14,9 @@ type AuditLog struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	UserID  uint   `gorm:"not null"`
-	Message string `gorm:"not null"`
+	UserID    uint   `gorm:"not null"`
+	IPAddress string `gorm:"size:100;not null"`
+	Message   string `gorm:"not null"`
 }
 
 func (self *AuditLog) Update(values ...any) {

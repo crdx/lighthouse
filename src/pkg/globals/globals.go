@@ -10,13 +10,18 @@ import (
 type Values struct {
 	Flash *flash.Message
 	User  *m.User
+
+	UserIsViewer bool
+	UserIsEditor bool
+	UserIsAdmin  bool
 }
 
 const CurrentUserKey = "globals.current_user"
 
 // CurrentUser returns the current user from the session.
 func CurrentUser(c *fiber.Ctx) *m.User {
-	return c.Locals(CurrentUserKey).(*m.User)
+	user, _ := c.Locals(CurrentUserKey).(*m.User)
+	return user
 }
 
 // IsCurrentUser returns whether user is the current user.

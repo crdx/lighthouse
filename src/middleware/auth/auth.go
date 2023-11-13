@@ -33,6 +33,7 @@ func needAuth(c *fiber.Ctx) error {
 }
 
 func logOut(c *fiber.Ctx) error {
+	auditLogR.Add(c, "User %s logged out", c.Locals(globals.CurrentUserKey).(*m.User).Username)
 	session.Destroy(c)
 	return c.Redirect("/")
 }
@@ -41,14 +42,17 @@ func logIn(c *fiber.Ctx, username string, password string) error {
 	user, found := db.B[m.User]("username = ?", username).First()
 
 	if !found {
+		auditLogR.Add(c, "Unknown user %q tried to log in", username)
 		return err(c)
 	}
 
 	if !stringutil.VerifyHashAndPassword(user.PasswordHash, password) {
+		auditLogR.Add(c, "User %s failed to log in", username)
 		return err(c)
 	}
 
 	user.Update("last_login", time.Now())
+	auditLogR.Add(c, "User %s logged in", user.Username)
 
 	session.Set(c, "user_id", user.ID)
 	return c.Redirect(c.Path())
@@ -57,10 +61,6 @@ func logIn(c *fiber.Ctx, username string, password string) error {
 // New returns middleware that handles authentication.
 func New() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		if c.Method() == http.MethodPost && c.Path() == "/bye" {
-			return logOut(c)
-		}
-
 		username := c.FormValue("username")
 		password := c.FormValue("password")
 		isAuthForm := c.FormValue("id") == FormID
@@ -80,6 +80,11 @@ func New() fiber.Handler {
 		}
 
 		c.Locals(globals.CurrentUserKey, user)
+
+		if c.Method() == http.MethodPost && c.Path() == "/bye" {
+			return logOut(c)
+		}
+
 		return c.Next()
 	}
 }

@@ -2,6 +2,7 @@
     <table class="table is-fullwidth">
         <tr>
             <th>User</th>
+            <th class="is-hidden-mobile">IP Address</th>
             <th>Action</th>
             <th>When</th>
             <th class="is-hidden-mobile">Date</th>
@@ -9,7 +10,14 @@
 
         {{ range .log }}
             <tr>
-                <td>{{ (index $.users .UserID).Username }}</td>
+                <td>
+                    {{ if ne .UserID 0 }}
+                        {{ (index $.users .UserID).Username }}
+                    {{ else }}
+                        <em>None</em>
+                    {{ end }}
+                </td>
+                <td class="is-hidden-mobile">{{ .IPAddress }}</td>
                 <td>{{ .Message }}</td>
                 <td>{{ template "p/time/rel" .CreatedAt }}</td>
                 <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>

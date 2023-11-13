@@ -10,8 +10,14 @@ import (
 )
 
 func Add(c *fiber.Ctx, message string, args ...any) {
+	var userID uint
+	if user := globals.CurrentUser(c); user != nil {
+		userID = user.ID
+	}
+
 	db.Save(&m.AuditLog{
-		UserID:  globals.CurrentUser(c).ID,
-		Message: fmt.Sprintf(message, args...),
+		UserID:    userID,
+		IPAddress: c.IP(),
+		Message:   fmt.Sprintf(message, args...),
 	})
 }
