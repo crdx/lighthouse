@@ -49,18 +49,21 @@
 
     <div class="field is-horizontal" x-data="id">
         <div class="field-label">
-            <label class="label">Admin</label>
+            <label class="label" :for="id">Role</label>
         </div>
         <div class="field-body">
             <div class="field">
                  <div class="control">
-                    <input type="checkbox"
-                           class="toggle"
-                           :id="id"
-                           name="{{ .fields.Admin.Name }}"
-                           {{ if .err }}{{ if eq .fields.Admin.Value "1" }}checked{{ end }}{{ end }}>
-                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
-                    <p class="help">Admins have edit capabilities, while non-admins have read-only access.</p>
+                    <div class="select">
+                        <select name="{{ .fields.Role.Name }}" required :id="id">
+                            <option value="1" {{ if .err }}{{ if eq .fields.Role.Value "1" }}selected{{ end }}{{ end }}>{{ template "p/name/role" 1 }}</option>
+                            <option value="2" {{ if .err }}{{ if eq .fields.Role.Value "2" }}selected{{ end }}{{ end }}>{{ template "p/name/role" 2 }}</option>
+                            <option value="3" {{ if .err }}{{ if eq .fields.Role.Value "3" }}selected{{ end }}{{ end }}>{{ template "p/name/role" 3 }}</option>
+                        </select>
+                    </div>
+
+                    {{ if .fields.Role.Error }}<p class="help is-danger">{{ .fields.Role.Error }}</p>{{ end }}
+                    <p class="help">{{ template "p/help/role" }}</p>
                 </div>
             </div>
         </div>

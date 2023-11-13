@@ -3,13 +3,13 @@ package audit_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/middleware/auth"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -21,8 +21,8 @@ func TestList(t *testing.T) {
 	assert.NotContains(t, res.Body, "anon")
 }
 
-func TestUserCannotList(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotList(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 404, res.StatusCode)

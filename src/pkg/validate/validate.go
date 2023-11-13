@@ -3,6 +3,7 @@ package validate
 import (
 	"errors"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -45,7 +46,9 @@ func init() {
 		return regexp.MustCompile("^.* <.*>$").Match([]byte(value))
 	})
 
-	Register("duration", "must be a valid duration", duration.Valid)
+	Register("role", "must be a valid role", func(value string) bool {
+		return slices.Contains([]string{"1", "2", "3"}, value)
+	})
 
 	Register("available_username", "must be an available username", func(value string) bool {
 		for _, user := range db.B[m.User]().Find() {
@@ -55,6 +58,8 @@ func init() {
 		}
 		return true
 	})
+
+	Register("duration", "must be a valid duration", duration.Valid)
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {
 		minDuration, ok := duration.Parse(min)

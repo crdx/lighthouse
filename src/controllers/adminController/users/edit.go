@@ -1,6 +1,8 @@
 package users
 
 import (
+	"fmt"
+
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
@@ -15,7 +17,7 @@ import (
 
 type EditForm struct {
 	Password string `form:"password" validate:"omitempty,min=4" transform:"trim"`
-	Admin    bool   `form:"admin"`
+	Role     string `form:"role" validate:"required,role"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {
@@ -39,7 +41,7 @@ func Edit(c *fiber.Ctx) error {
 	// Current user can't edit their own admin access so the disabled form field doesn't come
 	// through in the request. Set it here to make the form object valid.
 	if globals.IsCurrentUser(c, user) {
-		form.Admin = user.Admin
+		form.Role = fmt.Sprint(user.Role)
 	}
 
 	transform.Struct(form)
@@ -66,9 +68,9 @@ func Edit(c *fiber.Ctx) error {
 	}
 	delete(values, "password")
 
-	// Current user can't edit their own admin access.
+	// Admins can't demote themselves.
 	if globals.IsCurrentUser(c, user) {
-		delete(values, "admin")
+		delete(values, "role")
 	}
 
 	user.Update(values)

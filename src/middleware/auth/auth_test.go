@@ -5,6 +5,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestLoginPage(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
@@ -22,7 +23,7 @@ func TestLoginPage(t *testing.T) {
 }
 
 func TestSuccessfulAdminLogin(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -39,7 +40,7 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 }
 
 func TestSuccessfulUserLogin(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "anon",
@@ -55,7 +56,7 @@ func TestSuccessfulUserLogin(t *testing.T) {
 }
 
 func TestInvalidUsername(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "john",
@@ -70,7 +71,7 @@ func TestInvalidUsername(t *testing.T) {
 }
 
 func TestInvalidPassword(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -85,7 +86,7 @@ func TestInvalidPassword(t *testing.T) {
 }
 
 func TestInvalidFormID(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -99,7 +100,7 @@ func TestInvalidFormID(t *testing.T) {
 }
 
 func TestLogout(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	session.PostForm("/", map[string]string{
 		"username": "root",
@@ -116,7 +117,7 @@ func TestLogout(t *testing.T) {
 }
 
 func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
-	session := helpers.Init(auth.StateUnauthenticated)
+	session := helpers.Init(userR.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "anon",
@@ -130,7 +131,7 @@ func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "Devices")
 
-	lo.Must(db.First[m.User](2)).Delete()
+	lo.Must(db.First[m.User](3)).Delete()
 
 	res = session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)

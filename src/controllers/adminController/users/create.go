@@ -17,7 +17,7 @@ import (
 type CreateForm struct {
 	Username string `form:"username" validate:"required,available_username" transform:"trim"`
 	Password string `form:"password" validate:"required,min=4" transform:"trim"`
-	Admin    bool   `form:"admin"`
+	Role     string `form:"role" validate:"required,role"`
 }
 
 func ViewCreate(c *fiber.Ctx) error {

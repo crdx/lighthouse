@@ -27,7 +27,7 @@
 
     <div class="level-right">
         <div class="level-item">
-            {{ if and (eq .mode "view") (.globals.User.Admin) }}
+            {{ if and (eq .mode "view") $.globals.UserIsEditor }}
                 <div class="dropdown is-right" x-data="dropdown" :class="dropdownClass()" @click.outside="closeDropdown">
                     <div class="dropdown-trigger" @click="toggleDropdown">
                         <button class="button">

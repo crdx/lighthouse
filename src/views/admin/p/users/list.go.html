@@ -1,7 +1,7 @@
 <table class="table is-fullwidth">
     <tr>
         <th>Username</th>
-        <th>Admin</th>
+        <th>Role</th>
         <th>Last Login</th>
         <th class="is-hidden-mobile">Created</th>
         <th></th>
@@ -10,7 +10,7 @@
     {{ range .users }}
         <tr>
             <td>{{ .Username }}</td>
-            <td>{{ template "p/state/bool" .Admin }}</td>
+            <td>{{ template "p/name/role" .Role }}</td>
             <td>
                 {{ if .LastLogin.Valid }}
                     {{ template "p/time/rel" .LastLogin }}

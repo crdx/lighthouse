@@ -6,18 +6,12 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/util/stringutil"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
-)
-
-type State int
-
-const (
-	StateAdmin State = iota
-	StateUser
-	StateUnauthenticated
 )
 
 // Used to make sure with no shadow of a doubt that the submitted form is the login form.
@@ -91,7 +85,7 @@ func New() fiber.Handler {
 
 // Admin is middleware that only allows the request to continue if the current user is an admin.
 func Admin(c *fiber.Ctx) error {
-	if !globals.CurrentUser(c).Admin {
+	if globals.CurrentUser(c).Role < userR.RoleAdmin {
 		return c.SendStatus(404)
 	}
 	return c.Next()
@@ -99,9 +93,9 @@ func Admin(c *fiber.Ctx) error {
 
 // AutoLogin returns middleware that simulates the user being authorised as the provided state. The
 // first user in the db with the required authorisation will be picked.
-func AutoLogin(state State) fiber.Handler {
+func AutoLogin(role uint) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		user, _ := db.B[m.User]("admin = ?", state == StateAdmin).First()
+		user, _ := db.B[m.User]("role = ?", role).First()
 		c.Locals(globals.CurrentUserKey, user)
 		return c.Next()
 	}

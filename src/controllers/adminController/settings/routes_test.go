@@ -5,14 +5,14 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/m/repo/settingR"
-	"crdx.org/lighthouse/middleware/auth"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
@@ -20,15 +20,15 @@ func TestList(t *testing.T) {
 	assert.Contains(t, res.Body, "Settings")
 }
 
-func TestUserCannotList(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotList(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.Get("/admin/settings")
 	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	apiKey := uuid.NewString()
 
@@ -44,8 +44,8 @@ func TestEdit(t *testing.T) {
 	assert.Contains(t, res.Body, apiKey)
 }
 
-func TestUserCannotEdit(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotEdit(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	apiKey := uuid.NewString()
 
@@ -59,7 +59,7 @@ func TestUserCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	apiKey := strings.Repeat(uuid.NewString(), 20)
 
@@ -74,7 +74,7 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestCacheInvalidation(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	currentTimezone := settingR.Timezone()
 

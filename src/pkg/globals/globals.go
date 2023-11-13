@@ -2,6 +2,7 @@ package globals
 
 import (
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
@@ -37,7 +38,14 @@ func Get(c *fiber.Ctx) *Values {
 		values.Flash = &flashMessage
 	}
 
-	values.User = CurrentUser(c)
+	user := CurrentUser(c)
+	values.User = user
+
+	if user != nil {
+		values.UserIsAdmin = user.Role >= userR.RoleAdmin
+		values.UserIsEditor = user.Role >= userR.RoleEditor
+		values.UserIsViewer = user.Role >= userR.RoleViewer
+	}
 
 	return &values
 }

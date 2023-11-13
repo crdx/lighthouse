@@ -6,6 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers/seeder"
 	"crdx.org/lighthouse/util/stringutil"
 )
@@ -15,8 +16,8 @@ func seed() error {
 	db.Save(&m.Setting{Name: "watch", Value: "1"})
 	db.Save(&m.Setting{Name: "scan_interval", Value: "1 min"})
 
-	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPass()), Admin: true})
-	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPass()), Admin: false})
+	db.Save(&m.User{Username: "root", PasswordHash: stringutil.Hash(env.DefaultRootPass()), Role: userR.RoleAdmin})
+	db.Save(&m.User{Username: "anon", PasswordHash: stringutil.Hash(env.DefaultAnonPass()), Role: userR.RoleViewer})
 
 	return nil
 }

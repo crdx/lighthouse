@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"crdx.org/lighthouse/conf"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
@@ -26,13 +27,13 @@ type Response struct {
 }
 
 // NewSession returns a new session with the requested auth state.
-func NewSession(state auth.State, handlers ...func(c *fiber.Ctx) error) *Session {
+func NewSession(role uint, handlers ...func(c *fiber.Ctx) error) *Session {
 	app := fiber.New(conf.GetTestFiberConfig())
 
-	if state == auth.StateUnauthenticated {
+	if role == userR.RoleNone {
 		app.Use(auth.New())
 	} else {
-		app.Use(auth.AutoLogin(state))
+		app.Use(auth.AutoLogin(role))
 	}
 
 	for _, handler := range handlers {

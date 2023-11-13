@@ -5,7 +5,7 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/middleware/auth"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
@@ -13,7 +13,7 @@ import (
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
@@ -23,14 +23,14 @@ func TestList(t *testing.T) {
 }
 
 func TestListSort(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/?sc=seen&sd=asc")
 	assert.Equal(t, 200, res.StatusCode)
 }
 
 func TestListBadSort(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/?sd=foo")
 	assert.Equal(t, 400, res.StatusCode)
@@ -40,7 +40,7 @@ func TestListBadSort(t *testing.T) {
 }
 
 func TestView(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -51,15 +51,15 @@ func TestView(t *testing.T) {
 }
 
 func TestViewEdit(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/device/1/edit")
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041")
 }
 
-func TestUserCannotViewEdit(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotViewEdit(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.Get("/device/1/edit")
 	assert.Equal(t, 404, res.StatusCode)
@@ -67,7 +67,7 @@ func TestUserCannotViewEdit(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
@@ -89,7 +89,7 @@ func TestEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
@@ -111,8 +111,8 @@ func TestEditWithErrors(t *testing.T) {
 	assert.NotContains(t, res.Body, icon)
 }
 
-func TestUserCannotEdit(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotEdit(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.PostForm("/device/1/edit", map[string]string{
 		"name": uuid.NewString(),
@@ -122,7 +122,7 @@ func TestUserCannotEdit(t *testing.T) {
 }
 
 func TestMerge1(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
@@ -145,7 +145,7 @@ func TestMerge1(t *testing.T) {
 }
 
 func TestMerge2(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.PostForm("/device/2/merge", map[string]string{
 		"device_id": "1",
@@ -168,7 +168,7 @@ func TestMerge2(t *testing.T) {
 }
 
 func TestMergeBadDevice(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "100",
@@ -177,8 +177,8 @@ func TestMergeBadDevice(t *testing.T) {
 	assert.Equal(t, 400, res.StatusCode)
 }
 
-func TestUserCannotMerge(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotMerge(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
@@ -188,7 +188,7 @@ func TestUserCannotMerge(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -200,8 +200,8 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, 404, res.StatusCode)
 }
 
-func TestUserCannotDelete(t *testing.T) {
-	session := helpers.Init(auth.StateUser)
+func TestViewerCannotDelete(t *testing.T) {
+	session := helpers.Init(userR.RoleViewer)
 
 	res := session.PostForm("/device/1/delete", nil)
 	assert.Equal(t, 404, res.StatusCode)

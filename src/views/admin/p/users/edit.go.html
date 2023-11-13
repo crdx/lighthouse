@@ -30,27 +30,29 @@
     </div>
 
     <div class="field is-horizontal" x-data="id">
-        <div class="field-label">
-            <label class="label">Admin</label>
+        <div class="field-label is-normal">
+            <label class="label" :for="id">Role</label>
         </div>
         <div class="field-body">
             {{ if eq .user.ID $.globals.User.ID }}<fieldset disabled>{{ end }}
             <div class="field">
                  <div class="control">
-                    <input type="checkbox"
-                           class="toggle"
-                           :id="id"
-                           name="{{ .fields.Admin.Name }}"
-                           {{ if .err }}{{ if eq .fields.Admin.Value "1" }}checked{{ end }}
-                           {{ else if .user.Admin }}checked{{ end }}>
-                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
-                    {{ if eq .user.ID .globals.User.ID }}
+                    <div class="select">
+                        <select name="{{ .fields.Role.Name }}" required :id="id">
+                            <option value="1" {{ if .err }}{{ if eq .fields.Role.Value "1" }}selected{{ end }}{{ else if eq .user.Role 1 }}selected{{ end }}>{{ template "p/name/role" 1 }}</option>
+                            <option value="2" {{ if .err }}{{ if eq .fields.Role.Value "2" }}selected{{ end }}{{ else if eq .user.Role 2 }}selected{{ end }}>{{ template "p/name/role" 2 }}</option>
+                            <option value="3" {{ if .err }}{{ if eq .fields.Role.Value "3" }}selected{{ end }}{{ else if eq .user.Role 3 }}selected{{ end }}>{{ template "p/name/role" 3 }}</option>
+                        </select>
+                    </div>
+
+                    {{ if eq .user.ID $.globals.User.ID }}
                         <p class="help has-text-warning-dark">
                             <span class="icon"><i class="fa-duotone fa-warning"></i></span>
-                            You can't modify your own admin access.
+                            You can't modify your own role.
                         </p>
                     {{ end }}
-                    <p class="help">Admins have edit capabilities, while non-admins have read-only access.</p>
+
+                    <p class="help">{{ template "p/help/role" }}</p>
                 </div>
             </div>
             {{ if eq .user.ID $.globals.User.ID }}</fieldset>{{ end }}

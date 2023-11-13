@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/m/repo/userR"
 )
 
 func createDevice(id uint, name string, lastSeen time.Time) *m.Device {
@@ -67,9 +68,11 @@ func Run() error {
 	// bcrypt is expensive, and this runs for every test, so pregenerate the hashes.
 	rootHash := `$2a$10$Mjxj19.2lGTooLqwxi6MQeCukr7lZFyODKSFCIRR2aldNg/oTov.K`
 	anonHash := `$2a$10$mnYikOcNhl.Kr4bzShVIne4vywF9zRw967qOBQpaGpbTl2HRBoCPm`
+	edHash := `$2a$12$TpmujKynuODqYqFA89./iuZU.DDz1y7/K3R096NdxAgOl6fOjD9Ai`
 
-	db.Save(&m.User{ID: 1, Username: "root", PasswordHash: rootHash, Admin: true})
-	db.Save(&m.User{ID: 2, Username: "anon", PasswordHash: anonHash, Admin: false})
+	db.Save(&m.User{ID: 1, Username: "root", PasswordHash: rootHash, Role: userR.RoleAdmin})
+	db.Save(&m.User{ID: 2, Username: "ed", PasswordHash: edHash, Role: userR.RoleEditor})
+	db.Save(&m.User{ID: 3, Username: "anon", PasswordHash: anonHash, Role: userR.RoleViewer})
 
 	db.Save(&m.AuditLog{ID: 1, UserID: 1, Message: "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041"})
 

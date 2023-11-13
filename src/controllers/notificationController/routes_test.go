@@ -3,13 +3,13 @@ package notificationController_test
 import (
 	"testing"
 
-	"crdx.org/lighthouse/middleware/auth"
+	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestList(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/notifications")
 	assert.Equal(t, 200, res.StatusCode)
@@ -18,7 +18,7 @@ func TestList(t *testing.T) {
 }
 
 func TestListBadPageNumber(t *testing.T) {
-	session := helpers.Init(auth.StateAdmin)
+	session := helpers.Init(userR.RoleAdmin)
 
 	res := session.Get("/notifications/?p=100")
 	assert.Equal(t, 404, res.StatusCode)
