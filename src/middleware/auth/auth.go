@@ -5,10 +5,8 @@ import (
 	"time"
 
 	"crdx.org/db"
-	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
-	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/util/stringutil"
 	"crdx.org/session"
@@ -86,10 +84,19 @@ func New() fiber.Handler {
 
 // Admin is middleware that only allows the request to continue if the current user is an admin.
 func Admin(c *fiber.Ctx) error {
-	if globals.CurrentUser(c).Role < userR.RoleAdmin {
-		return c.SendStatus(404)
+	if globals.CurrentUser(c).IsAdmin() {
+		return c.Next()
 	}
-	return c.Next()
+	return c.SendStatus(404)
+}
+
+// Editor is middleware that only allows the request to continue if the current user is an editor.
+func Editor(c *fiber.Ctx) error {
+	if globals.CurrentUser(c).IsEditor() {
+		return c.Next()
+	}
+
+	return c.SendStatus(404)
 }
 
 // AutoLogin returns middleware that simulates the user being authorised as the provided state. The

@@ -9,7 +9,7 @@ import (
 
 func InitRoutes(app *fiber.App) {
 	adapterGroup := app.Group("/adapter/:id<int>").
-		Use(auth.Admin).
+		Use(auth.Editor).
 		Use(util.NewParseParam[m.Adapter]("id", "adapter"))
 
 	adapterGroup.Post("/delete", Delete)

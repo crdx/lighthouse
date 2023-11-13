@@ -14,8 +14,8 @@ func InitRoutes(app *fiber.App) {
 		Use(util.NewParseParam[m.Device]("id", "device"))
 
 	deviceGroup.Get("/", View)
-	deviceGroup.Post("/delete", auth.Admin, Delete)
-	deviceGroup.Get("/edit", auth.Admin, ViewEdit)
-	deviceGroup.Post("/edit", auth.Admin, Edit)
-	deviceGroup.Post("/merge", auth.Admin, Merge)
+	deviceGroup.Post("/delete", auth.Editor, Delete)
+	deviceGroup.Get("/edit", auth.Editor, ViewEdit)
+	deviceGroup.Post("/edit", auth.Editor, Edit)
+	deviceGroup.Post("/merge", auth.Editor, Merge)
 }

@@ -34,7 +34,7 @@ func TestViewerCannotViewEdit(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	session := helpers.Init(constants.RoleEditor)
 
 	name := uuid.NewString()
 	vendor := uuid.NewString()
@@ -68,7 +68,7 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	session := helpers.Init(constants.RoleEditor)
 
 	name := strings.Repeat(uuid.NewString(), 100)
 	vendor := uuid.NewString()
