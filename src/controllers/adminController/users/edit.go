@@ -14,7 +14,7 @@ import (
 )
 
 type EditForm struct {
-	Password string `form:"password" transform:"trim"`
+	Password string `form:"password" validate:"omitempty,min=4" transform:"trim"`
 	Admin    bool   `form:"admin"`
 }
 

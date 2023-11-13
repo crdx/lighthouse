@@ -42,7 +42,7 @@
                            value="{{ if .err }}{{ .fields.Password.Value }}{{ end }}">
                 </div>
                 {{ if .fields.Password.Error }}<p class="help is-danger">{{ .fields.Password.Error }}</p>{{ end }}
-                <p class="help">No password rules because it's up to you to decide your own risk tolerance.</p>
+                <p class="help">{{ template "p/help/password" }}</p>
             </div>
         </div>
     </div>
