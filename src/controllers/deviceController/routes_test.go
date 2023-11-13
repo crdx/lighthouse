@@ -88,6 +88,26 @@ func TestEdit(t *testing.T) {
 	assert.Contains(t, res.Body, "fa-solid fa-vials")
 }
 
+func TestEditOrigin(t *testing.T) {
+	session := helpers.Init(constants.RoleEditor)
+
+	name := uuid.NewString()
+	notes := uuid.NewString()
+
+	res := session.PostForm("/device/3/edit", map[string]string{
+		"name":  name,
+		"notes": notes,
+		"icon":  "solid:vials",
+	})
+
+	assert.Equal(t, 302, res.StatusCode)
+
+	res = session.Get("/device/3")
+	assert.Contains(t, res.Body, name)
+	assert.Contains(t, res.Body, notes)
+	assert.Contains(t, res.Body, "fa-solid fa-vials")
+}
+
 func TestEditWithErrors(t *testing.T) {
 	session := helpers.Init(constants.RoleEditor)
 

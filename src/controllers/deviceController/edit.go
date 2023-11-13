@@ -14,6 +14,12 @@ import (
 	"github.com/samber/lo"
 )
 
+type OriginEditForm struct {
+	Name  string `form:"name" validate:"max=100" transform:"trim"`
+	Icon  string `form:"icon" validate:"max=100" transform:"trim"`
+	Notes string `form:"notes" validate:"max=5000" transform:"trim"`
+}
+
 type EditForm struct {
 	Name        string `form:"name" validate:"max=100" transform:"trim"`
 	Icon        string `form:"icon" validate:"max=100" transform:"trim"`
@@ -37,7 +43,13 @@ func ViewEdit(c *fiber.Ctx) error {
 func Edit(c *fiber.Ctx) error {
 	device := c.Locals("device").(*m.Device)
 
-	form := new(EditForm)
+	var form any
+	if device.Origin {
+		form = new(OriginEditForm)
+	} else {
+		form = new(EditForm)
+	}
+
 	lo.Must0(c.BodyParser(form))
 
 	transform.Struct(form)
