@@ -70,7 +70,10 @@ func findInterface() (*net.Interface, bool) {
 
 	for _, iface := range interfaces {
 		isRunning := iface.Flags&net.FlagRunning == net.FlagRunning
-		hasAssignedIps := lo.Must(iface.Addrs()) != nil
+		hasAssignedIps := lo.CountBy(lo.Must(iface.Addrs()), func(addr net.Addr) bool {
+			network, ok := addr.(*net.IPNet)
+			return ok && network.IP.To4() != nil
+		}) > 0
 
 		if iface.Name != "lo" && isRunning && hasAssignedIps {
 			return &iface, true
