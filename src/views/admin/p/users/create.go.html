@@ -1,0 +1,77 @@
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <h1 class="title is-size-4">Create User</h1>
+        </div>
+    </div>
+    <div class="level-right">
+    </div>
+</div>
+
+<form method="post">
+    <div class="field is-horizontal" x-data="id">
+        <div class="field-label is-normal">
+            <label class="label" :for="id">Username</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                 <div class="control">
+                    <input class="input"
+                           :id="id"
+                           type="text"
+                           name="{{ .fields.Username.Name }}"
+                           value="{{ if .err }}{{ .fields.Username.Value }}{{ end }}">
+                </div>
+                {{ if .fields.Username.Error }}<p class="help is-danger">{{ .fields.Username.Error }}</p>{{ end }}
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal" x-data="id">
+        <div class="field-label is-normal">
+            <label class="label" :for="id">Password</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                 <div class="control">
+                    <input class="input"
+                           :id="id"
+                           autocomplete="new-password"
+                           type="password"
+                           name="{{ .fields.Password.Name }}"
+                           value="{{ if .err }}{{ .fields.Password.Value }}{{ end }}">
+                </div>
+                {{ if .fields.Password.Error }}<p class="help is-danger">{{ .fields.Password.Error }}</p>{{ end }}
+                <p class="help">No password rules because it's up to you to decide your own risk tolerance.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal" x-data="id">
+        <div class="field-label">
+            <label class="label">Admin</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                 <div class="control">
+                    <input type="checkbox"
+                           class="toggle"
+                           :id="id"
+                           name="{{ .fields.Admin.Name }}"
+                           {{ if .err }}{{ if eq .fields.Admin.Value "1" }}checked{{ end }}{{ end }}>
+                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                    <p class="help">Admins have edit capabilities, while non-admins have read-only access.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field is-horizontal is-grouped">
+        <div class="field-label"></div>
+        <div class="field-body">
+            <div class="control">
+                <button type="submit" class="button is-link">Create</button>
+            </div>
+        </div>
+    </div>
+</form>

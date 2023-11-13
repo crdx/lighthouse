@@ -20,6 +20,8 @@ func InitRoutes(app *fiber.App) {
 	adminGroup.Post("/settings", settings.Save)
 
 	adminGroup.Get("/users", users.List)
+	adminGroup.Get("/users/create", users.ViewCreate)
+	adminGroup.Post("/users/create", users.Create)
 
 	userGroup := adminGroup.Group("/users/:id<int>").
 		Use(util.NewParseParam[m.User]("id", "user"))

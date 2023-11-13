@@ -6,6 +6,8 @@ import (
 	"strings"
 	"time"
 
+	"crdx.org/db"
+	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/util/reflectutil"
 	enLocale "github.com/go-playground/locales/en"
@@ -44,6 +46,15 @@ func init() {
 	})
 
 	Register("duration", "must be a valid duration", duration.Valid)
+
+	Register("available_username", "must be an available username", func(value string) bool {
+		for _, user := range db.B[m.User]().Find() {
+			if user.Username == value {
+				return false
+			}
+		}
+		return true
+	})
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {
 		minDuration, ok := duration.Parse(min)

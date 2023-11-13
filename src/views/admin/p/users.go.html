@@ -2,4 +2,6 @@
     {{ template "admin/p/users/list" . }}
 {{ else if eq .mode "edit" }}
     {{ template "admin/p/users/edit" . }}
+{{ else if eq .mode "create" }}
+    {{ template "admin/p/users/create" . }}
 {{ end }}
