@@ -41,7 +41,7 @@ func Edit(c *fiber.Ctx) error {
 
 	user.Update("password_hash", stringutil.Hash(form.NewPassword))
 
-	auditLogR.Add(c, "Changed password")
+	auditLogR.Add(c, "Changed own password")
 	flash.Success(c, "Password changed")
 	return c.Redirect("/profile")
 }
