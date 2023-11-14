@@ -4,7 +4,13 @@
         <th>Role</th>
         <th>Last Login</th>
         <th class="is-hidden-mobile">Created</th>
-        <th></th>
+        <th>
+            <a title="Create" class="is-pulled-right" href="/admin/users/create">
+                <span class="icon is-small">
+                    <i class="fas fa-user-plus"></i>
+                </span>
+            </a>
+        </th>
     </tr>
 
     {{ range .users }}
@@ -44,12 +50,3 @@
         </tr>
     {{ end }}
 </table>
-
-<div class="buttons is-right">
-    <a class="button" href="/admin/users/create">
-      <span class="icon is-small">
-        <i class="fas fa-plus"></i>
-      </span>
-      <span>Create</span>
-    </a>
-</div>
