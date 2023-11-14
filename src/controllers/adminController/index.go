@@ -5,5 +5,5 @@ import (
 )
 
 func Index(c *fiber.Ctx) error {
-	return c.Redirect("/admin/settings")
+	return c.Redirect("/admin/users")
 }
