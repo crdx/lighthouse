@@ -1,6 +1,7 @@
 package validate_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -18,17 +19,33 @@ func TestStruct(t *testing.T) {
 	}
 
 	testCases := []struct {
-		input     S
-		expected  map[string]validate.Field
-		expectErr bool
+		input      S
+		validators validate.ValidatorMap
+		expected   map[string]validate.Field
+		expectErr  bool
 	}{
 		{
 			S{"test@example.com", "password"},
+			validate.ValidatorMap{},
 			map[string]validate.Field{},
 			false,
 		},
 		{
+			S{"test@example.com", "password"},
+			validate.ValidatorMap{
+				"Email": func(value string) error {
+					return errors.New("invalid email")
+				},
+			},
+			map[string]validate.Field{
+				"Email":    {Error: "invalid email", Value: "test@example.com", Name: "email"},
+				"Password": {Error: "", Value: "password", Name: "password"},
+			},
+			true,
+		},
+		{
 			S{"", ""},
+			validate.ValidatorMap{},
 			map[string]validate.Field{
 				"Email":    {Error: "required field", Value: "", Name: "email"},
 				"Password": {Error: "required field", Value: "", Name: "password"},
@@ -37,6 +54,7 @@ func TestStruct(t *testing.T) {
 		},
 		{
 			S{"invalid", "password"},
+			validate.ValidatorMap{},
 			map[string]validate.Field{
 				"Email":    {Error: "must be a valid email address", Value: "invalid", Name: "email"},
 				"Password": {Error: "", Value: "password", Name: "password"},
@@ -47,7 +65,7 @@ func TestStruct(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s_%s", testCase.input.Email, testCase.input.Password), func(t *testing.T) {
-			actual, err := validate.Struct(testCase.input)
+			actual, err := validate.Struct(testCase.input, testCase.validators)
 			if testCase.expectErr {
 				require.Error(t, err)
 			} else {

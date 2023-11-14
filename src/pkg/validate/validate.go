@@ -26,10 +26,14 @@ type Field struct {
 	Name  string
 }
 
+type ValidatorMap map[string]func(string) error
+
 var (
 	validate   *validator.Validate
 	translator universalTranslator.Translator
 )
+
+var ErrValidationFailed = errors.New("validation failed")
 
 func init() {
 	translator, _ = universalTranslator.New(enLocale.New()).GetTranslator("en")
@@ -127,32 +131,56 @@ func Fields[T any]() map[string]Field {
 // Struct validates a struct's contents according to the rules set in the "validate" tag, and
 // returns all the data needed by the template to render the form: the original submitted values,
 // validation error messages, and the field names.
-func Struct[T any](s T) (map[string]Field, error) {
-	if err := validate.Struct(s); err == nil {
+func Struct[T any](s T, validatorMaps ...ValidatorMap) (map[string]Field, error) {
+	err := validate.Struct(s)
+
+	// No errors and no possible additional validation functions to run means we're done here.
+	if err == nil && len(validatorMaps) == 0 {
 		return map[string]Field{}, nil
-	} else {
+	}
+
+	var errorMessages validator.ValidationErrorsTranslations
+	if err != nil {
 		err := err.(validator.ValidationErrors) //nolint
-		errorMessages := err.Translate(translator)
-		errorMessages = fixErrorMessages(errorMessages)
+		errorMessages = fixErrorMessages(err.Translate(translator))
+	}
 
-		fields := map[string]Field{}
-		structName := reflectutil.GetType(s).Name()
-		structValue := reflectutil.GetValue(s)
+	fields := map[string]Field{}
+	structName := reflectutil.GetType(s).Name()
+	structValue := reflectutil.GetValue(s)
 
-		for i := 0; i < structValue.NumField(); i++ {
-			submittedValue := reflectutil.ToString(structValue.Field(i).Interface())
-			fieldName := structValue.Type().Field(i).Name
-			tagValue := structValue.Type().Field(i).Tag.Get("form")
+	for i := 0; i < structValue.NumField(); i++ {
+		submittedValue := reflectutil.ToString(structValue.Field(i).Interface())
+		fieldName := structValue.Type().Field(i).Name
+		tagValue := structValue.Type().Field(i).Tag.Get("form")
+		errorMessage := errorMessages[structName+"."+fieldName]
 
-			fields[fieldName] = Field{
-				Error: errorMessages[structName+"."+fieldName],
-				Value: submittedValue,
-				Name:  tagValue,
+		for _, validatorMap := range validatorMaps {
+			if errorMessage == "" {
+				if validate, ok := validatorMap[fieldName]; ok {
+					if err := validate(submittedValue); err != nil {
+						errorMessage = err.Error()
+					}
+				}
+			}
+			if errorMessage != "" {
+				err = ErrValidationFailed
 			}
 		}
 
-		return fields, errors.New("validation failed")
+		fields[fieldName] = Field{
+			Error: errorMessage,
+			Value: submittedValue,
+			Name:  tagValue,
+		}
 	}
+
+	// Even after additional validators were run there are still no errors.
+	if err == nil {
+		return map[string]Field{}, nil
+	}
+
+	return fields, ErrValidationFailed
 }
 
 // fixErrorMessages cleans up error messages by removing the field name from the beginning as it's
