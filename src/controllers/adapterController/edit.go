@@ -37,7 +37,6 @@ func Edit(c *fiber.Ctx) error {
 
 	form := new(EditForm)
 	lo.Must0(c.BodyParser(form))
-
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {

@@ -49,7 +49,6 @@ func List(c *fiber.Ctx) error {
 func Save(c *fiber.Ctx) error {
 	form := new(Form)
 	lo.Must0(c.BodyParser(form))
-
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
