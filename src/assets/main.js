@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', function() {
-    // Save CPU cycles by reusing the same UUID across multiple calls to id(), yielding unique id
+    // Reuse the same UUID across multiple calls to id() by appending a counter, yielding unique
     // values that start with an alpha character.
     let prefix
     let counter = 1
