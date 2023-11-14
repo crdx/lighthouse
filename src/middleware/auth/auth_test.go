@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"fmt"
 	"testing"
 
 	"crdx.org/db"
@@ -8,6 +9,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/tests/helpers"
+	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
@@ -137,4 +139,33 @@ func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, auth.FormID)
 	assert.NotContains(t, res.Body, "Devices")
+}
+
+func TestMiddleware(t *testing.T) {
+	testCases := []struct {
+		middleware     func(c *fiber.Ctx) error
+		role           uint
+		expectedStatus int
+		roleName       string
+	}{
+		{auth.Admin, constants.RoleAdmin, 200, "admin"},
+		{auth.Admin, constants.RoleEditor, 404, "editor"},
+		{auth.Admin, constants.RoleViewer, 404, "viewer"},
+		{auth.Editor, constants.RoleAdmin, 200, "admin"},
+		{auth.Editor, constants.RoleEditor, 200, "editor"},
+		{auth.Editor, constants.RoleViewer, 404, "viewer"},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
+			session := helpers.Init(testCase.role, testCase.middleware)
+			res := session.Get("/profile")
+
+			assert.Equal(t, testCase.expectedStatus, res.StatusCode)
+			if res.StatusCode == 200 {
+				assert.Contains(t, res.Body, testCase.roleName)
+			} else {
+				assert.NotContains(t, res.Body, testCase.roleName)
+			}
+		})
+	}
 }
