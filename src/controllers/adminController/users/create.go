@@ -1,6 +1,8 @@
 package users
 
 import (
+	"errors"
+
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
@@ -15,7 +17,7 @@ import (
 )
 
 type CreateForm struct {
-	Username string `form:"username" validate:"required,available_username" transform:"trim"`
+	Username string `form:"username" validate:"required" transform:"trim"`
 	Password string `form:"password" validate:"required,min=4" transform:"trim"`
 	Role     string `form:"role" validate:"required,role"`
 }
@@ -34,7 +36,18 @@ func Create(c *fiber.Ctx) error {
 	lo.Must0(c.BodyParser(form))
 	transform.Struct(form)
 
-	if fields, err := validate.Struct(form); err != nil {
+	validatorMap := validate.ValidatorMap{
+		"Username": func(value string) error {
+			for _, user := range db.B[m.User]().Find() {
+				if user.Username == value {
+					return errors.New("must be an available username")
+				}
+			}
+			return nil
+		},
+	}
+
+	if fields, err := validate.Struct(form, validatorMap); err != nil {
 		flash.Failure(c, "Unable to create user")
 
 		return c.Render("admin/index", fiber.Map{

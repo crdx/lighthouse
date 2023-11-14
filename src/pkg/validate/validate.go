@@ -7,8 +7,6 @@ import (
 	"strings"
 	"time"
 
-	"crdx.org/db"
-	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/util/reflectutil"
 	enLocale "github.com/go-playground/locales/en"
@@ -52,15 +50,6 @@ func init() {
 
 	Register("role", "must be a valid role", func(value string) bool {
 		return slices.Contains([]string{"1", "2", "3"}, value)
-	})
-
-	Register("available_username", "must be an available username", func(value string) bool {
-		for _, user := range db.B[m.User]().Find() {
-			if user.Username == value {
-				return false
-			}
-		}
-		return true
 	})
 
 	Register("duration", "must be a valid duration", duration.Valid)

@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/validate"
-	"crdx.org/lighthouse/tests/helpers"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -316,37 +314,6 @@ func TestRoleValidator(t *testing.T) {
 		{"3", "", false},
 		{"0", "must be a valid role", true},
 		{"4", "must be a valid role", true},
-	}
-
-	for _, testCase := range testCases {
-		t.Run(testCase.input, func(t *testing.T) {
-			testStruct := S{Field1: testCase.input}
-			fields, err := validate.Struct(testStruct)
-			if testCase.expectErr {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-			}
-			assert.Equal(t, testCase.expected, fields["Field1"].Error)
-		})
-	}
-}
-
-func TestAvailableUsernameValidator(t *testing.T) {
-	helpers.Init(constants.RoleAdmin)
-
-	type S struct {
-		Field1 string `validate:"available_username"`
-	}
-
-	testCases := []struct {
-		input     string
-		expected  string
-		expectErr bool
-	}{
-		{"joe", "", false},
-		{"root", "must be an available username", true},
-		{"anon", "must be an available username", true},
 	}
 
 	for _, testCase := range testCases {
