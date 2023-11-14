@@ -14,13 +14,15 @@ func TestAddSortMetadata(t *testing.T) {
 	testCases := []struct {
 		currentSortColumn    string
 		currentSortDirection string
-		input                map[string]tplutil.SortableColumnConfig
-		expected             map[string]tplutil.SortableColumnState
+		currentFilter        string
+		input                map[string]tplutil.ColumnConfig
+		expected             map[string]tplutil.ColumnState
 	}{
 		{
 			"column1",
 			"asc",
-			map[string]tplutil.SortableColumnConfig{
+			"",
+			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
 					DefaultSortDirection: "asc",
@@ -32,7 +34,7 @@ func TestAddSortMetadata(t *testing.T) {
 					Minimal:              false,
 				},
 			},
-			map[string]tplutil.SortableColumnState{
+			map[string]tplutil.ColumnState{
 				"column1": {
 					Label:                "Column 1",
 					CurrentSortColumn:    "column1",
@@ -54,7 +56,8 @@ func TestAddSortMetadata(t *testing.T) {
 		{
 			"column2",
 			"desc",
-			map[string]tplutil.SortableColumnConfig{
+			"f",
+			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
 					DefaultSortDirection: "asc",
@@ -66,11 +69,12 @@ func TestAddSortMetadata(t *testing.T) {
 					Minimal:              true,
 				},
 			},
-			map[string]tplutil.SortableColumnState{
+			map[string]tplutil.ColumnState{
 				"column1": {
 					Label:                "Column 1",
 					CurrentSortColumn:    "column2",
 					CurrentSortDirection: "desc",
+					CurrentFilter:        "f",
 					SortColumn:           "column1",
 					SortDirection:        "asc",
 					Minimal:              true,
@@ -79,6 +83,7 @@ func TestAddSortMetadata(t *testing.T) {
 					Label:                "Column 2",
 					CurrentSortColumn:    "column2",
 					CurrentSortDirection: "desc",
+					CurrentFilter:        "f",
 					SortColumn:           "column2",
 					SortDirection:        "asc",
 					Minimal:              true,
@@ -88,14 +93,15 @@ func TestAddSortMetadata(t *testing.T) {
 		{
 			"",
 			"",
-			map[string]tplutil.SortableColumnConfig{
+			"",
+			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
 					DefaultSortDirection: "asc",
 					Minimal:              false,
 				},
 			},
-			map[string]tplutil.SortableColumnState{
+			map[string]tplutil.ColumnState{
 				"column1": {
 					Label:                "Column 1",
 					CurrentSortColumn:    "",
@@ -112,9 +118,10 @@ func TestAddSortMetadata(t *testing.T) {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
 			t.Parallel()
 
-			actual := tplutil.AddSortMetadata(
+			actual := tplutil.AddMetadata(
 				testCase.currentSortColumn,
 				testCase.currentSortDirection,
+				testCase.currentFilter,
 				testCase.input,
 			)
 			assert.Equal(t, testCase.expected, actual)

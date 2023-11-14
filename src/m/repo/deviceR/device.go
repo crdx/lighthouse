@@ -35,7 +35,7 @@ func (self ListView) IconClass() string {
 	return util.IconToClass(self.Icon)
 }
 
-func GetListView(sortColumn string, sortDirection string) []ListView {
+func GetListView(sortColumn string, sortDirection string, filter string) []ListView {
 	// Ensure sort is stable by appending "D.id ASC" to some of these.
 	orderByTemplates := map[string]string{
 		"name":   "D.name %s, D.id ASC",
@@ -47,8 +47,17 @@ func GetListView(sortColumn string, sortDirection string) []ListView {
 		"type":   "D.icon %s, D.id ASC",
 	}
 
-	orderByTemplate, ok := orderByTemplates[sortColumn]
-	if !ok {
+	filters := map[string]string{
+		"online":   "AND state = 'online'",
+		"offline":  "AND state = 'offline'",
+		"watching": "AND watch = 1",
+		"":         "",
+	}
+
+	orderByTemplate, orderOK := orderByTemplates[sortColumn]
+	filterBy, filterOK := filters[filter]
+
+	if !orderOK || !filterOK {
 		return nil
 	}
 
@@ -75,6 +84,23 @@ func GetListView(sortColumn string, sortDirection string) []ListView {
 		WHERE D.deleted_at IS NULL
 		AND A1.deleted_at IS NULL
 		AND A2.id IS NULL
+		%s
 		ORDER BY %s
-	`, orderBy))
+	`, filterBy, orderBy))
+}
+
+type Counts struct {
+	All      uint
+	Online   uint
+	Offline  uint
+	Watching uint
+}
+
+func GetCounts() *Counts {
+	return &Counts{
+		All:      uint(db.B[m.Device]().Count()),
+		Online:   uint(db.B[m.Device]("state = ?", "online").Count()),
+		Offline:  uint(db.B[m.Device]("state = ?", "offline").Count()),
+		Watching: uint(db.B[m.Device]("watch = 1").Count()),
+	}
 }

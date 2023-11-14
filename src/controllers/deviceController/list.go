@@ -16,7 +16,7 @@ func List(c *fiber.Ctx) error {
 	watchLabel := template.HTML(constants.WatchColumnLabel)
 	typeLabel := template.HTML(constants.TypeColumnLabel)
 
-	columns := map[string]tplutil.SortableColumnConfig{
+	columns := map[string]tplutil.ColumnConfig{
 		"name":   {Label: "Name", DefaultSortDirection: "asc"},
 		"ip":     {Label: "IP Address", DefaultSortDirection: "asc"},
 		"vendor": {Label: "Vendor", DefaultSortDirection: "asc"},
@@ -28,6 +28,7 @@ func List(c *fiber.Ctx) error {
 
 	currentSortColumn := c.Query("sc", "seen")
 	currentSortDirection := c.Query("sd", "desc")
+	currentFilter := c.Query("f", "")
 
 	if !slices.Contains([]string{"asc", "desc"}, currentSortDirection) {
 		return c.SendStatus(400)
@@ -38,8 +39,10 @@ func List(c *fiber.Ctx) error {
 	}
 
 	return c.Render("devices/list", fiber.Map{
-		"devices": deviceR.GetListView(currentSortColumn, currentSortDirection),
-		"columns": tplutil.AddSortMetadata(currentSortColumn, currentSortDirection, columns),
-		"globals": globals.Get(c),
+		"currentFilter": currentFilter,
+		"devices":       deviceR.GetListView(currentSortColumn, currentSortDirection, currentFilter),
+		"counts":        deviceR.GetCounts(),
+		"columns":       tplutil.AddMetadata(currentSortColumn, currentSortDirection, currentFilter, columns),
+		"globals":       globals.Get(c),
 	})
 }

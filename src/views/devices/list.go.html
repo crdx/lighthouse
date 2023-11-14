@@ -1,7 +1,26 @@
 <div class="section">
     <div class="container is-max-widescreen">
-        <div class="box">
-            <h1 class="title is-size-4">Devices</h1>
+        <div class="box" x-data="filter">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title is-size-4">Devices</h1>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="select">
+                            <select @change="filter" x-model.fill="filterSelection">
+                                <option value=""{{ if eq .currentFilter "" }} selected{{ end }}>All ({{ .counts.All }})</option>
+                                <option value="online"{{ if eq .currentFilter "online" }} selected{{ end }}>Online ({{ .counts.Online }})</option>
+                                <option value="offline"{{ if eq .currentFilter "offline" }} selected{{ end }}>Offline ({{ .counts.Offline }})</option>
+                                <option value="watching"{{ if eq .currentFilter "watching" }} selected{{ end }}>Watching ({{ .counts.Watching }})</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <table class="table is-fullwidth">
                 <thead>

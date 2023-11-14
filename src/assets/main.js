@@ -148,6 +148,24 @@ document.addEventListener('alpine:init', function() {
             },
         }
     })
+
+    Alpine.data('filter', function() {
+        return {
+            filterSelection: null,
+
+            filter() {
+                const qs = new URLSearchParams(document.location.search)
+
+                if (this.filterSelection) {
+                    qs.set('f', this.filterSelection)
+                } else {
+                    qs.delete('f')
+                }
+
+                document.location.search = qs.toString()
+            },
+        }
+    })
 })
 
 function uuid() {

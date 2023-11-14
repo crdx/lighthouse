@@ -1,11 +1,11 @@
 {{/*
-    Render a column header, along with sorters.
+    Render a column header, along with sorters and the current filter (if any).
 
     Context:
-        .    tpl.SortableColumnState
+        .    tpl.ColumnState
 */}}
 
-<a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}">
+<a class="has-text-black" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}{{ if .CurrentFilter }}&f={{ .CurrentFilter }}{{ end }}">
     {{ .Label }}
     {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
         <span class="icon">
