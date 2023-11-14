@@ -11,15 +11,15 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
-	"crdx.org/lighthouse/util/stringutil"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )
 
 type CreateForm struct {
-	Username string `form:"username" validate:"required" transform:"trim"`
-	Password string `form:"password" validate:"required,min=4" transform:"trim"`
-	Role     string `form:"role" validate:"required,role"`
+	Username        string `form:"username" validate:"required" transform:"trim"`
+	Password        string `form:"password" validate:"required,min=4" transform:"trim"`
+	ConfirmPassword string `form:"confirm_password" validate:"required" transform:"trim"`
+	Role            string `form:"role" validate:"required,role"`
 }
 
 func ViewCreate(c *fiber.Ctx) error {
@@ -45,6 +45,7 @@ func Create(c *fiber.Ctx) error {
 			}
 			return nil
 		},
+		"ConfirmPassword": validate.ConfirmPassword(form.Password),
 	}
 
 	if fields, err := validate.Struct(form, validatorMap); err != nil {
@@ -63,8 +64,7 @@ func Create(c *fiber.Ctx) error {
 
 	values := reflectutil.StructToMap(form, "form")
 
-	values["password_hash"] = stringutil.Hash(form.Password)
-	delete(values, "password")
+	transform.PasswordFields(values)
 
 	user.Update(values)
 

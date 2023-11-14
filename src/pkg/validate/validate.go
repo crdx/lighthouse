@@ -9,6 +9,7 @@ import (
 
 	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/util/reflectutil"
+	"crdx.org/lighthouse/util/stringutil"
 	enLocale "github.com/go-playground/locales/en"
 	universalTranslator "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
@@ -194,4 +195,25 @@ func fixErrorMessages(messages validator.ValidationErrorsTranslations) validator
 	}
 
 	return messages
+}
+
+// ConfirmPassword returns a validator that ensures the two passwords match.
+func ConfirmPassword(password string) func(string) error {
+	return func(confirmPassword string) error {
+		if password != confirmPassword {
+			return errors.New("passwords must match")
+		}
+		return nil
+	}
+}
+
+// CurrentPassword returns a validator that ensures the value is valid when verified against the
+// password hash.
+func CurrentPassword(hash string) func(string) error {
+	return func(password string) error {
+		if !stringutil.VerifyHashAndPassword(hash, password) {
+			return errors.New("must be your current password")
+		}
+		return nil
+	}
 }

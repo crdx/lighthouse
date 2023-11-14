@@ -24,8 +24,9 @@ func TestChangePassword(t *testing.T) {
 	password := uuid.NewString()
 
 	res := session.PostForm("/profile", map[string]string{
-		"current_password": "anon",
-		"new_password":     password,
+		"current_password":     "anon",
+		"new_password":         password,
+		"confirm_new_password": password,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -47,10 +48,24 @@ func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
 	password := uuid.NewString()
 
 	res := session.PostForm("/profile", map[string]string{
-		"current_password": "wrong",
-		"new_password":     password,
+		"current_password":     "wrong",
+		"new_password":         password,
+		"confirm_new_password": password,
 	})
 
 	assert.Equal(t, 200, res.StatusCode)
 	assert.Contains(t, res.Body, "must be your current password")
+}
+
+func TestCannotChangePasswordWithoutMatchingPasswords(t *testing.T) {
+	session := helpers.Init(constants.RoleAdmin)
+
+	res := session.PostForm("/profile", map[string]string{
+		"current_password":     "root",
+		"new_password":         "hunter2",
+		"confirm_new_password": "hunter3",
+	})
+
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, "passwords must match")
 }

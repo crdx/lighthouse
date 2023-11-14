@@ -10,14 +10,14 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
 	"crdx.org/lighthouse/util/reflectutil"
-	"crdx.org/lighthouse/util/stringutil"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )
 
 type EditForm struct {
-	Password string `form:"password" validate:"omitempty,min=4" transform:"trim"`
-	Role     string `form:"role" validate:"required,role"`
+	Password        string `form:"password" validate:"omitempty,min=4" transform:"trim"`
+	ConfirmPassword string `form:"confirm_password" transform:"trim"`
+	Role            string `form:"role" validate:"required,role"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {
@@ -46,7 +46,11 @@ func Edit(c *fiber.Ctx) error {
 
 	transform.Struct(form)
 
-	if fields, err := validate.Struct(form); err != nil {
+	validatorMap := validate.ValidatorMap{
+		"ConfirmPassword": validate.ConfirmPassword(form.Password),
+	}
+
+	if fields, err := validate.Struct(form, validatorMap); err != nil {
 		flash.Failure(c, "Unable to save user")
 
 		return c.Render("admin/index", fiber.Map{
@@ -59,14 +63,9 @@ func Edit(c *fiber.Ctx) error {
 		})
 	}
 
-	password := form.Password
-
 	values := reflectutil.StructToMap(form, "form")
 
-	if password != "" {
-		values["password_hash"] = stringutil.Hash(password)
-	}
-	delete(values, "password")
+	transform.PasswordFields(values)
 
 	// Admins can't demote themselves.
 	if globals.IsCurrentUser(c, user) {

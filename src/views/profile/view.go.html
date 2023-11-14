@@ -51,6 +51,26 @@
                                        value="{{ if .err }}{{ .fields.NewPassword.Value }}{{ end }}">
                             </div>
                             {{ if .fields.NewPassword.Error }}<p class="help is-danger">{{ .fields.NewPassword.Error }}</p>{{ end }}
+                            <p class="help">{{ template "p/help/password" }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">Confirm New Password</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       :id="id"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       name="{{ .fields.ConfirmNewPassword.Name }}"
+                                       value="{{ if .err }}{{ .fields.ConfirmNewPassword.Value }}{{ end }}">
+                            </div>
+                            {{ if .fields.ConfirmNewPassword.Error }}<p class="help is-danger">{{ .fields.ConfirmNewPassword.Error }}</p>{{ end }}
                         </div>
                     </div>
                 </div>

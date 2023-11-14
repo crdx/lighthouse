@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"crdx.org/lighthouse/util/reflectutil"
+	"crdx.org/lighthouse/util/stringutil"
 )
 
 // Struct transforms a struct's contents according to the rules set in the "transform" tag.
@@ -24,4 +25,13 @@ func Struct[T any](s T) {
 			}
 		}
 	}
+}
+
+func PasswordFields(values map[string]any) {
+	if password := values["password"].(string); password != "" {
+		values["password_hash"] = stringutil.Hash(password)
+	}
+
+	delete(values, "password")
+	delete(values, "confirm_password")
 }

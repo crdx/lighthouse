@@ -1,8 +1,6 @@
 package profileController
 
 import (
-	"errors"
-
 	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
@@ -14,8 +12,9 @@ import (
 )
 
 type EditForm struct {
-	CurrentPassword string `form:"current_password" validate:"required" transform:"trim"`
-	NewPassword     string `form:"new_password" validate:"required,min=4" transform:"trim"`
+	CurrentPassword    string `form:"current_password" validate:"required" transform:"trim"`
+	NewPassword        string `form:"new_password" validate:"required,min=4" transform:"trim"`
+	ConfirmNewPassword string `form:"confirm_new_password" validate:"required" transform:"trim"`
 }
 
 func Edit(c *fiber.Ctx) error {
@@ -26,12 +25,8 @@ func Edit(c *fiber.Ctx) error {
 	user := globals.Get(c).User
 
 	validatorMap := validate.ValidatorMap{
-		"CurrentPassword": func(value string) error {
-			if !stringutil.VerifyHashAndPassword(user.PasswordHash, value) {
-				return errors.New("must be your current password")
-			}
-			return nil
-		},
+		"CurrentPassword":    validate.CurrentPassword(user.PasswordHash),
+		"ConfirmNewPassword": validate.ConfirmPassword(form.NewPassword),
 	}
 
 	if fields, err := validate.Struct(form, validatorMap); err != nil {

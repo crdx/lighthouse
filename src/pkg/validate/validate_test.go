@@ -329,3 +329,59 @@ func TestRoleValidator(t *testing.T) {
 		})
 	}
 }
+
+func TestConfirmPassword(t *testing.T) {
+	testCases := []struct {
+		password        string
+		confirmPassword string
+		expectError     bool
+	}{
+		{"hunter2", "hunter2", false},
+		{"hunter2", "Hunter2", true},
+		{"foo123", "foo123", false},
+		{"foo123", "foo1234", true},
+		{"", "", false},
+		{"password", "", true},
+		{"", "password", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%s_%s", testCase.password, testCase.confirmPassword), func(t *testing.T) {
+			err := validate.ConfirmPassword(testCase.password)(testCase.confirmPassword)
+
+			if testCase.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestCurrentPassword(t *testing.T) {
+	testCases := []struct {
+		hash        string
+		password    string
+		expectError bool
+	}{
+		{`$2a$10$zqWx9ciqybX6FAARj0EDQOSn70FJ6RN.aHdAUNQFzucWnjXI3bnE6`, "password123", false},
+		{`$2a$10$zqWx9ciqybX6FAARj0EDQOSn70FJ6RN.aHdAUNQFzucWnjXI3bnE6`, "Password123", true},
+		{`$2a$10$2oaf1XqVTLS6iTFKPzZyWOA.ysfyUqptIIv18r8cP/AAIGivNo4su`, "abc123", false},
+		{`$2a$10$2oaf1XqVTLS6iTFKPzZyWOA.ysfyUqptIIv18r8cP/AAIGivNo4su`, "abc1234", true},
+		{"", "", true},
+		{"foo", "", true},
+		{"", "password", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(fmt.Sprintf("%s_%s", testCase.hash, testCase.password), func(t *testing.T) {
+			err := validate.CurrentPassword(testCase.hash)(testCase.password)
+
+			if testCase.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}

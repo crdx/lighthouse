@@ -58,15 +58,28 @@ func TestEditWithErrors(t *testing.T) {
 	assert.Contains(t, res.Body, "must be at least 4 characters in length")
 }
 
+func TestCannotEditWithoutMatchingPasswords(t *testing.T) {
+	session := helpers.Init(constants.RoleAdmin)
+
+	res := session.PostForm("/admin/users/1/edit", map[string]string{
+		"password":         "hunter2",
+		"confirm_password": "hunter3",
+	})
+
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, "passwords must match")
+}
+
 func TestCreate(t *testing.T) {
 	session := helpers.Init(constants.RoleAdmin)
 
 	password := uuid.NewString()
 
 	res := session.PostForm("/admin/users/create", map[string]string{
-		"username": "joe",
-		"password": password,
-		"role":     "1",
+		"username":         "joe",
+		"password":         password,
+		"confirm_password": password,
+		"role":             "1",
 	})
 
 	assert.Equal(t, 302, res.StatusCode)
@@ -112,14 +125,28 @@ func TestCannotCreateWithInvalidRole(t *testing.T) {
 	assert.Contains(t, res.Body, "must be a valid role")
 }
 
+func TestCannotCreateWithoutMatchingPasswords(t *testing.T) {
+	session := helpers.Init(constants.RoleAdmin)
+
+	res := session.PostForm("/admin/users/create", map[string]string{
+		"role":             "1",
+		"password":         "hunter2",
+		"confirm_password": "hunter3",
+	})
+
+	assert.Equal(t, 200, res.StatusCode)
+	assert.Contains(t, res.Body, "passwords must match")
+}
+
 func TestChangePassword(t *testing.T) {
 	session := helpers.Init(constants.RoleAdmin)
 
 	password := uuid.NewString()
 
 	res := session.PostForm("/admin/users/1/edit", map[string]string{
-		"username": "root",
-		"password": password,
+		"username":         "root",
+		"password":         password,
+		"confirm_password": password,
 	})
 
 	assert.Equal(t, 302, res.StatusCode)

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/pkg/transform"
+	"crdx.org/lighthouse/util/stringutil"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,4 +33,19 @@ func TestStructTrim(t *testing.T) {
 			assert.Equal(t, testCase.expected, testCase.input)
 		})
 	}
+}
+
+func TestPasswordFields(t *testing.T) {
+	values := map[string]any{
+		"password":         "hunter2",
+		"confirm_password": "hunter2",
+		"other_field":      "value",
+	}
+
+	transform.PasswordFields(values)
+
+	assert.True(t, stringutil.VerifyHashAndPassword(values["password_hash"].(string), "hunter2"))
+	assert.Equal(t, values["password"], nil)
+	assert.Equal(t, values["confirm_password"], nil)
+	assert.Equal(t, values["other_field"], "value")
 }
