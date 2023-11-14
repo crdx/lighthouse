@@ -46,6 +46,11 @@
                     </a>
                 {{ end }}
 
+                <a href="/profile" class="navbar-item" title="Profile">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span class="is-hidden-desktop">profile</span>
+                </a>
+
                 {{ if not disableAuth }}
                     <a class="navbar-item" x-data="form" @click="submitForm" title="Log out">
                         <form class="is-hidden"

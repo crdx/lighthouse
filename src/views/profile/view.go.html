@@ -1,0 +1,70 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            <h1 class="title is-size-4">Profile</h1>
+
+            <div class="content">
+                <p>Hello, <b>{{ .globals.User.Username }}</b>.
+                {{ if .globals.User.IsAdmin }}
+                    Your role is <b>admin</b>, which means you have full access.
+                {{ else if .globals.User.IsEditor }}
+                    Your role is <b>editor</b>, which means you can manage devices.
+                {{ else if .globals.User.IsViewer }}
+                    Your role is <b>viewer</b>, which means you have a read-only view.
+                {{ end }}
+                </p>
+            </div>
+
+            <h2 class="subtitle">Change password</h2>
+
+            <form method="post">
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">Current password</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       :id="id"
+                                       type="password"
+                                       name="{{ .fields.CurrentPassword.Name }}"
+                                       value="{{ if .err }}{{ .fields.CurrentPassword.Value }}{{ end }}">
+                            </div>
+                            {{ if .fields.CurrentPassword.Error }}<p class="help is-danger">{{ .fields.CurrentPassword.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">New password</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                             <div class="control">
+                                <input class="input"
+                                       :id="id"
+                                       autocomplete="new-password"
+                                       type="password"
+                                       name="{{ .fields.NewPassword.Name }}"
+                                       value="{{ if .err }}{{ .fields.NewPassword.Value }}{{ end }}">
+                            </div>
+                            {{ if .fields.NewPassword.Error }}<p class="help is-danger">{{ .fields.NewPassword.Error }}</p>{{ end }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal is-grouped">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="control">
+                            <button type="submit" class="button is-link">Change</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
