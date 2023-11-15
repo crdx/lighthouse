@@ -45,7 +45,7 @@ func TestPasswordFields(t *testing.T) {
 	transform.PasswordFields(values)
 
 	assert.True(t, stringutil.VerifyHashAndPassword(values["password_hash"].(string), "hunter2"))
-	assert.Equal(t, values["password"], nil)
-	assert.Equal(t, values["confirm_password"], nil)
-	assert.Equal(t, values["other_field"], "value")
+	assert.Equal(t, nil, values["password"])
+	assert.Equal(t, nil, values["confirm_password"])
+	assert.Equal(t, "value", values["other_field"])
 }

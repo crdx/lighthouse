@@ -350,9 +350,9 @@ func TestConfirmPassword(t *testing.T) {
 			err := validate.ConfirmPassword(testCase.password)(testCase.confirmPassword)
 
 			if testCase.expectError {
-				assert.Error(t, err)
+				require.Error(t, err)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
 		})
 	}
@@ -378,9 +378,9 @@ func TestCurrentPassword(t *testing.T) {
 			err := validate.CurrentPassword(testCase.hash)(testCase.password)
 
 			if testCase.expectError {
-				assert.Error(t, err)
+				require.Error(t, err)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
 		})
 	}
