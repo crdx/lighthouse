@@ -44,8 +44,6 @@ code {
     color: #4a4a4a !important;
 }
 
-/* —————————————————————————————————————————————————————————————————————————————————————————————— */
-
 .toggle {
     height: 0;
     width: 0;
@@ -125,4 +123,21 @@ fieldset[disabled] .toggle + label:active:after {
 .dropdown-icon-search .dropdown-content a:focus {
     outline: 1px solid #485fc7;
     border-radius: 5px;
+}
+
+.button.is-ghost,
+.button.is-ghost[disabled] {
+    border: 0;
+}
+
+.button.is-ghost[disabled]:hover {
+    text-decoration: none;
+}
+
+.button.is-ghost:focus:not(:active) {
+    box-shadow: none;
+}
+
+.pager .button:hover {
+    text-decoration: none;
 }

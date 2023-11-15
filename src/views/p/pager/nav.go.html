@@ -37,14 +37,14 @@
     </div>
 </div>
 
-<div class="columns is-hidden-mobile is-vcentered">
+<div class="columns is-hidden-mobile is-vcentered pager">
     <div class="column">
          <div class="buttons has-addons is-left">
-            <a class="button is-small" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-ghost is-small has-text-dark" {{ if .FirstPageURL }} href="{{ .FirstPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left-to-line"></i></span>
                 <span>First</span>
             </a>
-            <a class="button is-small" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
+            <a class="button is-ghost is-small has-text-dark" {{ if .PreviousPageURL }}href="{{ .PreviousPageURL }}"{{ else }}disabled{{ end }}>
                 <span class="icon is-small"><i class="fa-duotone fa-arrow-left"></i></span>
                 <span>Previous</span>
             </a>
@@ -57,13 +57,13 @@
 
     <div class="column">
         <div class="buttons has-addons is-right">
-            <a class="button is-small" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
-                <span class="icon is-small"><i class="fa-duotone fa-arrow-right"></i></span>
+            <a class="button is-ghost is-small has-text-dark" {{ if .NextPageURL }}href="{{ .NextPageURL }}"{{ else }}disabled{{ end }}>
                 <span>Next</span>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-right"></i></span>
             </a>
-            <a class="button is-small" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
-                <span class="icon is-small"><i class="fa-duotone fa-arrow-right-to-line"></i></span>
+            <a class="button is-ghost is-small has-text-dark" {{ if .LastPageURL }}href="{{ .LastPageURL }}"{{ else }}disabled{{ end }}>
                 <span>Last</span>
+                <span class="icon is-small"><i class="fa-duotone fa-arrow-right-to-line"></i></span>
             </a>
         </div>
     </div>
