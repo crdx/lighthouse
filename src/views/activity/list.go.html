@@ -42,8 +42,8 @@
                                     {{ end }}
                                 </td>
                                 <td>{{ template "devices/p/state" .State }}</td>
-                                <td>{{ template "p/time/rel" .CreatedAt }}</td>
-                                <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
+                                <td class="nowrap">{{ template "p/time/rel" .CreatedAt }}</td>
+                                <td class="is-hidden-mobile nowrap">{{ formatDateTimeReadable .CreatedAt }}</td>
                             </tr>
                         {{ end }}
                     </tbody>

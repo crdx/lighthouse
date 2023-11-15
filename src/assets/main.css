@@ -141,3 +141,7 @@ fieldset[disabled] .toggle + label:active:after {
 .pager .button:hover {
     text-decoration: none;
 }
+
+.nowrap {
+    white-space: nowrap;
+}
