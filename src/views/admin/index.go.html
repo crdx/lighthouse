@@ -14,15 +14,6 @@
                     </a>
                 </li>
 
-                <li{{ if eq .tab "settings" }} class="is-active"{{ end }}>
-                    <a href="/admin/settings">
-                        <span class="icon is-small">
-                            <i class="fa-duotone fa-cog" aria-hidden="true"></i>
-                        </span>
-                        <span>Settings</span>
-                    </a>
-                </li>
-
                 <li{{ if eq .tab "audit" }} class="is-active"{{ end }}>
                     <a href="/admin/audit">
                         <span class="icon is-small">
@@ -31,17 +22,22 @@
                         <span>Audit</span>
                     </a>
                 </li>
+
+                <li{{ if eq .tab "settings" }} class="is-active"{{ end }}>
+                    <a href="/admin/settings">
+                        <span class="icon is-small">
+                            <i class="fa-duotone fa-cog" aria-hidden="true"></i>
+                        </span>
+                        <span>Settings</span>
+                    </a>
+                </li>
               </ul>
             </div>
 
             <div>
-                {{ if eq .tab "settings" }}
-                    {{ template "admin/p/settings" . }}
-                {{ else if eq .tab "users" }}
-                    {{ template "admin/p/users" . }}
-                {{ else if eq .tab "audit" }}
-                    {{ template "admin/p/audit" . }}
-                {{ end }}
+                {{ if eq .tab "users" }}{{ template "admin/p/users" . }}{{ end }}
+                {{ if eq .tab "audit" }}{{ template "admin/p/audit" . }}{{ end }}
+                {{ if eq .tab "settings" }}{{ template "admin/p/settings" . }}{{ end }}
             </div>
         </div>
     </div>
