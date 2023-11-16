@@ -48,23 +48,27 @@ var migrations = []*db.Migration{
 		ID:   "ConvertDurations",
 		Type: db.MigrationTypePost,
 		Run: func(db *gorm.DB) error {
-			return errors.Join(
-				db.Exec(`UPDATE devices SET grace_period = CONCAT(grace_period, ' mins')`).Error,
-				db.Exec(`UPDATE device_state_logs SET grace_period = CONCAT(grace_period, ' mins')`).Error,
-				db.Exec(`UPDATE device_state_notifications SET grace_period = CONCAT(grace_period, ' mins')`).Error,
-				db.Exec(`UPDATE settings SET value = CONCAT(value, ' min') where name = 'scan_interval'`).Error,
-			)
+			return db.Transaction(func(db *gorm.DB) error {
+				return errors.Join(
+					db.Exec(`UPDATE devices SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+					db.Exec(`UPDATE device_state_logs SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+					db.Exec(`UPDATE device_state_notifications SET grace_period = CONCAT(grace_period, ' mins')`).Error,
+					db.Exec(`UPDATE settings SET value = CONCAT(value, ' min') where name = 'scan_interval'`).Error,
+				)
+			})
 		},
 	},
 	{
 		ID:   "MigrateToSimpleRoles",
 		Type: db.MigrationTypePost,
 		Run: func(db *gorm.DB) error {
-			return errors.Join(
-				db.Exec(`UPDATE users SET role = 3 where admin = 1`).Error,
-				db.Exec(`UPDATE users SET role = 1 where admin = 0`).Error,
-				db.Exec(`ALTER TABLE users DROP COLUMN admin`).Error,
-			)
+			return db.Transaction(func(db *gorm.DB) error {
+				return errors.Join(
+					db.Exec(`UPDATE users SET role = 3 where admin = 1`).Error,
+					db.Exec(`UPDATE users SET role = 1 where admin = 0`).Error,
+					db.Exec(`ALTER TABLE users DROP COLUMN admin`).Error,
+				)
+			})
 		},
 	},
 }
