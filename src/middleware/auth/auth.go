@@ -44,7 +44,7 @@ func logIn(c *fiber.Ctx, username string, password string) error {
 		return err(c)
 	}
 
-	user.Update("last_login", time.Now())
+	user.Update("last_login_at", time.Now())
 	auditLogR.Add(c, "User %s logged in", user.Username)
 
 	session.Set(c, "user_id", user.ID)

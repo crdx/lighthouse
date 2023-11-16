@@ -18,8 +18,8 @@
             <td>{{ .Username }}</td>
             <td>{{ template "p/name/role" .Role }}</td>
             <td>
-                {{ if .LastLogin.Valid }}
-                    {{ template "p/time/rel" .LastLogin }}
+                {{ if .LastLoginAt.Valid }}
+                    {{ template "p/time/rel" .LastLoginAt }}
                 {{ else }}
                     Never
                 {{ end }}
