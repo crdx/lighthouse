@@ -53,6 +53,10 @@ func init() {
 		return slices.Contains([]string{"1", "2", "3"}, value)
 	})
 
+	Register("icon", "must be a valid icon", func(value string) bool {
+		return regexp.MustCompile("^(duotone|solid|brands):.+$").Match([]byte(value))
+	})
+
 	Register("duration", "must be a valid duration", duration.Valid)
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {

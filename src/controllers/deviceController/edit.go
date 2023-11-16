@@ -22,7 +22,7 @@ type OriginEditForm struct {
 
 type EditForm struct {
 	Name        string `form:"name" validate:"max=100" transform:"trim"`
-	Icon        string `form:"icon" validate:"max=100" transform:"trim"`
+	Icon        string `form:"icon" validate:"omitempty,icon,max=100" transform:"trim"`
 	Notes       string `form:"notes" validate:"max=5000" transform:"trim"`
 	GracePeriod string `form:"grace_period" validate:"required,duration,dmin=1 min,dmax=60 mins" transform:"trim"`
 	Watch       bool   `form:"watch"`
