@@ -11,8 +11,8 @@
         {{ range .log }}
             <tr>
                 <td>
-                    {{ if ne .UserID 0 }}
-                        {{ (index $.users .UserID).Username }}
+                    {{ if .UserID.Valid }}
+                        {{ (index $.users .UserID.Value).Username }}
                     {{ else }}
                         <em>None</em>
                     {{ end }}

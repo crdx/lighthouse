@@ -6,13 +6,15 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/globals"
+	"crdx.org/lighthouse/util/sqlutil"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Add(c *fiber.Ctx, message string, args ...any) {
-	var userID uint
+	var userID sqlutil.NullUint
+
 	if user := globals.CurrentUser(c); user != nil {
-		userID = user.ID
+		_ = userID.Scan(user.ID)
 	}
 
 	db.Save(&m.AuditLog{

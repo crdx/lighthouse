@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/util/sqlutil"
 )
 
 func createDevice(id uint, name string, lastSeen time.Time, origin bool) *m.Device {
@@ -74,7 +75,7 @@ func Run() error {
 	db.Save(&m.User{ID: 2, Username: "ed", PasswordHash: edHash, Role: constants.RoleEditor})
 	db.Save(&m.User{ID: 3, Username: "anon", PasswordHash: anonHash, Role: constants.RoleViewer})
 
-	db.Save(&m.AuditLog{ID: 1, UserID: 1, Message: "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041"})
+	db.Save(&m.AuditLog{ID: 1, UserID: sqlutil.NullUint{Uint: 1, Valid: true}, Message: "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041"})
 
 	return nil
 }
