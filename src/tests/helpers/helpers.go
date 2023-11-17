@@ -11,7 +11,7 @@ import (
 	"github.com/samber/lo"
 )
 
-// Init initialises the database and r etuns a new session with the requested auth state.
+// Init initialises the database and returns a new session with the requested auth state.
 func Init(role uint, handlers ...func(c *fiber.Ctx) error) *Session {
 	env.Init()
 
