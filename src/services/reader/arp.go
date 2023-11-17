@@ -36,14 +36,14 @@ func (self *Reader) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet) {
 	}
 
 	ipAddressStr := ipAddress.String()
-	macAddressStr := macAddress.String()
+	macAddressStr := strings.ToUpper(macAddress.String())
 
 	if self.macAddressCache.SeenWithinLast(macAddressStr, 10*time.Second) {
 		return
 	}
 
 	self.handleARP(
-		strings.ToUpper(macAddressStr),
+		macAddressStr,
 		ipAddressStr,
 		ipNet.IP.String(),
 	)
