@@ -19,12 +19,12 @@ func TestView(t *testing.T) {
 }
 
 func TestChangePassword(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	session := helpers.Init(constants.RoleEditor)
 
 	password := uuid.NewString()
 
 	res := session.PostForm("/profile", map[string]string{
-		"current_password":     "anon",
+		"current_password":     "ed",
 		"new_password":         password,
 		"confirm_new_password": password,
 	})
@@ -34,7 +34,7 @@ func TestChangePassword(t *testing.T) {
 	session = helpers.NewSession(constants.RoleNone)
 
 	res = session.PostForm("/", map[string]string{
-		"username": "anon",
+		"username": "ed",
 		"password": password,
 		"id":       auth.FormID,
 	})
@@ -43,7 +43,7 @@ func TestChangePassword(t *testing.T) {
 }
 
 func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	session := helpers.Init(constants.RoleEditor)
 
 	password := uuid.NewString()
 
