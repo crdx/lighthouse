@@ -6,7 +6,7 @@ import (
 )
 
 // NewParseParam returns middleware that looks for a route parameter corresponding to an ID,
-// instantiates the model T with it, and assigns it to c.Locals.
+// instantiates the model T with it, and assigns it to c.Locals(name).
 func NewParseParam[T any](param string, name string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		instance, found := db.First[T](c.Params(param))
