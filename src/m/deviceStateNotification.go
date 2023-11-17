@@ -15,9 +15,9 @@ type DeviceStateNotification struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	DeviceID    uint   `gorm:"not null;index"`
-	State       string `gorm:"size:32;not null"`
+	State       string `gorm:"size:20;not null"`
 	GracePeriod string `gorm:"not null"`
-	Processed   bool   `gorm:"not null;default:false"`
+	Processed   bool   `gorm:"not null"`
 }
 
 func (self *DeviceStateNotification) Update(values ...any) {

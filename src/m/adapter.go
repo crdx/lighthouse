@@ -2,6 +2,7 @@ package m
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
 	"crdx.org/db"
@@ -17,9 +18,9 @@ type Adapter struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	DeviceID   uint      `gorm:"not null"`
-	Name       string    `gorm:"size:255;not null"`
+	Name       string    `gorm:"size:200;not null"`
 	MACAddress string    `gorm:"size:17;not null;index"`
-	Vendor     string    `gorm:"size:255;not null"`
+	Vendor     string    `gorm:"size:200;not null"`
 	IPAddress  string    `gorm:"size:15;not null"`
 	LastSeenAt time.Time `gorm:"not null"`
 }
@@ -38,11 +39,22 @@ func (self *Adapter) Fresh() *Adapter {
 	return lo.Must(db.First[Adapter](self.ID))
 }
 
-// Device returns the Device for this Adapter, and true if it has one associated.
-func (self *Adapter) Device() (*Device, bool) {
-	return db.First[Device](self.DeviceID)
+// Device returns the Device for this Adapter
+func (self *Adapter) Device() *Device {
+	device, _ := db.First[Device](self.DeviceID)
+	return device
 }
 
 func (self *Adapter) AuditName() string {
-	return fmt.Sprintf("%s (ID: %d) of device %s", self.Name, self.ID, lo.Must(self.Device()).AuditName())
+	return fmt.Sprintf("%s (ID: %d) of device %s", self.Name, self.ID, self.Device().AuditName())
+}
+
+func (self *Adapter) LogAttr() slog.Attr {
+	return slog.Group(
+		"adapter",
+		"id", self.ID,
+		"mac", self.MACAddress,
+		"ip", self.IPAddress,
+		"vendor", self.Vendor,
+	)
 }

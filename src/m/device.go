@@ -3,6 +3,7 @@ package m
 import (
 	"database/sql"
 	"fmt"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -22,18 +23,18 @@ type Device struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	Origin              bool         `gorm:"not null;default:false"`
-	Name                string       `gorm:"size:255;not null"`
-	Hostname            string       `gorm:"size:255;not null"`
+	Origin              bool         `gorm:"not null"`
+	Name                string       `gorm:"size:200;not null"`
+	Hostname            string       `gorm:"size:200;not null"`
 	HostnameAnnouncedAt sql.NullTime `gorm:""`
-	State               string       `gorm:"size:32;not null"`
+	State               string       `gorm:"size:20;not null"`
 	StateUpdatedAt      time.Time    `gorm:"not null"`
-	Icon                string       `gorm:"size:255;not null"`
+	Icon                string       `gorm:"size:100;not null"`
 	Notes               string       `gorm:"not null"`
 	LastSeenAt          time.Time    `gorm:"not null"`
-	Watch               bool         `gorm:"not null;default:false"`
-	Limit               string       `gorm:"not null"`
-	GracePeriod         string       `gorm:"not null;default:5 mins"`
+	Watch               bool         `gorm:"not null"`
+	Limit               string       `gorm:"size:200;not null"`
+	GracePeriod         string       `gorm:"not null"`
 }
 
 func (self *Device) Update(values ...any) {
@@ -131,4 +132,13 @@ func (self *Device) GracePeriodDuration() time.Duration {
 
 func (self *Device) AuditName() string {
 	return fmt.Sprintf("%s (ID: %d)", self.DisplayName(), self.ID)
+}
+
+func (self *Device) LogAttr() slog.Attr {
+	return slog.Group(
+		"device",
+		"id", self.ID,
+		"name", self.Name,
+		"hostname", self.Hostname,
+	)
 }

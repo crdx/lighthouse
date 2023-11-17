@@ -15,7 +15,7 @@ type DeviceStateLog struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	DeviceID    uint   `gorm:"not null"`
-	State       string `gorm:"size:15;not null"`
+	State       string `gorm:"size:20;not null"`
 	GracePeriod string `gorm:"not null"`
 }
 

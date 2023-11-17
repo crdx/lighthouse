@@ -17,7 +17,7 @@ type DeviceLimitNotification struct {
 	DeviceID       uint      `gorm:"not null;index"`
 	StateUpdatedAt time.Time `gorm:"not null"`
 	Limit          string    `gorm:"not null"`
-	Processed      bool      `gorm:"not null;default:false"`
+	Processed      bool      `gorm:"not null"`
 }
 
 func (self *DeviceLimitNotification) Update(values ...any) {

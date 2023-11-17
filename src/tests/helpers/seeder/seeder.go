@@ -12,12 +12,13 @@ import (
 
 func createDevice(id uint, name string, lastSeen time.Time, origin bool) *m.Device {
 	return db.Save(&m.Device{
-		ID:         id,
-		Name:       name,
-		State:      deviceR.StateOnline,
-		Icon:       constants.DefaultDeviceIconClass,
-		LastSeenAt: lastSeen,
-		Origin:     origin,
+		ID:          id,
+		Name:        name,
+		State:       deviceR.StateOnline,
+		Icon:        constants.DefaultDeviceIconClass,
+		LastSeenAt:  lastSeen,
+		Origin:      origin,
+		GracePeriod: constants.DefaultGracePeriod,
 	})
 }
 
@@ -75,7 +76,12 @@ func Run() error {
 	db.Save(&m.User{ID: 2, Username: "ed", PasswordHash: edHash, Role: constants.RoleEditor})
 	db.Save(&m.User{ID: 3, Username: "anon", PasswordHash: anonHash, Role: constants.RoleViewer})
 
-	db.Save(&m.AuditLog{ID: 1, UserID: sqlutil.NullUint{Uint: 1, Valid: true}, Message: "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041"})
+	db.Save(&m.AuditLog{
+		ID:        1,
+		IPAddress: "127.0.0.1",
+		UserID:    sqlutil.NullUint{Uint: 1, Valid: true},
+		Message:   "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041",
+	})
 
 	return nil
 }

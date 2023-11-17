@@ -1,7 +1,6 @@
 package reader
 
 import (
-	"log/slog"
 	"net"
 	"strings"
 	"time"
@@ -9,7 +8,6 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/m/repo/adapterR"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/util/netutil"
@@ -52,34 +50,15 @@ func (self *Reader) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet) {
 }
 
 func (self *Reader) handleARP(macAddress string, ipAddress, originIPAddress string) {
-	adapter, adapterFound := adapterR.Upsert(macAddress, ipAddress)
-
-	log := self.log.With(slog.Group(
-		"adapter",
-		"id", adapter.ID,
-		"mac", adapter.MACAddress,
-		"ip", adapter.IPAddress,
-		"vendor", adapter.Vendor,
-	))
-
-	var device *m.Device
 	hostname, hostnameFromDHCP := self.hostnameCache[macAddress]
+	device, adapter, found := findOrCreate(macAddress, ipAddress)
 
-	// If an adapter was found, then we know it must have an attached device.
-	if adapterFound {
-		var found bool
-		if device, found = adapter.Device(); !found {
-			log.Warn("existing adapter found with no associated device")
-			return
+	if !found {
+		if vendor, vendorFound := netutil.GetVendor(adapter.MACAddress); vendorFound {
+			adapter.Update("vendor", vendor)
+		} else if !db.B[m.VendorLookup]("adapter_id = ?", adapter.ID).Exists() {
+			db.Create(&m.VendorLookup{AdapterID: adapter.ID})
 		}
-	} else {
-		device = db.Create(&m.Device{
-			State:          deviceR.StateOnline,
-			StateUpdatedAt: time.Now(),
-			Icon:           constants.DefaultDeviceIconClass,
-		})
-
-		adapter.Update("device_id", device.ID)
 
 		if hostname == "" {
 			if names, err := net.LookupAddr(ipAddress); err == nil && len(names) > 0 {
@@ -88,27 +67,30 @@ func (self *Reader) handleARP(macAddress string, ipAddress, originIPAddress stri
 		}
 	}
 
-	log = log.With(slog.Group("device", "id", device.ID))
-
 	device.Update("last_seen_at", time.Now())
+	adapter.Update("last_seen_at", time.Now())
 
 	if ipAddress == originIPAddress {
 		db.B[m.Device]().Update("origin", false)
 		device.Update("origin", true)
 	}
 
-	if device.Name == "" && hostname != "" {
-		device.Update("name", hostname)
-	}
-
 	if hostname != "" {
 		device.Update("hostname", hostname)
+
+		if device.Name == "" {
+			device.Update("name", hostname)
+		}
+
 		if hostnameFromDHCP {
 			device.Update("hostname_announced_at", time.Now())
 		}
 	}
 
-	if !adapterFound {
+	if !found {
+		device = device.Fresh()
+		adapter = adapter.Fresh()
+
 		db.Create(&m.DeviceStateLog{
 			DeviceID:    device.ID,
 			State:       deviceR.StateOnline,
@@ -125,6 +107,37 @@ func (self *Reader) handleARP(macAddress string, ipAddress, originIPAddress stri
 			device.Update("watch", true)
 		}
 
-		log.Info("new device has joined the network")
+		self.log.With(
+			device.LogAttr(),
+			adapter.LogAttr(),
+		).Info("new device has joined the network")
 	}
+}
+
+func findOrCreate(macAddress string, ipAddress string) (*m.Device, *m.Adapter, bool) {
+	adapter, found := db.B[m.Adapter]("mac_address = ?", macAddress).First()
+	var device *m.Device
+
+	if found {
+		device = adapter.Device()
+		if adapter.IPAddress != ipAddress {
+			adapter.Update("ip_address", ipAddress)
+		}
+	} else {
+		device = db.Create(&m.Device{
+			State:          deviceR.StateOnline,
+			StateUpdatedAt: time.Now(),
+			Icon:           constants.DefaultDeviceIconClass,
+			GracePeriod:    constants.DefaultGracePeriod,
+			LastSeenAt:     time.Now(),
+		})
+
+		adapter = db.Create(&m.Adapter{
+			DeviceID:   device.ID,
+			MACAddress: macAddress,
+			IPAddress:  ipAddress,
+		})
+	}
+
+	return device, adapter, found
 }

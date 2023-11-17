@@ -16,7 +16,7 @@ type AuditLog struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	UserID    sqlutil.NullUint `gorm:""`
-	IPAddress string           `gorm:"size:100;not null"`
+	IPAddress string           `gorm:"size:15;not null"`
 	Message   string           `gorm:"not null"`
 }
 

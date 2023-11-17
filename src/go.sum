@@ -1,5 +1,5 @@
-crdx.org/db v1.8.0 h1:HxQptsro+l0QjJNMs86PBxM2Ew3FzUkohMz+WlJ4AiA=
-crdx.org/db v1.8.0/go.mod h1:QNP4WN/pTdWuHaxoRDHx5l1jSjJi4MTLTH6AHa+kvng=
+crdx.org/db v1.10.0 h1:gMge3NEsizr8OJ3GnW/saF1Dxmt+SwPvUs+016DhKso=
+crdx.org/db v1.10.0/go.mod h1:QNP4WN/pTdWuHaxoRDHx5l1jSjJi4MTLTH6AHa+kvng=
 crdx.org/duckopt/v2 v2.0.1 h1:1Fon0xO1Le6jTumpoQWXHuG0il/th0ESQpVXNNL/bCs=
 crdx.org/duckopt/v2 v2.0.1/go.mod h1:vSD5bx/4+OweUIhBOMVZX0vfr6VOT8hWE3B4RR/4DP0=
 crdx.org/hereduck v1.0.3 h1:37t7wJpTFyZOl8nnYR/O2BdlLAcbl5G15tL1KQSCuxs=

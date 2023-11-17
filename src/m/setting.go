@@ -14,7 +14,7 @@ type Setting struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	Name  string `gorm:"size:500;not null"`
+	Name  string `gorm:"size:100;not null"`
 	Value string `gorm:"not null"`
 }
 

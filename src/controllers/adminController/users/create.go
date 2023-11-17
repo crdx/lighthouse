@@ -60,15 +60,12 @@ func Create(c *fiber.Ctx) error {
 		})
 	}
 
-	user := db.Create(&m.User{})
-
 	values := reflectutil.StructToMap(form, "form")
-
 	transform.PasswordFields(values)
 
-	user.Update(values)
+	user := db.CreateFromMap[m.User](values)
 
-	auditLogR.Add(c, "Created user %s", user.Fresh().AuditName())
+	auditLogR.Add(c, "Created user %s", user.AuditName())
 	flash.Success(c, "User created")
 	return c.Redirect("/admin/users")
 }

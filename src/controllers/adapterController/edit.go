@@ -21,7 +21,7 @@ type EditForm struct {
 
 func ViewEdit(c *fiber.Ctx) error {
 	adapter := c.Locals("adapter").(*m.Adapter)
-	device := lo.Must(adapter.Device())
+	device := adapter.Device()
 
 	return c.Render("adapters/edit", fiber.Map{
 		"adapter": adapter,
@@ -33,7 +33,7 @@ func ViewEdit(c *fiber.Ctx) error {
 
 func Edit(c *fiber.Ctx) error {
 	adapter := c.Locals("adapter").(*m.Adapter)
-	device := lo.Must(adapter.Device())
+	device := adapter.Device()
 
 	form := new(EditForm)
 	lo.Must0(c.BodyParser(form))
