@@ -26,9 +26,9 @@ func List(c *fiber.Ctx) error {
 		"type":   {Label: typeLabel, DefaultSortDirection: "asc", Minimal: true},
 	}
 
-	currentSortColumn := c.Query("sc", "seen")
-	currentSortDirection := c.Query("sd", "desc")
-	currentFilter := c.Query("f", "")
+	currentSortColumn := c.Query("sc", "ip")
+	currentSortDirection := c.Query("sd", "asc")
+	currentFilter := c.Query("f", "online")
 
 	if !slices.Contains([]string{"asc", "desc"}, currentSortDirection) {
 		return c.SendStatus(400)
