@@ -170,7 +170,7 @@ remake-autocap:
 [private]
 @redev: make
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
-    {{ BIN_PATH }}
+    {{ BIN_PATH }} --env .env
 
 [private]
 @generate:
