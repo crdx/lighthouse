@@ -10,8 +10,8 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/pkg/duration"
-	"crdx.org/lighthouse/util"
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/util"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 	"github.com/samber/lo"
 	"gorm.io/gorm"
 )

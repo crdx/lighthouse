@@ -9,7 +9,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateNotificationR"
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 	"github.com/samber/lo"
 )
 

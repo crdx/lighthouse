@@ -5,10 +5,10 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/constants"
-	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/tests/helpers/seeder"
-	"crdx.org/lighthouse/util/stringutil"
 )
 
 func seed() error {

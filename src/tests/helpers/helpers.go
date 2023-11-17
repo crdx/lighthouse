@@ -3,9 +3,9 @@ package helpers
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/conf"
-	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/util/mailutil"
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/util/mailutil"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"

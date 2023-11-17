@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"github.com/stretchr/testify/assert"
 )
 

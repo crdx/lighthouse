@@ -5,7 +5,7 @@ import (
 	"net"
 	"testing"
 
-	"crdx.org/lighthouse/util/netutil"
+	"crdx.org/lighthouse/pkg/util/netutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

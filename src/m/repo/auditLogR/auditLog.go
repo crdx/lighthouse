@@ -6,7 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/globals"
-	"crdx.org/lighthouse/util/sqlutil"
+	"crdx.org/lighthouse/pkg/util/sqlutil"
 	"github.com/gofiber/fiber/v2"
 )
 

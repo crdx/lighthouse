@@ -6,7 +6,7 @@ import (
 	"os"
 	"sync"
 
-	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/pkg/env"
 	"github.com/lmittmann/tint"
 	"github.com/samber/lo"
 	slogmulti "github.com/samber/slog-multi"

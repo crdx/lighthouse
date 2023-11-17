@@ -8,7 +8,7 @@ import (
 	"net/smtp"
 	"testing"
 
-	"crdx.org/lighthouse/env"
+	"crdx.org/lighthouse/pkg/env"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

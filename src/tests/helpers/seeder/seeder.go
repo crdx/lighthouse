@@ -7,7 +7,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
-	"crdx.org/lighthouse/util/sqlutil"
+	"crdx.org/lighthouse/pkg/util/sqlutil"
 )
 
 func createDevice(id uint, name string, lastSeen time.Time, origin bool) *m.Device {

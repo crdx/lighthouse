@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"github.com/samber/lo"
 )
 

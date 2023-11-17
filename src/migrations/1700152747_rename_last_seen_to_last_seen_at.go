@@ -3,7 +3,7 @@ package migrations
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/pkg/util"
 	"gorm.io/gorm"
 )
 

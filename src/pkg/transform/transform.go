@@ -3,8 +3,8 @@ package transform
 import (
 	"strings"
 
-	"crdx.org/lighthouse/util/reflectutil"
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/reflectutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 )
 
 // Struct transforms a struct's contents according to the rules set in the "transform" tag.

@@ -5,7 +5,7 @@ import (
 	"maps"
 	"math"
 
-	"crdx.org/lighthouse/util/webutil"
+	"crdx.org/lighthouse/pkg/util/webutil"
 )
 
 const Key = "p"

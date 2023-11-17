@@ -8,7 +8,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/globals"
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
 )

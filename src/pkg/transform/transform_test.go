@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"crdx.org/lighthouse/pkg/transform"
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/constants"
-	"crdx.org/lighthouse/env"
 	"crdx.org/lighthouse/middleware/auth"
 	"crdx.org/lighthouse/middleware/minify"
+	"crdx.org/lighthouse/pkg/env"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"

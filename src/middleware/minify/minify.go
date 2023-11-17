@@ -1,7 +1,7 @@
 package minify
 
 import (
-	"crdx.org/lighthouse/util/webutil"
+	"crdx.org/lighthouse/pkg/util/webutil"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"crdx.org/lighthouse/util/runtimeutil"
+	"crdx.org/lighthouse/pkg/util/runtimeutil"
 	"github.com/stretchr/testify/assert"
 )
 

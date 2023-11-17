@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 )

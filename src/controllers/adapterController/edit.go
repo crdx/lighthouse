@@ -8,8 +8,8 @@ import (
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
+	"crdx.org/lighthouse/pkg/util/reflectutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"crdx.org/lighthouse/util/reflectutil"
 	"github.com/gofiber/fiber/v2"
 	"github.com/samber/lo"
 )

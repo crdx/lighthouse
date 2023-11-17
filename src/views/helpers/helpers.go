@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/constants"
-	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/util/reflectutil"
-	"crdx.org/lighthouse/util/stringutil"
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/util/reflectutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 )
 
 func GetFuncMap() template.FuncMap {

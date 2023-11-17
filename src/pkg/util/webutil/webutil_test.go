@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"crdx.org/lighthouse/util/webutil"
+	"crdx.org/lighthouse/pkg/util/webutil"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

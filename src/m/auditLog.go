@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"crdx.org/db"
-	"crdx.org/lighthouse/util/sqlutil"
+	"crdx.org/lighthouse/pkg/util/sqlutil"
 	"gorm.io/gorm"
 )
 

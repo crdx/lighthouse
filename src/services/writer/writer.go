@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/m/repo/settingR"
+	"crdx.org/lighthouse/pkg/util/netutil"
 	"crdx.org/lighthouse/services"
-	"crdx.org/lighthouse/util/netutil"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"

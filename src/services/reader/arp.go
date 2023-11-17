@@ -10,7 +10,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/settingR"
-	"crdx.org/lighthouse/util/netutil"
+	"crdx.org/lighthouse/pkg/util/netutil"
 	"github.com/google/gopacket/layers"
 )
 

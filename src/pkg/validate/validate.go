@@ -8,8 +8,9 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/pkg/duration"
-	"crdx.org/lighthouse/util/reflectutil"
-	"crdx.org/lighthouse/util/stringutil"
+	"crdx.org/lighthouse/pkg/util/netutil"
+	"crdx.org/lighthouse/pkg/util/reflectutil"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	enLocale "github.com/go-playground/locales/en"
 	universalTranslator "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"

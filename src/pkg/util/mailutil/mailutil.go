@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"crdx.org/lighthouse/logger"
+	"crdx.org/lighthouse/pkg/logger"
 )
 
 type Func func(string, smtp.Auth, string, []string, []byte) error

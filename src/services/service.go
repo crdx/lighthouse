@@ -4,8 +4,8 @@ import (
 	"log/slog"
 	"time"
 
-	"crdx.org/lighthouse/logger"
-	"crdx.org/lighthouse/util/runtimeutil"
+	"crdx.org/lighthouse/pkg/logger"
+	"crdx.org/lighthouse/pkg/util/runtimeutil"
 )
 
 type Args struct {

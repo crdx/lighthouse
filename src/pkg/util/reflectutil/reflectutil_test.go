@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"crdx.org/lighthouse/util/reflectutil"
+	"crdx.org/lighthouse/pkg/util/reflectutil"
 	"github.com/stretchr/testify/assert"
 )
 

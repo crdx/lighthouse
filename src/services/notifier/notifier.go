@@ -6,11 +6,11 @@ import (
 
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
+	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/limit"
 	"crdx.org/lighthouse/services/notifier/state"
-	"crdx.org/lighthouse/util/mailutil"
 	"github.com/samber/lo"
 )
 

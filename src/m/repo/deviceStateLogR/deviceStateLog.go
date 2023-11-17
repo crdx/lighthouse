@@ -7,7 +7,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/pager"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/pkg/util"
 )
 
 func LatestActivityForDevice(deviceID uint, n int) []*m.DeviceStateLog {

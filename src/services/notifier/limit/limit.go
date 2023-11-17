@@ -9,7 +9,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceLimitNotificationR"
-	"crdx.org/lighthouse/util/timeutil"
+	"crdx.org/lighthouse/pkg/util/timeutil"
 )
 
 type trespasser struct {

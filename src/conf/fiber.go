@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"crdx.org/lighthouse/env"
-	"crdx.org/lighthouse/util"
+	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/views/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
