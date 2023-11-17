@@ -17,6 +17,7 @@ set dotenv-load := true
         -w .env \
         -w src \
         -i src/conf/models.go \
+        -i src/conf/migrations.go \
         -r 'just redev'
 
 # start development without live reload
@@ -149,17 +150,20 @@ test-file path:
     echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/routes.go
     echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/routes_test.go
 
+@new-migration name:
+    go run src/cmd/mkmigration/main.go "{{ name }}"
+
 [private]
 make-autocap:
     #!/bin/bash
-    mkif {{ AUTOCAP_BIN_PATH }} helpers/autocap/main.go -x 'just remake-autocap'
+    mkif {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go -x 'just remake-autocap'
 
 [private]
 remake-autocap:
     #!/bin/bash
     set -e
     sudo rm -f {{ AUTOCAP_BIN_PATH }}
-    go build -o {{ AUTOCAP_BIN_PATH }} helpers/autocap/main.go
+    go build -o {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go
     sudo chown root {{ AUTOCAP_BIN_PATH }}
     sudo chmod u+s {{ AUTOCAP_BIN_PATH }}
 
