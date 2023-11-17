@@ -23,6 +23,15 @@
                     </a>
                 </li>
 
+                <li{{ if eq .tab "mappings" }} class="is-active"{{ end }}>
+                    <a href="/admin/mappings">
+                        <span class="icon is-small">
+                            <i class="fa-duotone fa-link" aria-hidden="true"></i>
+                        </span>
+                        <span>Mappings</span>
+                    </a>
+                </li>
+
                 <li{{ if eq .tab "settings" }} class="is-active"{{ end }}>
                     <a href="/admin/settings">
                         <span class="icon is-small">
@@ -37,6 +46,7 @@
             <div>
                 {{ if eq .tab "users" }}{{ template "admin/p/users" . }}{{ end }}
                 {{ if eq .tab "audit" }}{{ template "admin/p/audit" . }}{{ end }}
+                {{ if eq .tab "mappings" }}{{ template "admin/p/mappings" . }}{{ end }}
                 {{ if eq .tab "settings" }}{{ template "admin/p/settings" . }}{{ end }}
             </div>
         </div>

@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"net"
+	"regexp"
 	"strings"
 
 	"github.com/google/gopacket/macs"
@@ -116,4 +117,21 @@ func FindNetwork() (*net.Interface, *net.IPNet, error) {
 	}
 
 	return iface, ipNet, nil
+}
+
+func IsValidMAC(s string) bool {
+	re := regexp.MustCompile(`^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$`)
+	return re.MatchString(strings.TrimSpace(s))
+}
+
+func ParseMACList(values string) ([]string, bool) {
+	var macs []string
+	for _, value := range strings.Split(values, ",") {
+		value := strings.TrimSpace(value)
+		if !IsValidMAC(value) {
+			return nil, false
+		}
+		macs = append(macs, value)
+	}
+	return macs, true
 }

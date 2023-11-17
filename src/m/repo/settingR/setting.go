@@ -32,6 +32,9 @@ func ScanInterval() time.Duration { return lo.Must(duration.Parse(get("scan_inte
 func MACVendorsAPIKey() string { return get("macvendors_api_key") }
 func Timezone() string         { return get("timezone") }
 
+// Other
+func SourceMACAddresses() string { return get("source_mac_addresses") }
+
 var cache map[string]string
 
 // invalidate invalidates the settings cache.

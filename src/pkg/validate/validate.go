@@ -2,6 +2,7 @@ package validate
 
 import (
 	"errors"
+	"net"
 	"regexp"
 	"slices"
 	"strings"
@@ -47,7 +48,7 @@ func init() {
 	})
 
 	Register("mailaddr", `must be in the format "name <email>"`, func(value string) bool {
-		return regexp.MustCompile("^.* <.*>$").Match([]byte(value))
+		return regexp.MustCompile("^.* <.*>$").MatchString(value)
 	})
 
 	Register("role", "must be a valid role", func(value string) bool {
@@ -55,10 +56,21 @@ func init() {
 	})
 
 	Register("icon", "must be a valid icon", func(value string) bool {
-		return regexp.MustCompile("^(duotone|solid|brands):.+$").Match([]byte(value))
+		return regexp.MustCompile("^(duotone|solid|brands):.+$").MatchString(value)
 	})
 
 	Register("duration", "must be a valid duration", duration.Valid)
+
+	Register("mac_address_list", "must be a valid list of MAC addresses", func(value string) bool {
+		_, ok := netutil.ParseMACList(value)
+		return ok
+	})
+
+	Register("mac_address", "must be a valid MAC address", netutil.IsValidMAC)
+
+	Register("ip_address", "must be a valid IP address", func(value string) bool {
+		return net.ParseIP(value) != nil
+	})
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {
 		minDuration, ok := duration.Parse(min)

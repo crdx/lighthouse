@@ -2,6 +2,7 @@ package reader
 
 import (
 	"net"
+	"slices"
 	"strings"
 	"time"
 
@@ -9,6 +10,7 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
+	"crdx.org/lighthouse/m/repo/mappingR"
 	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/pkg/util/netutil"
 	"github.com/google/gopacket/layers"
@@ -40,6 +42,15 @@ func (self *Reader) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet) {
 
 	if self.macAddressCache.SeenWithinLast(macAddressStr, 10*time.Second) {
 		return
+	}
+
+	if repeaters, ok := netutil.ParseMACList(settingR.SourceMACAddresses()); ok {
+		if slices.Contains(repeaters, macAddressStr) {
+			mappings := mappingR.Map()
+			if value, ok := mappings[ipAddressStr]; ok {
+				macAddressStr = value
+			}
+		}
 	}
 
 	self.handleARP(

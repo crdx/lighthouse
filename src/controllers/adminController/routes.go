@@ -2,6 +2,7 @@ package adminController
 
 import (
 	"crdx.org/lighthouse/controllers/adminController/audit"
+	"crdx.org/lighthouse/controllers/adminController/mappings"
 	"crdx.org/lighthouse/controllers/adminController/settings"
 	"crdx.org/lighthouse/controllers/adminController/users"
 	"crdx.org/lighthouse/m"
@@ -32,4 +33,16 @@ func InitRoutes(app *fiber.App) {
 
 	auditGroup := adminGroup.Group("/audit")
 	auditGroup.Get("/", audit.List)
+
+	adminGroup.Get("/mappings", mappings.View)
+	adminGroup.Post("/mappings", mappings.EditSources)
+
+	adminGroup.Group("/mappings/:id<int>").
+		Use(util.NewParseParam[m.Mapping]("id", "mapping")).
+		Post("/delete", mappings.DeleteMapping)
+
+	adminGroup.Post("/mappings/add", mappings.AddMapping)
+	adminGroup.Get("/mappings/add", func(c *fiber.Ctx) error {
+		return c.Redirect("/admin/mappings")
+	})
 }

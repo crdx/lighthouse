@@ -15,4 +15,5 @@ var dbMigrations = []*db.Migration{
 	migrations.MigrateToSimpleRoles("MigrateToSimpleRoles"),
 	migrations.AddForeignKeyConstraints("AddForeignKeyConstraints"),
 	migrations.AddCheckConstraints("AddCheckConstraints"),
+	migrations.AddMappingTableConstraints("AddMappingTableConstraints"),
 }

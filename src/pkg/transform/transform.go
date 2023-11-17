@@ -20,6 +20,9 @@ func Struct[T any](s T) {
 				if transformation == "trim" {
 					str = strings.TrimSpace(str)
 				}
+				if transformation == "upper" {
+					str = strings.ToUpper(str)
+				}
 
 				fieldValue.SetString(str)
 			}

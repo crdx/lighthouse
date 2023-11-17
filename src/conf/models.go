@@ -15,6 +15,7 @@ var models = []db.Model{
 	&m.DeviceLimitNotification{},
 	&m.DeviceStateLog{},
 	&m.DeviceStateNotification{},
+	&m.Mapping{},
 	&m.Notification{},
 	&m.Setting{},
 	&m.User{},
