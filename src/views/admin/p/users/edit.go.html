@@ -15,7 +15,7 @@
         </div>
         <div class="field-body">
             <div class="field">
-                 <div class="control">
+                <div class="control">
                     <input class="input"
                            :id="id"
                            autocomplete="new-password"
@@ -35,7 +35,7 @@
         </div>
         <div class="field-body">
             <div class="field">
-                 <div class="control">
+                <div class="control">
                     <input class="input"
                            :id="id"
                            autocomplete="new-password"
@@ -55,7 +55,7 @@
         <div class="field-body">
             {{ if eq .user.ID $.globals.User.ID }}<fieldset disabled>{{ end }}
             <div class="field">
-                 <div class="control">
+                <div class="control">
                     <div class="select">
                         <select name="{{ .fields.Role.Name }}" required :id="id">
                             <option value="1" {{ if .err }}{{ if eq .fields.Role.Value "1" }}selected{{ end }}{{ else if eq .user.Role 1 }}selected{{ end }}>{{ template "p/name/role" 1 }}</option>
