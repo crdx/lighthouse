@@ -21,7 +21,7 @@
                         {{ range .rows }}
                             <tr>
                                 <td>{{ .Subject }}</td>
-                                <td>{{ if .Body }}<div class="pre is-family-monospace">{{ .Body }}</div>{{ end }}</td>
+                                <td>{{ if .Body }}<div class="pre mono">{{ .Body }}</div>{{ end }}</td>
                                 <td class="nowrap">{{ template "p/time/rel" .CreatedAt }}</td>
                                 <td class="is-hidden-mobile nowrap">{{ formatDateTimeReadable .CreatedAt }}</td>
                             </tr>

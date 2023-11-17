@@ -11,11 +11,8 @@ code {
     color: #363636;
 }
 
-.is-family-monospace {
-    font-size: 0.9em;
-}
-
 .mono {
+    font-size: 0.9rem;
     font-family: monospace;
 }
 

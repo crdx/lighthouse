@@ -23,7 +23,7 @@
         <tr>
             <td>{{ template "p/name/adapter" .Name }}</td>
             <td class="is-hidden-mobile">
-                <span class="is-family-monospace">{{ .MACAddress }}</span>
+                <span class="mono">{{ .MACAddress }}</span>
             </td>
             <td>{{ .IPAddress }}</td>
             <td class="is-hidden-mobile">{{ template "p/name/vendor" .Vendor }}</td>
