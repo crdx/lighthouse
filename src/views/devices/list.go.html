@@ -12,10 +12,11 @@
                     <div class="level-item">
                         <div class="select">
                             <select @change="filter" x-model.fill="filterSelection">
-                                <option value=""{{ if eq .currentFilter "" }} selected{{ end }}>All ({{ .counts.All }})</option>
+                                <option value="all"{{ if eq .currentFilter "all" }} selected{{ end }}>All ({{ .counts.All }})</option>
                                 <option value="online"{{ if eq .currentFilter "online" }} selected{{ end }}>Online ({{ .counts.Online }})</option>
                                 <option value="offline"{{ if eq .currentFilter "offline" }} selected{{ end }}>Offline ({{ .counts.Offline }})</option>
-                                <option value="watching"{{ if eq .currentFilter "watching" }} selected{{ end }}>Watching ({{ .counts.Watching }})</option>
+                                <option value="watched"{{ if eq .currentFilter "watched" }} selected{{ end }}>Watched ({{ .counts.Watched }})</option>
+                                <option value="unwatched"{{ if eq .currentFilter "unwatched" }} selected{{ end }}>Unwatched ({{ .counts.Unwatched }})</option>
                             </select>
                         </div>
                     </div>
