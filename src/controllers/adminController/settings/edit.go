@@ -12,7 +12,7 @@ import (
 	"github.com/samber/lo"
 )
 
-type Form struct {
+type EditForm struct {
 	// General
 	Watch    bool `form:"watch"`
 	WatchNew bool `form:"watch_new"`
@@ -40,14 +40,14 @@ type Form struct {
 func List(c *fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab":      "settings",
-		"fields":   validate.Fields[Form](),
-		"settings": reflectutil.MapToStruct[Form](settingR.Map(), "form"),
+		"fields":   validate.Fields[EditForm](),
+		"settings": reflectutil.MapToStruct[EditForm](settingR.Map(), "form"),
 		"globals":  globals.Get(c),
 	})
 }
 
 func Save(c *fiber.Ctx) error {
-	form := new(Form)
+	form := new(EditForm)
 	lo.Must0(c.BodyParser(form))
 	transform.Struct(form)
 
