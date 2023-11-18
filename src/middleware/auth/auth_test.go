@@ -15,8 +15,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestLoginPage(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
@@ -25,7 +30,8 @@ func TestLoginPage(t *testing.T) {
 }
 
 func TestSuccessfulAdminLogin(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -42,7 +48,8 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 }
 
 func TestSuccessfulUserLogin(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "anon",
@@ -58,7 +65,8 @@ func TestSuccessfulUserLogin(t *testing.T) {
 }
 
 func TestInvalidUsername(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "john",
@@ -73,7 +81,8 @@ func TestInvalidUsername(t *testing.T) {
 }
 
 func TestInvalidPassword(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -88,7 +97,8 @@ func TestInvalidPassword(t *testing.T) {
 }
 
 func TestInvalidFormID(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "root",
@@ -102,7 +112,8 @@ func TestInvalidFormID(t *testing.T) {
 }
 
 func TestLogout(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	session.PostForm("/", map[string]string{
 		"username": "root",
@@ -119,7 +130,8 @@ func TestLogout(t *testing.T) {
 }
 
 func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
-	session := helpers.Init(constants.RoleNone)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
 		"username": "anon",
@@ -155,9 +167,11 @@ func TestMiddleware(t *testing.T) {
 		{auth.Editor, constants.RoleEditor, 200, "editor"},
 		{auth.Editor, constants.RoleViewer, 404, "viewer"},
 	}
+
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
-			session := helpers.Init(testCase.role, testCase.middleware)
+			defer helpers.Start()()
+			session := helpers.NewSession(testCase.role, testCase.middleware)
 			res := session.Get("/profile")
 
 			assert.Equal(t, testCase.expectedStatus, res.StatusCode)

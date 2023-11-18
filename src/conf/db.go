@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"strings"
 	"time"
 
 	"crdx.org/db"
@@ -9,6 +10,7 @@ import (
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/tests/helpers/seeder"
+	"github.com/google/uuid"
 )
 
 func seed() error {
@@ -42,7 +44,7 @@ func GetDbConfig() *db.Config {
 
 func GetTestDbConfig() *db.Config {
 	return &db.Config{
-		Name:       env.DatabaseName() + "_test",
+		Name:       env.DatabaseName() + "_test_" + strings.ReplaceAll(uuid.NewString(), "-", ""),
 		User:       env.DatabaseUser(),
 		Pass:       env.DatabasePass(),
 		Host:       env.DatabaseHost(),

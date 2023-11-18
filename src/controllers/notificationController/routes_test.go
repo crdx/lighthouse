@@ -8,8 +8,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestList(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/notifications")
 	assert.Equal(t, 200, res.StatusCode)
@@ -18,7 +23,8 @@ func TestList(t *testing.T) {
 }
 
 func TestListBadPageNumber(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/notifications/?p=100")
 	assert.Equal(t, 404, res.StatusCode)

@@ -10,8 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestList(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/users")
 	assert.Equal(t, 200, res.StatusCode)
@@ -20,14 +25,16 @@ func TestList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/admin/users")
 	assert.Equal(t, 404, res.StatusCode)
 }
 
 func TestViewEditPage(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/users/1/edit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -35,7 +42,8 @@ func TestViewEditPage(t *testing.T) {
 }
 
 func TestCannotEditUsername(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/1/edit", map[string]string{
 		"username": "joe",
@@ -48,7 +56,8 @@ func TestCannotEditUsername(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/1/edit", map[string]string{
 		"password": "foo",
@@ -59,7 +68,8 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestCannotEditWithoutMatchingPasswords(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/1/edit", map[string]string{
 		"password":         "hunter2",
@@ -71,7 +81,8 @@ func TestCannotEditWithoutMatchingPasswords(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	password := uuid.NewString()
 
@@ -96,7 +107,8 @@ func TestCreate(t *testing.T) {
 }
 
 func TestViewCreatePage(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/users/create")
 	assert.Equal(t, 200, res.StatusCode)
@@ -104,7 +116,8 @@ func TestViewCreatePage(t *testing.T) {
 }
 
 func TestCannotCreateWithUnavailableUsername(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/create", map[string]string{
 		"username": "root",
@@ -115,7 +128,8 @@ func TestCannotCreateWithUnavailableUsername(t *testing.T) {
 }
 
 func TestCannotCreateWithInvalidRole(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/create", map[string]string{
 		"role": "100",
@@ -126,7 +140,8 @@ func TestCannotCreateWithInvalidRole(t *testing.T) {
 }
 
 func TestCannotCreateWithoutMatchingPasswords(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/create", map[string]string{
 		"role":             "1",
@@ -139,7 +154,8 @@ func TestCannotCreateWithoutMatchingPasswords(t *testing.T) {
 }
 
 func TestChangePassword(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	password := uuid.NewString()
 
@@ -163,7 +179,8 @@ func TestChangePassword(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/3/delete", nil)
 	assert.Equal(t, 302, res.StatusCode)
@@ -173,7 +190,8 @@ func TestDeleteUser(t *testing.T) {
 }
 
 func TestCannotDeleteSelf(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/1/delete", nil)
 	assert.Equal(t, 400, res.StatusCode)

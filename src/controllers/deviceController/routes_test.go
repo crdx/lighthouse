@@ -12,8 +12,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestList(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
@@ -23,14 +28,16 @@ func TestList(t *testing.T) {
 }
 
 func TestListSort(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/?sc=seen&sd=asc")
 	assert.Equal(t, 200, res.StatusCode)
 }
 
 func TestListBadSort(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/?sd=foo")
 	assert.Equal(t, 400, res.StatusCode)
@@ -40,7 +47,8 @@ func TestListBadSort(t *testing.T) {
 }
 
 func TestView(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -51,7 +59,8 @@ func TestView(t *testing.T) {
 }
 
 func TestViewEdit(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/device/1/edit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -59,7 +68,8 @@ func TestViewEdit(t *testing.T) {
 }
 
 func TestViewerCannotViewEdit(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/device/1/edit")
 	assert.Equal(t, 404, res.StatusCode)
@@ -67,7 +77,8 @@ func TestViewerCannotViewEdit(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	session := helpers.Init(constants.RoleEditor)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
@@ -89,7 +100,8 @@ func TestEdit(t *testing.T) {
 }
 
 func TestEditOrigin(t *testing.T) {
-	session := helpers.Init(constants.RoleEditor)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
@@ -109,7 +121,8 @@ func TestEditOrigin(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	session := helpers.Init(constants.RoleEditor)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
 
 	name := uuid.NewString()
 	notes := uuid.NewString()
@@ -132,7 +145,8 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestViewerCannotEdit(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.PostForm("/device/1/edit", map[string]string{
 		"name": uuid.NewString(),
@@ -142,7 +156,8 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestMerge1(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
@@ -165,7 +180,8 @@ func TestMerge1(t *testing.T) {
 }
 
 func TestMerge2(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/device/2/merge", map[string]string{
 		"device_id": "1",
@@ -188,7 +204,8 @@ func TestMerge2(t *testing.T) {
 }
 
 func TestMergeBadDevice(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "100",
@@ -198,7 +215,8 @@ func TestMergeBadDevice(t *testing.T) {
 }
 
 func TestViewerCannotMerge(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.PostForm("/device/1/merge", map[string]string{
 		"device_id": "2",
@@ -208,7 +226,8 @@ func TestViewerCannotMerge(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/device/1")
 	assert.Equal(t, 200, res.StatusCode)
@@ -221,7 +240,8 @@ func TestDelete(t *testing.T) {
 }
 
 func TestViewerCannotDelete(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.PostForm("/device/1/delete", nil)
 	assert.Equal(t, 404, res.StatusCode)

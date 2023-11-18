@@ -10,8 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestView(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/profile")
 	assert.Equal(t, 200, res.StatusCode)
@@ -19,7 +24,8 @@ func TestView(t *testing.T) {
 }
 
 func TestChangePassword(t *testing.T) {
-	session := helpers.Init(constants.RoleEditor)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
 
 	password := uuid.NewString()
 
@@ -43,7 +49,8 @@ func TestChangePassword(t *testing.T) {
 }
 
 func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
-	session := helpers.Init(constants.RoleEditor)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
 
 	password := uuid.NewString()
 
@@ -58,7 +65,8 @@ func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
 }
 
 func TestCannotChangePasswordWithoutMatchingPasswords(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/profile", map[string]string{
 		"current_password":     "root",

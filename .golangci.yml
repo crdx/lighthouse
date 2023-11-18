@@ -77,7 +77,6 @@ linters-settings:
       - name: call-to-gc
       - name: confusing-results
       - name: constant-logical-expr
-      - name: defer
       - name: duplicated-imports
       - name: early-return
       - name: empty-block

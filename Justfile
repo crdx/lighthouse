@@ -69,7 +69,7 @@ test:
     set -e
     cd src
     export VIEWS_DIR=$(realpath views)
-    go test -p 1 -cover ./... | grep -vF '[no test files]'
+    go test -cover ./... | grep -vF '[no test files]'
     exit ${PIPESTATUS[0]}
 
 # run tests and show code coverage
@@ -79,7 +79,7 @@ cov:
     cd src
     FILE=$(mktemp)
     export VIEWS_DIR=$(realpath views)
-    go test -p 1 -cover -coverprofile="$FILE" ./...
+    go test -cover -coverprofile="$FILE" ./...
     go tool cover -html="$FILE"
     rm "$FILE"
 
@@ -90,8 +90,8 @@ test-file path:
     cd src
     FILE="{{ path }}"
     export VIEWS_DIR=$(realpath views)
-    go test -p 1 -cover "${FILE#src/}"
-    # go test -p 1 -cover -cpuprofile ../cpu.prof "${FILE#src/}"
+    go test -cover "${FILE#src/}"
+    # go test -cover -cpuprofile ../cpu.prof "${FILE#src/}"
     # go tool pprof -png -output ../cpu.png ../cpu.prof
 
 # check everything

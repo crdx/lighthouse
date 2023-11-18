@@ -8,8 +8,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestList(t *testing.T) {
-	session := helpers.Init(constants.RoleAdmin)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 200, res.StatusCode)
@@ -22,7 +27,8 @@ func TestList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	session := helpers.Init(constants.RoleViewer)
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/admin/audit")
 	assert.Equal(t, 404, res.StatusCode)

@@ -12,6 +12,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestMain(m *testing.M) {
+	helpers.TestMain(m)
+}
+
 func TestFlash(t *testing.T) {
 	testCases := []struct {
 		success bool
@@ -24,7 +28,8 @@ func TestFlash(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%v", testCase.message, testCase.success), func(t *testing.T) {
-			session := helpers.Init(constants.RoleAdmin, func(c *fiber.Ctx) error {
+			defer helpers.Start()()
+			session := helpers.NewSession(constants.RoleAdmin, func(c *fiber.Ctx) error {
 				if testCase.success {
 					flash.Success(c, testCase.message)
 				} else {
