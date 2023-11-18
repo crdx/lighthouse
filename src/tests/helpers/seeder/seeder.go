@@ -10,11 +10,11 @@ import (
 	"crdx.org/lighthouse/pkg/util/sqlutil"
 )
 
-func createDevice(id uint, name string, lastSeen time.Time, origin bool) *m.Device {
+func createDevice(id uint, name string, lastSeen time.Time, origin bool, state string) *m.Device {
 	return db.Save(&m.Device{
 		ID:          id,
 		Name:        name,
-		State:       deviceR.StateOnline,
+		State:       state,
 		Icon:        constants.DefaultDeviceIconClass,
 		LastSeenAt:  lastSeen,
 		Origin:      origin,
@@ -48,15 +48,19 @@ func Run() error {
 	t1 := time.Date(2023, time.September, 1, 12, 0, 0, 0, time.UTC)
 	t2 := time.Date(2023, time.October, 1, 12, 0, 0, 0, time.UTC)
 	t3 := time.Date(2023, time.November, 1, 12, 0, 0, 0, time.UTC)
+	t4 := time.Now().Add(-1 * time.Minute)
 
-	device1 := createDevice(1, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041", t1, false)
+	device1 := createDevice(1, "device1-625a5fa0-9b63-46d8-b4fa-578f92dca041", t1, false, deviceR.StateOnline)
 	createAdapter(1, device1.ID, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25", "Vendor 1", "AA:AA:AA:AA:AA:AA", "127.0.0.1", t1)
 
-	device2 := createDevice(2, "device2-64774746-5937-412c-9aa4-f262d990cc7d", t2, false)
+	device2 := createDevice(2, "device2-64774746-5937-412c-9aa4-f262d990cc7d", t2, false, deviceR.StateOnline)
 	createAdapter(2, device2.ID, "adapter2-c71739fd-d6f2-44e8-966f-fc5cdf2eec59", "Vendor 2", "BB:BB:BB:BB:BB:BB", "127.0.0.2", t2)
 
-	device3 := createDevice(3, "device3-5acf7b73-b02c-4fe5-a63e-869f8bfc329e", t3, true)
+	device3 := createDevice(3, "device3-5acf7b73-b02c-4fe5-a63e-869f8bfc329e", t3, true, deviceR.StateOnline)
 	createAdapter(3, device3.ID, "adapter3-5b083c73-f92b-4890-811a-eed7bdca99c6", "Vendor 3", "CC:CC:CC:CC:CC:CC", "127.0.0.3", t3)
+
+	device4 := createDevice(4, "device3-8410c6ed-9b02-4c09-b757-f818f7a33586", t4, false, deviceR.StateOffline)
+	createAdapter(4, device4.ID, "adapter3-3171430d-c0a0-4a11-b980-05b4f20cf699", "Vendor 4", "DD:DD:DD:DD:DD:DD", "127.0.0.4", t4)
 
 	createDeviceStateLog(1, device1.ID, deviceR.StateOnline, time.Now().Add(-3*time.Minute))
 	createDeviceStateLog(2, device1.ID, deviceR.StateOffline, time.Now().Add(-2*time.Minute))
