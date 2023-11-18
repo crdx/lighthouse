@@ -18,9 +18,9 @@ type Adapter struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	DeviceID   uint      `gorm:"not null"`
-	Name       string    `gorm:"size:200;not null"`
+	Name       string    `gorm:"size:100;not null"`
 	MACAddress string    `gorm:"size:17;not null;index"`
-	Vendor     string    `gorm:"size:200;not null"`
+	Vendor     string    `gorm:"size:100;not null"`
 	IPAddress  string    `gorm:"size:15;not null"`
 	LastSeenAt time.Time `gorm:"not null"`
 }

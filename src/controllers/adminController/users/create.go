@@ -16,7 +16,7 @@ import (
 )
 
 type CreateForm struct {
-	Username        string `form:"username" validate:"required" transform:"trim"`
+	Username        string `form:"username" validate:"required,max=20" transform:"trim"`
 	Password        string `form:"password" validate:"required,min=4" transform:"trim"`
 	ConfirmPassword string `form:"confirm_password" validate:"required" transform:"trim"`
 	Role            string `form:"role" validate:"required,role"`

@@ -14,7 +14,7 @@ type Notification struct {
 	UpdatedAt time.Time      `gorm:""`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
-	Subject string `gorm:"size:500;not null"`
+	Subject string `gorm:"size:200;not null"`
 	Body    string `gorm:"not null"`
 }
 

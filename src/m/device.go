@@ -24,16 +24,16 @@ type Device struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 
 	Origin              bool         `gorm:"not null"`
-	Name                string       `gorm:"size:200;not null"`
-	Hostname            string       `gorm:"size:200;not null"`
+	Name                string       `gorm:"size:100;not null"`
+	Hostname            string       `gorm:"size:100;not null"`
 	HostnameAnnouncedAt sql.NullTime `gorm:""`
 	State               string       `gorm:"size:20;not null"`
 	StateUpdatedAt      time.Time    `gorm:"not null"`
 	Icon                string       `gorm:"size:100;not null"`
-	Notes               string       `gorm:"not null"`
+	Notes               string       `gorm:"size:5000,not null"`
 	LastSeenAt          time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null"`
-	Limit               string       `gorm:"size:200;not null"`
+	Limit               string       `gorm:"not null"`
 	GracePeriod         string       `gorm:"not null"`
 }
 
