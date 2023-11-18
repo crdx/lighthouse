@@ -330,6 +330,102 @@ func TestRoleValidator(t *testing.T) {
 	}
 }
 
+func TestIconValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"icon"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"duotone:foo", "", false},
+		{"solid:foo", "", false},
+		{"brands:foo", "", false},
+		{"foo:bar", "must be a valid icon", true},
+		{"foo", "must be a valid icon", true},
+		{"bar:foo", "must be a valid icon", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
+func TestIPAddressValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"ip_address"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"127.0.0.1", "", false},
+		{"10.0.0.1", "", false},
+		{"82.83.84.85", "", false},
+		{"foo", "must be a valid IPv4 address", true},
+		{"1.2", "must be a valid IPv4 address", true},
+		{"12345678", "must be a valid IPv4 address", true},
+		{"::1", "must be a valid IPv4 address", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
+func TestMACAddressListValidator(t *testing.T) {
+	type S struct {
+		Field1 string `validate:"mac_address_list"`
+	}
+
+	testCases := []struct {
+		input     string
+		expected  string
+		expectErr bool
+	}{
+		{"AA:AA:AA:AA:AA:AA", "", false},
+		{"AA:AA:AA:AA:AA:AA, BB:BB:BB:BB:BB:BB", "", false},
+		{"AA:AA:AA:AA:AA:AA, BB:BB:BB:BB:BB", "must be a valid list of MAC addresses", true},
+		{"AA:AA:AA:AA:AA:AA; BB:BB:BB:BB:BB:BB", "must be a valid list of MAC addresses", true},
+		{"AA:SS:AA:AA:AA:AA, BB:BB:BB:BB:BB:BB", "must be a valid list of MAC addresses", true},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			testStruct := S{Field1: testCase.input}
+			fields, err := validate.Struct(testStruct)
+			if testCase.expectErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+			assert.Equal(t, testCase.expected, fields["Field1"].Error)
+		})
+	}
+}
+
 func TestConfirmPassword(t *testing.T) {
 	testCases := []struct {
 		password        string

@@ -68,8 +68,9 @@ func init() {
 
 	Register("mac_address", "must be a valid MAC address", netutil.IsValidMAC)
 
-	Register("ip_address", "must be a valid IP address", func(value string) bool {
-		return net.ParseIP(value) != nil
+	Register("ip_address", "must be a valid IPv4 address", func(value string) bool {
+		ip := net.ParseIP(value)
+		return ip != nil && ip.To4() != nil
 	})
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {

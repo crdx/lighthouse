@@ -26,6 +26,14 @@ func TestList(t *testing.T) {
 	assert.NotContains(t, res.Body, "anon")
 }
 
+func TestEditorCannotList(t *testing.T) {
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleEditor)
+
+	res := session.Get("/admin/audit")
+	assert.Equal(t, 404, res.StatusCode)
+}
+
 func TestViewerCannotList(t *testing.T) {
 	defer helpers.Start()()
 	session := helpers.NewSession(constants.RoleViewer)
