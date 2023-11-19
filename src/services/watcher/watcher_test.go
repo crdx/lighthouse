@@ -33,12 +33,12 @@ func TestState(t *testing.T) {
 	require.NoError(t, w.Run())
 
 	assert.Equal(t, int64(3), db.B[m.DeviceStateLog]().Count())
-	assert.True(t, db.B[m.DeviceStateLog]("device_id = 1 and state = ?", "offline").Exists())
-	assert.True(t, db.B[m.DeviceStateLog]("device_id = 2 and state = ?", "offline").Exists())
-	assert.True(t, db.B[m.DeviceStateLog]("device_id = 4 and state = ?", "online").Exists())
+	assert.True(t, db.B[m.DeviceStateLog]("device_id = 1 and state = ?", deviceR.StateOffline).Exists())
+	assert.True(t, db.B[m.DeviceStateLog]("device_id = 2 and state = ?", deviceR.StateOffline).Exists())
+	assert.True(t, db.B[m.DeviceStateLog]("device_id = 4 and state = ?", deviceR.StateOnline).Exists())
 
-	assert.True(t, db.B[m.DeviceStateNotification]("device_id = 1 and state = ? and processed = 0", "offline").Exists())
-	assert.True(t, db.B[m.DeviceStateNotification]("device_id = 4 and state = ? and processed = 0", "online").Exists())
+	assert.True(t, db.B[m.DeviceStateNotification]("device_id = 1 and state = ? and processed = 0", deviceR.StateOffline).Exists())
+	assert.True(t, db.B[m.DeviceStateNotification]("device_id = 4 and state = ? and processed = 0", deviceR.StateOnline).Exists())
 }
 
 func TestLimit(t *testing.T) {

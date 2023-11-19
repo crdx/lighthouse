@@ -48,8 +48,8 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 	}
 
 	filters := map[string]string{
-		"online":    "AND state = 'online'",
-		"offline":   "AND state = 'offline'",
+		"online":    fmt.Sprintf("AND state = '%s'", StateOnline),
+		"offline":   fmt.Sprintf("AND state = '%s'", StateOffline),
 		"watched":   "AND watch = 1",
 		"unwatched": "AND watch = 0",
 		"all":       "",
@@ -101,8 +101,8 @@ type Counts struct {
 func GetCounts() *Counts {
 	return &Counts{
 		All:       uint(db.B[m.Device]().Count()),
-		Online:    uint(db.B[m.Device]("state = ?", "online").Count()),
-		Offline:   uint(db.B[m.Device]("state = ?", "offline").Count()),
+		Online:    uint(db.B[m.Device]("state = ?", StateOnline).Count()),
+		Offline:   uint(db.B[m.Device]("state = ?", StateOffline).Count()),
 		Watched:   uint(db.B[m.Device]("watch = 1").Count()),
 		Unwatched: uint(db.B[m.Device]("watch = 0").Count()),
 	}
