@@ -109,10 +109,12 @@ func TestIPNetTooLarge(t *testing.T) {
 		inputFixedBits int
 		expected       bool
 	}{
+		{"192.168.0.0", 25, false},
 		{"192.168.0.0", 24, false},
+		{"192.168.0.0", 23, true},
 		{"192.168.0.0", 15, true},
 		{"10.0.0.0", 8, true},
-		{"172.16.0.0", 16, false},
+		{"172.16.0.0", 16, true},
 		{"172.16.0.0", 12, true},
 	}
 

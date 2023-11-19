@@ -59,9 +59,11 @@ func ExpandIPNet(ipNet *net.IPNet) []net.IP {
 
 // IPNetTooLarge returns true if a network is considered too large to scan.
 //
-// Anything larger than a /16 is considered too large.
+// Anything larger than a /24 is considered too large.
 func IPNetTooLarge(ipNet *net.IPNet) bool {
-	return ipNet.Mask[0] != 0xff || ipNet.Mask[1] != 0xff
+	return ipNet.Mask[0] != 0xff ||
+		ipNet.Mask[1] != 0xff ||
+		ipNet.Mask[2] != 0xff
 }
 
 // findInterface returns the first interface that is considered "up" and is not the loopback
