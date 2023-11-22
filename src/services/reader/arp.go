@@ -10,8 +10,8 @@ import (
 	"crdx.org/lighthouse/constants"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
-	"crdx.org/lighthouse/m/repo/mappingR"
 	"crdx.org/lighthouse/m/repo/settingR"
+	"crdx.org/lighthouse/pkg/util/dbutil"
 	"crdx.org/lighthouse/pkg/util/netutil"
 	"github.com/google/gopacket/layers"
 )
@@ -46,9 +46,9 @@ func (self *Reader) handleARPPacket(packet *layers.ARP, ipNet *net.IPNet) {
 
 	if repeaters, ok := netutil.ParseMACList(settingR.SourceMACAddresses()); ok {
 		if slices.Contains(repeaters, macAddressStr) {
-			mappings := mappingR.Map()
-			if value, ok := mappings[ipAddressStr]; ok {
-				macAddressStr = value
+			mappings := dbutil.MapBy2[string, string]("IPAddress", "MACAddress", db.B[m.Mapping]().Find())
+			if macAddress, ok := mappings[ipAddressStr]; ok {
+				macAddressStr = macAddress
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/duration"
+	"crdx.org/lighthouse/pkg/util/dbutil"
 	"github.com/samber/lo"
 )
 
@@ -44,13 +45,7 @@ func invalidate() {
 
 // Map returns all settings as a map[string]string.
 func Map() map[string]string {
-	settings := map[string]string{}
-
-	for _, setting := range db.B[m.Setting]().Find() {
-		settings[setting.Name] = setting.Value
-	}
-
-	return settings
+	return dbutil.MapBy2[string, string]("Name", "Value", db.B[m.Setting]().Find())
 }
 
 // Set sets a setting to value.

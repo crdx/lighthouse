@@ -3,8 +3,8 @@ package audit
 import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
-	"crdx.org/lighthouse/m/repo/userR"
 	"crdx.org/lighthouse/pkg/globals"
+	"crdx.org/lighthouse/pkg/util/dbutil"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,7 +13,7 @@ func List(c *fiber.Ctx) error {
 		"tab":     "audit",
 		"mode":    "list",
 		"log":     db.B[m.AuditLog]().Order("created_at DESC").Find(),
-		"users":   userR.Map(),
+		"users":   dbutil.MapByID(db.B[m.User]().Find()),
 		"globals": globals.Get(c),
 	})
 }
