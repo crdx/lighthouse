@@ -20,7 +20,7 @@ func main() {
 
 	name := os.Args[1]
 	if !isProperCase(name) {
-		log.Fatal("\033[31mname must be ProperCase without any punctuation\033[m")
+		log.Fatal("\033[31mname must be ProperCase without any punctuation, beginning with a letter\033[m")
 	}
 
 	fileName := fmt.Sprintf("%d_%s.go", time.Now().Unix(), snakeCase(name))
@@ -36,7 +36,7 @@ func main() {
 }
 
 func isProperCase(s string) bool {
-	if s == "" || !unicode.IsLetter(rune(s[0])) {
+	if s == "" || !unicode.IsLetter(rune(s[0])) || !unicode.IsUpper(rune(s[0])) {
 		return false
 	}
 
