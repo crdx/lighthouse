@@ -14,6 +14,7 @@ func List(c *fiber.Ctx) error {
 		"mode":    "list",
 		"log":     db.B[m.AuditLog]().Order("created_at DESC").Find(),
 		"users":   dbutil.MapByID(db.B[m.User]().Find()),
+		"devices": dbutil.MapByID(db.B[m.Device]().Find()),
 		"globals": globals.Get(c),
 	})
 }

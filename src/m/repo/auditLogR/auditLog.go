@@ -12,14 +12,21 @@ import (
 
 func Add(c *fiber.Ctx, message string, args ...any) {
 	var userID sqlutil.NullUint
-
 	if user := globals.CurrentUser(c); user != nil {
 		_ = userID.Scan(user.ID)
 	}
 
+	ipAddress := c.IP()
+
+	var deviceID sqlutil.NullUint
+	if adapter, found := db.B[m.Adapter]("ip_address = ?", ipAddress).First(); found {
+		_ = deviceID.Scan(adapter.ID)
+	}
+
 	db.Save(&m.AuditLog{
+		IPAddress: ipAddress,
+		DeviceID:  deviceID,
 		UserID:    userID,
-		IPAddress: c.IP(),
 		Message:   fmt.Sprintf(message, args...),
 	})
 }

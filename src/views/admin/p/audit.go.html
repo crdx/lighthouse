@@ -2,7 +2,7 @@
     <table class="table is-fullwidth">
         <tr>
             <th>User</th>
-            <th class="is-hidden-mobile">IP Address</th>
+            <th class="is-hidden-mobile">Source</th>
             <th>Action</th>
             <th>When</th>
             <th class="is-hidden-mobile">Date</th>
@@ -17,7 +17,15 @@
                         <em>None</em>
                     {{ end }}
                 </td>
-                <td class="is-hidden-mobile">{{ .IPAddress }}</td>
+                <td class="is-hidden-mobile">
+                    {{ if .DeviceID.Valid }}
+                        <a title="{{ .IPAddress }}" href="/device/{{ .DeviceID.Value }}">
+                            {{ (index $.devices .DeviceID.Value).DisplayName }}
+                        </a>
+                    {{ else }}
+                        {{ .IPAddress }}
+                    {{ end }}
+                </td>
                 <td>{{ .Message }}</td>
                 <td class="nowrap">{{ template "p/time/rel" .CreatedAt }}</td>
                 <td class="is-hidden-mobile nowrap">{{ formatDateTimeReadable .CreatedAt }}</td>

@@ -16,4 +16,5 @@ var dbMigrations = []*db.Migration{
 	migrations.AddForeignKeyConstraints("AddForeignKeyConstraints"),
 	migrations.AddCheckConstraints("AddCheckConstraints"),
 	migrations.AddMappingTableConstraints("AddMappingTableConstraints"),
+	migrations.AddAuditLogDeviceIdConstraint("AddAuditLogDeviceIdConstraint"),
 }
