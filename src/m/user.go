@@ -22,6 +22,7 @@ type User struct {
 	PasswordHash string       `gorm:"not null"`
 	Role         uint         `gorm:"not null"`
 	LastLoginAt  sql.NullTime `gorm:""`
+	LastVisitAt  sql.NullTime `gorm:""`
 }
 
 func (self *User) Update(values ...any) {

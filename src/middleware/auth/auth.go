@@ -72,7 +72,8 @@ func New() fiber.Handler {
 			return needAuth(c)
 		}
 
-		c.Locals(globals.CurrentUserKey, user)
+		user.Update("last_visit_at", time.Now())
+		c.Locals(globals.CurrentUserKey, user.Fresh())
 
 		if c.Method() == http.MethodPost && c.Path() == "/bye" {
 			return logOut(c)
