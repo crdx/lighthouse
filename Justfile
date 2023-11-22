@@ -24,8 +24,12 @@ set dotenv-load := true
 @devn: make-autocap
     LIVE_RELOAD=0 just dev
 
-# start development with debug logging
+# start development with debug logging and no services
 @devd:
+    DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 just dev
+
+# start development with debug logging
+@devdd:
     LIGHTHOUSE_DEBUG=1 just dev
 
 # open the development site in the default browser

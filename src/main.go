@@ -65,7 +65,10 @@ func main() {
 	conf.InitRoutes(app)
 
 	initPackages()
-	startServices()
+
+	if !env.DisableServices() {
+		startServices()
+	}
 
 	panic(app.Listen(env.Host() + ":" + env.Port()))
 }

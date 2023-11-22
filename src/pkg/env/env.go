@@ -43,8 +43,9 @@ var (
 	DefaultRootPass = func() string { return or("DEFAULT_ROOT_PASS", "root") }
 	DefaultAnonPass = func() string { return or("DEFAULT_ANON_PASS", "anon") }
 
-	LiveReload  = func() bool { return truthy(env["LIVE_RELOAD"]) }
-	DisableAuth = func() bool { return truthy(env["DISABLE_AUTH"]) }
+	LiveReload      = func() bool { return truthy(env["LIVE_RELOAD"]) }
+	DisableAuth     = func() bool { return truthy(env["DISABLE_AUTH"]) }
+	DisableServices = func() bool { return truthy(env["DISABLE_SERVICES"]) }
 )
 
 func Init() {
