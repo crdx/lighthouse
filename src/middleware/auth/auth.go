@@ -26,7 +26,7 @@ func needAuth(c *fiber.Ctx) error {
 }
 
 func logOut(c *fiber.Ctx) error {
-	auditLogR.Add(c, "User %s logged out", c.Locals(globals.CurrentUserKey).(*m.User).Username)
+	auditLogR.Add(c, "User %s logged out", globals.CurrentUser(c).Username)
 	session.Destroy(c)
 	return c.Redirect("/")
 }
