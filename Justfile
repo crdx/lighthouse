@@ -155,6 +155,7 @@ test-file path:
     echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/routes_test.go
 
 # scaffold a new migration (name is ProperCase with no punctuation)
+[no-exit-message]
 @new-migration name:
     go run src/cmd/mkmigration/main.go "{{ name }}"
 
