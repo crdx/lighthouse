@@ -138,7 +138,7 @@ func (self *Device) LogAttr() slog.Attr {
 	return slog.Group(
 		"device",
 		"id", self.ID,
-		"name", self.Name,
+		"name", self.DisplayName(),
 		"hostname", self.Hostname,
 	)
 }
