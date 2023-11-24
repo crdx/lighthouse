@@ -42,11 +42,11 @@ func Merge(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Merged device %s into %s", child.AuditName(), parent.AuditName())
 
-	flash.Success(c, fmt.Sprintf(
+	flash.Success(c,
 		"Device %s merged into %s",
 		child.Identifier(),
 		parent.Identifier(),
-	))
+	)
 
 	return c.Redirect(fmt.Sprintf("/device/%d", parent.ID))
 }
