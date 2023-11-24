@@ -90,7 +90,7 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 	`, filterBy, orderBy))
 }
 
-type Counts struct {
+type Counters struct {
 	All       uint
 	Online    uint
 	Offline   uint
@@ -98,8 +98,8 @@ type Counts struct {
 	Unwatched uint
 }
 
-func GetCounts() *Counts {
-	return &Counts{
+func Counts() *Counters {
+	return &Counters{
 		All:       uint(db.B[m.Device]().Count()),
 		Online:    uint(db.B[m.Device]("state = ?", StateOnline).Count()),
 		Offline:   uint(db.B[m.Device]("state = ?", StateOffline).Count()),
