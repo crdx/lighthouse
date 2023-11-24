@@ -2,6 +2,7 @@ package flash
 
 import (
 	"encoding/gob"
+	"fmt"
 
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
@@ -21,16 +22,16 @@ func init() {
 	gob.Register(Message{})
 }
 
-func Success(c *fiber.Ctx, message string) {
-	add(c, SuccessClass, message)
+func Success(c *fiber.Ctx, message string, args ...any) {
+	add(c, SuccessClass, message, args...)
 }
 
-func Failure(c *fiber.Ctx, message string) {
-	add(c, FailureClass, message)
+func Failure(c *fiber.Ctx, message string, args ...any) {
+	add(c, FailureClass, message, args...)
 }
 
-func add(c *fiber.Ctx, class string, message string) {
-	session.Set(c, "globals.flash", get(class, message))
+func add(c *fiber.Ctx, class string, message string, args ...any) {
+	session.Set(c, "globals.flash", get(class, fmt.Sprintf(message, args...)))
 }
 
 func get(class string, message string) Message {

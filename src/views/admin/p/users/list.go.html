@@ -37,6 +37,13 @@
                         </span>
                     </a>
                     {{ if and (gt (len $.users) 1) (ne .ID $.globals.User.ID) }}
+                        <form class="column" action="/admin/users/{{ .ID }}/become" method="post">
+                            <a title="Become" onclick="parentNode.submit()" class="has-text-dark">
+                                <span class="icon has-text-grey-dark">
+                                    <i class="fa-duotone fa-user-tie"></i>
+                                </span>
+                            </a>
+                        </form>
                         <form class="column" action="/admin/users/{{ .ID }}/delete" method="post">
                             <a title="Delete" onclick="confirm('Are you sure you want to delete this user?') && parentNode.submit()" class="has-text-dark">
                                 <span class="icon has-text-danger-dark">

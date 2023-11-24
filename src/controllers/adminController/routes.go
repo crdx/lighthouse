@@ -30,6 +30,7 @@ func InitRoutes(app *fiber.App) {
 	userGroup.Get("/edit", users.ViewEdit)
 	userGroup.Post("/edit", users.Edit)
 	userGroup.Post("/delete", users.Delete)
+	userGroup.Post("/become", users.Become)
 
 	auditGroup := adminGroup.Group("/audit")
 	auditGroup.Get("/", audit.List)
