@@ -39,7 +39,7 @@ func (self *Adapter) Fresh() *Adapter {
 	return lo.Must(db.First[Adapter](self.ID))
 }
 
-// Device returns the Device for this Adapter
+// Device returns the Device for this Adapter.
 func (self *Adapter) Device() *Device {
 	device, _ := db.First[Device](self.DeviceID)
 	return device
