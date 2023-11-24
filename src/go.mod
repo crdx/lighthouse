@@ -3,17 +3,16 @@ module crdx.org/lighthouse
 go 1.21.0
 
 require (
-	crdx.org/db v1.10.0
+	crdx.org/db v1.11.0
 	crdx.org/duckopt/v2 v2.0.1
-	crdx.org/session v1.1.1
-	github.com/go-playground/assert/v2 v2.2.0
+	crdx.org/session v1.1.2
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.15.5
-	github.com/gofiber/fiber/v2 v2.50.0
+	github.com/gofiber/fiber/v2 v2.51.0
 	github.com/gofiber/template/html/v2 v2.0.5
 	github.com/google/gopacket v1.1.19
-	github.com/google/uuid v1.3.1
+	github.com/google/uuid v1.4.0
 	github.com/imroc/req/v3 v3.42.1
 	github.com/lmittmann/tint v1.0.2
 	github.com/samber/lo v1.38.1
@@ -66,7 +65,7 @@ require (
 	go.uber.org/mock v0.3.0 // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
