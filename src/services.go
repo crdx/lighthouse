@@ -6,6 +6,7 @@ import (
 	"crdx.org/lighthouse/m/repo/settingR"
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier"
+	"crdx.org/lighthouse/services/pinger"
 	"crdx.org/lighthouse/services/reader"
 	"crdx.org/lighthouse/services/vendor"
 	"crdx.org/lighthouse/services/watcher"
@@ -20,6 +21,11 @@ func startServices() {
 
 	services.Start("writer", &services.Config{
 		Service:     writer.New(),
+		RunInterval: settingR.ScanInterval(),
+	})
+
+	services.Start("pinger", &services.Config{
+		Service:     pinger.New(),
 		RunInterval: settingR.ScanInterval(),
 	})
 

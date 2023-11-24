@@ -53,7 +53,9 @@ func (self *Reader) Run() error {
 		if layer := packet.Layer(layers.LayerTypeDHCPv4); layer != nil {
 			self.handleDHCPPacket(layer.(*layers.DHCPv4))
 		} else if layer := packet.Layer(layers.LayerTypeARP); layer != nil {
-			self.handleARPPacket(layer.(*layers.ARP), ipNet)
+			self.handleARPPacket(layer.(*layers.ARP), ipNet.IP.String())
+		} else if layer := packet.Layer(layers.LayerTypeICMPv4); layer != nil {
+			self.handleICMPPacket(layer.(*layers.ICMPv4), packet, ipNet.IP.String())
 		}
 	}
 }

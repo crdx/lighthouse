@@ -18,6 +18,10 @@ func All() []*m.Device {
 	return db.B[m.Device]().Order("name ASC").Find()
 }
 
+func Scannable() []*m.Device {
+	return db.B[m.Device]("state = ? and origin = ?", StateOnline, false).Find()
+}
+
 type ListView struct {
 	ID         uint
 	Name       string

@@ -45,6 +45,17 @@ func (self *Adapter) Device() *Device {
 	return device
 }
 
+// IsOnline returns true if this adapter was last seen within its grace period.
+func (self *Adapter) IsOnline() bool {
+	return self.LastSeenAt.After(time.Now().Add(-self.Device().GracePeriodDuration()))
+}
+
+// IsNotResponding returns true if this adapter was last seen within half of the grace period. This
+// indicates a device that may be about to go offline.
+func (self *Adapter) IsNotResponding() bool {
+	return self.LastSeenAt.Before(time.Now().Add(-self.Device().GracePeriodDuration() / 2))
+}
+
 func (self *Adapter) AuditName() string {
 	return fmt.Sprintf("%s (ID: %d) of device %s", self.Name, self.ID, self.Device().AuditName())
 }

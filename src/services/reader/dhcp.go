@@ -10,11 +10,11 @@ import (
 	"github.com/google/gopacket/layers"
 )
 
-func (self *Reader) handleDHCPPacket(packet *layers.DHCPv4) {
-	for _, option := range packet.Options {
+func (self *Reader) handleDHCPPacket(dhcpPacket *layers.DHCPv4) {
+	for _, option := range dhcpPacket.Options {
 		if option.Type == layers.DHCPOptHostname {
 			self.handleDHCP(
-				strings.ToUpper(packet.ClientHWAddr.String()),
+				strings.ToUpper(dhcpPacket.ClientHWAddr.String()),
 				string(option.Data),
 			)
 		}
