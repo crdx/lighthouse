@@ -4,12 +4,13 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/deviceR"
 	"crdx.org/lighthouse/m/repo/deviceStateLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/globals"
 	"github.com/gofiber/fiber/v2"
 )
 
 func View(c *fiber.Ctx) error {
-	device := c.Locals("device").(*m.Device)
+	device := util.Param[m.Device](c)
 
 	rows := 6
 	if device.Notes != "" {

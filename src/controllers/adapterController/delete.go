@@ -5,12 +5,13 @@ import (
 
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Delete(c *fiber.Ctx) error {
-	adapter := c.Locals("adapter").(*m.Adapter)
+	adapter := util.Param[m.Adapter](c)
 
 	adapter.Delete()
 

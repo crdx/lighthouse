@@ -5,6 +5,7 @@ import (
 
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
@@ -30,7 +31,7 @@ type EditForm struct {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
-	device := c.Locals("device").(*m.Device)
+	device := util.Param[m.Device](c)
 
 	return c.Render("devices/edit", fiber.Map{
 		"mode":    "edit",
@@ -41,7 +42,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	device := c.Locals("device").(*m.Device)
+	device := util.Param[m.Device](c)
 
 	var form any
 	if device.Origin {

@@ -6,12 +6,13 @@ import (
 	"crdx.org/db"
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Merge(c *fiber.Ctx) error {
-	device1 := c.Locals("device").(*m.Device)
+	device1 := util.Param[m.Device](c)
 	device2, found := db.First[m.Device](c.FormValue("device_id"))
 
 	if !found {

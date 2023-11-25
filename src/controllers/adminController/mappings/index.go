@@ -7,6 +7,7 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
 	"crdx.org/lighthouse/m/repo/settingR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
@@ -85,7 +86,7 @@ func AddMapping(c *fiber.Ctx) error {
 }
 
 func DeleteMapping(c *fiber.Ctx) error {
-	mapping := c.Locals("mapping").(*m.Mapping)
+	mapping := util.Param[m.Mapping](c)
 	mapping.Delete()
 
 	auditLogR.Add(c, "Deleted mapping %s", mapping.AuditName())

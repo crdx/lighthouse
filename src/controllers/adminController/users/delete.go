@@ -3,13 +3,14 @@ package users
 import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Delete(c *fiber.Ctx) error {
-	user := c.Locals("user").(*m.User)
+	user := util.Param[m.User](c)
 
 	// Current user can't delete themselves.
 	if globals.IsCurrentUser(c, user) {

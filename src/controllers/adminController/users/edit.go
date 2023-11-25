@@ -5,6 +5,7 @@ import (
 
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/transform"
@@ -21,7 +22,7 @@ type EditForm struct {
 }
 
 func ViewEdit(c *fiber.Ctx) error {
-	user := c.Locals("user").(*m.User)
+	user := util.Param[m.User](c)
 
 	return c.Render("admin/index", fiber.Map{
 		"tab":     "users",
@@ -33,7 +34,7 @@ func ViewEdit(c *fiber.Ctx) error {
 }
 
 func Edit(c *fiber.Ctx) error {
-	user := c.Locals("user").(*m.User)
+	user := util.Param[m.User](c)
 
 	form := new(EditForm)
 	lo.Must0(c.BodyParser(form))

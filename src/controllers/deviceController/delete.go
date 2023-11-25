@@ -3,12 +3,13 @@ package deviceController
 import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/m/repo/auditLogR"
+	"crdx.org/lighthouse/middleware/util"
 	"crdx.org/lighthouse/pkg/flash"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Delete(c *fiber.Ctx) error {
-	device := c.Locals("device").(*m.Device)
+	device := util.Param[m.Device](c)
 
 	device.Delete()
 
