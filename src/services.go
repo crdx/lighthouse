@@ -19,16 +19,6 @@ func startServices() {
 		RunInterval: 0,
 	})
 
-	services.Start("writer", &services.Config{
-		Service:     writer.New(),
-		RunInterval: settingR.ScanInterval(),
-	})
-
-	services.Start("pinger", &services.Config{
-		Service:     pinger.New(),
-		RunInterval: settingR.ScanInterval(),
-	})
-
 	services.Start("vendor", &services.Config{
 		Service:     vendor.New(),
 		RunInterval: 5 * time.Second,
@@ -53,4 +43,16 @@ func startServices() {
 		// notifications.
 		InitialRestartInterval: 1 * time.Minute,
 	})
+
+	if !settingR.Passive() {
+		services.Start("writer", &services.Config{
+			Service:     writer.New(),
+			RunInterval: settingR.ScanInterval(),
+		})
+
+		services.Start("pinger", &services.Config{
+			Service:     pinger.New(),
+			RunInterval: settingR.ScanInterval(),
+		})
+	}
 }

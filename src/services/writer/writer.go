@@ -42,10 +42,7 @@ func (self *Writer) Run() error {
 	defer handle.Close()
 
 	for {
-		if !settingR.Passive() {
-			lo.Must0(self.write(handle, iface, ipNet))
-		}
-
+		lo.Must0(self.write(handle, iface, ipNet))
 		time.Sleep(settingR.ScanInterval())
 	}
 }
