@@ -104,8 +104,17 @@ func Editor(c *fiber.Ctx) error {
 // first user in the db with the required authorisation will be picked.
 func AutoLogin(role uint) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		user, _ := db.B[m.User]("role = ?", role).First()
-		c.Locals(globals.CurrentUserKey, user)
+		if session.GetUint(c, "user_id") == 0 {
+			user, _ := db.B[m.User]("role = ?", role).First()
+			user.Update("last_login_at", time.Now())
+			auditLogR.Add(c, "User %s logged in", user.Username)
+			session.Set(c, "user_id", user.ID)
+		}
+
+		userId := session.GetUint(c, "user_id")
+		user, _ := db.First[m.User](userId)
+		user.Update("last_visit_at", time.Now())
+		c.Locals(globals.CurrentUserKey, user.Fresh())
 		return c.Next()
 	}
 }
