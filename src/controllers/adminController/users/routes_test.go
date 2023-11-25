@@ -196,3 +196,14 @@ func TestCannotDeleteSelf(t *testing.T) {
 	res := session.PostForm("/admin/users/1/delete", nil)
 	assert.Equal(t, 400, res.StatusCode)
 }
+
+func TestBecome(t *testing.T) {
+	defer helpers.Start()()
+	session := helpers.NewSession(constants.RoleAdmin)
+
+	res := session.PostForm("/admin/users/3/become", nil)
+	assert.Equal(t, 302, res.StatusCode)
+
+	res = session.Get("/profile")
+	assert.Contains(t, res.Body, "You are a <b>viewer</b>")
+}
