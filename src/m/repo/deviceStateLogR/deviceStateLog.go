@@ -38,6 +38,9 @@ func GetListViewRowCount(deviceID uint) uint {
 		INNER JOIN devices D on D.id = DSL.device_id
 	`)
 
+	q.And("D.deleted_at IS NULL")
+	q.And("DSL.deleted_at IS NULL")
+
 	if deviceID != 0 {
 		q.And("device_id = ?", deviceID)
 	}
@@ -57,6 +60,9 @@ func GetListView(deviceID uint, page uint, perPage uint) []ListView {
 		FROM device_state_logs DSL
 		INNER JOIN devices D on D.id = DSL.device_id
 	`)
+
+	q.And("D.deleted_at IS NULL")
+	q.And("DSL.deleted_at IS NULL")
 
 	if deviceID != 0 {
 		q.And("device_id = ?", deviceID)

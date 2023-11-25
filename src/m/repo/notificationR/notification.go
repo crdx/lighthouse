@@ -17,6 +17,7 @@ func GetListViewRowCount() uint {
 	return db.Query[uint](`
 		SELECT count(*)
 		FROM notifications
+		WHERE deleted_at IS NULL
 	`)
 }
 
@@ -27,6 +28,7 @@ func GetListView(page uint, perPage uint) []ListView {
 			subject,
 			body
 		FROM notifications
+		WHERE deleted_at IS NULL
 		ORDER BY created_at DESC
 	`)
 
