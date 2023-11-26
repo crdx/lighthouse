@@ -3,7 +3,7 @@
         <th>Username</th>
         <th>Role</th>
         <th>Last Login</th>
-        <th>Last Visit</th>
+        <th class="is-hidden-mobile">Last Visit</th>
         <th class="is-hidden-mobile">Created</th>
         <th>
             <a title="Create" class="is-pulled-right" href="/admin/users/create">
@@ -27,7 +27,7 @@
             <td>{{ .Username }}</td>
             <td>{{ template "p/name/role" .Role }}</td>
             <td>{{ template "date" .LastLoginAt }}</td>
-            <td>{{ template "date" .LastVisitAt }}</td>
+            <td class="is-hidden-mobile">{{ template "date" .LastVisitAt }}</td>
             <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
             <td class="min-column">
                 <div class="columns is-variable is-1 is-mobile">
