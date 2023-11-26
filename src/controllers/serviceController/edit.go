@@ -1,4 +1,4 @@
-package adapterController
+package serviceController
 
 import (
 	"fmt"
@@ -16,43 +16,42 @@ import (
 )
 
 type EditForm struct {
-	Name   string `form:"name" validate:"max=100" transform:"trim"`
-	Vendor string `form:"vendor" validate:"max=100" transform:"trim"`
+	Name string `form:"name" validate:"max=100" transform:"trim"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {
-	adapter := util.Param[m.Adapter](c)
+	service := util.Param[m.Service](c)
 
-	return c.Render("adapters/edit", fiber.Map{
-		"adapter": adapter,
-		"device":  adapter.Device(),
+	return c.Render("services/edit", fiber.Map{
+		"service": service,
+		"device":  service.Device(),
 		"fields":  validate.Fields[EditForm](),
 		"globals": globals.Get(c),
 	})
 }
 
 func Edit(c *fiber.Ctx) error {
-	adapter := util.Param[m.Adapter](c)
+	service := util.Param[m.Service](c)
 
 	form := new(EditForm)
 	lo.Must0(c.BodyParser(form))
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
-		flash.Failure(c, "Unable to save adapter")
+		flash.Failure(c, "Unable to save service")
 
-		return c.Render("adapters/edit", fiber.Map{
-			"adapter": adapter,
-			"device":  adapter.Device(),
+		return c.Render("services/edit", fiber.Map{
+			"service": service,
+			"device":  service.Device(),
 			"err":     err,
 			"fields":  fields,
 			"globals": globals.Get(c),
 		})
 	}
 
-	adapter.Update(reflectutil.StructToMap(form, "form"))
+	service.Update(reflectutil.StructToMap(form, "form"))
 
-	auditLogR.Add(c, "Edited adapter %s", adapter.Fresh().AuditName())
-	flash.Success(c, "Adapter saved")
-	return c.Redirect(fmt.Sprintf("/device/%d", adapter.DeviceID))
+	auditLogR.Add(c, "Edited service %s", service.Fresh().AuditName())
+	flash.Success(c, "Service saved")
+	return c.Redirect(fmt.Sprintf("/device/%d", service.DeviceID))
 }

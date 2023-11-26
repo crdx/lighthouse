@@ -1,17 +1,17 @@
 <form method="post" action="/admin/settings">
     <div class="block">
-        <h2 class="subtitle">General</h2>
-        {{ template "admin/p/settings/general" . }}
+        <h2 class="subtitle">Device Scanning</h2>
+        {{ template "admin/p/settings/device_scanning" . }}
+    </div>
+
+    <div class="block">
+        <h2 class="subtitle">Service Scanning</h2>
+        {{ template "admin/p/settings/service_scanning" . }}
     </div>
 
     <div class="block">
         <h2 class="subtitle">Mail</h2>
         {{ template "admin/p/settings/mail" . }}
-    </div>
-
-    <div class="block">
-        <h2 class="subtitle">Scanning</h2>
-        {{ template "admin/p/settings/scanning" . }}
     </div>
 
     <div class="block">

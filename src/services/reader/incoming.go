@@ -78,7 +78,7 @@ func (self *Reader) handleIncoming(macAddress string, ipAddress string, isOrigin
 			GracePeriod: device.GracePeriod,
 		})
 
-		if settingR.Watch() {
+		if settingR.NotifyOnNewDevice() {
 			db.Create(&m.DeviceDiscoveryNotification{
 				DeviceID: device.ID,
 			})
@@ -86,6 +86,10 @@ func (self *Reader) handleIncoming(macAddress string, ipAddress string, isOrigin
 
 		if settingR.WatchNew() {
 			device.Update("watch", true)
+		}
+
+		if settingR.PingNew() {
+			device.Update("ping", true)
 		}
 
 		self.log.With(

@@ -28,11 +28,13 @@ func ToLocal(t time.Time) time.Time {
 	return t.In(lo.Must(time.LoadLocation(pkgConfig.Timezone())))
 }
 
-// TimeAgo formats a number of seconds as a relative time in the past.
+// FormatDuration formats a duration as a relative time.
 //
 // Precision is the number of units to include. For example, for 65 seconds a precision of 1 would
 // return "1 min" and a precision of 2 would return "1 min 5 secs".
-func TimeAgo(seconds int, long bool, precision int) string {
+func FormatDuration(duration time.Duration, long bool, precision int, suffix string) string {
+	seconds := int(duration.Seconds())
+
 	if seconds == 0 {
 		if long {
 			return "just now"
@@ -95,5 +97,11 @@ func TimeAgo(seconds int, long bool, precision int) string {
 		}
 	}
 
-	return strings.Join(parts, " ") + " ago"
+	s := strings.Join(parts, " ")
+
+	if suffix != "" {
+		return s + " " + suffix
+	}
+
+	return s
 }

@@ -42,8 +42,11 @@ func (self *Writer) Run() error {
 	defer handle.Close()
 
 	for {
-		lo.Must0(self.write(handle, iface, ipNet))
-		time.Sleep(settingR.ScanInterval())
+		if settingR.EnableDeviceScan() {
+			lo.Must0(self.write(handle, iface, ipNet))
+		}
+
+		time.Sleep(settingR.DeviceScanInterval())
 	}
 }
 

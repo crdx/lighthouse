@@ -15,16 +15,24 @@ func GetFuncMap() template.FuncMap {
 	return template.FuncMap{
 		"timeAgoLong": func(v any) string {
 			if t, found := reflectutil.GetTime(v); found {
-				return timeutil.TimeAgo(int(time.Since(t).Seconds()), true, 1)
+				return timeutil.FormatDuration(time.Since(t), true, 1, "ago")
 			}
 			return ""
 		},
 		"timeAgoShort": func(v any) string {
 			if t, found := reflectutil.GetTime(v); found {
-				return timeutil.TimeAgo(int(time.Since(t).Seconds()), false, 1)
+				return timeutil.FormatDuration(time.Since(t), false, 1, "ago")
 			}
 			return ""
 		},
+
+		"formatDurationLong": func(duration time.Duration) string {
+			return timeutil.FormatDuration(duration, true, 1, "")
+		},
+		"formatDurationShort": func(duration time.Duration) string {
+			return timeutil.FormatDuration(duration, false, 1, "")
+		},
+
 		"formatDateTimeSystem": func(v any) string {
 			if t, found := reflectutil.GetTime(v); found {
 				return timeutil.ToLocal(t).Format(constants.TimeFormatSystem)

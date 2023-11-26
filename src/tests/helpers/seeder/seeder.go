@@ -87,5 +87,11 @@ func Run() error {
 		Message:   "Edited device device1-625a5fa0-9b63-46d8-b4fa-578f92dca041",
 	})
 
+	db.Save(&m.Service{
+		DeviceID: 1,
+		Name:     "service1-f6d0b172-7e23-4d6c-a9bd-e456208c01fe",
+		Port:     80,
+	})
+
 	return nil
 }

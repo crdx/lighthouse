@@ -13,9 +13,16 @@ import (
 )
 
 type EditForm struct {
-	// General
-	Watch    bool `form:"watch"`
-	WatchNew bool `form:"watch_new"`
+	// Device Scanning
+	EnableDeviceScan   bool   `form:"enable_device_scan"`
+	DeviceScanInterval string `form:"device_scan_interval" validate:"required,duration,dmin=1 min,dmax=30 mins" transform:"trim"`
+	NotifyOnNewDevice  bool   `form:"notify_on_new_device"`
+	WatchNew           bool   `form:"watch_new"`
+	PingNew            bool   `form:"ping_new"`
+
+	// Service Scanning
+	EnableServiceScan   bool   `form:"enable_service_scan"`
+	ServiceScanInterval string `form:"service_scan_interval" validate:"required,duration,dmin=1 hour,dmax=1 week" transform:"trim"`
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
@@ -31,10 +38,6 @@ type EditForm struct {
 	// System
 	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
 	Timezone         string `form:"timezone"           validate:"required,timezone" transform:"trim"`
-
-	// Scanning
-	Passive      bool   `form:"passive"`
-	ScanInterval string `form:"scan_interval" validate:"required,duration,dmin=1 min,dmax=30 mins" transform:"trim"`
 }
 
 func List(c *fiber.Ctx) error {

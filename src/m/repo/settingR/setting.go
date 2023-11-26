@@ -11,8 +11,9 @@ import (
 )
 
 // General
-func Watch() bool    { return getBool("watch") }
-func WatchNew() bool { return getBool("watch_new") }
+func NotifyOnNewDevice() bool { return getBool("notify_on_new_device") }
+func WatchNew() bool          { return getBool("watch_new") }
+func PingNew() bool           { return getBool("ping_new") }
 
 // Mail
 func EnableMail() bool        { return getBool("enable_mail") }
@@ -25,9 +26,13 @@ func SMTPPort() string        { return get("smtp_port") }
 func SMTPUser() string        { return get("smtp_user") }
 func SMTPPass() string        { return get("smtp_pass") }
 
-// Scanning
-func Passive() bool               { return getBool("passive") }
-func ScanInterval() time.Duration { return lo.Must(duration.Parse(get("scan_interval"))) }
+// Device Scanning
+func EnableDeviceScan() bool            { return getBool("enable_device_scan") }
+func DeviceScanInterval() time.Duration { return getDuration("device_scan_interval") }
+
+// Service Scanning
+func EnableServiceScan() bool            { return getBool("enable_service_scan") }
+func ServiceScanInterval() time.Duration { return getDuration("service_scan_interval") }
 
 // System
 func MACVendorsAPIKey() string { return get("macvendors_api_key") }
@@ -62,6 +67,10 @@ func get(name string) string {
 	}
 
 	return cache[name]
+}
+
+func getDuration(name string) time.Duration {
+	return lo.Must(duration.Parse(get(name)))
 }
 
 // // Get returns a setting as an int.

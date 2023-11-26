@@ -27,6 +27,7 @@ type EditForm struct {
 	Notes       string `form:"notes" validate:"max=5000" transform:"trim"`
 	GracePeriod string `form:"grace_period" validate:"required,duration,dmin=1 min,dmax=60 mins" transform:"trim"`
 	Watch       bool   `form:"watch"`
+	Ping        bool   `form:"ping"`
 	Limit       string `form:"limit" validate:"omitempty,duration,dmin=1 min,dmax=1 week" transform:"trim"`
 }
 

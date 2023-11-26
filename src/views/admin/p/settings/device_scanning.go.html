@@ -1,0 +1,101 @@
+<div class="field is-horizontal" x-data="id">
+    <div class="field-label is-normal">
+        <label class="label">Enabled</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="checkbox"
+                       class="toggle"
+                       :id="id"
+                       name="{{ .fields.EnableDeviceScan.Name }}"
+                       {{ if .err }}{{ if eq .fields.EnableDeviceScan.Value "1" }}checked{{ end }}
+                       {{ else if .settings.EnableDeviceScan }}checked{{ end }}>
+                <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+            </div>
+            <p class="help">Listen for packets but don't actively send out any ARP or ICMP requests.</p>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal" x-data="id">
+    <div class="field-label is-normal">
+        <label class="label" :for="id">Scan Interval</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input class="input"
+                       type="text"
+                       :id="id"
+                       name="{{ .fields.DeviceScanInterval.Name }}"
+                       value="{{ if .err }}{{ .fields.DeviceScanInterval.Value }}{{ else }}{{ .settings.DeviceScanInterval }}{{ end }}">
+            </div>
+            {{ if .fields.DeviceScanInterval.Error }}<p class="help is-danger">{{ .fields.DeviceScanInterval.Error }}</p>{{ end }}
+            <p class="help">
+                How long to wait between device scans.
+                {{ template "p/help/duration" }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal" x-data="id">
+    <div class="field-label">
+        <label class="label">Notify on new device</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="checkbox"
+                       class="toggle"
+                       :id="id"
+                       name="{{ .fields.NotifyOnNewDevice.Name }}"
+                       {{ if .err }}{{ if eq .fields.NotifyOnNewDevice.Value "1" }}checked{{ end }}
+                       {{ else if .settings.NotifyOnNewDevice }}checked{{ end }}>
+                <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                <p class="help">Receive a notification if any new devices join the network.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal" x-data="id">
+    <div class="field-label is-normal">
+        <label class="label">Watch new devices</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="checkbox"
+                       class="toggle"
+                       :id="id"
+                       name="{{ .fields.WatchNew.Name }}"
+                       {{ if .err }}{{ if eq .fields.WatchNew.Value "1" }}checked{{ end }}
+                       {{ else if .settings.WatchNew }}checked{{ end }}>
+                <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                <p class="help">Automatically mark any new devices that join the network as watched.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="field is-horizontal" x-data="id">
+    <div class="field-label is-normal">
+        <label class="label">Ping new devices</label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="checkbox"
+                       class="toggle"
+                       :id="id"
+                       name="{{ .fields.PingNew.Name }}"
+                       {{ if .err }}{{ if eq .fields.PingNew.Value "1" }}checked{{ end }}
+                       {{ else if .settings.PingNew }}checked{{ end }}>
+                <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                <p class="help">Automatically mark any new devices that join the network as pingable.</p>
+            </div>
+        </div>
+    </div>
+</div>

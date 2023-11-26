@@ -22,6 +22,10 @@ func Scannable() []*m.Device {
 	return db.B[m.Device]("state = ? and origin = ?", StateOnline, false).Find()
 }
 
+func Pingable() []*m.Device {
+	return db.B[m.Device]("state = ? and origin = ? and ping = 1", StateOnline, false).Find()
+}
+
 type ListView struct {
 	ID         uint
 	Name       string

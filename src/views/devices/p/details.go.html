@@ -40,6 +40,11 @@
         </tr>
 
         <tr>
+            <th>Pingable</th>
+            <td>{{ template "p/state/bool" .Ping }}</td>
+        </tr>
+
+        <tr>
             <th>Grace Period</th>
             <td>{{ .GracePeriod }}</td>
         </tr>

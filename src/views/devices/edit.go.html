@@ -54,6 +54,26 @@
                 {{ if not .device.Origin }}
                     <div class="field is-horizontal" x-data="id">
                         <div class="field-label">
+                            <label class="label">Ping</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="checkbox"
+                                           class="toggle"
+                                           :id="id"
+                                           name="{{ .fields.Ping.Name }}"
+                                           {{ if .err }}{{ if eq .fields.Ping.Value "1" }}checked{{ end }}
+                                           {{ else if .device.Ping }}checked{{ end }}>
+                                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                                    <p class="help">Ping this device if it looks like it's about to go offline. If it's ignoring ARP requests then a ping may be more effective in provoking a response.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label">
                             <label class="label">Watch</label>
                         </div>
                         <div class="field-body">

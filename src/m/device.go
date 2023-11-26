@@ -33,6 +33,7 @@ type Device struct {
 	Notes               string       `gorm:"size:5000,not null"`
 	LastSeenAt          time.Time    `gorm:"not null"`
 	Watch               bool         `gorm:"not null"`
+	Ping                bool         `gorm:"not null"`
 	Limit               string       `gorm:"not null"`
 	GracePeriod         string       `gorm:"not null"`
 }
@@ -109,6 +110,11 @@ func (self *Device) Details() string {
 // Adapters returns all Adapters attached to this Device.
 func (self *Device) Adapters() []*Adapter {
 	return db.B[Adapter]("device_id = ?", self.ID).Order("last_seen_at DESC").Find()
+}
+
+// Services returns all Services found for this Device.
+func (self *Device) Services() []*Service {
+	return db.B[Service]("device_id = ?", self.ID).Order("port ASC").Find()
 }
 
 func (self *Device) UpdateState(state string) {
