@@ -21,7 +21,10 @@
             </div>
 
             {{ template "devices/p/adapters" . }}
-            {{ template "devices/p/services" . }}
+
+            {{ if and (.servicesEnabled) (not .device.Origin) }}
+                {{ template "devices/p/services" . }}
+            {{ end }}
         </div>
     </div>
 </div>

@@ -93,5 +93,10 @@ func Run() error {
 		Port:     80,
 	})
 
+	db.Save(&m.Setting{
+		Name:  "enable_service_scan",
+		Value: "1",
+	})
+
 	return nil
 }
