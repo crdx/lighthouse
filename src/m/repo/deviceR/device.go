@@ -56,11 +56,13 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 	}
 
 	filters := map[string]string{
-		"online":    fmt.Sprintf("AND state = '%s'", StateOnline),
-		"offline":   fmt.Sprintf("AND state = '%s'", StateOffline),
-		"watched":   "AND watch = 1",
-		"unwatched": "AND watch = 0",
-		"all":       "",
+		"online":     fmt.Sprintf("AND state = '%s'", StateOnline),
+		"offline":    fmt.Sprintf("AND state = '%s'", StateOffline),
+		"watched":    "AND watch = 1",
+		"unwatched":  "AND watch = 0",
+		"pingable":   "AND ping = 1",
+		"unpingable": "AND ping = 0",
+		"all":        "",
 	}
 
 	orderByTemplate, orderOK := orderByTemplates[sortColumn]
@@ -99,19 +101,23 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 }
 
 type Counters struct {
-	All       uint
-	Online    uint
-	Offline   uint
-	Watched   uint
-	Unwatched uint
+	All        uint
+	Online     uint
+	Offline    uint
+	Watched    uint
+	Unwatched  uint
+	Pingable   uint
+	Unpingable uint
 }
 
 func Counts() *Counters {
 	return &Counters{
-		All:       uint(db.B[m.Device]().Count()),
-		Online:    uint(db.B[m.Device]("state = ?", StateOnline).Count()),
-		Offline:   uint(db.B[m.Device]("state = ?", StateOffline).Count()),
-		Watched:   uint(db.B[m.Device]("watch = 1").Count()),
-		Unwatched: uint(db.B[m.Device]("watch = 0").Count()),
+		All:        uint(db.B[m.Device]().Count()),
+		Online:     uint(db.B[m.Device]("state = ?", StateOnline).Count()),
+		Offline:    uint(db.B[m.Device]("state = ?", StateOffline).Count()),
+		Watched:    uint(db.B[m.Device]("watch = 1").Count()),
+		Unwatched:  uint(db.B[m.Device]("watch = 0").Count()),
+		Pingable:   uint(db.B[m.Device]("ping = 1").Count()),
+		Unpingable: uint(db.B[m.Device]("ping = 0").Count()),
 	}
 }

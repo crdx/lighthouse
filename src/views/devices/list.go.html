@@ -17,6 +17,8 @@
                                 <option value="offline"{{ if eq .currentFilter "offline" }} selected{{ end }}>Offline ({{ .counts.Offline }})</option>
                                 <option value="watched"{{ if eq .currentFilter "watched" }} selected{{ end }}>Watched ({{ .counts.Watched }})</option>
                                 <option value="unwatched"{{ if eq .currentFilter "unwatched" }} selected{{ end }}>Unwatched ({{ .counts.Unwatched }})</option>
+                                <option value="pingable"{{ if eq .currentFilter "pingable" }} selected{{ end }}>Pingable ({{ .counts.Pingable }})</option>
+                                <option value="unpingable"{{ if eq .currentFilter "unpingable" }} selected{{ end }}>Unpingable ({{ .counts.Unpingable }})</option>
                             </select>
                         </div>
                     </div>
