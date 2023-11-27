@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"bytes"
+	"encoding/gob"
 	"net/http"
 	"time"
 
@@ -11,6 +13,7 @@ import (
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/session"
 	"github.com/gofiber/fiber/v2"
+	"github.com/samber/lo"
 )
 
 // Used to make sure with no shadow of a doubt that the submitted form is the login form.
@@ -116,5 +119,23 @@ func AutoLogin(role uint) fiber.Handler {
 		user.Update("last_visit_at", time.Now())
 		c.Locals(globals.CurrentUserKey, user.Fresh())
 		return c.Next()
+	}
+}
+
+func ExpireUserID(userId uint, exceptSessionId string) {
+	type session struct {
+		K string
+		V []byte
+	}
+
+	sessions := db.Query[[]session]("SELECT k, v FROM sessions WHERE k != ?", exceptSessionId)
+
+	for _, session := range sessions {
+		sessionData := map[string]any{}
+		lo.Must0(gob.NewDecoder(bytes.NewBuffer(session.V)).Decode(&sessionData))
+
+		if sessionUserId := sessionData["user_id"].(uint); sessionUserId == userId {
+			db.Exec("DELETE FROM sessions WHERE k = ?", session.K)
+		}
 	}
 }
