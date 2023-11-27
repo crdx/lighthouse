@@ -22,7 +22,7 @@
 
             {{ template "devices/p/adapters" . }}
 
-            {{ if and (.servicesEnabled) (not .device.Origin) }}
+            {{ if and (.serviceScanEnabled) (not .device.Origin) }}
                 {{ template "devices/p/services" . }}
             {{ end }}
         </div>

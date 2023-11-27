@@ -20,14 +20,14 @@ func View(c *fiber.Ctx) error {
 	}
 
 	return c.Render("devices/view", fiber.Map{
-		"mode":            "view",
-		"device":          device,
-		"devices":         deviceR.All(),
-		"adapters":        device.Adapters(),
-		"services":        device.Services(),
-		"serviceTTL":      probeR.TTL(),
-		"servicesEnabled": settingR.EnableServiceScan(),
-		"activity":        deviceStateLogR.LatestActivityForDevice(device.ID, rows),
-		"globals":         globals.Get(c),
+		"mode":               "view",
+		"device":             device,
+		"devices":            deviceR.All(),
+		"adapters":           device.Adapters(),
+		"services":           device.Services(),
+		"serviceTTL":         probeR.TTL(),
+		"serviceScanEnabled": settingR.EnableServiceScan(),
+		"activity":           deviceStateLogR.LatestActivityForDevice(device.ID, rows),
+		"globals":            globals.Get(c),
 	})
 }
