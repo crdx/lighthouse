@@ -48,28 +48,30 @@ func (self *Prober) run() {
 
 	for _, device := range devices {
 		for _, adapter := range device.Adapters() {
-			if adapter.IsOnline() {
-				ports := lo.Must(probe.Scan(adapter.MACAddress, adapter.IPAddress)).Ports
-
-				for _, port := range ports {
-					self.log.Info(
-						"found service",
-						"device", device.DisplayName(),
-						"name", probe.ServiceName(port),
-						"port", port,
-						"ip", adapter.IPAddress,
-					)
-
-					db.Save(&m.ScanResult{
-						ScanID:   scan.ID,
-						DeviceID: device.ID,
-						Port:     port,
-					})
-				}
-
-				logCurrentServices(device, ports)
-				break
+			if !adapter.IsOnline() {
+				continue
 			}
+
+			ports := lo.Must(probe.Scan(adapter.MACAddress, adapter.IPAddress)).Ports
+
+			for _, port := range ports {
+				self.log.Info(
+					"found service",
+					"device", device.DisplayName(),
+					"name", probe.ServiceName(port),
+					"port", port,
+					"ip", adapter.IPAddress,
+				)
+
+				db.Save(&m.ScanResult{
+					ScanID:   scan.ID,
+					DeviceID: device.ID,
+					Port:     port,
+				})
+			}
+
+			process(device, ports)
+			break
 		}
 	}
 
@@ -77,12 +79,12 @@ func (self *Prober) run() {
 	self.log.Info("service scan completed")
 }
 
-func logCurrentServices(device *m.Device, ports []uint) {
+func process(device *m.Device, foundPorts []uint) {
 	services := db.B[m.Service]("device_id = ?", device.ID).Find()
 
 	var servicePorts []uint
 	for _, service := range services {
-		if !slices.Contains(ports, service.Port) {
+		if !slices.Contains(foundPorts, service.Port) {
 			if service.UpdatedAt.Before(time.Now().Add(-probeR.TTL())) {
 				service.Delete()
 			}
@@ -93,13 +95,29 @@ func logCurrentServices(device *m.Device, ports []uint) {
 		servicePorts = append(servicePorts, service.Port)
 	}
 
-	for _, port := range ports {
+	for _, port := range foundPorts {
 		if !slices.Contains(servicePorts, port) {
-			db.Create(&m.Service{
+			service := db.Create(&m.Service{
 				DeviceID:   device.ID,
 				Port:       port,
 				LastSeenAt: time.Now(),
 			})
+
+			if settingR.NotifyOnNewService() {
+				previouslyFound := db.B[m.Service](
+					"device_id = ? and port = ? and id != ?",
+					device.ID,
+					port,
+					service.ID,
+				).Unscoped().Exists()
+
+				if !previouslyFound {
+					db.Create(&m.DeviceServiceNotification{
+						DeviceID:  device.ID,
+						ServiceID: service.ID,
+					})
+				}
+			}
 		}
 	}
 }

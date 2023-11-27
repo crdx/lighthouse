@@ -2,6 +2,7 @@ package m
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"crdx.org/db"
@@ -50,4 +51,16 @@ func (self *Service) DisplayName() string {
 
 func (self *Service) AuditName() string {
 	return fmt.Sprintf("%s (ID: %d) of device %s", self.DisplayName(), self.ID, self.Device().AuditName())
+}
+
+func (self *Service) Details() string {
+	var s strings.Builder
+
+	name := self.DisplayName()
+	if name == "" {
+		name = "unknown"
+	}
+
+	s.WriteString(fmt.Sprintf("port %d (%s) is open on %s", self.Port, name, self.Device().DisplayName()))
+	return strings.TrimSpace(s.String())
 }

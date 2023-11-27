@@ -10,6 +10,7 @@ import (
 	"crdx.org/lighthouse/services"
 	"crdx.org/lighthouse/services/notifier/discovery"
 	"crdx.org/lighthouse/services/notifier/limit"
+	"crdx.org/lighthouse/services/notifier/service"
 	"crdx.org/lighthouse/services/notifier/state"
 	"github.com/samber/lo"
 )
@@ -28,9 +29,10 @@ func (self *Notifier) Init(args *services.Args) error {
 }
 
 func (*Notifier) Run() error {
-	add(state.Notifications())
 	add(discovery.Notifications())
 	add(limit.Notifications())
+	add(service.Notifications())
+	add(state.Notifications())
 
 	return nil
 }

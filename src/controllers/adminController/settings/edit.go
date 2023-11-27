@@ -23,6 +23,7 @@ type EditForm struct {
 	// Service Scanning
 	EnableServiceScan   bool   `form:"enable_service_scan"`
 	ServiceScanInterval string `form:"service_scan_interval" validate:"required,duration,dmin=1 hour,dmax=1 week" transform:"trim"`
+	NotifyOnNewService  bool   `form:"notify_on_new_service"`
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
