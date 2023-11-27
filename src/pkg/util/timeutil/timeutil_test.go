@@ -64,7 +64,7 @@ func TestToLocal(t *testing.T) {
 	}
 }
 
-func TestTimeAgo(t *testing.T) {
+func TestFormatDuration(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -72,27 +72,28 @@ func TestTimeAgo(t *testing.T) {
 		inputLong      bool
 		inputPrecision int
 		expected       string
+		suffix         string
 	}{
-		{0, false, 0, "now"},
-		{0, true, 0, "just now"},
-		{60 * time.Second, false, 0, "1m ago"},
-		{60 * time.Second, true, 0, "1 min ago"},
-		{3600 * time.Second, false, 0, "1h ago"},
-		{3660 * time.Second, false, 1, "1h ago"},
-		{3660 * time.Second, true, 1, "1 hour ago"},
-		{3660 * time.Second, true, 2, "1 hour 1 min ago"},
-		{90000 * time.Second, false, 2, "1d 1h ago"},
-		{90000 * time.Second, true, 2, "1 day 1 hour ago"},
-		{1234567 * time.Second, true, 2, "2 weeks 6 hours ago"},
-		{12345678 * time.Second, true, 1, "20 weeks ago"},
-		{123456789 * time.Second, true, 2, "3 years 48 weeks ago"},
+		{0, false, 0, "now", "ago"},
+		{0, true, 0, "just now", "ago"},
+		{60 * time.Second, false, 0, "1m ago", "ago"},
+		{60 * time.Second, true, 0, "1 min ago", "ago"},
+		{3600 * time.Second, false, 0, "1h ago", "ago"},
+		{3660 * time.Second, false, 1, "1h ago", "ago"},
+		{3660 * time.Second, true, 1, "1 hour ago", "ago"},
+		{3660 * time.Second, true, 2, "1 hour 1 min ago", "ago"},
+		{90000 * time.Second, false, 2, "1d 1h", ""},
+		{90000 * time.Second, true, 2, "1 day 1 hour ago", "ago"},
+		{1234567 * time.Second, true, 2, "2 weeks 6 hours", ""},
+		{12345678 * time.Second, true, 1, "20 weeks ago", "ago"},
+		{123456789 * time.Second, true, 2, "3 years 48 weeks ago", "ago"},
 	}
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d,%v,%d", testCase.inputN, testCase.inputLong, testCase.inputPrecision), func(t *testing.T) {
 			t.Parallel()
 
-			actual := timeutil.FormatDuration(testCase.inputN, testCase.inputLong, testCase.inputPrecision, "ago")
+			actual := timeutil.FormatDuration(testCase.inputN, testCase.inputLong, testCase.inputPrecision, testCase.suffix)
 			assert.Equal(t, testCase.expected, actual)
 		})
 	}
