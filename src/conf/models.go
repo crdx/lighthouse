@@ -12,6 +12,7 @@ var models = []db.Model{
 	&m.AuditLog{},
 	&m.Device{},
 	&m.DeviceDiscoveryNotification{},
+	&m.DeviceIPAddressLog{},
 	&m.DeviceLimitNotification{},
 	&m.DeviceServiceNotification{},
 	&m.DeviceStateLog{},

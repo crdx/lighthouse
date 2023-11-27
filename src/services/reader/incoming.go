@@ -48,6 +48,18 @@ func (self *Reader) handleIncoming(macAddress string, ipAddress string, isOrigin
 		}
 	}
 
+	ipChanged := adapter.IPAddress != ipAddress
+
+	if ipChanged && found {
+		adapter.Update("ip_address", ipAddress)
+	}
+	if ipChanged || !found {
+		db.Create(&m.DeviceIPAddressLog{
+			DeviceID:  device.ID,
+			IPAddress: ipAddress,
+		})
+	}
+
 	device.Update("last_seen_at", time.Now())
 	adapter.Update("last_seen_at", time.Now())
 
@@ -105,9 +117,6 @@ func findOrCreate(macAddress string, ipAddress string) (*m.Device, *m.Adapter, b
 
 	if found {
 		device = adapter.Device()
-		if adapter.IPAddress != ipAddress {
-			adapter.Update("ip_address", ipAddress)
-		}
 	} else {
 		device = db.Create(&m.Device{
 			State:          deviceR.StateOnline,

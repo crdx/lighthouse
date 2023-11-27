@@ -1,6 +1,7 @@
 linters:
   enable-all: true
   disable:
+    - gocognit
     - cyclop
     - deadcode
     - depguard

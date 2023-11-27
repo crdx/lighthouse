@@ -19,4 +19,5 @@ var dbMigrations = []*db.Migration{
 	migrations.AddAuditLogDeviceIdConstraint("AddAuditLogDeviceIdConstraint"),
 	migrations.RenameSettings("RenameSettings"),
 	migrations.AddServiceConstraints("AddServiceConstraints"),
+	migrations.AddDeviceIpAddressLogConstraints("AddDeviceIpAddressLogConstraints"),
 }
