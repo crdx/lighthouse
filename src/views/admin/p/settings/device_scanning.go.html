@@ -13,7 +13,7 @@
                        {{ else if .settings.EnableDeviceScan }}checked{{ end }}>
                 <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
             </div>
-            <p class="help">Listen for packets but don't actively send out any ARP or ICMP requests.</p>
+            <p class="help">Scan network for devices.</p>
         </div>
     </div>
 </div>
@@ -33,7 +33,7 @@
             </div>
             {{ if .fields.DeviceScanInterval.Error }}<p class="help is-danger">{{ .fields.DeviceScanInterval.Error }}</p>{{ end }}
             <p class="help">
-                How long to wait between device scans.
+                How long to wait between network scans.
                 {{ template "p/help/duration" }}
             </p>
         </div>
@@ -94,7 +94,7 @@
                        {{ if .err }}{{ if eq .fields.PingNew.Value "1" }}checked{{ end }}
                        {{ else if .settings.PingNew }}checked{{ end }}>
                 <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
-                <p class="help">Automatically mark any new devices that join the network as pingable.</p>
+                <p class="help">Automatically mark any new devices that join the network as pingable. Pings are only sent once a device has not responded for half its grace period.</p>
             </div>
         </div>
     </div>
