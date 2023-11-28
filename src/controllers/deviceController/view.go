@@ -14,7 +14,7 @@ import (
 func View(c *fiber.Ctx) error {
 	device := util.Param[m.Device](c)
 
-	rows := 6
+	rows := 7
 	if device.Notes != "" {
 		rows++
 	}
