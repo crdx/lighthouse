@@ -28,6 +28,8 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 		ViewsLayout:             "layouts/main",
 		Immutable:               true, // https://docs.gofiber.io/#zero-allocation
 		EnableTrustedProxyCheck: true,
+		TrustedProxies:          []string{"127.0.0.1"},
+		ProxyHeader:             "X-Forwarded-For",
 	}
 
 	if env.Production() {
