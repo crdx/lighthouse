@@ -86,3 +86,24 @@ func TestHashAndVerifyHash(t *testing.T) {
 		})
 	}
 }
+
+func TestMapTrimSpace(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected string
+	}{
+		{"   foo   ", "foo"},
+		{"\t\n  foo  \n\t", "foo"},
+		{"foo", "foo"},
+		{"", ""},
+		{"   ", ""},
+		{"\t\n\r ", ""},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.input, func(t *testing.T) {
+			actual := stringutil.MapTrimSpace(testCase.input, 0)
+			assert.Equal(t, testCase.expected, actual)
+		})
+	}
+}

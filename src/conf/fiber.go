@@ -5,12 +5,15 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
+	"strings"
 
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/util"
+	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/views/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"github.com/samber/lo"
 )
 
 func GetFiberConfig(views fs.FS) fiber.Config {
@@ -24,12 +27,15 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 
 	// https://docs.gofiber.io
 	config := fiber.Config{
-		Views:                   viewsEngine,
-		ViewsLayout:             "layouts/main",
-		Immutable:               true, // https://docs.gofiber.io/#zero-allocation
-		EnableTrustedProxyCheck: true,
-		TrustedProxies:          []string{"127.0.0.1"},
-		ProxyHeader:             "X-Forwarded-For",
+		Views:       viewsEngine,
+		ViewsLayout: "layouts/main",
+		Immutable:   true, // https://docs.gofiber.io/#zero-allocation
+	}
+
+	if env.TrustedProxies() != "" {
+		config.EnableTrustedProxyCheck = true
+		config.TrustedProxies = lo.Map(strings.Split(env.TrustedProxies(), ","), stringutil.MapTrimSpace)
+		config.ProxyHeader = "X-Forwarded-For"
 	}
 
 	if env.Production() {

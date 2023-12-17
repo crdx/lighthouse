@@ -46,6 +46,8 @@ var (
 	LiveReload      = func() bool { return truthy(env["LIVE_RELOAD"]) }
 	DisableAuth     = func() bool { return truthy(env["DISABLE_AUTH"]) }
 	DisableServices = func() bool { return truthy(env["DISABLE_SERVICES"]) }
+
+	TrustedProxies = func() string { return env["TRUSTED_PROXIES"] }
 )
 
 func Init() {

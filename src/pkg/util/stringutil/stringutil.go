@@ -2,6 +2,7 @@ package stringutil
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/samber/lo"
 	"github.com/yuin/goldmark"
@@ -58,4 +59,10 @@ func Hash(value string) string {
 // VerifyHashAndPassword verifies a bcrypt hash against a password.
 func VerifyHashAndPassword(hash string, password string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
+}
+
+// MapTrimSpace is a lo.Map-compatible function that trims leading and trailing spaces from its
+// arguments.
+func MapTrimSpace(s string, _ int) string {
+	return strings.TrimSpace(s)
 }

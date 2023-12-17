@@ -157,6 +157,13 @@ The port to listen on. If not specified in development mode then lighthouse will
 - Value: password e.g., `anon`
 - Default: `anon`
 
+### TRUSTED_PROXIES
+
+- Required: no
+- Value: comma-separated list of IP addresses e.g. `127.0.0.1`
+
+If running behind a reverse proxy then set this to the proxy's IP address(es). This will ensure the correct IP address is displayed in the audit log.
+
 ## Mail
 
 Mail is optional, but without it the only way to see notifications is to manually check using the web interface. Once lighthouse is up and running go to settings and configure the SMTP settings.
