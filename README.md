@@ -2,24 +2,42 @@
 
 **lighthouse** is a network monitor designed keep you aware of what's happening on your home network.
 
-In a nutshell, lighthouse periodically sends out [ARP](https://en.wikipedia.org/wiki/Address_Resolution_Protocol) requests to all hosts within a subnet and waits for responses. A responsive host is considered online, and a non-responsive host is considered offline after a (configurable) amount of time has passed.
+lighthouse periodically sends out [ARP](https://en.wikipedia.org/wiki/Address_Resolution_Protocol) requests to all hosts within a subnet and waits for responses. A responsive host is considered online, and a non-responsive host is considered offline after a (configurable) amount of time has passed. As some devices can't be relied on to reply to ARP requests in a timely fashion, if it looks like a device is about go offline an ICMP ping is sent to it to try to provoke a response, as a last-ditch effort.
 
-Devices can be configured so a notification is triggered when they go offline or come online, and the whole network can be watched so notifications are sent when a new device joins the network.
+lighthouse was born out of frustration with the [Fingbox](https://www.fing.com)'s increasing tendency to gate new features behind their premium offering while persistently upgrade-nagging whenever the app is opened.
 
-lighthouse was born out of frustration with the [Fingbox](https://www.fing.com)'s increasing tendency to gate new features behind their premium offering while consistently upgrade-nagging whenever the app is opened.
+## Features
+
+- Track devices on the local network using ARP and ICMP
+- Notify when devices go offline or come online
+- Notify when devices stay online for longer than a specific amount of time
+- Notify when an unknown device joins the network
+- Service (port) scanning with notifications when new services are found
+- Send ICMP packets to devices before they go offline to provoke a response as a last-ditch effort
+- Assign icons to devices for easier identification
+- Track DHCP-provided device hostname for easier identification
+- User roles: admin, editor, viewer
+- Support static mappings to work around dodgy devices like repeaters that rewrite ARP packets
+- Passive mode which does not actively send out any packets
+- Device vendor lookup using [gopacket's db](https://github.com/google/gopacket) with [macvendors](https://macvendors.com) fallback (requires API key)
+- Support for devices with multiple adapters with different MAC addresses e.g. a laptop with ethernet & Wi-Fi
+- Activity history, notification history, and audit log
+- Minimal JavaScript (but not _none_)
+- No remote dependencies
+- Easy deployment with a single binary
 
 ## Deployment (binary)
 
-The simplest way to get lighthouse running is with the compiled binary, a `.env` file, and a local MySQL or MariaDB database.
+The simplest way to run lighthouse is with the compiled binary, a `.env` file, and a MySQL or MariaDB database.
 
-Permission is needed to send raw packets so lighthouse needs to run either as root (not recommended) or with capability `cap_net_raw`.
+Permission is needed to send raw packets so it needs to run either as root (not recommended) or with capability `cap_net_raw`.
 
 ```bash
 just make
 sudo setcap cap_net_raw+ep dist/lighthouse
 ```
 
-Set up the `.env` file (see [Configuration](#configuration)), then run lighthouse with `--env`.
+Set up the `.env` file (see [Configuration](#configuration)), then run with `--env`.
 
 ```bash
 dist/lighthouse --env .env
@@ -27,7 +45,7 @@ dist/lighthouse --env .env
 
 ## Deployment (docker)
 
-Deployment with docker is also an option. In this case you'll need the built image, a `.env` file, and a local MySQL or MariaDB database. Because lighthouse needs to run with `network_mode: host` (to be able to monitor the host network) the local database server can be installed directly on the host or as an additional service placed in `docker-compose.yml` (which should also be `network_mode: host`).
+Docker is also an option. In this case you'll need the built image, a `.env` file, and a MySQL or MariaDB database. Because it needs to run with `network_mode: host` (to be able to monitor the host network) the database server can be installed directly on the host or as an additional service placed in `docker-compose.yml` (which should also be `network_mode: host`).
 
 ```yaml
   db:
@@ -83,16 +101,14 @@ The execution mode. Unless you're working on lighthouse, this should always be s
 
 The interface to bind to.
 
-`0.0.0.0` binds to all interfaces making lighthouse accessible to all hosts, while `127.0.0.1` will bind to the loopback interface and restrict it to the local system. Other values will bind to that specific interface.
-
-The exact value to set here will depend on your network configuration.
+`0.0.0.0` binds to all interfaces allowing access for all hosts, while `127.0.0.1` binds to the loopback interface and restricts access to the local system. Other values will bind to that specific interface. The exact value to set here will depend on your network configuration.
 
 ### PORT
 
 - Required: only if `MODE` is `production`
 - Value: port, e.g., `1337`
 
-The port to listen on. If not specified in development mode then lighthouse will listen on a random port.
+The port to listen on. If not specified in development mode then a random port will be used.
 
 ### LOG_TYPE
 
@@ -166,7 +182,7 @@ If running behind a reverse proxy then set this to the proxy's IP address(es). T
 
 ## Mail
 
-Mail is optional, but without it the only way to see notifications is to manually check using the web interface. Once lighthouse is up and running go to settings and configure the SMTP settings.
+Mail is optional, but without it the only way to see notifications is to manually check using the web interface. Once up and running go to settings and configure the SMTP settings.
 
 ## Tests
 
