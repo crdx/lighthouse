@@ -2,7 +2,8 @@
 /bin/
 /logs/
 
-# sfe: ignore next 3
+# sfe: ignore next 4
 /TODO.md
 /.env
 /.env.prod
+internal.just

@@ -4,6 +4,8 @@ REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
+import? 'internal.just'
+
 set dotenv-load := true
 
 [private]
@@ -51,16 +53,6 @@ set dotenv-load := true
 # stop the container
 @down:
     docker-compose down
-
-# deploy the container
-@deploy: build
-    deploy-container \
-        --host s \
-        --image "{{ IMAGE_NAME }}" \
-        --dir "{{ REMOTE_DIR }}" \
-        --compose docker-compose.yml \
-        --add .env.prod \
-        --init deploy/init
 
 # start a shell in the app container
 @shell: build
@@ -123,14 +115,6 @@ test-file path:
 # drop the dev db
 @drop-db:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
-
-# connect to the live db
-@live-db:
-    ssh-to s -t mariadb {{ DB_NAME }}
-
-# pull down the live db
-@pull:
-    importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
 # scaffold a new service (name is lowercase e.g. watcher)
 @new-service name:
