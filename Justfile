@@ -1,8 +1,9 @@
 BIN_PATH := 'dist/lighthouse'
-IMAGE_NAME := 'lighthouse_app'
-REMOTE_DIR := 'lighthouse'
-DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
+
+mod make
+mod container
+mod db
 
 import? 'internal.just'
 
@@ -13,7 +14,7 @@ set dotenv-load := true
     just --list --unsorted
 
 # start development
-@dev: make-autocap
+@dev: build-autocap
     watchexec \
         --no-vcs-ignore \
         -w .env \
@@ -23,7 +24,7 @@ set dotenv-load := true
         -r 'just redev'
 
 # start development without live reload
-@devn: make-autocap
+@devn: build-autocap
     LIVE_RELOAD=0 just dev
 
 # start development with debug logging and no services
@@ -39,25 +40,8 @@ set dotenv-load := true
     xdg-open http://$HOST:$PORT
 
 # build binary
-@make:
-    mkif {{ BIN_PATH }} $(find src -type f) -x 'just remake'
-
-# build the container
 @build:
-    docker-compose build
-
-# start the container
-@up: build
-    docker-compose up
-
-# stop the container
-@down:
-    docker-compose down
-
-# start a shell in the app container
-@shell: build
-    docker-compose run app bash || true
-    docker-compose down
+    mkif {{ BIN_PATH }} $(find src -type f) -x 'just rebuild'
 
 # run tests
 test:
@@ -108,48 +92,15 @@ test-file path:
         -e src/assets/alpine.min.js \
         -e src/assets/bulma.min.css
 
-# connect to the dev db
-@db:
-    mariadb {{ DB_NAME }}
-
-# drop the dev db
-@drop-db:
-    echo 'drop database if exists {{ DB_NAME }}' | mariadb
-
-# scaffold a new service (name is lowercase e.g. watcher)
-@new-service name:
-    mkdir -pv src/services/{{ name }}
-    touch src/services/{{ name }}/{{ name }}.go
-    echo 'package {{ name }}' > src/services/{{ name }}/{{ name }}.go
-
-# scaffold a new model (name is lowercase e.g. device)
-@new-model name:
-    touch src/m/{{ name }}.go
-    echo 'package m' > src/m/{{ name }}.go
-    mkdir src/m/repo/{{ name }}R
-    touch src/m/repo/{{ name }}R/{{ name }}.go
-    echo 'package {{ name }}R' > src/m/repo/{{ name }}R/{{ name }}.go
-
-# scaffold a new controller (name is lowercase e.g. device)
-@new-controller name:
-    mkdir -pv src/controllers/{{ name }}Controller
-    touch src/controllers/{{ name }}Controller/routes.go
-    touch src/controllers/{{ name }}Controller/routes_test.go
-    echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/routes.go
-    echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/routes_test.go
-
-# scaffold a new migration (name is ProperCase with no punctuation)
-[no-exit-message]
-@new-migration name:
-    go run src/cmd/mkmigration/main.go "{{ name }}"
+# ——————————————————————————————————————————————————————————————————————————————————————————————————
 
 [private]
-make-autocap:
+build-autocap:
     #!/bin/bash
-    mkif {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go -x 'just remake-autocap'
+    mkif {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go -x 'just rebuild-autocap'
 
 [private]
-remake-autocap:
+rebuild-autocap:
     #!/bin/bash
     set -e
     sudo rm -f {{ AUTOCAP_BIN_PATH }}
@@ -158,7 +109,7 @@ remake-autocap:
     sudo chmod u+s {{ AUTOCAP_BIN_PATH }}
 
 [private]
-@redev: make
+@redev: build
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
     {{ BIN_PATH }} --env .env
 
@@ -167,7 +118,7 @@ remake-autocap:
     cd src && go generate ./...
 
 [private]
-@remake: generate
+@rebuild: generate
     cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
 
 [private]
