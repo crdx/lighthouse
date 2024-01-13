@@ -1,3 +1,5 @@
+set quiet
+
 BIN_PATH := 'dist/lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
@@ -10,11 +12,11 @@ import? 'internal.just'
 set dotenv-load := true
 
 [private]
-@help:
+help:
     just --list --unsorted
 
 # start development
-@dev: build-autocap
+dev: build-autocap
     watchexec \
         --no-vcs-ignore \
         -w .env \
@@ -24,19 +26,19 @@ set dotenv-load := true
         -r 'just redev'
 
 # start development without live reload
-@devn: build-autocap
+devn: build-autocap
     LIVE_RELOAD=0 just dev
 
 # start development with debug logging and no services
-@devd:
+devd:
     DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 just dev
 
 # start development with debug logging
-@devdd:
+devdd:
     LIGHTHOUSE_DEBUG=1 just dev
 
 # build binary
-@build:
+build:
     mkif {{ BIN_PATH }} $(find src -type f) -x 'just rebuild'
 
 # run tests
@@ -71,19 +73,19 @@ test-file path:
     # go tool pprof -png -output ../cpu.png ../cpu.prof
 
 # check everything
-@check: lint test
+check: lint test
 
 # run linter
-@lint:
+lint:
     # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
     cd src && go vet -loopclosure=false ./... && golangci-lint run
 
 # run formatter
-@fmt:
+fmt:
     cd src && go fmt ./...
 
 # show code stats
-@sloc:
+sloc:
     tokei -tGo,HTML,CSS,JavaScript \
         -e src/assets/alpine.min.js \
         -e src/assets/bulma.min.css
@@ -105,18 +107,18 @@ rebuild-autocap:
     sudo chmod u+s {{ AUTOCAP_BIN_PATH }}
 
 [private]
-@redev: build
+redev: build
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
     {{ BIN_PATH }} --env .env
 
 [private]
-@generate:
+generate:
     cd src && go generate ./...
 
 [private]
-@rebuild: generate
+rebuild: generate
     cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
 
 [private]
-@clean:
+clean:
     rm -fv {{ BIN_PATH }}
