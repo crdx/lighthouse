@@ -39,16 +39,23 @@ func main() {
 	code.WriteString("package conf\n\n")
 	code.WriteString("import (\n")
 	code.WriteString("\t\"crdx.org/db\"\n")
-	code.WriteString("\t\"crdx.org/lighthouse/migrations\"\n")
+	if len(migrationNames) > 0 {
+		code.WriteString("\t\"crdx.org/lighthouse/migrations\"\n")
+	}
 	code.WriteString(")\n\n")
 	code.WriteString("//  GENERATED CODE — DO NOT EDIT \n\n")
-	code.WriteString("var dbMigrations = []*db.Migration{\n")
 
-	for _, name := range migrationNames {
-		code.WriteString(fmt.Sprintf("\tmigrations.%s(\"%s\"),\n", name, name))
+	if len(migrationNames) == 0 {
+		code.WriteString("var dbMigrations = []*db.Migration{}\n")
+	} else {
+		code.WriteString("var dbMigrations = []*db.Migration{\n")
+
+		for _, name := range migrationNames {
+			code.WriteString(fmt.Sprintf("\tmigrations.%s(\"%s\"),\n", name, name))
+		}
+
+		code.WriteString("}\n")
 	}
-
-	code.WriteString("}\n")
 
 	lo.Must0(os.WriteFile("conf/migrations.go", []byte(code.String()), 0o644))
 }
