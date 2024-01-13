@@ -39,20 +39,20 @@
                 </thead>
                 <tbody>
                     {{ range .devices }}
-                    <tr {{ if ne .State "online" }}class="has-text-grey"{{ end }}>
-                        <td class="min-column">
-                            {{ template "devices/p/icon" . }}
-                        </td>
-                        <td>
-                            <div><a href="/device/{{ .ID }}">{{ template "p/name/device" .Name }}</a></div>
-                            <div class="is-hidden-tablet mono has-text-grey">{{ .IPAddress }}</div>
-                        </td>
-                        <td class="is-hidden-mobile mono">{{ .IPAddress }}</td>
-                        <td class="is-hidden-touch ">{{ template "p/name/vendor" .Vendor }}</td>
-                        <td class="is-hidden-mobile mono">{{ .MACAddress }}</td>
-                        <td class="min-column">{{ template "p/time/rel" .LastSeenAt }}</td>
-                        <td class="min-column is-hidden-mobile">{{ template "p/state/bool" .Watch }}</td>
-                    </tr>
+                        <tr {{ if ne .State "online" }}class="has-text-grey"{{ end }}>
+                            <td class="min-column">
+                                {{ template "devices/p/icon" . }}
+                            </td>
+                            <td>
+                                <div><a href="/device/{{ .ID }}">{{ template "p/name/device" .Name }}</a></div>
+                                <div class="is-hidden-tablet mono has-text-grey">{{ .IPAddress }}</div>
+                            </td>
+                            <td class="is-hidden-mobile mono">{{ .IPAddress }}</td>
+                            <td class="is-hidden-touch ">{{ template "p/name/vendor" .Vendor }}</td>
+                            <td class="is-hidden-mobile mono">{{ .MACAddress }}</td>
+                            <td class="min-column">{{ template "p/time/rel" .LastSeenAt }}</td>
+                            <td class="min-column is-hidden-mobile">{{ template "p/state/bool" .Watch }}</td>
+                        </tr>
                     {{ end }}
                 </tbody>
             </table>
