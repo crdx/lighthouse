@@ -12,7 +12,16 @@
             <tr>
                 <td>
                     {{ if .UserID.Valid }}
-                        {{ (index $.users .UserID.Value).Username }}
+                        {{ $user := (index $.users .UserID.Value) }}
+                        {{ if $user.DeletedAt.Valid }}
+                            <span class="is-strikethrough hint--bottom hint--rounded" aria-label="This user was deleted {{ timeAgoLong $user.DeletedAt.Value }}">
+                        {{ end }}
+
+                        {{ $user.Username }}
+
+                        {{ if .DeletedAt.Valid }}
+                            </span>
+                        {{ end }}
                     {{ else }}
                         <em>None</em>
                     {{ end }}

@@ -13,8 +13,8 @@ func List(c *fiber.Ctx) error {
 		"tab":     "audit",
 		"mode":    "list",
 		"log":     db.B[m.AuditLog]().Order("created_at DESC").Find(),
-		"users":   dbutil.MapByID(db.B[m.User]().Find()),
-		"devices": dbutil.MapByID(db.B[m.Device]().Find()),
+		"users":   dbutil.MapByID(db.B[m.User]().Unscoped().Find()),
+		"devices": dbutil.MapByID(db.B[m.Device]().Unscoped().Find()),
 		"globals": globals.Get(c),
 	})
 }

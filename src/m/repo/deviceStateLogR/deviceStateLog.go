@@ -61,9 +61,6 @@ func GetListView(deviceID uint, page uint, perPage uint) []ListView {
 		INNER JOIN devices D on D.id = DSL.device_id
 	`)
 
-	q.And("D.deleted_at IS NULL")
-	q.And("DSL.deleted_at IS NULL")
-
 	if deviceID != 0 {
 		q.And("device_id = ?", deviceID)
 	}
