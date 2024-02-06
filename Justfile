@@ -90,6 +90,10 @@ sloc:
         -e src/assets/alpine.min.js \
         -e src/assets/bulma.min.css
 
+# deploy the container
+deploy:
+    just container::deploy
+
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
 
 [private]
