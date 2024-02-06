@@ -39,16 +39,23 @@ func main() {
 	code.WriteString("package conf\n\n")
 	code.WriteString("import (\n")
 	code.WriteString("\t\"crdx.org/db\"\n")
-	code.WriteString("\t\"crdx.org/lighthouse/m\"\n")
+	if len(modelNames) > 0 {
+		code.WriteString("\t\"crdx.org/lighthouse/m\"\n")
+	}
 	code.WriteString(")\n\n")
 	code.WriteString("//  GENERATED CODE — DO NOT EDIT \n\n")
-	code.WriteString("var models = []db.Model{\n")
 
-	for _, model := range modelNames {
-		code.WriteString(fmt.Sprintf("\t&m.%s{},\n", model))
+	if len(modelNames) == 0 {
+		code.WriteString("var models = []db.Model{}\n")
+	} else {
+		code.WriteString("var models = []db.Model{\n")
+
+		for _, model := range modelNames {
+			code.WriteString(fmt.Sprintf("\t&m.%s{},\n", model))
+		}
+
+		code.WriteString("}\n")
 	}
-
-	code.WriteString("}\n")
 
 	lo.Must0(os.WriteFile("conf/models.go", []byte(code.String()), 0o644))
 }
