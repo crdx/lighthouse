@@ -29,7 +29,7 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 	config := fiber.Config{
 		Views:       viewsEngine,
 		ViewsLayout: "layouts/main",
-		Immutable:   true, // https://docs.gofiber.io/#zero-allocation
+		Immutable:   false, // https://docs.gofiber.io/#zero-allocation
 	}
 
 	if env.TrustedProxies() != "" {
@@ -59,6 +59,6 @@ func GetTestFiberConfig() fiber.Config {
 	return fiber.Config{
 		Views:       views,
 		ViewsLayout: "layouts/main",
-		Immutable:   true, // https://docs.gofiber.io/#zero-allocation
+		Immutable:   false, // https://docs.gofiber.io/#zero-allocation
 	}
 }
