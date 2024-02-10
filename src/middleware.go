@@ -26,9 +26,11 @@ var assets embed.FS
 func initMiddleware(app *fiber.App) {
 	app.Use(helmet.New())
 
-	if env.Production() {
-		app.Use(etag.New())
-	}
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestSpeed,
+	}))
+
+	app.Use(etag.New())
 
 	app.Use("/assets", filesystem.New(filesystem.Config{
 		Root:       http.FS(assets),
@@ -43,19 +45,13 @@ func initMiddleware(app *fiber.App) {
 		}))
 	}
 
-	if env.Production() {
-		app.Use(compress.New(compress.Config{
-			Level: compress.LevelBestSpeed,
-		}))
+	app.Use(minify.New())
 
-		app.Use(minify.New())
-
-		app.Use(limiter.New(limiter.Config{
-			Max:        300,
-			Expiration: 60 * time.Second,
-			// LimiterMiddleware: limiter.SlidingWindow{},
-		}))
-	}
+	app.Use(limiter.New(limiter.Config{
+		Max:        300,
+		Expiration: 60 * time.Second,
+		// LimiterMiddleware: limiter.SlidingWindow{},
+	}))
 
 	if !env.Production() {
 		app.Use(logger.New())
