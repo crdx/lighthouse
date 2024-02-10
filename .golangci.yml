@@ -97,7 +97,6 @@ linters-settings:
       - name: unexported-naming
       - name: unnecessary-stmt
       - name: unreachable-code
-      - name: unused-parameter
       - name: unused-receiver
       - name: useless-break
       - name: waitgroup-by-value
