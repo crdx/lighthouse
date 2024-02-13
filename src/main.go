@@ -83,7 +83,7 @@ func initEnvironment(envFile string) {
 	}
 
 	if err := env.Validate(); err != nil {
-		log.Fatalf("Error: failed to initialise environment:\n%s", err)
+		log.Fatal(err)
 	}
 }
 

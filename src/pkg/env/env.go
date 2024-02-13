@@ -93,7 +93,7 @@ func Validate() error {
 	e(require(Host, "HOST"))
 
 	if DatabaseSocket() == "" && DatabaseHost() == "" {
-		e(fmt.Errorf("DB_SOCK or DB_HOST required"))
+		e(fmt.Errorf("    DB_SOCK or DB_HOST required"))
 	}
 
 	e(require(DatabaseName, "DB_NAME"))
@@ -107,7 +107,11 @@ func Validate() error {
 		e(require(LogPath, "LOG_PATH"))
 	}
 
-	return errors.Join(errs...)
+	err := errors.Join(errs...)
+	if err != nil {
+		return errors.New("missing environment variables:\n" + err.Error())
+	}
+	return nil
 }
 
 func parse(s string) map[string]string {
@@ -140,7 +144,7 @@ func parse(s string) map[string]string {
 
 func require(f func() string, name string) error {
 	if f() == "" {
-		return fmt.Errorf("%s required", name)
+		return fmt.Errorf("    %s required", name)
 	}
 	return nil
 }
