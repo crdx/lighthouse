@@ -8,21 +8,21 @@ require (
 	crdx.org/session v1.2.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
-	github.com/go-playground/validator/v10 v10.16.0
+	github.com/go-playground/validator/v10 v10.18.0
 	github.com/gofiber/fiber/v2 v2.52.0
 	github.com/gofiber/template/html/v2 v2.1.0
 	github.com/google/gopacket v1.1.19
-	github.com/google/uuid v1.5.0
+	github.com/google/uuid v1.6.0
 	github.com/imroc/req/v3 v3.42.3
-	github.com/lmittmann/tint v1.0.3
+	github.com/lmittmann/tint v1.0.4
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-multi v1.0.2
 	github.com/stretchr/testify v1.8.4
-	github.com/tdewolff/minify/v2 v2.20.13
-	github.com/yuin/goldmark v1.6.0
-	golang.org/x/crypto v0.18.0
-	golang.org/x/exp v0.0.0-20240110193028-0dcbfd608b1e
-	gorm.io/gorm v1.25.5
+	github.com/tdewolff/minify/v2 v2.20.16
+	github.com/yuin/goldmark v1.7.0
+	golang.org/x/crypto v0.19.0
+	golang.org/x/exp v0.0.0-20240205201215-2c58cdc269a3
+	gorm.io/gorm v1.25.7
 )
 
 require (
@@ -44,7 +44,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/klauspost/compress v1.17.4 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
-	github.com/leodido/go-urn v1.2.4 // indirect
+	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.15 // indirect
@@ -56,17 +56,17 @@ require (
 	github.com/quic-go/quic-go v0.40.1 // indirect
 	github.com/refraction-networking/utls v1.6.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/tdewolff/parse/v2 v2.7.8 // indirect
+	github.com/tdewolff/parse/v2 v2.7.11 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.51.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/mock v0.4.0 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.19.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.16.1 // indirect
+	golang.org/x/tools v0.17.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.5.2 // indirect
 )
