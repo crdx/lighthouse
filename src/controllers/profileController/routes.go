@@ -6,6 +6,6 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
-	app.Get("/profile", View)
+	app.Get("/profile", View).Name("profile")
 	app.Post("/profile", auth.Editor, Edit)
 }

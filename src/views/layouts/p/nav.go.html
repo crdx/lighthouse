@@ -14,11 +14,11 @@
                 </span>
             </a>
 
-            <a href="/" class="navbar-item">
+            <a href="/" class="navbar-item{{ if eq $.globals.CurrentRoute "devices" }} is-active{{ end }}">
                 <span>devices</span>
             </a>
 
-            <a href="/activity" class="navbar-item">
+            <a href="/activity" class="navbar-item{{ if eq $.globals.CurrentRoute "activity" }} is-active{{ end }}">
                 <span>activity</span>
             </a>
 
@@ -34,19 +34,19 @@
             </div>
 
             <div class="navbar-end">
-                <a href="/notifications" class="navbar-item" title="Notifications">
+                <a href="/notifications" class="navbar-item{{ if eq $.globals.CurrentRoute "notifications" }} is-active{{ end }}" title="Notifications">
                     <span class="icon"><i class="fas fa-bell"></i></span>
                     <span class="is-hidden-desktop">notifications</span>
                 </a>
 
                 {{ if $.globals.User.IsAdmin }}
-                    <a href="/admin" class="navbar-item" title="Administration">
+                    <a href="/admin" class="navbar-item{{ if eq $.globals.CurrentRoute "admin" }} is-active{{ end }}" title="Administration">
                         <span class="icon"><i class="fas fa-cog"></i></span>
                         <span class="is-hidden-desktop">administration</span>
                     </a>
                 {{ end }}
 
-                <a href="/profile" class="navbar-item" title="Profile">
+                <a href="/profile" class="navbar-item{{ if eq $.globals.CurrentRoute "profile" }} is-active{{ end }}" title="Profile">
                     <span class="icon"><i class="fas fa-user"></i></span>
                     <span class="is-hidden-desktop">profile</span>
                 </a>

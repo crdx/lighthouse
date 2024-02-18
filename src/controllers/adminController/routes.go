@@ -17,25 +17,25 @@ func InitRoutes(app *fiber.App) {
 
 	adminGroup.Get("/", Index)
 
-	adminGroup.Get("/settings", settings.List)
+	adminGroup.Get("/settings", settings.List).Name("admin")
 	adminGroup.Post("/settings", settings.Save)
 
-	adminGroup.Get("/users", users.List)
-	adminGroup.Get("/users/create", users.ViewCreate)
+	adminGroup.Get("/users", users.List).Name("admin")
+	adminGroup.Get("/users/create", users.ViewCreate).Name("admin")
 	adminGroup.Post("/users/create", users.Create)
 
 	userGroup := adminGroup.Group("/users/:id<int>").
 		Use(util.NewParseParam[m.User]("id", "user"))
 
-	userGroup.Get("/edit", users.ViewEdit)
+	userGroup.Get("/edit", users.ViewEdit).Name("admin")
 	userGroup.Post("/edit", users.Edit)
 	userGroup.Post("/delete", users.Delete)
 	userGroup.Post("/become", users.Become)
 
 	auditGroup := adminGroup.Group("/audit")
-	auditGroup.Get("/", audit.List)
+	auditGroup.Get("/", audit.List).Name("admin")
 
-	adminGroup.Get("/mappings", mappings.View)
+	adminGroup.Get("/mappings", mappings.View).Name("admin")
 	adminGroup.Post("/mappings", mappings.EditSources)
 
 	adminGroup.Group("/mappings/:id<int>").

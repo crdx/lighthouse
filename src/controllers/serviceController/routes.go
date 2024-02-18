@@ -13,6 +13,6 @@ func InitRoutes(app *fiber.App) {
 		Use(util.NewParseParam[m.Service]("id", "service"))
 
 	serviceGroup.Post("/delete", Delete)
-	serviceGroup.Get("/edit", ViewEdit)
+	serviceGroup.Get("/edit", ViewEdit).Name("devices")
 	serviceGroup.Post("/edit", Edit)
 }

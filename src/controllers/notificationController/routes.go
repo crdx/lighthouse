@@ -5,5 +5,5 @@ import (
 )
 
 func InitRoutes(app *fiber.App) {
-	app.Get("/notifications", List)
+	app.Get("/notifications", List).Name("notifications")
 }
