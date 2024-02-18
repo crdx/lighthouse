@@ -29,14 +29,13 @@ func IsCurrentUser(c *fiber.Ctx, user *m.User) bool {
 // Get returns the encapsulated globals to be referenced from templates.
 func Get(c *fiber.Ctx) *Values {
 	values := Values{
+		User:         CurrentUser(c),
 		CurrentRoute: c.Route().Name,
 	}
 
 	if flashMessage, found := session.GetOnce[flash.Message](c, "globals.flash"); found {
 		values.Flash = &flashMessage
 	}
-
-	values.User = CurrentUser(c)
 
 	return &values
 }
