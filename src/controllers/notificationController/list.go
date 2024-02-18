@@ -10,7 +10,7 @@ import (
 )
 
 func List(c *fiber.Ctx) error {
-	pageNumber, ok := pager.GetCurrentPageNumber(uint(c.QueryInt(pager.Key, 1)))
+	pageNumber, ok := pager.GetCurrentPageNumber(c.QueryInt(pager.Key, 1))
 
 	if !ok {
 		return c.SendStatus(404)

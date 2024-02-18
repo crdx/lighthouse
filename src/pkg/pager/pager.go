@@ -11,8 +11,8 @@ import (
 const Key = "p"
 
 type State struct {
-	CurrentPage     uint
-	TotalPages      uint
+	CurrentPage     int
+	TotalPages      int
 	FirstPageURL    string
 	NextPageURL     string
 	PreviousPageURL string
@@ -21,7 +21,7 @@ type State struct {
 
 // GetCurrentPageNumber returns the page number of the current page, and true if a valid page number
 // was provided.
-func GetCurrentPageNumber(pageNumber uint) (uint, bool) {
+func GetCurrentPageNumber(pageNumber int) (int, bool) {
 	if pageNumber < 1 {
 		return 0, false
 	}
@@ -33,7 +33,7 @@ func GetCurrentPageNumber(pageNumber uint) (uint, bool) {
 // paging navigation (p/pager/nav.go.html), or an error if basePath could not be parsed.
 //
 // This method will not modify qs. Pass nil for qs if no additional parameters are needed.
-func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]string) (*State, error) {
+func GetState(pageNumber int, pageCount int, basePath string, qs map[string]string) (*State, error) {
 	if qs == nil {
 		qs = map[string]string{}
 	} else {
@@ -49,7 +49,7 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 
 	// Removes a lot of the repetitive error handling from the code below using a technique inspired
 	// by https://go.dev/blog/errors-are-values.
-	f := func(n uint) string {
+	f := func(n int) string {
 		if err != nil {
 			return ""
 		}
@@ -79,15 +79,15 @@ func GetState(pageNumber uint, pageCount uint, basePath string, qs map[string]st
 
 // GetPageCount returns the number of pages needed to fit n items if there are perPage items per
 // page. If there are no items then that's still 1 page needed to show nothing.
-func GetPageCount(n uint, perPage uint) uint {
+func GetPageCount(n int, perPage int) int {
 	if n == 0 {
 		return 1
 	}
-	return uint(math.Ceil(float64(n) / float64(perPage)))
+	return int(math.Ceil(float64(n) / float64(perPage)))
 }
 
 // GetOffset returns the offset for a LIMIT query for page pageNumber if there are perPage items per
 // page.
-func GetOffset(pageNumber uint, perPage uint) uint {
+func GetOffset(pageNumber int, perPage int) int {
 	return (pageNumber - 1) * perPage
 }

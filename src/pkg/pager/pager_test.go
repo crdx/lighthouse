@@ -13,8 +13,8 @@ func TestGetCurrentPageNumber(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		inputPageNumber    uint
-		expectedPageNumber uint
+		inputPageNumber    int
+		expectedPageNumber int
 		expectOK           bool
 	}{
 		{5, 5, true},
@@ -39,14 +39,14 @@ func TestGetState(t *testing.T) {
 
 	testCases := []struct {
 		name           string
-		currentPage    uint
-		totalPages     uint
+		currentPage    int
+		totalPages     int
 		path           string
 		qs             map[string]string
 		expectedState  pager.State
 		expectErr      bool
-		expectedCount  uint
-		expectedOffset uint
+		expectedCount  int
+		expectedOffset int
 	}{
 		{
 			currentPage: 1,
@@ -112,9 +112,9 @@ func TestGetPageCount(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		total    uint
-		perPage  uint
-		expected uint
+		total    int
+		perPage  int
+		expected int
 	}{
 		{0, 10, 1},
 		{1, 10, 1},
@@ -139,9 +139,9 @@ func TestGetOffset(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		pageNumber uint
-		perPage    uint
-		expected   uint
+		pageNumber int
+		perPage    int
+		expected   int
 	}{
 		{1, 10, 0},
 		{2, 10, 10},

@@ -13,15 +13,15 @@ type ListView struct {
 	Body      string
 }
 
-func GetListViewRowCount() uint {
-	return db.Query[uint](`
+func GetListViewRowCount() int {
+	return db.Query[int](`
 		SELECT count(*)
 		FROM notifications
 		WHERE deleted_at IS NULL
 	`)
 }
 
-func GetListView(page uint, perPage uint) []ListView {
+func GetListView(page int, perPage int) []ListView {
 	q := db.Q(`
 		SELECT
 			created_at,

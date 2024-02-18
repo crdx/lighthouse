@@ -101,23 +101,23 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 }
 
 type Counters struct {
-	All        uint
-	Online     uint
-	Offline    uint
-	Watched    uint
-	Unwatched  uint
-	Pingable   uint
-	Unpingable uint
+	All        int64
+	Online     int64
+	Offline    int64
+	Watched    int64
+	Unwatched  int64
+	Pingable   int64
+	Unpingable int64
 }
 
 func Counts() *Counters {
 	return &Counters{
-		All:        uint(db.B[m.Device]().Count()),
-		Online:     uint(db.B[m.Device]("state = ?", StateOnline).Count()),
-		Offline:    uint(db.B[m.Device]("state = ?", StateOffline).Count()),
-		Watched:    uint(db.B[m.Device]("watch = 1").Count()),
-		Unwatched:  uint(db.B[m.Device]("watch = 0").Count()),
-		Pingable:   uint(db.B[m.Device]("ping = 1").Count()),
-		Unpingable: uint(db.B[m.Device]("ping = 0").Count()),
+		All:        db.B[m.Device]().Count(),
+		Online:     db.B[m.Device]("state = ?", StateOnline).Count(),
+		Offline:    db.B[m.Device]("state = ?", StateOffline).Count(),
+		Watched:    db.B[m.Device]("watch = 1").Count(),
+		Unwatched:  db.B[m.Device]("watch = 0").Count(),
+		Pingable:   db.B[m.Device]("ping = 1").Count(),
+		Unpingable: db.B[m.Device]("ping = 0").Count(),
 	}
 }

@@ -31,7 +31,7 @@ func (self ListView) IconClass() string {
 	return util.IconToClass(self.Icon)
 }
 
-func GetListViewRowCount(deviceID uint) uint {
+func GetListViewRowCount(deviceID uint) int {
 	q := db.Q(`
 		SELECT count(*)
 		FROM device_state_logs DSL
@@ -45,10 +45,10 @@ func GetListViewRowCount(deviceID uint) uint {
 		q.And("device_id = ?", deviceID)
 	}
 
-	return db.Query[uint](q.Query(), q.Args()...)
+	return db.Query[int](q.Query(), q.Args()...)
 }
 
-func GetListView(deviceID uint, page uint, perPage uint) []ListView {
+func GetListView(deviceID uint, page int, perPage int) []ListView {
 	q := db.Q(`
 		SELECT
 			DSL.created_at,
