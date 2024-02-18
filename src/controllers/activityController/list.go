@@ -23,8 +23,8 @@ func List(c *fiber.Ctx) error {
 
 	deviceID := uint(c.QueryInt("device_id", 0))
 
-	rows := deviceStateLogR.GetListView(deviceID, pageNumber, constants.ActivityRowsPerPage)
-	rowCount := deviceStateLogR.GetListViewRowCount(deviceID)
+	rows := deviceStateLogR.GetList(deviceID, pageNumber, constants.ActivityRowsPerPage)
+	rowCount := deviceStateLogR.GetListRowCount(deviceID)
 	pageCount := pager.GetPageCount(rowCount, constants.ActivityRowsPerPage)
 
 	if pageNumber > pageCount {

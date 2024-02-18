@@ -18,7 +18,7 @@ func LatestActivityForDevice(deviceID uint, n int) []*m.DeviceStateLog {
 		Find()
 }
 
-type ListView struct {
+type List struct {
 	CreatedAt time.Time
 	DeviceID  string
 	Name      string
@@ -27,11 +27,11 @@ type ListView struct {
 	State     string
 }
 
-func (self ListView) IconClass() string {
+func (self List) IconClass() string {
 	return util.IconToClass(self.Icon)
 }
 
-func GetListViewRowCount(deviceID uint) int {
+func GetListRowCount(deviceID uint) int {
 	q := db.Q(`
 		SELECT count(*)
 		FROM device_state_logs DSL
@@ -48,7 +48,7 @@ func GetListViewRowCount(deviceID uint) int {
 	return db.Query[int](q.Query(), q.Args()...)
 }
 
-func GetListView(deviceID uint, page int, perPage int) []ListView {
+func GetList(deviceID uint, page int, perPage int) []List {
 	q := db.Q(`
 		SELECT
 			DSL.created_at,
@@ -68,5 +68,5 @@ func GetListView(deviceID uint, page int, perPage int) []ListView {
 	q.Append("ORDER BY created_at DESC")
 	q.Append(`LIMIT ?, ?`, pager.GetOffset(page, perPage), perPage)
 
-	return db.Query[[]ListView](q.Query(), q.Args()...)
+	return db.Query[[]List](q.Query(), q.Args()...)
 }

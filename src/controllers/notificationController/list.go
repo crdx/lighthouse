@@ -16,8 +16,8 @@ func List(c *fiber.Ctx) error {
 		return c.SendStatus(404)
 	}
 
-	rows := notificationR.GetListView(pageNumber, constants.ActivityRowsPerPage)
-	rowCount := notificationR.GetListViewRowCount()
+	rows := notificationR.GetList(pageNumber, constants.ActivityRowsPerPage)
+	rowCount := notificationR.GetListRowCount()
 	pageCount := pager.GetPageCount(rowCount, constants.NotificationRowsPerPage)
 
 	if pageNumber > pageCount {

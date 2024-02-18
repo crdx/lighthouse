@@ -40,7 +40,7 @@ func List(c *fiber.Ctx) error {
 
 	return c.Render("devices/list", fiber.Map{
 		"currentFilter": currentFilter,
-		"devices":       deviceR.GetListView(currentSortColumn, currentSortDirection, currentFilter),
+		"devices":       deviceR.GetList(currentSortColumn, currentSortDirection, currentFilter),
 		"counts":        deviceR.Counts(),
 		"columns":       tplutil.AddMetadata(currentSortColumn, currentSortDirection, currentFilter, columns),
 		"globals":       globals.Get(c),

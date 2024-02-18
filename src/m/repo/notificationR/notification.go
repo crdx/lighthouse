@@ -7,13 +7,13 @@ import (
 	"crdx.org/lighthouse/pkg/pager"
 )
 
-type ListView struct {
+type List struct {
 	CreatedAt time.Time
 	Subject   string
 	Body      string
 }
 
-func GetListViewRowCount() int {
+func GetListRowCount() int {
 	return db.Query[int](`
 		SELECT count(*)
 		FROM notifications
@@ -21,7 +21,7 @@ func GetListViewRowCount() int {
 	`)
 }
 
-func GetListView(page int, perPage int) []ListView {
+func GetList(page int, perPage int) []List {
 	q := db.Q(`
 		SELECT
 			created_at,
@@ -34,5 +34,5 @@ func GetListView(page int, perPage int) []ListView {
 
 	q.Append(`LIMIT ?, ?`, pager.GetOffset(page, perPage), perPage)
 
-	return db.Query[[]ListView](q.Query(), q.Args()...)
+	return db.Query[[]List](q.Query(), q.Args()...)
 }

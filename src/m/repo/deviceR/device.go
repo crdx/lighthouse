@@ -26,7 +26,7 @@ func Pingable() []*m.Device {
 	return db.B[m.Device]("state = ? and origin = ? and ping = 1", StateOnline, false).Find()
 }
 
-type ListView struct {
+type List struct {
 	ID         uint
 	Name       string
 	State      string
@@ -39,11 +39,11 @@ type ListView struct {
 	LastSeenAt time.Time
 }
 
-func (self ListView) IconClass() string {
+func (self List) IconClass() string {
 	return util.IconToClass(self.Icon)
 }
 
-func GetListView(sortColumn string, sortDirection string, filter string) []ListView {
+func GetList(sortColumn string, sortDirection string, filter string) []List {
 	// Ensure sort is stable by appending "D.id ASC" to some of these.
 	orderByTemplates := map[string]string{
 		"name":   "D.name %s, D.id ASC",
@@ -77,7 +77,7 @@ func GetListView(sortColumn string, sortDirection string, filter string) []ListV
 	// The left join with adapters on last_seen_at finds the adapter with the newest last_seen_at
 	// date. This works because the row where there is no newer last_seen_at date will contain
 	// nulls for the A2 part of the table, and the where clause requires A2.id to be null.
-	return db.Query[[]ListView](fmt.Sprintf(`
+	return db.Query[[]List](fmt.Sprintf(`
 		SELECT
 			D.id,
 			D.name,
