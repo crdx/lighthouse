@@ -106,7 +106,7 @@ retry:
 }
 
 func getVendor(macAddress string) (*req.Response, error) {
-	return req.C().R().
+	return req.R().
 		SetBearerAuthToken(settingR.MACVendorsAPIKey()).
 		SetHeader("Accept", "text/plain").
 		Get("https://api.macvendors.com/v1/lookup/" + macAddress)

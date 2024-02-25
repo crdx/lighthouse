@@ -117,7 +117,7 @@ func search(s string) []icon {
 
 	payload := fmt.Sprintf(q, strconv.Quote(s), maxResults)
 	jsonBytes := lo.Must(json.Marshal(map[string]string{"query": payload}))
-	response := lo.Must(req.C().R().SetBodyJsonBytes(jsonBytes).Post("https://api.fontawesome.com"))
+	response := lo.Must(req.R().SetBodyJsonBytes(jsonBytes).Post("https://api.fontawesome.com"))
 
 	var results results
 	lo.Must0(json.Unmarshal(response.Bytes(), &results))
