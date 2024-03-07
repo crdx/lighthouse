@@ -75,12 +75,12 @@ func init() {
 
 	RegisterWithParam("dmin", "must be at least {0}", func(value string, min string) bool {
 		minDuration, ok := duration.Parse(min)
-		return ok && lo.Must(duration.Parse(value)) >= minDuration
+		return ok && duration.MustParse(value) >= minDuration
 	})
 
 	RegisterWithParam("dmax", "must be at most {0}", func(value string, max string) bool {
 		maxDuration, ok := duration.Parse(max)
-		return ok && lo.Must(duration.Parse(value)) <= maxDuration
+		return ok && duration.MustParse(value) <= maxDuration
 	})
 }
 

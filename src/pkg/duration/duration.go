@@ -5,12 +5,19 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/samber/lo"
 )
 
 // Valid returns true if s is a valid duration.
 func Valid(s string) bool {
 	_, ok := newDuration(s).seconds()
 	return ok
+}
+
+// Parse converts s into a time.Duration, and panics if it fails.
+func MustParse(s string) time.Duration {
+	return lo.Must(Parse(s))
 }
 
 // Parse converts s into a time.Duration.

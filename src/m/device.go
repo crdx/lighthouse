@@ -129,11 +129,11 @@ func (self *Device) IconClass() string {
 }
 
 func (self *Device) LimitDuration() time.Duration {
-	return lo.Must(duration.Parse(self.Limit))
+	return duration.MustParse(self.Limit)
 }
 
 func (self *Device) GracePeriodDuration() time.Duration {
-	return lo.Must(duration.Parse(self.GracePeriod))
+	return duration.MustParse(self.GracePeriod)
 }
 
 func (self *Device) AuditName() string {

@@ -7,7 +7,6 @@ import (
 	"crdx.org/lighthouse/m"
 	"crdx.org/lighthouse/pkg/duration"
 	"crdx.org/lighthouse/pkg/util/dbutil"
-	"github.com/samber/lo"
 )
 
 // Mail
@@ -69,7 +68,7 @@ func get(name string) string {
 }
 
 func getDuration(name string) time.Duration {
-	return lo.Must(duration.Parse(get(name)))
+	return duration.MustParse(get(name))
 }
 
 // // Get returns a setting as an int.
