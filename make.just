@@ -14,11 +14,11 @@
 
 # scaffold a new controller (name is lowercase e.g. device)
 @controller name:
-    mkdir -pv src/controllers/{{ name }}Controller
-    touch src/controllers/{{ name }}Controller/routes.go
-    touch src/controllers/{{ name }}Controller/routes_test.go
-    echo 'package {{ name }}Controller' > src/controllers/{{ name }}Controller/routes.go
-    echo 'package {{ name }}Controller_test' > src/controllers/{{ name }}Controller/routes_test.go
+    mkdir -pv src/controllers/{{ name }}
+    touch src/controllers/{{ name }}/routes.go
+    touch src/controllers/{{ name }}/routes_test.go
+    echo 'package {{ name }}' > src/controllers/{{ name }}/routes.go
+    echo 'package {{ name }}_test' > src/controllers/{{ name }}/routes_test.go
 
 # scaffold a new migration (name is ProperCase with no punctuation)
 [no-exit-message]

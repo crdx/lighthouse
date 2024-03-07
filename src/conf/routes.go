@@ -1,26 +1,26 @@
 package conf
 
 import (
-	"crdx.org/lighthouse/controllers/activityController"
-	"crdx.org/lighthouse/controllers/adapterController"
-	"crdx.org/lighthouse/controllers/adminController"
-	"crdx.org/lighthouse/controllers/apiController"
-	"crdx.org/lighthouse/controllers/deviceController"
-	"crdx.org/lighthouse/controllers/notificationController"
-	"crdx.org/lighthouse/controllers/profileController"
-	"crdx.org/lighthouse/controllers/serviceController"
+	"crdx.org/lighthouse/controllers/activity"
+	"crdx.org/lighthouse/controllers/adapter"
+	"crdx.org/lighthouse/controllers/admin"
+	"crdx.org/lighthouse/controllers/api"
+	"crdx.org/lighthouse/controllers/device"
+	"crdx.org/lighthouse/controllers/notification"
+	"crdx.org/lighthouse/controllers/profile"
+	"crdx.org/lighthouse/controllers/service"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoutes(app *fiber.App) {
-	activityController.InitRoutes(app)
-	adapterController.InitRoutes(app)
-	adminController.InitRoutes(app)
-	apiController.InitRoutes(app)
-	deviceController.InitRoutes(app)
-	notificationController.InitRoutes(app)
-	profileController.InitRoutes(app)
-	serviceController.InitRoutes(app)
+	activity.InitRoutes(app)
+	adapter.InitRoutes(app)
+	admin.InitRoutes(app)
+	api.InitRoutes(app)
+	device.InitRoutes(app)
+	notification.InitRoutes(app)
+	profile.InitRoutes(app)
+	service.InitRoutes(app)
 
 	// Catch all requests not defined above.
 	app.Use(func(c *fiber.Ctx) error {
