@@ -25,10 +25,6 @@ dev: build-autocap
         -i src/conf/migrations.go \
         -r 'just redev'
 
-# start development without live reload
-devn: build-autocap
-    LIVE_RELOAD=0 just dev
-
 # start development with debug logging and no services
 devd:
     DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 just dev
