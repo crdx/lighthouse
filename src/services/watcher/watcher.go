@@ -12,7 +12,7 @@ import (
 )
 
 type Watcher struct {
-	log                    *slog.Logger
+	logger                 *slog.Logger
 	limitNotificationCache map[uint]time.Time
 }
 
@@ -21,7 +21,7 @@ func New() *Watcher {
 }
 
 func (self *Watcher) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	self.limitNotificationCache = map[uint]time.Time{}
 
 	return nil
@@ -35,7 +35,7 @@ func (self *Watcher) Run() error {
 
 		gracePeriod := device.GracePeriodDuration()
 
-		log := self.log.With(slog.Group(
+		logger := self.logger.With(slog.Group(
 			"device",
 			"id", device.ID,
 			"name", device.Name,
@@ -46,12 +46,12 @@ func (self *Watcher) Run() error {
 		if device.LastSeenAt.Before(threshold) {
 			if device.State == deviceR.StateOnline {
 				deviceOffline(device, threshold)
-				log.Info("device is offline")
+				logger.Info("device is offline")
 			}
 		} else {
 			if device.State == deviceR.StateOffline {
 				deviceOnline(device)
-				log.Info("device is online")
+				logger.Info("device is online")
 			}
 		}
 
@@ -78,7 +78,7 @@ func (self *Watcher) Run() error {
 				Limit:          device.Limit,
 			})
 
-			log.Info("device overstayed its welcome", "limit", limit)
+			logger.Info("device overstayed its welcome", "limit", limit)
 		}
 	}
 

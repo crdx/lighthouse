@@ -20,7 +20,7 @@ import (
 const arpPacketInterval = 50 * time.Millisecond
 
 type Writer struct {
-	log *slog.Logger
+	logger *slog.Logger
 }
 
 func New() *Writer {
@@ -28,7 +28,7 @@ func New() *Writer {
 }
 
 func (self *Writer) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 

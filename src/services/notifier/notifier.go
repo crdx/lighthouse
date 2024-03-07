@@ -16,7 +16,7 @@ import (
 )
 
 type Notifier struct {
-	log *slog.Logger
+	logger *slog.Logger
 }
 
 func New() *Notifier {
@@ -24,7 +24,7 @@ func New() *Notifier {
 }
 
 func (self *Notifier) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 

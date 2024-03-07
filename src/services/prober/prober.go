@@ -16,7 +16,7 @@ import (
 )
 
 type Prober struct {
-	log *slog.Logger
+	logger *slog.Logger
 }
 
 func New() *Prober {
@@ -24,7 +24,7 @@ func New() *Prober {
 }
 
 func (self *Prober) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 
@@ -44,7 +44,7 @@ func (self *Prober) run() {
 
 	scan := db.Save(&m.Scan{})
 
-	self.log.Info("service scan started")
+	self.logger.Info("service scan started")
 
 	for _, device := range devices {
 		for _, adapter := range device.Adapters() {
@@ -55,7 +55,7 @@ func (self *Prober) run() {
 			ports := lo.Must(probe.Scan(adapter.MACAddress, adapter.IPAddress)).Ports
 
 			for _, port := range ports {
-				self.log.Info(
+				self.logger.Info(
 					"found service",
 					"device", device.DisplayName(),
 					"name", probe.ServiceName(port),
@@ -76,7 +76,7 @@ func (self *Prober) run() {
 	}
 
 	scan.Update("completed_at", time.Now())
-	self.log.Info("service scan completed")
+	self.logger.Info("service scan completed")
 }
 
 func process(device *m.Device, foundPorts []uint) {

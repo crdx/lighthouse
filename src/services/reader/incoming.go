@@ -104,7 +104,7 @@ func (self *Reader) handleIncoming(macAddress string, ipAddress string, isOrigin
 			device.Update("ping", true)
 		}
 
-		self.log.With(
+		self.logger.With(
 			device.LogAttr(),
 			adapter.LogAttr(),
 		).Info("new device has joined the network")

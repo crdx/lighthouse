@@ -20,7 +20,7 @@ func (self *Reader) handleICMPPacket(icmpPacket *layers.ICMPv4, packet gopacket.
 	macAddress := ethernetLayer.(*layers.Ethernet).SrcMAC.String()
 	ipAddress := ipLayer.(*layers.IPv4).SrcIP.String()
 
-	self.log.Info("received ICMP reply", "ip", ipAddress)
+	self.logger.Info("received ICMP reply", "ip", ipAddress)
 
 	self.handleIncoming(
 		macAddress,

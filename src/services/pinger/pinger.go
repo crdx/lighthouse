@@ -17,7 +17,7 @@ import (
 )
 
 type Pinger struct {
-	log *slog.Logger
+	logger *slog.Logger
 }
 
 func New() *Pinger {
@@ -25,7 +25,7 @@ func New() *Pinger {
 }
 
 func (self *Pinger) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 
@@ -66,7 +66,7 @@ func (self *Pinger) Run() error {
 					lo.Must(net.ParseMAC(adapter.MACAddress)),
 				))
 
-				self.log.Info(
+				self.logger.Info(
 					"sent ICMP request",
 					"device", adapter.Device().DisplayName(),
 					"mac", adapter.MACAddress,

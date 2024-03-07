@@ -54,14 +54,14 @@ func applyDefaults(config *Config) {
 func Start(name string, config *Config) {
 	applyDefaults(config)
 
-	log := logger.With("service", name)
+	logger := logger.With("service", name)
 
-	if err := config.Service.Init(&Args{Logger: log}); err != nil {
-		log.Error("service init failed", "msg", err)
+	if err := config.Service.Init(&Args{Logger: logger}); err != nil {
+		logger.Error("service init failed", "msg", err)
 		return
 	}
 
-	log.Info(
+	logger.Info(
 		"service init complete",
 		"run_interval", config.RunInterval.String(),
 		"initial_delay", config.StartDelay.String(),
@@ -70,7 +70,7 @@ func Start(name string, config *Config) {
 	go func() {
 		if config.StartDelay > 0 {
 			time.Sleep(config.StartDelay)
-			log.Info("service start delay elapsed")
+			logger.Info("service start delay elapsed")
 		}
 
 		restarting := false
@@ -79,9 +79,9 @@ func Start(name string, config *Config) {
 		run := func() error {
 			defer func() {
 				if err := recover(); err != nil {
-					log.Error("service panicked", "msg", err)
+					logger.Error("service panicked", "msg", err)
 					runtimeutil.PrintStackTrace(3)
-					log.Error("restarting service", "restart_interval", restartInterval.String())
+					logger.Error("restarting service", "restart_interval", restartInterval.String())
 					time.Sleep(restartInterval)
 					restartInterval = config.NextRestartInterval(restartInterval)
 					restarting = true

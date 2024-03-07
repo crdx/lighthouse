@@ -15,7 +15,7 @@ import (
 )
 
 type Vendor struct {
-	log *slog.Logger
+	logger *slog.Logger
 }
 
 func New() *Vendor {
@@ -25,7 +25,7 @@ func New() *Vendor {
 const backoff = 10 * time.Second
 
 func (self *Vendor) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 
@@ -41,9 +41,9 @@ func (self *Vendor) Run() error {
 			continue
 		}
 
-		log := self.log.With(slog.Group("adapter", "id", adapter.ID, "mac", adapter.MACAddress))
+		logger := self.logger.With(slog.Group("adapter", "id", adapter.ID, "mac", adapter.MACAddress))
 
-		if err := doLookup(lookup, adapter, log); err != nil {
+		if err := doLookup(lookup, adapter, logger); err != nil {
 			return err
 		}
 	}

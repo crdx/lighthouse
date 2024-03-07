@@ -14,7 +14,7 @@ import (
 )
 
 type Reader struct {
-	log             *slog.Logger
+	logger          *slog.Logger
 	macAddressCache *cache.TemporalCache[string]
 
 	// Since the DHCP handshake happens before the device officially joins the network and starts
@@ -32,7 +32,7 @@ func New() *Reader {
 }
 
 func (self *Reader) Init(args *services.Args) error {
-	self.log = args.Logger
+	self.logger = args.Logger
 	return nil
 }
 
