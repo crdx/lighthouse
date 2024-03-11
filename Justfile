@@ -32,10 +32,10 @@ build:
 # run tests
 test:
     #!/bin/bash
-    set -e
+    set -eo pipefail
     cd src
     export VIEWS_DIR=$(realpath views)
-    go test -cover ./... | grep -vF '[no test files]'
+    go test -cover ./... 2>&1 | gostack --mode gotest --mod crdx.org/lighthouse
     exit ${PIPESTATUS[0]}
 
 # run tests and show code coverage
@@ -100,8 +100,10 @@ rebuild-autocap:
 
 [private]
 redev: build
+    #!/bin/bash
+    set -eo pipefail
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
-    {{ BIN_PATH }} --env .env
+    unbuffer {{ BIN_PATH }} --env .env 2>&1 | gostack --mod crdx.org/lighthouse
 
 [private]
 generate:
@@ -109,7 +111,10 @@ generate:
 
 [private]
 rebuild: generate
-    cd src && go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w'
+    #!/bin/bash
+    set -eo pipefail
+    cd src
+    unbuffer go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w' 2>&1 | gostack --mod crdx.org/lighthouse
 
 [private]
 clean:
