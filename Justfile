@@ -7,8 +7,6 @@ mod make
 mod container
 mod db
 
-import? 'internal.just'
-
 set dotenv-load := true
 
 [private]
