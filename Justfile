@@ -15,13 +15,7 @@ help:
 
 # start development
 dev: build-autocap
-    watchexec \
-        --no-vcs-ignore \
-        -w .env \
-        -w src \
-        -i src/conf/models.go \
-        -i src/conf/migrations.go \
-        -r 'just redev'
+    watchexec -r 'just redev'
 
 # start development with debug logging and no services
 devd:
