@@ -33,12 +33,12 @@ var (
 	LogPath = func() string { return env["LOG_PATH"] }
 
 	DatabaseName     = func() string { return env["DB_NAME"] }
-	DatabaseUser     = func() string { return env["DB_USER"] }
-	DatabasePass     = func() string { return env["DB_PASS"] }
-	DatabaseSocket   = func() string { return env["DB_SOCK"] }
-	DatabaseHost     = func() string { return env["DB_HOST"] }
+	DatabaseUsername = func() string { return env["DB_USERNAME"] }
+	DatabasePassword = func() string { return env["DB_PASSWORD"] }
+	DatabaseProtocol = func() string { return env["DB_PROTOCOL"] }
+	DatabaseAddress  = func() string { return env["DB_ADDRESS"] }
 	DatabaseCharset  = func() string { return env["DB_CHARSET"] }
-	DatabaseTimezone = func() string { return env["DB_TZ"] }
+	DatabaseTimezone = func() string { return env["DB_TIMEZONE"] }
 
 	DefaultRootPass = func() string { return or("DEFAULT_ROOT_PASS", "root") }
 	DefaultAnonPass = func() string { return or("DEFAULT_ANON_PASS", "anon") }
@@ -92,14 +92,8 @@ func Validate() error {
 
 	e(require(Host, "HOST"))
 
-	if DatabaseSocket() == "" && DatabaseHost() == "" {
-		e(fmt.Errorf("    DB_SOCK or DB_HOST required"))
-	}
-
 	e(require(DatabaseName, "DB_NAME"))
-	e(require(DatabaseUser, "DB_USER"))
-	e(require(DatabaseCharset, "DB_CHARSET"))
-	e(require(DatabaseTimezone, "DB_TZ"))
+	e(require(DatabaseUsername, "DB_USERNAME"))
 
 	e(requireIn(LogType, "LOG_TYPE", []string{"all", "disk", "stderr", "none"}, false))
 

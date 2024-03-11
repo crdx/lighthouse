@@ -61,12 +61,13 @@ volumes:
   state:
 ```
 
-Configure the `.env.prod` file to connect to it (see [Configuration](#configuration)).
+Configure the `.env.prod` file to connect to it (see [Configuration](#configuration)), e.g.,
 
 ```
-DB_USER=anon
-DB_PASS=anon
-DB_HOST=127.0.0.1:3306
+DB_USERNAME=anon
+DB_PASSWORD=anon
+DB_PROTOCOL=tcp
+DB_ADDRESS=127.0.0.1:3306
 ```
 
 Note: The `docker-compose.yml` file references `.env.prod` instead of `.env`.
@@ -125,35 +126,40 @@ The port to listen on. If not specified in development mode then a random port w
 - Required: yes
 - Value: database name e.g., `lighthouse`
 
-### DB_USER
+### DB_USERNAME
 
 - Required: yes
 - Value: username e.g., `anon`
 
-### DB_PASS
+### DB_PASSWORD
 
 - Required: no
 - Value: password e.g., `anon`
+- Default: (empty)
 
-### DB_SOCK
+### DB_PROTOCOL
 
-- Required: only if `DB_HOST` is not set
-- Value: path to a unix socket e.g., `/run/mysqld/mysqld.sock`
+- Required: no
+- Value: `tcp` or `unix`
+- Default: `tcp`
 
-### DB_HOST
+### DB_ADDRESS
 
-- Required: only if `DB_SOCK` is not set
-- Value: host and port combination e.g., `127.0.0.1:3306`
+- Required: no
+- Value: host and port combination e.g., `127.0.0.1:3306`, or a unix socket path e.g. `/run/mysqld/mysqld.sock`
+- Default: `127.0.0.1:3306`
 
 ### DB_CHARSET
 
-- Required: yes
+- Required: no
 - Value: character set e.g., `utf8mb4`
+- Default: `utf8mb4`
 
-### DB_TZ
+### DB_TIMEZONE
 
-- Required: yes
+- Required: no
 - Value: timezone e.g., `UTC`, `Europe/London`
+- Default: `UTC`
 
 ### LIVE_RELOAD
 

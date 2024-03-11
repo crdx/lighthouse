@@ -11,12 +11,10 @@ import (
 )
 
 func GetDbConfig() *db.Config {
-	return &db.Config{
+	config := db.Config{
 		Name:          env.DatabaseName(),
-		User:          env.DatabaseUser(),
-		Pass:          env.DatabasePass(),
-		Host:          env.DatabaseHost(),
-		Socket:        env.DatabaseSocket(),
+		User:          env.DatabaseUsername(),
+		Pass:          env.DatabasePassword(),
 		TimeZone:      env.DatabaseTimezone(),
 		CharSet:       env.DatabaseCharset(),
 		Models:        models,
@@ -26,15 +24,21 @@ func GetDbConfig() *db.Config {
 		SlowThreshold: 250 * time.Millisecond,
 		Seed:          seed,
 	}
+
+	if env.DatabaseProtocol() == "" || env.DatabaseProtocol() == "tcp" {
+		config.Host = env.DatabaseAddress()
+	} else if env.DatabaseProtocol() == "unix" {
+		config.Socket = env.DatabaseAddress()
+	}
+
+	return &config
 }
 
 func GetTestDbConfig() *db.Config {
-	return &db.Config{
+	config := db.Config{
 		Name:       env.DatabaseName() + "_test_" + strings.ReplaceAll(uuid.NewString(), "-", ""),
-		User:       env.DatabaseUser(),
-		Pass:       env.DatabasePass(),
-		Host:       env.DatabaseHost(),
-		Socket:     env.DatabaseSocket(),
+		User:       env.DatabaseUsername(),
+		Pass:       env.DatabasePassword(),
 		TimeZone:   env.DatabaseTimezone(),
 		CharSet:    env.DatabaseCharset(),
 		Models:     models,
@@ -44,4 +48,12 @@ func GetTestDbConfig() *db.Config {
 		Fresh:      true,
 		Seed:       seeder.Run,
 	}
+
+	if env.DatabaseProtocol() == "" || env.DatabaseProtocol() == "tcp" {
+		config.Host = env.DatabaseAddress()
+	} else if env.DatabaseProtocol() == "unix" {
+		config.Socket = env.DatabaseAddress()
+	}
+
+	return &config
 }
