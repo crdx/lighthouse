@@ -37,6 +37,13 @@
 </div>
 
 <script type="text/javascript">
+    let navigating = false
+
+    window.onbeforeunload = function() {
+        navigating = true
+        return null
+    };
+
     (async function() {
         async function sleep(n) {
             return new Promise(resolve => setTimeout(resolve, n))
@@ -62,11 +69,9 @@
         try {
             await fetch('/hang')
         } catch (e) {
-            // Navigation also breaks the connection to /hang and since the server is still healthy,
-            // there's a chance the reload below will trigger before the navigation completes.
-            // Sleeping for a small amount of time prevents this.
-            await sleep(500)
-
+            if (navigating) {
+                return
+            }
             document.querySelector('.a5eab416-b1c5-4f51-9feb-dccf69eccd64').style.display = 'grid'
             document.title = '(...) ' + document.title
             await waitUntilHealthy()
