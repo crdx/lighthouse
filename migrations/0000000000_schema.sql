@@ -7,7 +7,7 @@ create table sessions (
 
 create table devices (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     name varchar(100) not null,
@@ -34,7 +34,7 @@ create table devices (
 
 create table users (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     username varchar(20) not null,
@@ -51,7 +51,7 @@ create table users (
 
 create table adapters (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -71,7 +71,7 @@ create table adapters (
 
 create table audit_logs (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     user_id bigint default null,
@@ -90,7 +90,7 @@ create table audit_logs (
 
 create table device_discovery_notifications (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -104,7 +104,7 @@ create table device_discovery_notifications (
 
 create table device_ip_address_logs (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -118,7 +118,7 @@ create table device_ip_address_logs (
 
 create table device_limit_notifications (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -134,7 +134,7 @@ create table device_limit_notifications (
 
 create table device_state_logs (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -149,7 +149,7 @@ create table device_state_logs (
 
 create table device_state_notifications (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -166,7 +166,7 @@ create table device_state_notifications (
 
 create table mappings (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     mac_address varchar(17) not null,
@@ -181,7 +181,7 @@ create table mappings (
 
 create table notifications (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     subject varchar(200) not null,
@@ -192,7 +192,7 @@ create table notifications (
 
 create table scan_results (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     scan_id bigint not null,
@@ -204,7 +204,7 @@ create table scan_results (
 
 create table scans (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     completed_at datetime default null,
@@ -214,7 +214,7 @@ create table scans (
 
 create table services (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -229,7 +229,7 @@ create table services (
 
 create table device_service_notifications (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     device_id bigint not null,
@@ -244,7 +244,7 @@ create table device_service_notifications (
 
 create table settings (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     name varchar(100) not null,
@@ -255,7 +255,7 @@ create table settings (
 
 create table vendor_lookups (
     id bigint not null auto_increment,
-    created_at datetime default null,
+    created_at datetime not null,
     updated_at datetime default null,
     deleted_at datetime default null,
     adapter_id bigint not null,
