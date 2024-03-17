@@ -1,6 +1,6 @@
-/dist/
 /bin/
 /logs/
+*.gen.go
 
 # sfe: ignore rest
 /TODO.md

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="/assets/favicon/light.svg" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="/assets/favicon/dark.svg" media="(prefers-color-scheme: dark)">
+
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/assets/bulma.min.css">
+
+    <title>lighthouse</title>
+    <style type="text/css">
+        .constrained {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    {{ embed }}
+
+    {{ if enableLiveReload }}
+        {{ template "layout/p/livereload" }}
+    {{ end }}
+</body>
+</html>

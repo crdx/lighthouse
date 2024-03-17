@@ -1,26 +1,29 @@
-# scaffold a new service (name should be in lowercase e.g. watcher)
-@service name:
-    mkdir -pv src/services/{{ name }}
-    touch src/services/{{ name }}/{{ name }}.go
-    echo 'package {{ name }}' > src/services/{{ name }}/{{ name }}.go
+set quiet := true
 
-# scaffold a new model (name should be in lowercase e.g. device)
-@model name:
-    touch src/m/{{ name }}.go
-    echo 'package m' > src/m/{{ name }}.go
-    mkdir src/m/repo/{{ name }}R
-    touch src/m/repo/{{ name }}R/{{ name }}.go
-    echo 'package {{ name }}R' > src/m/repo/{{ name }}R/{{ name }}.go
+PREFIX := 'cmd/lighthouse'
 
-# scaffold a new controller (name should be in lowercase e.g. device)
-@controller name:
-    mkdir -pv src/controllers/{{ name }}
-    touch src/controllers/{{ name }}/routes.go
-    touch src/controllers/{{ name }}/routes_test.go
-    echo 'package {{ name }}' > src/controllers/{{ name }}/routes.go
-    echo 'package {{ name }}_test' > src/controllers/{{ name }}/routes_test.go
+# create service e.g. fooer
+service name:
+    mkdir -pv {{ PREFIX }}/services/{{ name }}
+    touch {{ PREFIX }}/services/{{ name }}/{{ name }}.go
+    echo 'package {{ name }}' > {{ PREFIX }}/services/{{ name }}/{{ name }}.go
 
-# scaffold a new migration (name should be in ProperCase or lowercase)
-[no-exit-message]
-@migration name:
-    go run src/cmd/mkmigration/main.go "{{ name }}"
+# create model e.g. foo
+model name:
+    mkdir -p db/repo/{{ name }}R
+    touch db/repo/{{ name }}R/{{ name }}.go
+    echo 'package {{ name }}R' > db/repo/{{ name }}R/{{ name }}.go
+    touch queries/{{ name }}s.sql
+    just make::migration 'create_{{ name }}_model'
+
+# create controller e.g. foo
+controller name:
+    mkdir -pv {{ PREFIX }}/controllers/{{ name }}
+    touch {{ PREFIX }}/controllers/{{ name }}/routes.go
+    touch {{ PREFIX }}/controllers/{{ name }}/routes_test.go
+    echo 'package {{ name }}' > {{ PREFIX }}/controllers/{{ name }}/routes.go
+    echo 'package {{ name }}_test' > {{ PREFIX }}/controllers/{{ name }}/routes_test.go
+
+# create migration e.g. create_foo_model
+migration name:
+    go run ./tools/make-migration "{{ name }}"

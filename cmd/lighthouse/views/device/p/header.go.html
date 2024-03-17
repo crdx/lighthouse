@@ -1,0 +1,77 @@
+{{/*
+    Render a device's header.
+
+    Context:
+        .device     db.Device
+        .devices    []db.Device
+        .mode       string
+*/}}
+
+<div class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <span class="icon is-medium mr-2 ml-1">
+                {{ if eq .device.State "online" }}
+                    <i class="fa-2x {{ .device.IconClass }} has-text-success-dark"></i>
+                {{ else }}
+                    <i class="fa-2x {{ .device.IconClass }} has-text-grey"></i>
+                {{ end }}
+            </span>
+        </div>
+        <div class="level-item">
+            <h1 class="title is-size-4">
+                {{ template "p/name/device" .device.Name }}
+            </h1>
+        </div>
+    </div>
+
+    <div class="level-right">
+        <div class="level-item">
+            {{ if and (eq .mode "view") $.globals.User.IsEditor }}
+                <div class="dropdown is-right" x-data="dropdown" :class="dropdownClass()" @click.outside="closeDropdown">
+                    <div class="dropdown-trigger" @click="toggleDropdown">
+                        <button class="button">
+                            <span class="icon is-small"><i class="fa-solid fa-bars"></i></span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-content">
+                            <a href="/device/{{ .device.ID }}/edit" class="dropdown-item">
+                                <span class="icon is-small">
+                                    <i class="fa-duotone fa-edit"></i>
+                                </span>
+                                <span>Edit</span>
+                            </a>
+
+                            {{ template "device/p/merge-button" . }}
+
+                            <hr class="dropdown-divider">
+
+                            <a class="dropdown-item has-text-danger-dark" x-data="form" @click="submitForm">
+                                <form class="is-hidden"
+                                      method="post"
+                                      onsubmit="return confirm('Are you sure you want to delete this device?')"
+                                      action="/device/{{ .device.ID }}/delete">
+                                </form>
+                                <span class="icon is-small">
+                                    <i class="fa-duotone fa-trash"></i>
+                                </span>
+                                <span>Delete</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {{ end }}
+
+            {{ if eq .mode "edit" }}
+                <nav class="breadcrumb has-arrow-separator is-small">
+                    <ul>
+                        <li><a href="/">devices</a></li>
+                        <li><a href="/device/{{ .device.ID }}">{{ template "p/name/device" .device.Name }}</a></li>
+                    </ul>
+                </nav>
+            {{ end }}
+        </div>
+    </div>
+</div>
+

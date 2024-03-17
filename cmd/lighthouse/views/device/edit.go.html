@@ -1,0 +1,156 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            {{ template "device/p/header" . }}
+
+            <form method="post">
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">Name</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input"
+                                       :id="id"
+                                       type="text"
+                                       name="{{ .fields.Name.Name }}"
+                                       value="{{ if .err }}{{ .fields.Name.Value }}{{ else }}{{ .device.Name }}{{ end }}">
+                            </div>
+                            {{ if .fields.Name.Error }}<p class="help is-danger">{{ .fields.Name.Error }}</p>{{ end }}
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                {{ template "device/p/icon-search" . }}
+                            </div>
+
+                            {{ if .fields.Icon.Error }}<p class="help is-danger">{{ .fields.Icon.Error }}</p>{{ end }}
+                            <p class="help">
+                                <a href="https://fontawesome.com/search">Font Awesome</a> icon.
+                                {{ template "p/help/icon" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal" x-data="id">
+                    <div class="field-label is-normal">
+                        <label class="label" :for="id">Notes</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <textarea :id="id"
+                                          class="textarea"
+                                          @keydown.ctrl.enter="$el.closest('form').requestSubmit()"
+                                          name="{{ .fields.Notes.Name }}">{{ if .err }}{{ .fields.Notes.Value }}{{ else }}{{ .device.Notes }}{{ end }}</textarea>
+                            </div>
+                            {{ if .fields.Notes.Error }}<p class="help is-danger">{{ .fields.Notes.Error }}</p>{{ end }}
+                            <p class="help">Markdown supported.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{ if not .device.Origin }}
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label">
+                            <label class="label">Ping</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="checkbox"
+                                           class="toggle"
+                                           :id="id"
+                                           name="{{ .fields.Ping.Name }}"
+                                           {{ if .err }}{{ if eq .fields.Ping.Value "1" }}checked{{ end }}
+                                           {{ else if .device.Ping }}checked{{ end }}>
+                                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                                    <p class="help">Ping this device if it looks like it's about to go offline. If it's ignoring ARP requests then a ping may be more effective in provoking a response.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label">
+                            <label class="label">Watch</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="checkbox"
+                                           class="toggle"
+                                           :id="id"
+                                           name="{{ .fields.Watch.Name }}"
+                                           {{ if .err }}{{ if eq .fields.Watch.Value "1" }}checked{{ end }}
+                                           {{ else if .device.Watch }}checked{{ end }}>
+                                    <label :for="id" tabindex="0" @keydown.space="$el.click()" @keydown.enter="$el.click()"></label>
+                                    <p class="help">Receive a notification if this device goes offline or comes online.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label is-normal">
+                            <label class="label" :for="id">Grace Period</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input"
+                                           :id="id"
+                                           type="text"
+                                           name="{{ .fields.GracePeriod.Name }}"
+                                           value="{{ if .err }}{{ .fields.GracePeriod.Value }}{{ else }}{{ .device.GracePeriod }}{{ end }}">
+                                </div>
+                                {{ if .fields.GracePeriod.Error }}<p class="help is-danger">{{ .fields.GracePeriod.Error }}</p>{{ end }}
+                                <p class="help">
+                                    How long to wait before considering this device to be offline. Increase this if a device is incorrectly reported as offline.
+                                    {{ template "p/help/duration" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal" x-data="id">
+                        <div class="field-label is-normal">
+                            <label class="label" :for="id">Limit</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input"
+                                           :id="id"
+                                           type="text"
+                                           name="{{ .fields.Limit.Name }}"
+                                           value="{{ if .err }}{{ .fields.Limit.Value }}{{ else }}{{ .device.Limit }}{{ end }}">
+                                </div>
+                                {{ if .fields.Limit.Error }}<p class="help is-danger">{{ .fields.Limit.Error }}</p>{{ end }}
+                                <p class="help">
+                                    How long this device can remain online until a notification is generated. Leave blank to disable.
+                                    {{ template "p/help/duration" }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {{ end }}
+
+                <div class="field is-horizontal is-grouped">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-link">Save</button>
+                            </div>
+                            {{ if .device.Origin }}
+                                <p class="help">Additional fields cannot be configured because this is the device that is running lighthouse.</p>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

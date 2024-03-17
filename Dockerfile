@@ -1,4 +1,4 @@
-FROM golang:1.22.0-alpine3.19 AS build
+FROM golang:1.22.1-alpine3.19 AS build
 # https://hub.docker.com/_/golang
 
 RUN apk add --no-cache \
@@ -8,20 +8,18 @@ RUN apk add --no-cache \
     libcap-utils \
     upx
 
-WORKDIR /build/src
-COPY src/go.sum src/go.mod ./
-
-ENV GOEXPERIMENT=loopvar
+WORKDIR /build
+COPY go.sum go.mod .
 
 # Fetch dependencies in a separate layer to speed up rebuilds.
 ARG FORMAT='{{ if not .Main }}{{ .Path }}/...@{{ .Version }}{{ end }}'
 RUN for PACKAGE in $(go list -m -f "$FORMAT" all); do go get $PACKAGE; done
 
 # Build.
-COPY src ./
-RUN go build -o /build/dist/lighthouse -trimpath -ldflags '-s -w' && \
-    upx /build/dist/lighthouse && \
-    setcap cap_net_raw+eip /build/dist/lighthouse
+COPY . .
+RUN go build -o lighthouse -trimpath -ldflags '-s -w' ./cmd/lighthouse && \
+    upx lighthouse && \
+    setcap cap_net_raw+eip lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
 FROM alpine:3.19.1
@@ -43,7 +41,7 @@ RUN addgroup -g 1000 anon && \
     adduser -G anon -D -u 1000 anon
 
 WORKDIR /app
-COPY --from=build /build/dist/lighthouse lighthouse
+COPY --from=build /build/lighthouse lighthouse
 
 # This needs to be a script within the container because we need access to $PORT.
 RUN echo 'curl -sSf http://localhost:$PORT/health' >> healthcheck && \

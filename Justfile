@@ -1,121 +1,124 @@
-set quiet
+set quiet := true
+set dotenv-load := true
 
-BIN_PATH := 'dist/lighthouse'
+BIN_PATH := 'bin/lighthouse'
+IMAGE_NAME := 'lighthouse_app'
+REMOTE_DIR := 'lighthouse'
+DB_NAME := 'lighthouse'
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
 mod make
-mod container
-mod db
-
-set dotenv-load := true
 
 [private]
 help:
     just --list --unsorted
 
-# start development
+# debug disabled, services enabled
 dev: build-autocap
-    watchexec -r 'just redev'
+    hivemind
 
-# start development with debug logging and no services
-devd:
-    DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 just dev
+# debug enabled, services disabled
+dev2: build-autocap
+    DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 hivemind
 
-# start development with debug logging
-devdd:
-    LIGHTHOUSE_DEBUG=1 just dev
+# debug enabled, services enabled
+dev3: build-autocap
+    LIGHTHOUSE_DEBUG=1 hivemind
 
-# build binary
-build:
-    mkif {{ BIN_PATH }} $(find src -type f) -x 'just rebuild'
+db:
+    mariadb {{ DB_NAME }}
 
-# run tests
-test:
+drop:
+    echo 'drop database if exists {{ DB_NAME }}' | mariadb
+
+pull:
+    importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
+
+fmt:
+    go fmt ./...
+    just --fmt
+
+test: generate
     #!/bin/bash
     set -eo pipefail
-    cd src
-    export VIEWS_DIR=$(realpath views)
-    go test -cover ./... 2>&1 | gostack --mode gotest --mod crdx.org/lighthouse
-    exit ${PIPESTATUS[0]}
+    export VIEWS_DIR=$(realpath cmd/*/views)
+    unbuffer go test -cover ./... | gostack --test
 
-# run tests and show code coverage
-cov:
+cov: generate
     #!/bin/bash
-    set -e
-    cd src
+    set -eo pipefail
     FILE=$(mktemp)
-    export VIEWS_DIR=$(realpath views)
-    go test -cover -coverprofile="$FILE" ./...
+    export VIEWS_DIR=$(realpath cmd/*/views)
+    go test ./... -cover -coverprofile="$FILE"
     go tool cover -html="$FILE"
     rm "$FILE"
 
-# run a specific test
-test-file path:
-    #!/bin/bash
-    set -e
-    cd src
-    FILE="{{ path }}"
-    export VIEWS_DIR=$(realpath views)
-    go test -cover "${FILE#src/}"
-    # go test -cover -cpuprofile ../cpu.prof "${FILE#src/}"
-    # go tool pprof -png -output ../cpu.png ../cpu.prof
-
-# check everything
-check: lint test
-
-# run linter
 lint:
-    # We don't need the loopclosure check because of GOEXPERIMENT=loopvar.
-    cd src && go vet -loopclosure=false ./... && golangci-lint run
+    #!/bin/bash
+    set -eo pipefail
+    unbuffer go vet ./... | gostack
+    unbuffer golangci-lint --color never run | gostack
 
-# run formatter
-fmt:
-    cd src && go fmt ./...
+fix:
+    #!/bin/bash
+    set -eo pipefail
+    unbuffer golangci-lint --color never run --fix | gostack
 
-# show code stats
 sloc:
     tokei -tGo,HTML,CSS,JavaScript \
-        -e src/assets/alpine.min.js \
-        -e src/assets/bulma.min.css
+        -e **/alpine.min.js \
+        -e **/bulma.min.css
 
-# deploy the container
-deploy:
-    just container::deploy
+clean:
+    rm -vf {{ AUTOCAP_BIN_PATH }}
+    rm -vf {{ BIN_PATH }}
+
+deploy: buildc
+    deploy-container \
+        --host s \
+        --image {{ IMAGE_NAME }} \
+        --dir {{ REMOTE_DIR }} \
+        --compose docker-compose.yml \
+        --add .env.prod \
+        --init deploy/init
+
+buildc:
+    docker-compose build
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
 
 [private]
+up: buildc
+    docker-compose up
+
+[private]
+down:
+    docker-compose down
+
+[private]
 build-autocap:
-    #!/bin/bash
-    mkif {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go -x 'just rebuild-autocap'
+    mkif {{ AUTOCAP_BIN_PATH }} ./tools/autocap/* -x 'just rebuild-autocap'
 
 [private]
 rebuild-autocap:
-    #!/bin/bash
-    set -e
     sudo rm -f {{ AUTOCAP_BIN_PATH }}
-    go build -o {{ AUTOCAP_BIN_PATH }} src/cmd/autocap/main.go
+    go build -o {{ AUTOCAP_BIN_PATH }} ./tools/autocap
     sudo chown root {{ AUTOCAP_BIN_PATH }}
     sudo chmod u+s {{ AUTOCAP_BIN_PATH }}
 
 [private]
-redev: build
+serve: build
     #!/bin/bash
     set -eo pipefail
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
-    unbuffer {{ BIN_PATH }} --env .env 2>&1 | gostack --mod crdx.org/lighthouse
+    unbuffer {{ BIN_PATH }} | gostack
 
 [private]
 generate:
-    cd src && go generate ./...
+    go generate ./...
 
 [private]
-rebuild: generate
+build: generate
     #!/bin/bash
     set -eo pipefail
-    cd src
-    unbuffer go build -o ../{{ BIN_PATH }} -trimpath -ldflags '-s -w' 2>&1 | gostack --mod crdx.org/lighthouse
-
-[private]
-clean:
-    rm -fv {{ BIN_PATH }}
+    unbuffer go build -o {{ BIN_PATH }} ./cmd/lighthouse | gostack

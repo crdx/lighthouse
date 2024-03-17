@@ -11,5 +11,5 @@ insert_final_newline = true
 [*.yml]
 indent_size = 2
 
-[{*.go,go.mod,migration.template}]
+[{*.go,go.mod}]
 indent_style = tab

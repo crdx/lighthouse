@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="/assets/favicon/light.svg" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="/assets/favicon/dark.svg" media="(prefers-color-scheme: dark)">
+
+    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/assets/bulma.min.css">
+    <link rel="stylesheet" href="/assets/hint.min.css">
+    <link rel="stylesheet" href="/assets/main.css">
+
+    <title>lighthouse</title>
+</head>
+<body>
+    {{ template "layout/p/nav" . }}
+    {{ template "layout/p/warning" $.globals }}
+    {{ template "layout/p/flash" $.globals.Flash }}
+
+    {{ embed }}
+
+    <script type="text/javascript" src="/assets/main.js"></script>
+    <script defer src="/assets/alpine.min.js"></script>
+
+    {{ if enableLiveReload }}
+        {{ template "layout/p/livereload" }}
+    {{ end }}
+</body>
+</html>

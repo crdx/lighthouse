@@ -1,0 +1,21 @@
+version: '2'
+sql:
+  - name: lighthouse
+    engine: mysql
+    queries: queries
+    schema: migrations
+    codegen:
+      - plugin: starfield
+        out: db
+        options:
+          package: db
+          max_params: 4
+          rename:
+            url: URL
+            ip_address: IPAddress
+            mac_address: MACAddress
+            device_ip_address_log: DeviceIPAddressLog
+plugins:
+  - name: starfield
+    process:
+      cmd: starfield

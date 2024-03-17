@@ -1,0 +1,30 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            {{ template "device/p/header" . }}
+
+            <div class="columns">
+                <div class="column">
+                    <h2 class="subtitle">Details</h2>
+
+                    {{ template "device/p/details" .device }}
+                </div>
+
+                <div class="column">
+                    <h2 class="subtitle">
+                        Activity
+                        {{ if .activity }} — <a href="/activity/?device_id={{ .device.ID }}">view all</a>{{ end }}
+                    </h2>
+
+                    {{ template "device/p/activity" . }}
+                </div>
+            </div>
+
+            {{ template "device/p/adapters" . }}
+
+            {{ if and (.serviceScanEnabled) (not .device.Origin) }}
+                {{ template "device/p/services" . }}
+            {{ end }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box" x-data="filter">
+            <div class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <h1 class="title is-size-4">Devices</h1>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="select">
+                            <select @change="filter" x-model.fill="filterSelection">
+                                <option value="all"{{ if eq .currentFilter "all" }} selected{{ end }}>All ({{ .counts.All }})</option>
+                                <option value="online"{{ if eq .currentFilter "online" }} selected{{ end }}>Online ({{ .counts.Online }})</option>
+                                <option value="offline"{{ if eq .currentFilter "offline" }} selected{{ end }}>Offline ({{ .counts.Offline }})</option>
+                                <option value="watched"{{ if eq .currentFilter "watched" }} selected{{ end }}>Watched ({{ .counts.Watched }})</option>
+                                <option value="unwatched"{{ if eq .currentFilter "unwatched" }} selected{{ end }}>Unwatched ({{ .counts.Unwatched }})</option>
+                                <option value="pingable"{{ if eq .currentFilter "pingable" }} selected{{ end }}>Pingable ({{ .counts.Pingable }})</option>
+                                <option value="unpingable"{{ if eq .currentFilter "unpingable" }} selected{{ end }}>Unpingable ({{ .counts.Unpingable }})</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th title="Type">{{ template "p/table/column-header" .columns.type }}</th>
+                        <th>{{ template "p/table/column-header" .columns.name }}</th>
+                        <th class="is-hidden-mobile">{{ template "p/table/column-header" .columns.ip }}</th>
+                        <th class="is-hidden-touch">{{ template "p/table/column-header" .columns.vendor }}</th>
+                        <th class="is-hidden-mobile">{{ template "p/table/column-header" .columns.mac }}</th>
+                        <th>{{ template "p/table/column-header" .columns.seen }}</th>
+                        <th class="is-hidden-mobile" title="Watching">{{ template "p/table/column-header" .columns.watch }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .devices }}
+                        <tr {{ if ne .State "online" }}class="has-text-grey"{{ end }}>
+                            <td class="min-column">
+                                {{ template "device/p/icon" . }}
+                            </td>
+                            <td>
+                                <div><a href="/device/{{ .ID }}">{{ template "p/name/device" .Name }}</a></div>
+                                <div class="is-hidden-tablet mono has-text-grey">{{ .IPAddress }}</div>
+                            </td>
+                            <td class="is-hidden-mobile mono">{{ .IPAddress }}</td>
+                            <td class="is-hidden-touch ">{{ template "p/name/vendor" .Vendor }}</td>
+                            <td class="is-hidden-mobile mono">{{ .MACAddress }}</td>
+                            <td class="min-column">{{ template "p/time/rel" .LastSeenAt }}</td>
+                            <td class="min-column is-hidden-mobile">{{ template "p/state/bool" .Watch }}</td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

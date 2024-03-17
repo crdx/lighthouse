@@ -1,0 +1,19 @@
+{{/*
+    Render a time as relative time in short form (s, m) on mobile and long form (secs, mins)
+    otherwise.
+
+    Context:
+        .    time.Time | sql.Null[time.Time]
+*/}}
+
+<div class="is-hidden-touch">
+    <span title="{{ formatDateTimeSystem . }}">
+        {{ timeAgoLong . }}
+    </span>
+</div>
+
+<div class="is-hidden-desktop">
+    <span class="hint--bottom hint--rounded" aria-label="{{ formatDateTimeSystem . }}">
+        {{ timeAgoShort . }}
+    </span>
+</div>

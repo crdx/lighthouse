@@ -1,0 +1,58 @@
+<div class="section">
+    <div class="container is-max-widescreen">
+        <div class="box">
+            {{ if .device }}
+                <h1 class="title is-size-4">Activity for {{ template "p/name/device" .device.Name }}</h1>
+            {{ else }}
+                <h1 class="title is-size-4">Activity</h1>
+            {{ end }}
+
+            {{ if not .rows }}
+                {{ template "activity/p/no-activity" .device }}
+            {{ else }}
+                {{ template "p/pager/nav" .pagingState }}
+
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>{{ .typeColumnLabel }}</th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>When</th>
+                            <th class="is-hidden-mobile">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .rows }}
+                            <tr>
+                                <td class="min-column has-text-centered">{{ template "device/p/icon" . }}</td>
+                                <td>
+                                    {{ if not .DeletedAt.Valid }}
+                                        <a href="/device/{{ .DeviceID }}">
+                                    {{ else }}
+                                        <span class="is-strikethrough hint--bottom hint--rounded" aria-label="This device was deleted {{ timeAgoLong .DeletedAt }}">
+                                    {{ end }}
+
+                                    {{ template "p/name/device" .Name }}
+
+                                    {{ if not .DeletedAt.Valid }}
+                                        </a>
+                                    {{ else }}
+                                        </span>
+                                    {{ end }}
+                                </td>
+                                <td>{{ template "device/p/state" .State }}</td>
+                                <td class="nowrap">{{ template "p/time/rel" .CreatedAt }}</td>
+                                <td class="is-hidden-mobile nowrap">{{ formatDateTimeReadable .CreatedAt }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+
+                {{ if gt (len .rows) 20 }}
+                    {{ template "p/pager/nav" .pagingState }}
+                {{ end }}
+            {{ end }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+alter table adapters change column created_at created_at datetime not null;
+alter table audit_logs change column created_at created_at datetime not null;
+alter table device_discovery_notifications change column created_at created_at datetime not null;
+alter table device_ip_address_logs change column created_at created_at datetime not null;
+alter table device_limit_notifications change column created_at created_at datetime not null;
+alter table device_service_notifications change column created_at created_at datetime not null;
+alter table device_state_logs change column created_at created_at datetime not null;
+alter table device_state_notifications change column created_at created_at datetime not null;
+alter table devices change column created_at created_at datetime not null;
+alter table mappings change column created_at created_at datetime not null;
+alter table notifications change column created_at created_at datetime not null;
+alter table scan_results change column created_at created_at datetime not null;
+alter table scans change column created_at created_at datetime not null;
+alter table services change column created_at created_at datetime not null;
+alter table settings change column created_at created_at datetime not null;
+alter table users change column created_at created_at datetime not null;
+alter table vendor_lookups change column created_at created_at datetime not null;
