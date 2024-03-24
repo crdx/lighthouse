@@ -28,7 +28,6 @@ func getUsage() string {
 
 		Options:
 			--env PATH    Read environment file
-			-h, --help    Show help
 	`
 }
 
