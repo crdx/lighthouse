@@ -30,7 +30,7 @@ func (self *ListItem) IconClass() string {
 	return util.IconToClass(self.Icon)
 }
 
-func GetList(sortColumn string, sortDirection string, filter string) []ListItem {
+func GetList(sortColumn string, sortDirection string, filter string) []*ListItem {
 	// Ensure sort is stable by appending "D.id ASC" to some of these.
 	orderByTemplates := map[string]string{
 		"name":   "D.name %s, D.id ASC",
@@ -64,7 +64,7 @@ func GetList(sortColumn string, sortDirection string, filter string) []ListItem 
 	// The left join with adapters on last_seen_at finds the adapter with the newest last_seen_at
 	// date. This works because the row where there is no newer last_seen_at date will contain
 	// nulls for the A2 part of the table, and the where clause requires A2.id to be null.
-	rows, err := db.Query(fmt.Sprintf(`
+	return db.ScanN[ListItem](fmt.Sprintf(`
 		SELECT
 			D.id,
 			D.name,
@@ -85,31 +85,6 @@ func GetList(sortColumn string, sortDirection string, filter string) []ListItem 
 		%s
 		ORDER BY %s
 	`, filterBy, orderBy))
-	if err != nil {
-		return nil
-	}
-
-	var list []ListItem
-	for rows.Next() {
-		var item ListItem
-		if err := rows.Scan(
-			&item.ID,
-			&item.Name,
-			&item.State,
-			&item.Hostname,
-			&item.Icon,
-			&item.Watch,
-			&item.MACAddress,
-			&item.Vendor,
-			&item.IPAddress,
-			&item.LastSeenAt,
-		); err != nil {
-			return nil
-		}
-		list = append(list, item)
-	}
-
-	return list
 }
 
 type Counters struct {
