@@ -18,7 +18,7 @@ require (
 	github.com/lmittmann/tint v1.0.4
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-multi v1.0.2
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	github.com/tdewolff/minify/v2 v2.20.20
 	github.com/yuin/goldmark v1.7.1
 	golang.org/x/crypto v0.22.0
