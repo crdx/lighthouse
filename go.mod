@@ -19,7 +19,7 @@ require (
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-multi v1.0.2
 	github.com/stretchr/testify v1.8.4
-	github.com/tdewolff/minify/v2 v2.20.20
+	github.com/tdewolff/minify/v2 v2.20.21
 	github.com/yuin/goldmark v1.7.1
 	golang.org/x/crypto v0.22.0
 	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
