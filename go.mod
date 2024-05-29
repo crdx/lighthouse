@@ -14,7 +14,7 @@ require (
 	github.com/gofiber/template/html/v2 v2.1.1
 	github.com/google/gopacket v1.1.19
 	github.com/google/uuid v1.6.0
-	github.com/imroc/req/v3 v3.43.3
+	github.com/imroc/req/v3 v3.43.6
 	github.com/lmittmann/tint v1.0.4
 	github.com/samber/lo v1.39.0
 	github.com/samber/slog-multi v1.0.2
