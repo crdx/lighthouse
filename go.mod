@@ -17,7 +17,7 @@ require (
 	github.com/imroc/req/v3 v3.43.3
 	github.com/lmittmann/tint v1.0.4
 	github.com/samber/lo v1.39.0
-	github.com/samber/slog-multi v1.0.2
+	github.com/samber/slog-multi v1.1.0
 	github.com/stretchr/testify v1.8.4
 	github.com/tdewolff/minify/v2 v2.20.20
 	github.com/yuin/goldmark v1.7.1
