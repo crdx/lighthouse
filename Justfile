@@ -11,7 +11,7 @@ mod make
 
 [private]
 help:
-    just --list --unsorted
+    just --list --unsorted --list-submodules
 
 # debug disabled, services enabled
 dev: build-autocap
