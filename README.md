@@ -45,7 +45,7 @@ dist/lighthouse --env .env
 
 ## Deployment (docker)
 
-Docker is also an option. In this case you'll need the built image, a `.env` file, and a MySQL or MariaDB database. Because it needs to run with `network_mode: host` (to be able to monitor the host network) the database server can be installed directly on the host or as an additional service placed in `docker-compose.yml` (which should also be `network_mode: host`).
+Docker is also an option. In this case you'll need the built image, a `.env` file, and a MySQL or MariaDB database. Because it needs to run with `network_mode: host` (to be able to monitor the host network) the database server can be installed directly on the host or as an additional service placed in `compose.yml` (which should also be `network_mode: host`).
 
 ```yaml
   db:
@@ -70,7 +70,7 @@ DB_PROTOCOL=tcp
 DB_ADDRESS=127.0.0.1:3306
 ```
 
-Note: The `docker-compose.yml` file references `.env.prod` instead of `.env`.
+Note: The `compose.yml` file references `.env.prod` instead of `.env`.
 
 Build the image and run it.
 

@@ -78,7 +78,7 @@ deploy: buildc
         --host s \
         --image {{ IMAGE_NAME }} \
         --dir {{ REMOTE_DIR }} \
-        --compose docker-compose.yml \
+        --compose compose.yml \
         --add .env.prod \
         --init deploy/init
 
