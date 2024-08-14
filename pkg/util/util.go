@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// PathExists returns true if a path exiss.
+// PathExists returns true if a path exists.
 func PathExists(s string) bool {
 	_, err := os.Stat(s)
 	return !errors.Is(err, os.ErrNotExist)
