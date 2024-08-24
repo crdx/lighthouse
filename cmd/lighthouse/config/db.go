@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"strings"
 
+	_ "github.com/go-sql-driver/mysql"
+
 	"crdx.org/lighthouse/cmd/lighthouse/tests/helpers/seeder"
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/migrations"
