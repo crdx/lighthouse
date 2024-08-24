@@ -1,4 +1,4 @@
-FROM golang:1.22.2-alpine3.19 AS build
+FROM golang:1.23.0-alpine3.20 AS build
 # https://hub.docker.com/_/golang
 
 RUN apk add --no-cache \
@@ -22,7 +22,7 @@ RUN go build -o lighthouse -trimpath -ldflags '-s -w' ./cmd/lighthouse && \
     setcap cap_net_raw+eip lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
-FROM alpine:3.19.1
+FROM alpine:3.20.2
 # https://hub.docker.com/_/alpine
 
 RUN apk add --no-cache tzdata && \
