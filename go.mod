@@ -1,8 +1,7 @@
 module crdx.org/lighthouse
 
 go 1.22
-
-toolchain go1.22.0
+toolchain go1.22.5
 
 require (
 	crdx.org/duckopt/v2 v2.3.0
@@ -15,15 +14,15 @@ require (
 	github.com/gofiber/template/html/v2 v2.1.2
 	github.com/google/gopacket v1.1.19
 	github.com/google/uuid v1.6.0
-	github.com/imroc/req/v3 v3.43.7
+	github.com/imroc/req/v3 v3.45.0
 	github.com/lmittmann/tint v1.0.5
 	github.com/samber/lo v1.47.0
 	github.com/samber/slog-multi v1.2.0
 	github.com/stretchr/testify v1.9.0
 	github.com/tdewolff/minify/v2 v2.20.37
 	github.com/yuin/goldmark v1.7.4
-	golang.org/x/crypto v0.26.0
-	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948
+	golang.org/x/crypto v0.27.0
+	golang.org/x/exp v0.0.0-20240904232852-e7e105dedf7e
 )
 
 require (
@@ -38,7 +37,7 @@ require (
 	github.com/gofiber/storage/mysql v1.3.7 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
-	github.com/google/pprof v0.0.0-20240727154555-813a5fbdbec8 // indirect
+	github.com/google/pprof v0.0.0-20240903155634-a8630aee4ab9 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
@@ -46,11 +45,11 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
-	github.com/onsi/ginkgo/v2 v2.20.1 // indirect
+	github.com/onsi/ginkgo/v2 v2.20.2 // indirect
 	github.com/philhofer/fwd v1.1.3-0.20240612014219-fbbf4953d986 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/quic-go/qpack v0.4.0 // indirect
-	github.com/quic-go/quic-go v0.46.0 // indirect
+	github.com/quic-go/qpack v0.5.1 // indirect
+	github.com/quic-go/quic-go v0.47.0 // indirect
 	github.com/refraction-networking/utls v1.6.7 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/tdewolff/parse/v2 v2.7.15 // indirect
@@ -59,11 +58,11 @@ require (
 	github.com/valyala/fasthttp v1.55.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/mock v0.4.0 // indirect
-	golang.org/x/mod v0.20.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/mod v0.21.0 // indirect
+	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 	golang.org/x/tools v0.24.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
