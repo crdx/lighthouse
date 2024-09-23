@@ -1,5 +1,6 @@
 services:
   app:
+    init: true
     restart: unless-stopped
     image: lighthouse_app
     env_file: .env.prod

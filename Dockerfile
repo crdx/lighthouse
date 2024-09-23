@@ -31,7 +31,6 @@ RUN apk add --no-cache tzdata && \
     apk del tzdata
 
 RUN apk add --no-cache \
-    dumb-init \
     bash \
     libpcap-dev \
     curl \
@@ -49,4 +48,4 @@ RUN echo 'curl -sSf http://localhost:$PORT/health' >> healthcheck && \
 
 USER anon
 
-CMD ["dumb-init", "./lighthouse"]
+CMD ["./lighthouse"]
