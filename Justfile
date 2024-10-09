@@ -35,8 +35,9 @@ pull:
     importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
 fmt:
-    go fmt ./...
     just --fmt
+    find . -name '*.just' -print0 | xargs -0 -I{} just --fmt -f {}
+    go fmt ./...
 
 test: generate
     #!/bin/bash
