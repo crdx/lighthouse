@@ -19,7 +19,7 @@ require (
 	github.com/samber/lo v1.47.0
 	github.com/samber/slog-multi v1.2.3
 	github.com/stretchr/testify v1.9.0
-	github.com/tdewolff/minify/v2 v2.20.37
+	github.com/tdewolff/minify/v2 v2.21.0
 	github.com/yuin/goldmark v1.7.4
 	golang.org/x/crypto v0.28.0
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
@@ -52,7 +52,7 @@ require (
 	github.com/quic-go/quic-go v0.47.0 // indirect
 	github.com/refraction-networking/utls v1.6.7 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/tdewolff/parse/v2 v2.7.15 // indirect
+	github.com/tdewolff/parse/v2 v2.7.17 // indirect
 	github.com/tinylib/msgp v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.55.0 // indirect
