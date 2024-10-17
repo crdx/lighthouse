@@ -27,14 +27,14 @@ type EditForm struct {
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
-	MailFromHeader  string `form:"mail_from_header"  validate:"required_if=EnableMail 1,omitempty,mailaddr" transform:"trim"`
-	MailFromAddress string `form:"mail_from_address" validate:"required_if=EnableMail 1,omitempty,email" transform:"trim"`
-	MailToHeader    string `form:"mail_to_header"    validate:"required_if=EnableMail 1,omitempty,mailaddr" transform:"trim"`
-	MailToAddress   string `form:"mail_to_address"   validate:"required_if=EnableMail 1,omitempty,email" transform:"trim"`
-	SMTPHost        string `form:"smtp_host"         validate:"required_if=EnableMail 1" transform:"trim"`
-	SMTPPort        string `form:"smtp_port"         validate:"required_if=EnableMail 1,omitempty,number,excludesall=-." transform:"trim"`
-	SMTPUser        string `form:"smtp_user"         validate:"required_if=EnableMail 1" transform:"trim"`
-	SMTPPass        string `form:"smtp_pass"         validate:"required_if=EnableMail 1" transform:"trim"`
+	MailFromHeader  string `form:"mail_from_header"  validate:"required_if=EnableMail true,omitempty,mailaddr" transform:"trim"`
+	MailFromAddress string `form:"mail_from_address" validate:"required_if=EnableMail true,omitempty,email" transform:"trim"`
+	MailToHeader    string `form:"mail_to_header"    validate:"required_if=EnableMail true,omitempty,mailaddr" transform:"trim"`
+	MailToAddress   string `form:"mail_to_address"   validate:"required_if=EnableMail true,omitempty,email" transform:"trim"`
+	SMTPHost        string `form:"smtp_host"         validate:"required_if=EnableMail true" transform:"trim"`
+	SMTPPort        string `form:"smtp_port"         validate:"required_if=EnableMail true,omitempty,number,excludesall=-." transform:"trim"`
+	SMTPUser        string `form:"smtp_user"         validate:"required_if=EnableMail true" transform:"trim"`
+	SMTPPass        string `form:"smtp_pass"         validate:"required_if=EnableMail true" transform:"trim"`
 
 	// System
 	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
