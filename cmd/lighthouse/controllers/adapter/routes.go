@@ -10,7 +10,7 @@ import (
 func InitRoutes(app *fiber.App) {
 	adapterGroup := app.Group("/adapter/:id<int>").
 		Use(auth.Editor).
-		Use(parseparam.New[db.Adapter]("id", "adapter", db.FindAdapter))
+		Use(parseparam.New("id", db.FindAdapter))
 
 	adapterGroup.Post("/delete", Delete)
 	adapterGroup.Get("/edit", ViewEdit).Name("devices")

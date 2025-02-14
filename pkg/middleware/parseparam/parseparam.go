@@ -11,7 +11,10 @@ const parseParamPrefix = "parseParam_"
 
 // New returns middleware that looks for a route parameter corresponding to an ID, fetches
 // the model for it, and assigns it to c.Locals(name).
-func New[T any](param string, name string, fetch func(int64) (*T, bool)) fiber.Handler {
+func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
+	var v T
+	name := strings.ToLower(reflectutil.GetType(v).Name())
+
 	return func(c *fiber.Ctx) error {
 		id, err := c.ParamsInt(param)
 		if err != nil {

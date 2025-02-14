@@ -10,7 +10,7 @@ import (
 func InitRoutes(app *fiber.App) {
 	serviceGroup := app.Group("/service/:id<int>").
 		Use(auth.Editor).
-		Use(parseparam.New[db.Service]("id", "service", db.FindService))
+		Use(parseparam.New("id", db.FindService))
 
 	serviceGroup.Post("/delete", Delete)
 	serviceGroup.Get("/edit", ViewEdit).Name("devices")

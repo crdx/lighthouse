@@ -25,7 +25,7 @@ func InitRoutes(app *fiber.App) {
 	adminGroup.Post("/users/create", users.Create)
 
 	userGroup := adminGroup.Group("/users/:id<int>").
-		Use(parseparam.New[db.User]("id", "user", db.FindUser))
+		Use(parseparam.New("id", db.FindUser))
 
 	userGroup.Get("/edit", users.ViewEdit).Name("admin")
 	userGroup.Post("/edit", users.Edit)
@@ -39,7 +39,7 @@ func InitRoutes(app *fiber.App) {
 	adminGroup.Post("/mappings", mappings.EditSources)
 
 	adminGroup.Group("/mappings/:id<int>").
-		Use(parseparam.New[db.Mapping]("id", "mapping", db.FindMapping)).
+		Use(parseparam.New("id", db.FindMapping)).
 		Post("/delete", mappings.DeleteMapping)
 
 	adminGroup.Post("/mappings/add", mappings.AddMapping)

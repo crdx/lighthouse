@@ -11,7 +11,7 @@ func InitRoutes(app *fiber.App) {
 	app.Get("/", List).Name("devices")
 
 	deviceGroup := app.Group("/device/:id<int>").
-		Use(parseparam.New[db.Device]("id", "device", db.FindDevice))
+		Use(parseparam.New("id", db.FindDevice))
 
 	deviceGroup.Get("/", View).Name("devices")
 	deviceGroup.Post("/delete", auth.Editor, Delete)
