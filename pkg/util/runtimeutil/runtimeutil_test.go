@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"testing"
 
 	"crdx.org/lighthouse/pkg/util/runtimeutil"
@@ -36,7 +35,7 @@ func TestPrintStackTrace(t *testing.T) {
 			output := buf.String()
 
 			for _, expected := range testCase.expectedContains {
-				assert.True(t, strings.Contains(output, expected))
+				assert.Contains(t, output, expected)
 			}
 		})
 	}
