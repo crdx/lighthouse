@@ -31,7 +31,7 @@ db:
 drop:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
 
-pull:
+fetchdb:
     importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
 fmt:
