@@ -21,9 +21,9 @@ type SourceForm struct {
 }
 
 type MappingForm struct {
-	Label      string `form:"label" validate:"max=20" transform:"trim"`
+	Label      string `form:"label" validate:"max=20"`
 	MACAddress string `form:"mac_address" validate:"required,mac_address" transform:"trim,upper"`
-	IPAddress  string `form:"ip_address" validate:"required,ip_address" transform:"trim"`
+	IPAddress  string `form:"ip_address" validate:"required,ip_address"`
 }
 
 func View(c *fiber.Ctx) error {

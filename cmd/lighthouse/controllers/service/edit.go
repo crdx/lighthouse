@@ -15,7 +15,7 @@ import (
 )
 
 type EditForm struct {
-	Name string `form:"name" validate:"max=100" transform:"trim"`
+	Name string `form:"name" validate:"max=100"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {

@@ -12,8 +12,8 @@ func TestStructTrim(t *testing.T) {
 	t.Parallel()
 
 	type S struct {
-		Field1 string `transform:"trim"`
-		Field2 string
+		Field1 string
+		Field2 string `transform:"no-trim"`
 	}
 
 	testCases := []struct {

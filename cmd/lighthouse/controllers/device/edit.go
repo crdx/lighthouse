@@ -15,19 +15,19 @@ import (
 )
 
 type OriginEditForm struct {
-	Name  string `form:"name" validate:"max=100" transform:"trim"`
-	Icon  string `form:"icon" validate:"max=100" transform:"trim"`
-	Notes string `form:"notes" validate:"max=5000" transform:"trim"`
+	Name  string `form:"name" validate:"max=100"`
+	Icon  string `form:"icon" validate:"max=100"`
+	Notes string `form:"notes" validate:"max=5000"`
 }
 
 type EditForm struct {
-	Name        string `form:"name" validate:"max=100" transform:"trim"`
-	Icon        string `form:"icon" validate:"omitempty,icon,max=100" transform:"trim"`
-	Notes       string `form:"notes" validate:"max=5000" transform:"trim"`
-	GracePeriod string `form:"grace_period" validate:"required,duration,dmin=1 min,dmax=60 mins" transform:"trim"`
+	Name        string `form:"name" validate:"max=100"`
+	Icon        string `form:"icon" validate:"omitempty,icon,max=100"`
+	Notes       string `form:"notes" validate:"max=5000"`
+	GracePeriod string `form:"grace_period" validate:"required,duration,dmin=1 min,dmax=60 mins"`
 	Watch       bool   `form:"watch"`
 	Ping        bool   `form:"ping"`
-	Limit       string `form:"limit" validate:"omitempty,duration,dmin=1 min,dmax=1 week" transform:"trim"`
+	Limit       string `form:"limit" validate:"omitempty,duration,dmin=1 min,dmax=1 week"`
 }
 
 func ViewEdit(c *fiber.Ctx) error {

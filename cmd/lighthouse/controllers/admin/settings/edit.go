@@ -15,30 +15,30 @@ import (
 type EditForm struct {
 	// Device Scanning
 	EnableDeviceScan   bool   `form:"enable_device_scan"`
-	DeviceScanInterval string `form:"device_scan_interval" validate:"required,duration,dmin=1 min,dmax=30 mins" transform:"trim"`
+	DeviceScanInterval string `form:"device_scan_interval" validate:"required,duration,dmin=1 min,dmax=30 mins"`
 	NotifyOnNewDevice  bool   `form:"notify_on_new_device"`
 	WatchNew           bool   `form:"watch_new"`
 	PingNew            bool   `form:"ping_new"`
 
 	// Service Scanning
 	EnableServiceScan   bool   `form:"enable_service_scan"`
-	ServiceScanInterval string `form:"service_scan_interval" validate:"required,duration,dmin=1 hour,dmax=1 week" transform:"trim"`
+	ServiceScanInterval string `form:"service_scan_interval" validate:"required,duration,dmin=1 hour,dmax=1 week"`
 	NotifyOnNewService  bool   `form:"notify_on_new_service"`
 
 	// Mail
 	EnableMail      bool   `form:"enable_mail"`
-	MailFromHeader  string `form:"mail_from_header"  validate:"required_if=EnableMail true,omitempty,mailaddr" transform:"trim"`
-	MailFromAddress string `form:"mail_from_address" validate:"required_if=EnableMail true,omitempty,email" transform:"trim"`
-	MailToHeader    string `form:"mail_to_header"    validate:"required_if=EnableMail true,omitempty,mailaddr" transform:"trim"`
-	MailToAddress   string `form:"mail_to_address"   validate:"required_if=EnableMail true,omitempty,email" transform:"trim"`
-	SMTPHost        string `form:"smtp_host"         validate:"required_if=EnableMail true" transform:"trim"`
-	SMTPPort        string `form:"smtp_port"         validate:"required_if=EnableMail true,omitempty,number,excludesall=-." transform:"trim"`
-	SMTPUser        string `form:"smtp_user"         validate:"required_if=EnableMail true" transform:"trim"`
-	SMTPPass        string `form:"smtp_pass"         validate:"required_if=EnableMail true" transform:"trim"`
+	MailFromHeader  string `form:"mail_from_header"  validate:"required_if=EnableMail true,omitempty,mailaddr"`
+	MailFromAddress string `form:"mail_from_address" validate:"required_if=EnableMail true,omitempty,email"`
+	MailToHeader    string `form:"mail_to_header"    validate:"required_if=EnableMail true,omitempty,mailaddr"`
+	MailToAddress   string `form:"mail_to_address"   validate:"required_if=EnableMail true,omitempty,email"`
+	SMTPHost        string `form:"smtp_host"         validate:"required_if=EnableMail true"`
+	SMTPPort        string `form:"smtp_port"         validate:"required_if=EnableMail true,omitempty,number,excludesall=-."`
+	SMTPUser        string `form:"smtp_user"         validate:"required_if=EnableMail true"`
+	SMTPPass        string `form:"smtp_pass"         validate:"required_if=EnableMail true"`
 
 	// System
-	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500" transform:"trim"`
-	Timezone         string `form:"timezone"           validate:"required,timezone" transform:"trim"`
+	MACVendorsAPIKey string `form:"macvendors_api_key" validate:"max=500"`
+	Timezone         string `form:"timezone"           validate:"required,timezone"`
 }
 
 func List(c *fiber.Ctx) error {

@@ -17,8 +17,8 @@ import (
 )
 
 type EditForm struct {
-	Password        string `form:"password" validate:"omitempty,min=4" transform:"trim"`
-	ConfirmPassword string `form:"confirm_password" transform:"trim"`
+	Password        string `form:"password" validate:"omitempty,min=4"`
+	ConfirmPassword string `form:"confirm_password"`
 	Role            string `form:"role" validate:"required,role"`
 }
 

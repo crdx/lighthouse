@@ -14,9 +14,9 @@ import (
 )
 
 type EditForm struct {
-	CurrentPassword    string `form:"current_password" validate:"required" transform:"trim"`
-	NewPassword        string `form:"new_password" validate:"required,min=4" transform:"trim"`
-	ConfirmNewPassword string `form:"confirm_new_password" validate:"required" transform:"trim"`
+	CurrentPassword    string `form:"current_password" validate:"required"`
+	NewPassword        string `form:"new_password" validate:"required,min=4"`
+	ConfirmNewPassword string `form:"confirm_new_password" validate:"required"`
 }
 
 func Edit(c *fiber.Ctx) error {
