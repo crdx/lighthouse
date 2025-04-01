@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-const parseParamPrefix = "parseParam_"
+const prefix = "parseParam_"
 
 // New returns middleware that looks for a route parameter corresponding to an ID, fetches
 // the model for it, and assigns it to c.Locals(name).
@@ -26,7 +26,7 @@ func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
 			return c.SendStatus(404)
 		}
 
-		c.Locals(parseParamPrefix+name, instance)
+		c.Locals(prefix+name, instance)
 		return c.Next()
 	}
 }
@@ -35,5 +35,5 @@ func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
 func Get[T any](c *fiber.Ctx) *T {
 	var v T
 	name := strings.ToLower(reflectutil.GetType(v).Name())
-	return c.Locals(parseParamPrefix + name).(*T)
+	return c.Locals(prefix + name).(*T)
 }
