@@ -15,7 +15,7 @@ import (
 	"github.com/samber/lo"
 )
 
-// Used to make sure with no shadow of a doubt that the submitted form is the login form.
+// FormID is used to make sure with no shadow of a doubt that the submitted form is the login form.
 const FormID = "afc434ce-bf57-48f7-9844-e9ab4091f19a"
 
 func err(c *fiber.Ctx) error {

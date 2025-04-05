@@ -61,7 +61,7 @@ func (self *Watcher) Run() error {
 		}
 
 		if device.State == deviceR.StateOnline && device.StateUpdatedAt.Before(db.Now().Add(-limit)) {
-			if self.limitNotificationCache[device.ID] == device.StateUpdatedAt {
+			if self.limitNotificationCache[device.ID].Equal(device.StateUpdatedAt) {
 				continue
 			}
 

@@ -87,7 +87,7 @@ func GetValue(s any) reflect.Value {
 	return v
 }
 
-// GetValue gets the type of s, following pointers.
+// GetType gets the type of s, following pointers.
 func GetType(s any) reflect.Type {
 	t := reflect.TypeOf(s)
 	if t.Kind() == reflect.Ptr {

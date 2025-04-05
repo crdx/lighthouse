@@ -9,6 +9,7 @@ import (
 )
 
 // Mail
+
 func EnableMail() bool        { return getBool("enable_mail") }
 func MailFromHeader() string  { return get("mail_from_header") }
 func MailFromAddress() string { return get("mail_from_address") }
@@ -20,6 +21,7 @@ func SMTPUser() string        { return get("smtp_user") }
 func SMTPPass() string        { return get("smtp_pass") }
 
 // Device Scanning
+
 func EnableDeviceScan() bool            { return getBool("enable_device_scan") }
 func DeviceScanInterval() time.Duration { return getDuration("device_scan_interval") }
 func NotifyOnNewDevice() bool           { return getBool("notify_on_new_device") }
@@ -27,15 +29,18 @@ func WatchNew() bool                    { return getBool("watch_new") }
 func PingNew() bool                     { return getBool("ping_new") }
 
 // Service Scanning
+
 func EnableServiceScan() bool            { return getBool("enable_service_scan") }
 func ServiceScanInterval() time.Duration { return getDuration("service_scan_interval") }
 func NotifyOnNewService() bool           { return getBool("notify_on_new_service") }
 
 // System
+
 func MACVendorsAPIKey() string { return get("macvendors_api_key") }
 func Timezone() string         { return get("timezone") }
 
 // Other
+
 func SourceMACAddresses() string { return get("source_mac_addresses") }
 
 var cache map[string]string

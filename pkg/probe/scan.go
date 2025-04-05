@@ -166,6 +166,6 @@ func getSourcePort() (int, error) {
 		return 0, err
 	}
 
-	defer listener.Close()
+	defer listener.Close() //nolint:errcheck
 	return listener.Addr().(*net.TCPAddr).Port, nil
 }

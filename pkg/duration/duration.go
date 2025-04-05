@@ -15,7 +15,7 @@ func Valid(s string) bool {
 	return ok
 }
 
-// Parse converts s into a time.Duration, and panics if it fails.
+// MustParse converts s into a time.Duration, and panics if it fails.
 func MustParse(s string) time.Duration {
 	return lo.Must(Parse(s))
 }

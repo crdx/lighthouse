@@ -27,7 +27,7 @@ func TestPrintStackTrace(t *testing.T) {
 
 			runtimeutil.PrintStackTrace(testCase.input)
 
-			w.Close()
+			_ = w.Close()
 			os.Stdout = originalStdout
 
 			var buf bytes.Buffer
