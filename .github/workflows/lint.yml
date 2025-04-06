@@ -1,0 +1,28 @@
+name: Lint
+
+on:
+  push:
+
+permissions: read-all
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - uses: actions/setup-go@0aaccfd150d50ccaeb58ebd88d36e91967a5f35b # v5.4.0
+        with:
+          go-version: stable
+
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y libpcap-dev
+          curl -sSfL https://github.com/crdx/starfield/releases/download/v1.1.0/starfield -o /usr/local/bin/starfield
+          chmod +x /usr/local/bin/starfield
+          curl -sSfL https://github.com/sqlc-dev/sqlc/releases/download/v1.28.0/sqlc_1.28.0_linux_amd64.tar.gz | tar -xzf - -C /usr/local/bin
+          go generate
+
+      - uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # v7.0.0
+        with:
+          version: latest
