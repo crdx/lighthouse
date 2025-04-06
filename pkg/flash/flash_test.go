@@ -31,9 +31,9 @@ func TestFlash(t *testing.T) {
 			defer helpers.Start()()
 			session := helpers.NewSession(constants.RoleAdmin, func(c *fiber.Ctx) error {
 				if testCase.success {
-					flash.Success(c, testCase.message) // nolint:govet
+					flash.Success(c, "%s", testCase.message)
 				} else {
-					flash.Failure(c, testCase.message) // nolint:govet
+					flash.Failure(c, "%s", testCase.message)
 				}
 				return c.Next()
 			})

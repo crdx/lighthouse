@@ -88,7 +88,7 @@ func (self *Session) send(req *http.Request) *Response {
 		req.AddCookie(cookie)
 	}
 
-	res := lo.Must(self.app.Test(req)) //nolint
+	res := lo.Must(self.app.Test(req))
 	self.cookies = res.Cookies()
 
 	return &Response{

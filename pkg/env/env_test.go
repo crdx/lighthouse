@@ -39,7 +39,7 @@ func TestRequire(t *testing.T) {
 		input func() string
 		err   bool
 	}{
-		{func() string { return "foo" }, false}, //nolint
+		{func() string { return "foo" }, false},
 		{func() string { return "" }, true},
 	}
 

@@ -27,7 +27,7 @@ func Chain(fs ...func() error) error {
 
 func IconToClass(icon string) string {
 	if style, name, ok := strings.Cut(icon, ":"); ok {
-		return fmt.Sprintf("fa-%s fa-%s", style, name) //nolint
+		return fmt.Sprintf("fa-%s fa-%s", style, name)
 	} else {
 		return ""
 	}

@@ -174,7 +174,7 @@ func TestMiddleware(t *testing.T) {
 			res := session.Get("/profile")
 
 			assert.Equal(t, testCase.expectedStatus, res.StatusCode)
-			if res.StatusCode == 200 { //nolint
+			if res.StatusCode == 200 { //nolint:usestdlibvars
 				assert.Contains(t, res.Body, testCase.roleName)
 			} else {
 				assert.NotContains(t, res.Body, testCase.roleName)
