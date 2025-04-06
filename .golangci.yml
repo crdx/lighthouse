@@ -19,6 +19,8 @@ linters:
     - goconst
     - gocritic
     - gocyclo
+    - godot
+    - godox
     - gosec
     - inamedparam
     - ireturn
