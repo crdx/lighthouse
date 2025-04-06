@@ -1,8 +1,6 @@
 module crdx.org/lighthouse
 
-go 1.22.0
-
-toolchain go1.23.2
+go 1.24
 
 require (
 	crdx.org/duckopt/v2 v2.3.0
@@ -23,7 +21,6 @@ require (
 	github.com/tdewolff/minify/v2 v2.21.1
 	github.com/yuin/goldmark v1.7.8
 	golang.org/x/crypto v0.28.0
-	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
 )
 
 require (
@@ -59,6 +56,7 @@ require (
 	github.com/valyala/fasthttp v1.56.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/mock v0.5.0 // indirect
+	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.30.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
