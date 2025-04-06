@@ -10,7 +10,7 @@ import (
 func Struct[T any](s T) {
 	structValue := reflectutil.GetValue(s)
 
-	for i := 0; i < structValue.NumField(); i++ {
+	for i := range structValue.NumField() {
 		fieldValue := structValue.Field(i)
 
 		if str, ok := fieldValue.Interface().(string); ok {

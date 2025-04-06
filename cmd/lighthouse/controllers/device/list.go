@@ -2,6 +2,7 @@ package device
 
 import (
 	"html/template"
+	"maps"
 	"slices"
 
 	"crdx.org/lighthouse/db/repo/deviceR"
@@ -9,7 +10,6 @@ import (
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/util/tplutil"
 	"github.com/gofiber/fiber/v2"
-	"golang.org/x/exp/maps"
 )
 
 func List(c *fiber.Ctx) error {
@@ -34,7 +34,7 @@ func List(c *fiber.Ctx) error {
 		return c.SendStatus(400)
 	}
 
-	if !slices.Contains(maps.Keys(columns), currentSortColumn) {
+	if !slices.Contains(slices.Collect(maps.Keys(columns)), currentSortColumn) {
 		return c.SendStatus(400)
 	}
 

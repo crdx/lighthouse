@@ -124,7 +124,7 @@ func Fields[T any]() map[string]Field {
 
 	structValue := reflectutil.GetValue(new(T))
 
-	for i := 0; i < structValue.NumField(); i++ {
+	for i := range structValue.NumField() {
 		fieldName := structValue.Type().Field(i).Name
 		tagValue := structValue.Type().Field(i).Tag.Get("form")
 
@@ -157,7 +157,7 @@ func Struct[T any](s T, validatorMaps ...ValidatorMap) (map[string]Field, error)
 	structName := reflectutil.GetType(s).Name()
 	structValue := reflectutil.GetValue(s)
 
-	for i := 0; i < structValue.NumField(); i++ {
+	for i := range structValue.NumField() {
 		submittedValue := reflectutil.ToString(structValue.Field(i).Interface())
 		fieldName := structValue.Type().Field(i).Name
 		tagValue := structValue.Type().Field(i).Tag.Get("form")

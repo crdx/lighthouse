@@ -15,7 +15,7 @@ func StructToMap[T any](s T, tagName string) map[string]any {
 	structValue := GetValue(s)
 	fields := map[string]any{}
 
-	for i := 0; i < structValue.NumField(); i++ {
+	for i := range structValue.NumField() {
 		tagValue := structValue.Type().Field(i).Tag.Get(tagName)
 
 		fields[tagValue] = structValue.Field(i).Interface()
@@ -67,7 +67,7 @@ func MapToStruct[T any](m map[string]string, tagName string) T {
 func GetStructFieldValue[T any](s T, tagValue string, tagName string) (reflect.Value, bool) {
 	structValue := GetValue(s)
 
-	for i := 0; i < structValue.NumField(); i++ {
+	for i := range structValue.NumField() {
 		actualValue := structValue.Type().Field(i).Tag.Get(tagName)
 
 		if actualValue == tagValue {
