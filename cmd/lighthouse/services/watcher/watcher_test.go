@@ -1,7 +1,6 @@
 package watcher_test
 
 import (
-	"io"
 	"log/slog"
 	"testing"
 	"time"
@@ -32,7 +31,7 @@ func TestState(t *testing.T) {
 	device.UpdateWatch(true)
 
 	w := watcher.New()
-	require.NoError(t, w.Init(&services.Args{Logger: slog.New(slog.NewTextHandler(io.Discard, nil))}))
+	require.NoError(t, w.Init(&services.Args{Logger: slog.New(slog.DiscardHandler)}))
 	require.NoError(t, w.Run())
 
 	assert.Len(t, db.FindDeviceStateLogs(), 3)
@@ -55,7 +54,7 @@ func TestLimit(t *testing.T) {
 	device.UpdateStateUpdatedAt(db.Now().Add(-1 * time.Hour).Add(-5 * time.Minute))
 
 	w := watcher.New()
-	require.NoError(t, w.Init(&services.Args{Logger: slog.New(slog.NewTextHandler(io.Discard, nil))}))
+	require.NoError(t, w.Init(&services.Args{Logger: slog.New(slog.DiscardHandler)}))
 	require.NoError(t, w.Run())
 
 	assert.Len(t, db.FindDeviceLimitNotifications(), 1)
