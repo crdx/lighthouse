@@ -11,6 +11,7 @@ import (
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/samber/lo"
+	"github.com/samber/lo/mutable"
 )
 
 type Pinger struct {
@@ -36,7 +37,7 @@ func (self *Pinger) Run() error {
 	defer handle.Close()
 
 	devices := db.FindPingableDevices()
-	lo.Shuffle(devices)
+	mutable.Shuffle(devices)
 
 	var adapters []*db.Adapter
 

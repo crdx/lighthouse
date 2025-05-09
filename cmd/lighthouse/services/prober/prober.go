@@ -10,6 +10,7 @@ import (
 	"crdx.org/lighthouse/db/repo/settingR"
 	"crdx.org/lighthouse/pkg/probe"
 	"github.com/samber/lo"
+	"github.com/samber/lo/mutable"
 )
 
 type Prober struct {
@@ -27,7 +28,7 @@ func (self *Prober) Init(args *services.Args) error {
 
 func (self *Prober) Run() error {
 	devices := db.FindScannableDevices()
-	lo.Shuffle(devices)
+	mutable.Shuffle(devices)
 
 	scan := db.CreateScan(&db.Scan{})
 
