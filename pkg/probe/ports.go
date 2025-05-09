@@ -25,7 +25,7 @@ func PortMap() map[int64]string {
 		scanner := bufio.NewScanner(strings.NewReader(data))
 		for scanner.Scan() {
 			line := strings.TrimSpace(scanner.Text())
-			if line[0] == '#' {
+			if len(line) == 0 || line[0] == '#' {
 				continue
 			}
 
