@@ -1,7 +1,6 @@
 package writer
 
 import (
-	"errors"
 	"log/slog"
 	"net"
 	"time"
@@ -44,48 +43,41 @@ func (self *Writer) Run() error {
 }
 
 func (*Writer) write(handle *pcap.Handle, iface *net.Interface, ipNet *net.IPNet) error {
-	scan := func() error {
-		for _, ip := range netutil.ExpandIPNet(ipNet) {
-			ethernetLayer := layers.Ethernet{
-				SrcMAC:       iface.HardwareAddr,
-				DstMAC:       net.HardwareAddr{0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
-				EthernetType: layers.EthernetTypeARP,
-			}
-
-			arpLayer := layers.ARP{
-				AddrType:          layers.LinkTypeEthernet,
-				Protocol:          layers.EthernetTypeIPv4,
-				HwAddressSize:     6,
-				ProtAddressSize:   4,
-				Operation:         layers.ARPRequest,
-				SourceHwAddress:   []byte(iface.HardwareAddr),
-				SourceProtAddress: []byte(ipNet.IP),
-				DstHwAddress:      []byte{0, 0, 0, 0, 0, 0},
-				DstProtAddress:    []byte(ip),
-			}
-
-			options := gopacket.SerializeOptions{
-				FixLengths:       true,
-				ComputeChecksums: true,
-			}
-
-			buffer := gopacket.NewSerializeBuffer()
-			if err := gopacket.SerializeLayers(buffer, options, &ethernetLayer, &arpLayer); err != nil {
-				return err
-			}
-
-			if err := handle.WritePacketData(buffer.Bytes()); err != nil {
-				return err
-			}
-
-			time.Sleep(arpPacketInterval)
+	for _, ip := range netutil.ExpandIPNet(ipNet) {
+		ethernetLayer := layers.Ethernet{
+			SrcMAC:       iface.HardwareAddr,
+			DstMAC:       net.HardwareAddr{0xff, 0xff, 0xff, 0xff, 0xff, 0xff},
+			EthernetType: layers.EthernetTypeARP,
 		}
 
-		return nil
+		arpLayer := layers.ARP{
+			AddrType:          layers.LinkTypeEthernet,
+			Protocol:          layers.EthernetTypeIPv4,
+			HwAddressSize:     6,
+			ProtAddressSize:   4,
+			Operation:         layers.ARPRequest,
+			SourceHwAddress:   []byte(iface.HardwareAddr),
+			SourceProtAddress: []byte(ipNet.IP),
+			DstHwAddress:      []byte{0, 0, 0, 0, 0, 0},
+			DstProtAddress:    []byte(ip),
+		}
+
+		options := gopacket.SerializeOptions{
+			FixLengths:       true,
+			ComputeChecksums: true,
+		}
+
+		buffer := gopacket.NewSerializeBuffer()
+		if err := gopacket.SerializeLayers(buffer, options, &ethernetLayer, &arpLayer); err != nil {
+			return err
+		}
+
+		if err := handle.WritePacketData(buffer.Bytes()); err != nil {
+			return err
+		}
+
+		time.Sleep(arpPacketInterval)
 	}
 
-	return errors.Join(
-		scan(),
-		scan(),
-	)
+	return nil
 }
