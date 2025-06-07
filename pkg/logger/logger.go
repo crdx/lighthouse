@@ -7,8 +7,8 @@ import (
 
 	"crdx.org/lighthouse/pkg/env"
 	"github.com/lmittmann/tint"
-	"github.com/samber/lo"
 	slogmulti "github.com/samber/slog-multi"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (
@@ -44,9 +44,11 @@ func With(args ...any) *slog.Logger {
 }
 
 func getDiskHandler() slog.Handler {
-	file := lo.Must(os.OpenFile(env.LogPath(), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644))
-	lo.Must0(os.MkdirAll("logs", 0o755))
-	return slog.NewJSONHandler(file, nil)
+	return slog.NewJSONHandler(&lumberjack.Logger{
+		Filename: env.LogPath(),
+		MaxSize:  50, // MB
+		Compress: true,
+	}, nil)
 }
 
 func getStderrHandler() slog.Handler {

@@ -21,6 +21,7 @@ require (
 	github.com/tdewolff/minify/v2 v2.23.5
 	github.com/yuin/goldmark v1.7.11
 	golang.org/x/crypto v0.38.0
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
 require (
