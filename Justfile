@@ -43,6 +43,7 @@ test: generate
     #!/bin/bash
     set -eo pipefail
     export VIEWS_DIR=$(realpath cmd/*/views)
+    export LOG_TYPE=none
     unbuffer go test -cover ./... | gostack --test
 
 cov: generate
