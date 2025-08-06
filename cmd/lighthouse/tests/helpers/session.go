@@ -23,6 +23,7 @@ type Session struct {
 
 type Response struct {
 	*http.Response
+
 	Body string
 }
 
