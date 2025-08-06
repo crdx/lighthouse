@@ -31,6 +31,7 @@ linters:
     - nilnil
     - nlreturn
     - noctx
+    - noinlineerr
     - nonamedreturns
     - paralleltest
     - perfsprint
@@ -45,6 +46,7 @@ linters:
     - varnamelen
     - wrapcheck
     - wsl
+    - wsl_v5
   settings:
     staticcheck:
       checks:
