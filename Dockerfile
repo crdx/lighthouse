@@ -40,7 +40,7 @@ RUN addgroup -g 1000 anon && \
     adduser -G anon -D -u 1000 anon
 
 WORKDIR /app
-COPY --from=build /build/lighthouse lighthouse
+COPY --from=build /build/lighthouse /init
 
 # This needs to be a script within the container because we need access to $PORT.
 RUN echo 'curl -sSf http://localhost:$PORT/health' >> healthcheck && \
@@ -48,4 +48,4 @@ RUN echo 'curl -sSf http://localhost:$PORT/health' >> healthcheck && \
 
 USER anon
 
-CMD ["./lighthouse"]
+CMD ["/init"]
