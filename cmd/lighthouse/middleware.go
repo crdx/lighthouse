@@ -31,6 +31,10 @@ func initMiddleware(app *fiber.App) {
 
 	app.Use(etag.New())
 
+	app.Get("/assets", func(c *fiber.Ctx) error {
+		return c.SendStatus(404)
+	})
+
 	app.Use("/assets", filesystem.New(filesystem.Config{
 		Root:       http.FS(assets),
 		PathPrefix: "assets",
