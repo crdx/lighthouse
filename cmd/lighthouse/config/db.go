@@ -8,7 +8,7 @@ import (
 
 	"crdx.org/lighthouse/cmd/lighthouse/tests/helpers/seeder"
 	"crdx.org/lighthouse/db"
-	"crdx.org/lighthouse/migrations"
+	"crdx.org/lighthouse/db/schema"
 	"crdx.org/lighthouse/pkg/env"
 	"github.com/google/uuid"
 )
@@ -27,7 +27,7 @@ func GetDbConfig() *db.Config {
 			return dsn
 		}),
 		Create:       true,
-		Migrations:   migrations.List(),
+		Migrations:   schema.GetMigrations(),
 		EnableLogger: env.Debug(),
 		Seed:         seed,
 	}
@@ -46,7 +46,7 @@ func GetTestDbConfig() *db.Config {
 			dsn.Protocol = env.DatabaseProtocol()
 			return dsn
 		}),
-		Migrations:   migrations.List(),
+		Migrations:   schema.GetMigrations(),
 		Fresh:        true,
 		EnableLogger: false,
 		Seed:         seeder.Run,

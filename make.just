@@ -26,4 +26,4 @@ controller name:
 
 # create migration e.g. create_foo_model
 migration name:
-    go run ./tools/make-migration "{{ name }}"
+    starfieldctl make-migration "{{ name }}"

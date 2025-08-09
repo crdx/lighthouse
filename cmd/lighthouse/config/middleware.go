@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"embed"
@@ -19,10 +19,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
-//go:embed assets/*
-var assets embed.FS
-
-func initMiddleware(app *fiber.App) {
+func InitMiddleware(app *fiber.App, assets *embed.FS) {
 	app.Use(helmet.New())
 
 	app.Use(compress.New(compress.Config{

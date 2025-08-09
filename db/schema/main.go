@@ -1,4 +1,4 @@
-package migrations
+package schema
 
 import (
 	"embed"
@@ -10,7 +10,7 @@ import (
 //go:embed *.sql
 var fs embed.FS
 
-func List() []*db.Migration {
+func GetMigrations() []*db.Migration {
 	files, err := fs.ReadDir(".")
 	if err != nil {
 		panic(err)
