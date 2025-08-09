@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install -y libpcap-dev
           curl -sSfL https://github.com/crdx/starfield/releases/latest/download/starfield -o /usr/local/bin/starfield
           chmod +x /usr/local/bin/starfield
-          curl -sSfL https://github.com/sqlc-dev/sqlc/releases/download/v1.28.0/sqlc_1.28.0_linux_amd64.tar.gz | tar -xzf - -C /usr/local/bin
+          curl -sSfL https://github.com/sqlc-dev/sqlc/releases/download/v1.29.0/sqlc_1.29.0_linux_amd64.tar.gz | tar -xzf - -C /usr/local/bin
           go generate
 
       - uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # v7.0.0
