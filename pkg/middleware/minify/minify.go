@@ -6,19 +6,19 @@ import (
 )
 
 func New() fiber.Handler {
-	return func(ctx fiber.Ctx) error {
-		if err := ctx.Next(); err != nil {
+	return func(c fiber.Ctx) error {
+		if err := c.Next(); err != nil {
 			return err
 		}
 
-		if !webutil.IsHTMLContentType(string(ctx.Response().Header.ContentType())) {
+		if !webutil.IsHTMLContentType(string(c.Response().Header.ContentType())) {
 			return nil
 		}
 
-		if html, err := webutil.MinifyHTML(ctx.Response().Body()); err != nil {
+		if html, err := webutil.MinifyHTML(c.Response().Body()); err != nil {
 			return err
 		} else {
-			ctx.Response().SetBody(html)
+			c.Response().SetBody(html)
 		}
 
 		return nil
