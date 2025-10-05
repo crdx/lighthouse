@@ -10,7 +10,7 @@ import (
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -19,7 +19,7 @@ type EditForm struct {
 	Vendor string `form:"vendor" validate:"max=100"`
 }
 
-func ViewEdit(c *fiber.Ctx) error {
+func ViewEdit(c fiber.Ctx) error {
 	adapter := parseparam.Get[db.Adapter](c)
 
 	return c.Render("adapter/edit", fiber.Map{
@@ -30,11 +30,11 @@ func ViewEdit(c *fiber.Ctx) error {
 	})
 }
 
-func Edit(c *fiber.Ctx) error {
+func Edit(c fiber.Ctx) error {
 	adapter := parseparam.Get[db.Adapter](c)
 
 	form := new(EditForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
@@ -59,5 +59,5 @@ func Edit(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Edited adapter %s", adapter.AuditName())
 	flash.Success(c, "Adapter saved")
-	return c.Redirect(fmt.Sprintf("/device/%d", adapter.DeviceID))
+	return c.Redirect().To(fmt.Sprintf("/device/%d", adapter.DeviceID))
 }

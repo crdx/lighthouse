@@ -6,10 +6,10 @@ import (
 	"crdx.org/lighthouse/db/repo/settingR"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func View(c *fiber.Ctx) error {
+func View(c fiber.Ctx) error {
 	device := parseparam.Get[db.Device](c)
 
 	var rows int64 = 7

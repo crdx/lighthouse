@@ -11,7 +11,7 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -22,7 +22,7 @@ type CreateForm struct {
 	Role            string `form:"role" validate:"required,role"`
 }
 
-func ViewCreate(c *fiber.Ctx) error {
+func ViewCreate(c fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab":     "users",
 		"mode":    "create",
@@ -31,9 +31,9 @@ func ViewCreate(c *fiber.Ctx) error {
 	})
 }
 
-func Create(c *fiber.Ctx) error {
+func Create(c fiber.Ctx) error {
 	form := new(CreateForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	validatorMap := validate.ValidatorMap{
@@ -73,5 +73,5 @@ func Create(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Created user %s", user.AuditName())
 	flash.Success(c, "User created")
-	return c.Redirect("/admin/users")
+	return c.Redirect().To("/admin/users")
 }

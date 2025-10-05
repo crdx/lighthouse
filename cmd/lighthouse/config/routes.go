@@ -9,7 +9,7 @@ import (
 	"crdx.org/lighthouse/cmd/lighthouse/controllers/notification"
 	"crdx.org/lighthouse/cmd/lighthouse/controllers/profile"
 	"crdx.org/lighthouse/cmd/lighthouse/controllers/service"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func InitRoutes(app *fiber.App) {
@@ -23,7 +23,7 @@ func InitRoutes(app *fiber.App) {
 	service.InitRoutes(app)
 
 	// Catch all requests not defined above.
-	app.Use(func(c *fiber.Ctx) error {
+	app.Use(func(c fiber.Ctx) error {
 		return c.SendStatus(404)
 	})
 }

@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"crdx.org/lighthouse/pkg/util/reflectutil"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 const prefix = "parseParam_"
@@ -15,9 +15,9 @@ func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
 	var v T
 	name := strings.ToLower(reflectutil.GetType(v).Name())
 
-	return func(c *fiber.Ctx) error {
-		id, err := c.ParamsInt(param)
-		if err != nil {
+	return func(c fiber.Ctx) error {
+		id := fiber.Params[int](c, param)
+		if id == 0 {
 			return c.SendStatus(404)
 		}
 
@@ -32,7 +32,7 @@ func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
 }
 
 // Get returns the route parameter for T.
-func Get[T any](c *fiber.Ctx) *T {
+func Get[T any](c fiber.Ctx) *T {
 	var v T
 	name := strings.ToLower(reflectutil.GetType(v).Name())
 	return c.Locals(prefix + name).(*T)

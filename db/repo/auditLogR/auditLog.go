@@ -6,10 +6,10 @@ import (
 
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/globals"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func Add(c *fiber.Ctx, message string, args ...any) {
+func Add(c fiber.Ctx, message string, args ...any) {
 	var userID sql.Null[int64]
 	if user := globals.CurrentUser(c); user != nil {
 		userID = db.N(user.ID)

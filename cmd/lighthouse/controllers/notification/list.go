@@ -5,12 +5,12 @@ import (
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/pager"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
-func List(c *fiber.Ctx) error {
-	pageNumber, ok := pager.GetCurrentPageNumber(c.QueryInt(pager.Key, 1))
+func List(c fiber.Ctx) error {
+	pageNumber, ok := pager.GetCurrentPageNumber(fiber.Query[int](c, pager.Key, 1))
 
 	if !ok {
 		return c.SendStatus(404)

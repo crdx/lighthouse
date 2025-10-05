@@ -2,7 +2,7 @@ package profile
 
 import (
 	"crdx.org/lighthouse/pkg/middleware/auth"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func InitRoutes(app *fiber.App) {

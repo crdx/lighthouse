@@ -8,7 +8,7 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/middleware/auth"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func InitRoutes(app *fiber.App) {
@@ -43,7 +43,7 @@ func InitRoutes(app *fiber.App) {
 		Post("/delete", mappings.DeleteMapping)
 
 	adminGroup.Post("/mappings/add", mappings.AddMapping)
-	adminGroup.Get("/mappings/add", func(c *fiber.Ctx) error {
-		return c.Redirect("/admin/mappings")
+	adminGroup.Get("/mappings/add", func(c fiber.Ctx) error {
+		return c.Redirect().To("/admin/mappings")
 	})
 }

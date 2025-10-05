@@ -2,21 +2,20 @@ package config
 
 import (
 	"embed"
-	"net/http"
 	"time"
 
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/middleware/auth"
 	"crdx.org/lighthouse/pkg/middleware/minify"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/compress"
-	"github.com/gofiber/fiber/v2/middleware/etag"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
-	"github.com/gofiber/fiber/v2/middleware/helmet"
-	"github.com/gofiber/fiber/v2/middleware/limiter"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/compress"
+	"github.com/gofiber/fiber/v3/middleware/etag"
+	"github.com/gofiber/fiber/v3/middleware/helmet"
+	"github.com/gofiber/fiber/v3/middleware/limiter"
+	"github.com/gofiber/fiber/v3/middleware/logger"
+	"github.com/gofiber/fiber/v3/middleware/recover"
+	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
 func InitMiddleware(app *fiber.App, assets *embed.FS) {
@@ -28,13 +27,8 @@ func InitMiddleware(app *fiber.App, assets *embed.FS) {
 
 	app.Use(etag.New())
 
-	app.Get("/assets", func(c *fiber.Ctx) error {
-		return c.SendStatus(404)
-	})
-
-	app.Use("/assets", filesystem.New(filesystem.Config{
-		Root:       http.FS(assets),
-		PathPrefix: "assets",
+	app.Use(static.New("/assets", static.Config{
+		FS: assets,
 	}))
 
 	if env.Production() {

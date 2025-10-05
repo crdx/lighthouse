@@ -9,7 +9,7 @@ import (
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
-	"crdx.org/session/v2"
+	"crdx.org/session/v3"
 	"github.com/samber/lo"
 )
 

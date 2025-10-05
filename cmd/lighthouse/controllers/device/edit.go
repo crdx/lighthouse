@@ -10,7 +10,7 @@ import (
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -30,7 +30,7 @@ type EditForm struct {
 	Limit       string `form:"limit" validate:"omitempty,duration,dmin=1 min,dmax=1 week"`
 }
 
-func ViewEdit(c *fiber.Ctx) error {
+func ViewEdit(c fiber.Ctx) error {
 	device := parseparam.Get[db.Device](c)
 
 	return c.Render("device/edit", fiber.Map{
@@ -41,7 +41,7 @@ func ViewEdit(c *fiber.Ctx) error {
 	})
 }
 
-func Edit(c *fiber.Ctx) error {
+func Edit(c fiber.Ctx) error {
 	device := parseparam.Get[db.Device](c)
 
 	var form any
@@ -51,7 +51,7 @@ func Edit(c *fiber.Ctx) error {
 		form = new(EditForm)
 	}
 
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
@@ -90,5 +90,5 @@ func Edit(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Edited device %s", device.AuditName())
 	flash.Success(c, "Device saved")
-	return c.Redirect(fmt.Sprintf("/device/%d", device.ID))
+	return c.Redirect().To(fmt.Sprintf("/device/%d", device.ID))
 }

@@ -6,10 +6,10 @@ import (
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func Delete(c *fiber.Ctx) error {
+func Delete(c fiber.Ctx) error {
 	user := parseparam.Get[db.User](c)
 
 	// Current user can't delete themselves.
@@ -21,5 +21,5 @@ func Delete(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Deleted user %s", user.AuditName())
 	flash.Success(c, "User deleted")
-	return c.Redirect("/admin/users")
+	return c.Redirect().To("/admin/users")
 }

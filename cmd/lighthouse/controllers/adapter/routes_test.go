@@ -52,7 +52,7 @@ func TestEdit(t *testing.T) {
 		"vendor": vendor,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.Contains(t, res.Body, name)
@@ -104,7 +104,7 @@ func TestDelete(t *testing.T) {
 	assert.Contains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")
 
 	res = session.PostForm("/adapter/1/delete", nil)
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.NotContains(t, res.Body, "adapter1-1d6d5f93-e5bf-4651-ae9f-662cf01aad25")

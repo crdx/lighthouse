@@ -7,10 +7,10 @@ import (
 	"crdx.org/lighthouse/db/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func Merge(c *fiber.Ctx) error {
+func Merge(c fiber.Ctx) error {
 	device1 := parseparam.Get[db.Device](c)
 	device2, found := db.FindDevice(c.FormValue("device_id"))
 
@@ -59,5 +59,5 @@ func Merge(c *fiber.Ctx) error {
 		parent.Identifier(),
 	)
 
-	return c.Redirect(fmt.Sprintf("/device/%d", parent.ID))
+	return c.Redirect().To(fmt.Sprintf("/device/%d", parent.ID))
 }

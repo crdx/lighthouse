@@ -46,7 +46,7 @@ func TestEdit(t *testing.T) {
 		"service_scan_interval": "1 hour",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/settings")
 	assert.Contains(t, res.Body, apiKey)

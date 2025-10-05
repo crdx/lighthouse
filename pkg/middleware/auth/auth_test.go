@@ -8,7 +8,7 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/middleware/auth"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -37,7 +37,7 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/settings")
 	assert.Equal(t, 200, res.StatusCode)
@@ -55,7 +55,7 @@ func TestSuccessfulUserLogin(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/settings")
 	assert.Equal(t, 404, res.StatusCode)
@@ -120,7 +120,7 @@ func TestLogout(t *testing.T) {
 	})
 
 	res := session.PostForm("/bye", nil)
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/")
 	assert.Contains(t, res.Body, auth.FormID)
@@ -137,7 +137,7 @@ func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/")
 	assert.Equal(t, 200, res.StatusCode)
@@ -154,7 +154,7 @@ func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
 
 func TestMiddleware(t *testing.T) {
 	testCases := []struct {
-		middleware     func(c *fiber.Ctx) error
+		middleware     func(c fiber.Ctx) error
 		role           int64
 		expectedStatus int
 		roleName       string

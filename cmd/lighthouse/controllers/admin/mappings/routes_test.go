@@ -31,7 +31,7 @@ func TestSaveSources(t *testing.T) {
 		"source_mac_addresses": "AA:AA:AA:AA:AA:AA",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/mappings")
 	assert.Equal(t, 200, res.StatusCode)
@@ -62,7 +62,7 @@ func TestAddMapping(t *testing.T) {
 		"ip_address":  "127.0.0.1",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/mappings")
 	assert.Equal(t, 200, res.StatusCode)
@@ -83,7 +83,7 @@ func TestCannotAddMappingWithDuplicateIP(t *testing.T) {
 		"ip_address":  "127.0.0.1",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.PostForm("/admin/mappings/add", map[string]string{
 		"label":       label,
@@ -107,11 +107,11 @@ func TestDeleteMapping(t *testing.T) {
 		"ip_address":  "127.0.0.1",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 	mapping, _ := db.FindMappingByLabel(label)
 
 	res = session.PostForm(fmt.Sprintf("/admin/mappings/%d/delete", mapping.ID), map[string]string{})
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/mappings")
 	assert.Equal(t, 200, res.StatusCode)

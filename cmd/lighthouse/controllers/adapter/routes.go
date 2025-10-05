@@ -4,7 +4,7 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/middleware/auth"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func InitRoutes(app *fiber.App) {

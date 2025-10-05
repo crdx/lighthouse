@@ -35,7 +35,7 @@ func TestChangePassword(t *testing.T) {
 		"confirm_new_password": password,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	session = helpers.NewSession(constants.RoleNone)
 
@@ -45,7 +45,7 @@ func TestChangePassword(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 }
 
 func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {

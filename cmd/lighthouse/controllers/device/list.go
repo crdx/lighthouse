@@ -9,10 +9,10 @@ import (
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/util/tplutil"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
-func List(c *fiber.Ctx) error {
+func List(c fiber.Ctx) error {
 	watchLabel := template.HTML(constants.WatchColumnLabel)
 	typeLabel := template.HTML(constants.TypeColumnLabel)
 

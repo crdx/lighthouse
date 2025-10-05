@@ -21,9 +21,9 @@ import (
 	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
-	"crdx.org/session/v2"
+	"crdx.org/session/v3"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -59,12 +59,12 @@ func main() {
 
 	app := fiber.New(config.GetFiberConfig(views))
 
-	app.Get("/health", func(c *fiber.Ctx) error {
+	app.Get("/health", func(c fiber.Ctx) error {
 		return c.SendString("OK")
 	})
 
 	if env.LiveReload() {
-		app.Get("/hang", func(c *fiber.Ctx) error {
+		app.Get("/hang", func(c fiber.Ctx) error {
 			select {}
 		})
 	}

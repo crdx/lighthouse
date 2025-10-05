@@ -8,7 +8,7 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/util/reflectutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -41,7 +41,7 @@ type EditForm struct {
 	Timezone         string `form:"timezone"           validate:"required,timezone"`
 }
 
-func List(c *fiber.Ctx) error {
+func List(c fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab":      "settings",
 		"fields":   validate.Fields[EditForm](),
@@ -50,9 +50,9 @@ func List(c *fiber.Ctx) error {
 	})
 }
 
-func Save(c *fiber.Ctx) error {
+func Save(c fiber.Ctx) error {
 	form := new(EditForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
@@ -72,5 +72,5 @@ func Save(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Saved settings")
 	flash.Success(c, "Settings saved")
-	return c.Redirect("/admin/settings")
+	return c.Redirect().To("/admin/settings")
 }

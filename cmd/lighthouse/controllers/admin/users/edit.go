@@ -12,7 +12,7 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -22,7 +22,7 @@ type EditForm struct {
 	Role            string `form:"role" validate:"required,role"`
 }
 
-func ViewEdit(c *fiber.Ctx) error {
+func ViewEdit(c fiber.Ctx) error {
 	user := parseparam.Get[db.User](c)
 
 	return c.Render("admin/index", fiber.Map{
@@ -34,11 +34,11 @@ func ViewEdit(c *fiber.Ctx) error {
 	})
 }
 
-func Edit(c *fiber.Ctx) error {
+func Edit(c fiber.Ctx) error {
 	user := parseparam.Get[db.User](c)
 
 	form := new(EditForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 
 	// Current user can't edit their own admin access so the disabled form field doesn't come
 	// through in the request. Set it here to make the form object valid.
@@ -84,5 +84,5 @@ func Edit(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Edited user %s", user.AuditName())
 	flash.Success(c, "User saved")
-	return c.Redirect("/admin/users")
+	return c.Redirect().To("/admin/users")
 }

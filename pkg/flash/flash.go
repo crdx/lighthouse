@@ -4,8 +4,8 @@ import (
 	"encoding/gob"
 	"fmt"
 
-	"crdx.org/session/v2"
-	"github.com/gofiber/fiber/v2"
+	"crdx.org/session/v3"
+	"github.com/gofiber/fiber/v3"
 )
 
 const (
@@ -22,15 +22,15 @@ func init() {
 	gob.Register(Message{})
 }
 
-func Success(c *fiber.Ctx, message string, args ...any) {
+func Success(c fiber.Ctx, message string, args ...any) {
 	add(c, SuccessClass, message, args...)
 }
 
-func Failure(c *fiber.Ctx, message string, args ...any) {
+func Failure(c fiber.Ctx, message string, args ...any) {
 	add(c, FailureClass, message, args...)
 }
 
-func add(c *fiber.Ctx, class string, message string, args ...any) {
+func add(c fiber.Ctx, class string, message string, args ...any) {
 	session.Set(c, "globals.flash", get(class, fmt.Sprintf(message, args...)))
 }
 

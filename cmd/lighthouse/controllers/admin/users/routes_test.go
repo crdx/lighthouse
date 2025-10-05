@@ -49,7 +49,7 @@ func TestCannotEditUsername(t *testing.T) {
 		"username": "joe",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/users")
 	assert.Contains(t, res.Body, "root")
@@ -93,7 +93,7 @@ func TestCreate(t *testing.T) {
 		"role":             "1",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	session = helpers.NewSession(constants.RoleNone)
 
@@ -103,7 +103,7 @@ func TestCreate(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 }
 
 func TestViewCreatePage(t *testing.T) {
@@ -165,7 +165,7 @@ func TestChangePassword(t *testing.T) {
 		"confirm_password": password,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	session = helpers.NewSession(constants.RoleNone)
 
@@ -175,7 +175,7 @@ func TestChangePassword(t *testing.T) {
 		"id":       auth.FormID,
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 }
 
 func TestDeleteUser(t *testing.T) {
@@ -183,7 +183,7 @@ func TestDeleteUser(t *testing.T) {
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/3/delete", nil)
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/admin/users")
 	assert.NotContains(t, res.Body, "anon")
@@ -202,7 +202,7 @@ func TestBecome(t *testing.T) {
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/users/3/become", nil)
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/profile")
 	assert.Contains(t, res.Body, "You are a <b>viewer</b>")

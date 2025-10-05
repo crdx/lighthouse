@@ -12,7 +12,7 @@ import (
 	"crdx.org/lighthouse/cmd/lighthouse/config"
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/middleware/auth"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -28,7 +28,7 @@ type Response struct {
 }
 
 // NewSession returns a new session with the requested auth state.
-func NewSession(role int64, handlers ...func(c *fiber.Ctx) error) *Session {
+func NewSession(role int64, handlers ...func(c fiber.Ctx) error) *Session {
 	app := fiber.New(config.GetTestFiberConfig())
 
 	if role == constants.RoleNone {

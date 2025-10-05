@@ -90,7 +90,7 @@ func TestEdit(t *testing.T) {
 		"limit":        "1 hour",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.Contains(t, res.Body, name)
@@ -111,7 +111,7 @@ func TestEditOrigin(t *testing.T) {
 		"icon":  "solid:vials",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/3")
 	assert.Contains(t, res.Body, name)
@@ -162,7 +162,7 @@ func TestMerge1(t *testing.T) {
 		"device_id": "2",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.Contains(t, res.Body, "2023-10-01")
@@ -186,7 +186,7 @@ func TestMerge2(t *testing.T) {
 		"device_id": "1",
 	})
 
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.Contains(t, res.Body, "2023-10-01")
@@ -232,7 +232,7 @@ func TestDelete(t *testing.T) {
 	assert.Equal(t, 200, res.StatusCode)
 
 	res = session.PostForm("/device/1/delete", nil)
-	assert.Equal(t, 302, res.StatusCode)
+	assert.Equal(t, 303, res.StatusCode)
 
 	res = session.Get("/device/1")
 	assert.Equal(t, 404, res.StatusCode)

@@ -12,7 +12,7 @@ import (
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/util/reflectutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )
 
@@ -26,7 +26,7 @@ type MappingForm struct {
 	IPAddress  string `form:"ip_address" validate:"required,ip_address"`
 }
 
-func View(c *fiber.Ctx) error {
+func View(c fiber.Ctx) error {
 	return c.Render("admin/index", fiber.Map{
 		"tab": "mappings",
 		"source": fiber.Map{
@@ -41,9 +41,9 @@ func View(c *fiber.Ctx) error {
 	})
 }
 
-func AddMapping(c *fiber.Ctx) error {
+func AddMapping(c fiber.Ctx) error {
 	form := new(MappingForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	mappings := db.FindMappings()
@@ -85,21 +85,21 @@ func AddMapping(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Added mapping %s", mapping.AuditName())
 	flash.Success(c, "Mapping added")
-	return c.Redirect("/admin/mappings")
+	return c.Redirect().To("/admin/mappings")
 }
 
-func DeleteMapping(c *fiber.Ctx) error {
+func DeleteMapping(c fiber.Ctx) error {
 	mapping := parseparam.Get[db.Mapping](c)
 	mapping.Delete()
 
 	auditLogR.Add(c, "Deleted mapping %s", mapping.AuditName())
 	flash.Success(c, "Mapping deleted")
-	return c.Redirect("/admin/mappings")
+	return c.Redirect().To("/admin/mappings")
 }
 
-func EditSources(c *fiber.Ctx) error {
+func EditSources(c fiber.Ctx) error {
 	form := new(SourceForm)
-	lo.Must0(c.BodyParser(form))
+	lo.Must0(c.Bind().Body(form))
 	transform.Struct(form)
 
 	if fields, err := validate.Struct(form); err != nil {
@@ -126,7 +126,7 @@ func EditSources(c *fiber.Ctx) error {
 
 	auditLogR.Add(c, "Saved source MAC addresses")
 	flash.Success(c, "Source MAC addresses saved")
-	return c.Redirect("/admin/mappings")
+	return c.Redirect().To("/admin/mappings")
 }
 
 func sources() SourceForm {

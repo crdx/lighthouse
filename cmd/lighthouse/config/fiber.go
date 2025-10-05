@@ -10,7 +10,7 @@ import (
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/pkg/util/stringutil"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/template/html/v2"
 	"github.com/samber/lo"
 )
@@ -32,13 +32,15 @@ func GetFiberConfig(views fs.FS) fiber.Config {
 	}
 
 	if env.TrustedProxies() != "" {
-		config.EnableTrustedProxyCheck = true
-		config.TrustedProxies = lo.Map(strings.Split(env.TrustedProxies(), ","), stringutil.MapTrimSpace)
+		config.TrustProxy = true
+		config.TrustProxyConfig = fiber.TrustProxyConfig{
+			Proxies: lo.Map(strings.Split(env.TrustedProxies(), ","), stringutil.MapTrimSpace),
+		}
 		config.ProxyHeader = "X-Forwarded-For"
 	}
 
 	if env.Production() {
-		config.ErrorHandler = func(c *fiber.Ctx, err error) error {
+		config.ErrorHandler = func(c fiber.Ctx, err error) error {
 			if e := new(fiber.Error); errors.As(err, &e) {
 				return c.SendStatus(e.Code)
 			} else {
