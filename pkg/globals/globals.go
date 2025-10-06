@@ -33,7 +33,7 @@ func Get(c fiber.Ctx) *Values {
 		CurrentRoute: c.Route().Name,
 	}
 
-	if flashMessage, found := session.GetOnce[flash.Message](c, "globals.flash"); found {
+	if flashMessage, found := session.TryGetOnce[flash.Message](c, "globals.flash"); found {
 		values.Flash = &flashMessage
 	}
 

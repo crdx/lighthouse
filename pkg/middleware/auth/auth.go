@@ -64,7 +64,7 @@ func New() fiber.Handler {
 			return logIn(c, username, password)
 		}
 
-		userId := session.GetInt(c, "user_id")
+		userId := session.Get[int64](c, "user_id")
 		if userId == 0 {
 			return needAuth(c)
 		}
@@ -106,14 +106,14 @@ func Editor(c fiber.Ctx) error {
 // first user in the db with the required authorisation will be picked.
 func AutoLogin(role int64) fiber.Handler {
 	return func(c fiber.Ctx) error {
-		if session.GetInt(c, "user_id") == 0 {
+		if session.Get[int64](c, "user_id") == 0 {
 			user, _ := db.FindUserByRole(role)
 			user.UpdateLastLoginAt(db.Now())
 			auditLogR.Add(c, "User %s logged in", user.Username)
 			session.Set(c, "user_id", user.ID)
 		}
 
-		userId := session.GetInt(c, "user_id")
+		userId := session.Get[int64](c, "user_id")
 		user, _ := db.FindUser(userId)
 		user.UpdateLastVisitAt(db.Now())
 		c.Locals(globals.CurrentUserKey, user)

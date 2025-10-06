@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	crdx.org/duckopt/v2 v2.3.0
-	crdx.org/session/v3 v3.0.0
+	crdx.org/session/v3 v3.0.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.28.0
