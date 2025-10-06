@@ -18,7 +18,7 @@ func Add(c fiber.Ctx, message string, args ...any) {
 	ipAddress := c.IP()
 
 	var deviceID sql.Null[int64]
-	if adapter, found := db.FindAdapterByIPAddress(ipAddress); found {
+	if adapter, found := db.FindAdapterByIPAddressLatest(ipAddress); found {
 		deviceID = db.N(adapter.DeviceID)
 	}
 
