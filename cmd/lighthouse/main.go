@@ -28,10 +28,10 @@ import (
 	"github.com/samber/lo"
 )
 
-//go:embed assets/*
+//go:embed assets
 var assets embed.FS
 
-//go:embed views/*
+//go:embed views
 var views embed.FS
 
 func getUsage() string {
@@ -58,7 +58,7 @@ func main() {
 	lo.Must0(db.Init(dbConfig))
 	session.Init(config.GetSessionConfig(), dbConfig.DataSource.Format())
 
-	app := fiber.New(config.GetFiberConfig(views))
+	app := fiber.New(config.GetFiberConfig(views, "views"))
 
 	app.Get("/health", func(c fiber.Ctx) error {
 		return c.SendString("OK")
