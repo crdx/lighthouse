@@ -18,6 +18,7 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/db/repo/settingR"
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/logger"
 	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
@@ -68,6 +69,8 @@ func main() {
 			select {}
 		})
 	}
+
+	logger.Init()
 
 	config.InitMiddleware(app, &assets)
 	config.InitRoutes(app)

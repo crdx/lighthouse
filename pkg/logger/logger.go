@@ -16,6 +16,10 @@ var (
 	mutex  sync.Mutex
 )
 
+func Init() {
+	Get()
+}
+
 func Get() *slog.Logger {
 	mutex.Lock()
 	defer mutex.Unlock()
