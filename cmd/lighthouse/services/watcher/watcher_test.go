@@ -36,7 +36,7 @@ func TestState(t *testing.T) {
 
 	assert.Len(t, db.FindDeviceStateLogs(), 3)
 
-	var zero int64
+	var zero int64 // "Elements should be the same type"
 	assert.Greater(t, db.CountDeviceStateLogsForTest(1, deviceR.StateOffline), zero)
 	assert.Greater(t, db.CountDeviceStateLogsForTest(2, deviceR.StateOffline), zero)
 	assert.Greater(t, db.CountDeviceStateLogsForTest(4, deviceR.StateOnline), zero)
