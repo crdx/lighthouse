@@ -4,6 +4,7 @@ import (
 	"embed"
 	"time"
 
+	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/constants"
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/middleware/auth"
@@ -18,7 +19,7 @@ import (
 	"github.com/gofiber/fiber/v3/middleware/static"
 )
 
-func InitMiddleware(app *fiber.App, assets *embed.FS) {
+func InitMiddleware(app *fiber.App, assets *embed.FS, dbConfig *db.Config) {
 	app.Use(helmet.New())
 
 	app.Use(compress.New(compress.Config{
@@ -50,6 +51,8 @@ func InitMiddleware(app *fiber.App, assets *embed.FS) {
 	if !env.Production() {
 		app.Use(logger.New())
 	}
+
+	app.Use(NewSessionMiddleware(dbConfig))
 
 	if env.DisableAuth() {
 		app.Use(auth.AutoLogin(constants.RoleAdmin))

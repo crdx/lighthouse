@@ -4,12 +4,12 @@ go 1.25.0
 
 require (
 	crdx.org/duckopt/v2 v2.3.0
-	crdx.org/session/v3 v3.0.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/gofiber/fiber/v3 v3.0.0-rc.2
+	github.com/gofiber/storage/mysql/v2 v2.2.0
 	github.com/gofiber/template/html/v2 v2.1.3
 	github.com/google/gopacket v1.1.19
 	github.com/google/uuid v1.6.0
@@ -32,7 +32,6 @@ require (
 	github.com/docopt/docopt-go v0.0.0-20180111231733-ee0de3bc6815 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.10 // indirect
 	github.com/gofiber/schema v1.6.0 // indirect
-	github.com/gofiber/storage/mysql v1.3.7 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect
 	github.com/gofiber/utils/v2 v2.0.0-rc.1 // indirect

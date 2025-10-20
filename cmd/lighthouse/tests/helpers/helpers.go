@@ -9,9 +9,10 @@ import (
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
-	"crdx.org/session/v3"
 	"github.com/samber/lo"
 )
+
+var dbConfig *db.Config
 
 // Start begins a new db transaction and registers a cleanup function that will roll back the
 // transaction. This function is NOT thread-safe, but this is fine because each test within a test
@@ -29,9 +30,8 @@ func Start(tb testing.TB) {
 func TestMain(m *testing.M) {
 	env.Init()
 
-	dbConfig := config.GetTestDbConfig()
+	dbConfig = config.GetTestDbConfig()
 	lo.Must0(db.Init(dbConfig))
-	session.Init(config.GetTestSessionConfig(), dbConfig.DataSource.Format())
 
 	timeutil.Init(&timeutil.Config{Timezone: func() string { return "Europe/London" }})
 	mailutil.Init(&mailutil.Config{Enabled: func() bool { return false }})

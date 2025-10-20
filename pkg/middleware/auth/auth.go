@@ -9,8 +9,8 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/db/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/globals"
+	"crdx.org/lighthouse/pkg/session"
 	"crdx.org/lighthouse/pkg/util/stringutil"
-	"crdx.org/session/v3"
 	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )

@@ -5,10 +5,10 @@ import (
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/globals"
 	"crdx.org/lighthouse/pkg/middleware/auth"
+	"crdx.org/lighthouse/pkg/session"
 	"crdx.org/lighthouse/pkg/transform"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"crdx.org/lighthouse/pkg/validate"
-	"crdx.org/session/v3"
 	"github.com/gofiber/fiber/v3"
 	"github.com/samber/lo"
 )

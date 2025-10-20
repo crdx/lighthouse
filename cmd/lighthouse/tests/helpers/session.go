@@ -31,6 +31,8 @@ type Response struct {
 func NewSession(role int64, handlers ...func(c fiber.Ctx) error) *Session {
 	app := fiber.New(config.GetTestFiberConfig())
 
+	app.Use(config.NewTestSessionMiddleware(dbConfig))
+
 	if role == constants.RoleNone {
 		app.Use(auth.New())
 	} else {

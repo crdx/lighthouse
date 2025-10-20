@@ -5,7 +5,7 @@ import (
 	"crdx.org/lighthouse/db/repo/auditLogR"
 	"crdx.org/lighthouse/pkg/flash"
 	"crdx.org/lighthouse/pkg/middleware/parseparam"
-	"crdx.org/session/v3"
+	"crdx.org/lighthouse/pkg/session"
 	"github.com/gofiber/fiber/v3"
 )
 

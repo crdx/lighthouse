@@ -4,7 +4,7 @@ import (
 	"encoding/gob"
 	"fmt"
 
-	"crdx.org/session/v3"
+	"crdx.org/lighthouse/pkg/session"
 	"github.com/gofiber/fiber/v3"
 )
 
