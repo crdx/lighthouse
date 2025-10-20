@@ -18,6 +18,8 @@ var dbConfig *db.Config
 // transaction. This function is NOT thread-safe, but this is fine because each test within a test
 // package runs in serial.
 func Start(tb testing.TB) {
+	tb.Helper()
+
 	_ = db.BeginTransaction()
 
 	tb.Cleanup(func() {
