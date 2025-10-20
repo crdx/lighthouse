@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestView(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/profile")
@@ -24,7 +24,7 @@ func TestView(t *testing.T) {
 }
 
 func TestChangePassword(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleEditor)
 
 	password := uuid.NewString()
@@ -49,7 +49,7 @@ func TestChangePassword(t *testing.T) {
 }
 
 func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleEditor)
 
 	password := uuid.NewString()
@@ -65,7 +65,7 @@ func TestCannotChangePasswordWithoutCurrentPassword(t *testing.T) {
 }
 
 func TestCannotChangePasswordWithoutMatchingPasswords(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/profile", map[string]string{

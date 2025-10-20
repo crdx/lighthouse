@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestViewEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/service/1/edit")
@@ -24,7 +24,7 @@ func TestViewEdit(t *testing.T) {
 }
 
 func TestViewEditBadService(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/service/100/edit")
@@ -32,7 +32,7 @@ func TestViewEditBadService(t *testing.T) {
 }
 
 func TestViewerCannotViewEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/service/1/edit")
@@ -41,7 +41,7 @@ func TestViewerCannotViewEdit(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleEditor)
 
 	name := uuid.NewString()
@@ -57,7 +57,7 @@ func TestEdit(t *testing.T) {
 }
 
 func TestViewerCannotEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	name := uuid.NewString()
@@ -71,7 +71,7 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleEditor)
 
 	name := strings.Repeat(uuid.NewString(), 100)
@@ -88,7 +88,7 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/device/1/")
@@ -105,7 +105,7 @@ func TestDelete(t *testing.T) {
 }
 
 func TestViewerCannotDelete(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.PostForm("/service/1/delete", nil)

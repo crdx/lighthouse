@@ -13,15 +13,15 @@ import (
 	"github.com/samber/lo"
 )
 
-// Start begins a new db transaction and returns a func that will roll back the transaction. This
-// function is NOT thread-safe, but this is fine because each test within a test package runs in
-// serial.
-func Start() func() {
+// Start begins a new db transaction and registers a cleanup function that will roll back the
+// transaction. This function is NOT thread-safe, but this is fine because each test within a test
+// package runs in serial.
+func Start(tb testing.TB) {
 	_ = db.BeginTransaction()
 
-	return func() {
+	tb.Cleanup(func() {
 		_ = db.RollbackTransaction()
-	}
+	})
 }
 
 // TestMain initialises the environment and database for the current test package, runs the tests,

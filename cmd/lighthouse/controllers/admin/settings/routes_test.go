@@ -16,7 +16,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/settings")
@@ -26,7 +26,7 @@ func TestList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/admin/settings")
@@ -34,7 +34,7 @@ func TestViewerCannotList(t *testing.T) {
 }
 
 func TestEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	apiKey := uuid.NewString()
@@ -53,7 +53,7 @@ func TestEdit(t *testing.T) {
 }
 
 func TestViewerCannotEdit(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	apiKey := uuid.NewString()
@@ -68,7 +68,7 @@ func TestViewerCannotEdit(t *testing.T) {
 }
 
 func TestEditWithErrors(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	apiKey := strings.Repeat(uuid.NewString(), 20)
@@ -84,7 +84,7 @@ func TestEditWithErrors(t *testing.T) {
 }
 
 func TestCacheInvalidation(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	currentTimezone := settingR.Timezone()

@@ -13,7 +13,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/notifications")
@@ -23,7 +23,7 @@ func TestList(t *testing.T) {
 }
 
 func TestListBadPageNumber(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/notifications/?p=100")

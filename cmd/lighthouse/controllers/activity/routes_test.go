@@ -13,7 +13,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/activity")
@@ -26,7 +26,7 @@ func TestList(t *testing.T) {
 }
 
 func TestListDevice(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/activity/?device_id=2")
@@ -37,7 +37,7 @@ func TestListDevice(t *testing.T) {
 }
 
 func TestListBadDevice(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/activity/?device_id=100")
@@ -45,7 +45,7 @@ func TestListBadDevice(t *testing.T) {
 }
 
 func TestListBadPageNumber(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/activity/?p=100")

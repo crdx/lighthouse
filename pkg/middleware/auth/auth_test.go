@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestLoginPage(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.Get("/")
@@ -28,7 +28,7 @@ func TestLoginPage(t *testing.T) {
 }
 
 func TestSuccessfulAdminLogin(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -46,7 +46,7 @@ func TestSuccessfulAdminLogin(t *testing.T) {
 }
 
 func TestSuccessfulUserLogin(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -63,7 +63,7 @@ func TestSuccessfulUserLogin(t *testing.T) {
 }
 
 func TestInvalidUsername(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -79,7 +79,7 @@ func TestInvalidUsername(t *testing.T) {
 }
 
 func TestInvalidPassword(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -95,7 +95,7 @@ func TestInvalidPassword(t *testing.T) {
 }
 
 func TestInvalidFormID(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -110,7 +110,7 @@ func TestInvalidFormID(t *testing.T) {
 }
 
 func TestLogout(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	session.PostForm("/", map[string]string{
@@ -128,7 +128,7 @@ func TestLogout(t *testing.T) {
 }
 
 func TestUserIsDeletedWhileLoggedIn(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleNone)
 
 	res := session.PostForm("/", map[string]string{
@@ -169,7 +169,7 @@ func TestMiddleware(t *testing.T) {
 
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("Case%d", i+1), func(t *testing.T) {
-			defer helpers.Start()()
+			helpers.Start(t)
 			session := helpers.NewSession(testCase.role, testCase.middleware)
 			res := session.Get("/profile")
 

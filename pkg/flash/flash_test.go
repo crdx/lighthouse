@@ -28,7 +28,7 @@ func TestFlash(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%s,%v", testCase.message, testCase.success), func(t *testing.T) {
-			defer helpers.Start()()
+			helpers.Start(t)
 			session := helpers.NewSession(constants.RoleAdmin, func(c fiber.Ctx) error {
 				if testCase.success {
 					flash.Success(c, "%s", testCase.message)

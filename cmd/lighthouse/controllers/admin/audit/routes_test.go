@@ -13,7 +13,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/audit")
@@ -27,7 +27,7 @@ func TestList(t *testing.T) {
 }
 
 func TestEditorCannotList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleEditor)
 
 	res := session.Get("/admin/audit")
@@ -35,7 +35,7 @@ func TestEditorCannotList(t *testing.T) {
 }
 
 func TestViewerCannotList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleViewer)
 
 	res := session.Get("/admin/audit")

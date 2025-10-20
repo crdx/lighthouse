@@ -16,7 +16,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestList(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.Get("/admin/mappings")
@@ -24,7 +24,7 @@ func TestList(t *testing.T) {
 }
 
 func TestSaveSources(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/mappings", map[string]string{
@@ -39,7 +39,7 @@ func TestSaveSources(t *testing.T) {
 }
 
 func TestSaveSourcesWithErrors(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	res := session.PostForm("/admin/mappings", map[string]string{
@@ -51,7 +51,7 @@ func TestSaveSourcesWithErrors(t *testing.T) {
 }
 
 func TestAddMapping(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	label := uuid.NewString()[:20]
@@ -72,7 +72,7 @@ func TestAddMapping(t *testing.T) {
 }
 
 func TestCannotAddMappingWithDuplicateIP(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	label := uuid.NewString()[:20]
@@ -96,7 +96,7 @@ func TestCannotAddMappingWithDuplicateIP(t *testing.T) {
 }
 
 func TestDeleteMapping(t *testing.T) {
-	defer helpers.Start()()
+	helpers.Start(t)
 	session := helpers.NewSession(constants.RoleAdmin)
 
 	label := uuid.NewString()[:20]
