@@ -49,6 +49,7 @@ func logIn(c fiber.Ctx, username string, password string) error {
 	user.UpdateLastLoginAt(db.Now())
 	auditLogR.Add(c, "User %s logged in", user.Username)
 
+	session.Regenerate(c)
 	session.Set(c, "user_id", user.ID)
 	return c.Redirect().To(c.Path())
 }

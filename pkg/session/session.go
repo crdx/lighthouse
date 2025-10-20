@@ -79,6 +79,11 @@ func Destroy(c fiber.Ctx) {
 	lo.Must0(session.FromContext(c).Destroy())
 }
 
+// Regenerate regenerates the session.
+func Regenerate(c fiber.Ctx) {
+	lo.Must0(session.FromContext(c).Regenerate())
+}
+
 // GetID returns the session ID.
 func GetID(c fiber.Ctx) string {
 	return session.FromContext(c).ID()
