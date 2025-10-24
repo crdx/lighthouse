@@ -13,13 +13,13 @@ mod make
 help:
     just --list --unsorted --list-submodules
 
-# debug disabled, services enabled
-dev: build-autocap
-    hivemind
-
 # debug enabled, services disabled
+dev: build-autocap
+    LIGHTHOUSE_DEBUG=1 DISABLE_SERVICES=1 hivemind
+
+# debug disabled, services enabled
 dev2: build-autocap
-    DISABLE_SERVICES=1 LIGHTHOUSE_DEBUG=1 hivemind
+    hivemind
 
 # debug enabled, services enabled
 dev3: build-autocap
