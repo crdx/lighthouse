@@ -21,9 +21,4 @@ func InitRoutes(app *fiber.App) {
 	notification.InitRoutes(app)
 	profile.InitRoutes(app)
 	service.InitRoutes(app)
-
-	// Catch all requests not defined above.
-	app.Use(func(c fiber.Ctx) error {
-		return c.SendStatus(404)
-	})
 }
