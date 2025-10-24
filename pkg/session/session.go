@@ -14,13 +14,14 @@ type Config struct {
 	Table        string        // The table to store the session data in.
 	CookieSecure bool          // Whether the cookie should be HTTPS-only.
 	IdleTimeout  time.Duration // How long the session cookie should last.
+	DSN          string
 }
 
 // New initialises the session and returns a middleware handler.
-func New(config *Config, dsn string) fiber.Handler {
+func New(config *Config) fiber.Handler {
 	return session.New(session.Config{
 		Storage: mysql.New(mysql.Config{
-			ConnectionURI: dsn,
+			ConnectionURI: config.DSN,
 			Table:         config.Table,
 		}),
 		Extractor:      extractors.FromCookie("session"),

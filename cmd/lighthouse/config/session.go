@@ -3,26 +3,27 @@ package config
 import (
 	"time"
 
-	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/session"
 	"github.com/gofiber/fiber/v3"
 )
 
-// NewSessionMiddleware creates session middleware with the production config.
-func NewSessionMiddleware(dbConfig *db.Config) fiber.Handler {
-	return session.New(&session.Config{
-		Table:       "sessions",
-		IdleTimeout: 365 * 24 * time.Hour,
+const tableName = "sessions"
 
-		// lighthouse is intended to be accessed over the local network only.
+// NewSession creates session middleware with the production config.
+func NewSession(dsn string) fiber.Handler {
+	return session.New(&session.Config{
+		DSN:          dsn,
+		Table:        tableName,
+		IdleTimeout:  365 * 24 * time.Hour,
 		CookieSecure: false,
-	}, dbConfig.DataSource.Format())
+	})
 }
 
-// NewTestSessionMiddleware creates session middleware with the test config.
-func NewTestSessionMiddleware(dbConfig *db.Config) fiber.Handler {
+// NewTestSession creates session middleware with the test config.
+func NewTestSession(dsn string) fiber.Handler {
 	return session.New(&session.Config{
-		Table:        "sessions",
+		DSN:          dsn,
+		Table:        tableName,
 		CookieSecure: false,
-	}, dbConfig.DataSource.Format())
+	})
 }
