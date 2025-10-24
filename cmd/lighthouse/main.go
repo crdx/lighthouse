@@ -24,6 +24,7 @@ import (
 	"crdx.org/lighthouse/pkg/util/timeutil"
 
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/healthcheck"
 	"github.com/samber/lo"
 )
 
@@ -52,24 +53,12 @@ func main() {
 	opts := duckopt.MustBind[Opts](getUsage(), "$0")
 
 	initEnvironment(opts.EnvFile)
-
-	dbConfig := config.GetDbConfig()
-	lo.Must0(db.Init(dbConfig))
+	dbConfig := initState()
 
 	app := fiber.New(config.GetFiberConfig(views, "views"))
-
-	app.Get("/health", func(c fiber.Ctx) error {
-		return c.SendString("OK")
-	})
-
-	if env.LiveReload() {
-		app.Get("/hang", func(c fiber.Ctx) error {
-			select {}
-		})
-	}
+	app.Get("/health", healthcheck.New())
 
 	logger.Init()
-
 	config.InitMiddleware(app, &assets, dbConfig)
 	config.InitRoutes(app)
 
@@ -94,6 +83,12 @@ func initEnvironment(envFile string) {
 	if err := env.Validate(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func initState() *db.Config {
+	dbConfig := config.GetDbConfig()
+	lo.Must0(db.Init(dbConfig))
+	return dbConfig
 }
 
 func initPackages() {
