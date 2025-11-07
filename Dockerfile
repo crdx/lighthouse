@@ -10,10 +10,7 @@ RUN apk add --no-cache \
 
 WORKDIR /build
 COPY go.sum go.mod .
-
-# Fetch dependencies in a separate layer to speed up rebuilds.
-ARG FORMAT='{{ if not .Main }}{{ .Path }}/...@{{ .Version }}{{ end }}'
-RUN for PACKAGE in $(go list -m -f "$FORMAT" all); do go get $PACKAGE; done
+RUN go mod download
 
 # Build.
 COPY . .
