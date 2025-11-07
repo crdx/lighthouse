@@ -187,10 +187,10 @@ func TestGetType(t *testing.T) {
 		input    any
 		expected reflect.Type
 	}{
-		{123, reflect.TypeOf(123)},
-		{"foo", reflect.TypeOf("foo")},
-		{S{Field: 1}, reflect.TypeOf(S{})},
-		{&S{Field: 2}, reflect.TypeOf(S{})},
+		{123, reflect.TypeFor[int]()},
+		{"foo", reflect.TypeFor[string]()},
+		{S{Field: 1}, reflect.TypeFor[S]()},
+		{&S{Field: 2}, reflect.TypeFor[S]()},
 	}
 
 	for _, testCase := range testCases {

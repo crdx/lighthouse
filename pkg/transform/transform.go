@@ -17,7 +17,7 @@ func Struct[T any](s T) {
 			tagValue := structValue.Type().Field(i).Tag.Get("transform")
 
 			noTrim := false
-			for _, transformation := range strings.Split(tagValue, ",") {
+			for transformation := range strings.SplitSeq(tagValue, ",") {
 				if transformation == "no-trim" {
 					noTrim = true
 				}
