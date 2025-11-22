@@ -39,20 +39,23 @@ fmt:
     find . -name '*.just' -print0 | xargs -0 -I{} just --fmt -f {}
     go fmt ./...
 
-test: generate
+test package='./...': generate
     #!/bin/bash
     set -eo pipefail
-    export VIEWS_DIR=$(realpath cmd/*/views)
     export LOG_TYPE=none
-    unbuffer go test -cover ./... | gostack --test
+    unbuffer go test -cover {{ package }} | gostack --test
 
-cov: generate
+cov package='./...': (gencov 'func' package)
+cov-html package='./...': (gencov 'html' package)
+
+[private]
+gencov flag package: generate
     #!/bin/bash
     set -eo pipefail
     FILE=$(mktemp)
-    export VIEWS_DIR=$(realpath cmd/*/views)
-    go test ./... -cover -coverprofile="$FILE"
-    go tool cover -html="$FILE"
+    export LOG_TYPE=none
+    go test {{ package }} -cover -coverprofile="$FILE"
+    go tool cover -{{ flag }}="$FILE"
     rm "$FILE"
 
 lint:

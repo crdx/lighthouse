@@ -4,10 +4,11 @@ import (
 	"errors"
 	"io/fs"
 	"net/http"
-	"os"
+	"path/filepath"
 	"strings"
 
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/util/runtimeutil"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/template/html/v2"
@@ -48,7 +49,8 @@ func GetFiberConfig(views fs.FS, subdir string) fiber.Config {
 }
 
 func GetTestFiberConfig() fiber.Config {
-	views := html.New(os.Getenv("VIEWS_DIR"), ".go.html")
+	viewsPath := filepath.Join(runtimeutil.FindProjectRoot(), "cmd", "lighthouse", "views")
+	views := html.New(viewsPath, ".go.html")
 	views.AddFuncMap(GetViewFuncMap())
 
 	// https://docs.gofiber.io
