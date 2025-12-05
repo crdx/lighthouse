@@ -1,11 +1,16 @@
 set quiet := true
+set shell := ["bash", "-cu", "-o", "pipefail"]
 set dotenv-load := true
 
-BIN_PATH := 'bin/lighthouse'
+NAME := 'lighthouse'
 IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
+HOST := 'm'
+BIN_PATH := 'bin/' + NAME
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
+
+import? 'local.just'
 
 mod make
 
@@ -32,18 +37,13 @@ drop:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
 
 fetchdb:
-    importdb -f --host s --local {{ DB_NAME }} --remote {{ DB_NAME }}
+    importdb -f --host {{ HOST }} --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
 fmt:
-    just --fmt
-    find . -name '*.just' -print0 | xargs -0 -I{} just --fmt -f {}
     go fmt ./...
 
 test package='./...': generate
-    #!/bin/bash
-    set -eo pipefail
-    export LOG_TYPE=none
-    unbuffer go test -cover {{ package }} | gostack --test
+    LOG_TYPE=none unbuffer go test -cover {{ package }} | gostack --test
 
 cov package='./...': (gencov 'func' package)
 cov-html package='./...': (gencov 'html' package)
@@ -51,54 +51,45 @@ cov-html package='./...': (gencov 'html' package)
 [private]
 gencov flag package: generate
     #!/bin/bash
-    set -eo pipefail
+    set -euo pipefail
     FILE=$(mktemp)
     export LOG_TYPE=none
-    go test {{ package }} -cover -coverprofile="$FILE"
-    go tool cover -{{ flag }}="$FILE"
+    unbuffer go test {{ package }} -cover -coverprofile="$FILE" | gostack --test
+    sed -i '/\.gen\.go/d' "$FILE"
+    if [ "{{ flag }}" = func ]; then
+        unbuffer go tool cover -{{ flag }}="$FILE" | gostack --test
+    else
+        go tool cover -{{ flag }}="$FILE"
+    fi
     rm "$FILE"
 
 lint:
-    #!/bin/bash
-    set -eo pipefail
     unbuffer go vet ./... | gostack
     unbuffer golangci-lint --color never run | gostack
 
 fix:
-    #!/bin/bash
-    set -eo pipefail
     unbuffer golangci-lint --color never run --fix | gostack
-
-sloc:
-    tokei -tGo,HTML,CSS,JavaScript \
-        -e **/alpine.min.js \
-        -e **/bulma.min.css
-
-clean:
-    rm -vf {{ AUTOCAP_BIN_PATH }}
-    rm -vf {{ BIN_PATH }}
 
 deploy: buildc
     deploy-container \
-        --host s \
+        --host {{ HOST }} \
         --image {{ IMAGE_NAME }} \
         --dir {{ REMOTE_DIR }} \
         --compose compose.yml \
         --add .env.prod \
         --init deploy/init
 
-buildc:
+check: test fmt lint
+
+build: generate
+    unbuffer go build -o {{ BIN_PATH }} ./cmd/{{ NAME }} | gostack
+
+buildc: generate
     docker-compose build
 
-# ——————————————————————————————————————————————————————————————————————————————————————————————————
-
-[private]
-up: buildc
-    docker-compose up
-
-[private]
-down:
-    docker-compose down
+clean:
+    rm -vf {{ AUTOCAP_BIN_PATH }}
+    rm -vf {{ BIN_PATH }}
 
 [private]
 build-autocap:
@@ -113,17 +104,9 @@ rebuild-autocap:
 
 [private]
 serve: build
-    #!/bin/bash
-    set -eo pipefail
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
     unbuffer {{ BIN_PATH }} | gostack
 
 [private]
 generate:
     go generate ./...
-
-[private]
-build: generate
-    #!/bin/bash
-    set -eo pipefail
-    unbuffer go build -o {{ BIN_PATH }} ./cmd/lighthouse | gostack
