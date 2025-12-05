@@ -5,8 +5,7 @@ RUN apk add --no-cache \
     build-base \
     git \
     libpcap-dev \
-    libcap-utils \
-    upx
+    libcap-utils
 
 WORKDIR /build
 COPY go.sum go.mod .
@@ -15,7 +14,6 @@ RUN go mod download
 # Build.
 COPY . .
 RUN go build -o lighthouse -trimpath -ldflags '-s -w' ./cmd/lighthouse && \
-    upx lighthouse && \
     setcap cap_net_raw+eip lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
