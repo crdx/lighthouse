@@ -6,7 +6,7 @@ NAME := 'lighthouse'
 IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
-HOST := 'm'
+HOST := 's'
 BIN_PATH := 'bin/' + NAME
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
