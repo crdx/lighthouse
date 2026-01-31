@@ -51,11 +51,17 @@ func (self *Reader) Run() error {
 		packet := <-packets
 
 		if layer := packet.Layer(layers.LayerTypeDHCPv4); layer != nil {
-			self.handleDHCPPacket(layer.(*layers.DHCPv4))
+			if dhcp, ok := layer.(*layers.DHCPv4); ok {
+				self.handleDHCPPacket(dhcp)
+			}
 		} else if layer := packet.Layer(layers.LayerTypeARP); layer != nil {
-			self.handleARPPacket(layer.(*layers.ARP), ipNet.IP.String())
+			if arp, ok := layer.(*layers.ARP); ok {
+				self.handleARPPacket(arp, ipNet.IP.String())
+			}
 		} else if layer := packet.Layer(layers.LayerTypeICMPv4); layer != nil {
-			self.handleICMPPacket(layer.(*layers.ICMPv4), packet, ipNet.IP.String())
+			if icmp, ok := layer.(*layers.ICMPv4); ok {
+				self.handleICMPPacket(icmp, packet, ipNet.IP.String())
+			}
 		}
 	}
 }

@@ -23,7 +23,7 @@ func MustParse(s string) time.Duration {
 // Parse converts s into a time.Duration.
 func Parse(s string) (time.Duration, bool) {
 	seconds, ok := newDuration(s).seconds()
-	return time.Duration(seconds) * time.Second, ok
+	return time.Duration(seconds) * time.Second, ok //nolint:gosec // Human-readable durations will not overflow.
 }
 
 type duration struct {
@@ -53,7 +53,7 @@ func (self *duration) seconds() (uint, bool) {
 		}
 
 		number, err := strconv.Atoi(tokens[i])
-		if err != nil || number == 0 {
+		if err != nil || number <= 0 {
 			return 0, false
 		}
 

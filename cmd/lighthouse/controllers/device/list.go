@@ -13,8 +13,8 @@ import (
 )
 
 func List(c fiber.Ctx) error {
-	watchLabel := template.HTML(constants.WatchColumnLabel)
-	typeLabel := template.HTML(constants.TypeColumnLabel)
+	watchLabel := template.HTML(constants.WatchColumnLabel) //nolint:gosec // Constant string, not user input.
+	typeLabel := template.HTML(constants.TypeColumnLabel)   //nolint:gosec // Constant string, not user input.
 
 	columns := map[string]tplutil.ColumnConfig{
 		"name":   {Label: "Name", DefaultSortDirection: "asc"},

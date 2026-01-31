@@ -32,7 +32,7 @@ func List(c fiber.Ctx) error {
 
 	templateParams := fiber.Map{
 		"rows":            rows,
-		"typeColumnLabel": template.HTML(constants.TypeColumnLabel),
+		"typeColumnLabel": template.HTML(constants.TypeColumnLabel), //nolint:gosec // Constant string, not user input.
 		"globals":         globals.Get(c),
 	}
 

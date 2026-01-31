@@ -7,11 +7,9 @@ linters:
     - depguard
     - dupword
     - err113
-    - errorlint
     - exhaustive
     - exhaustruct
     - forbidigo
-    - forcetypeassert
     - funlen
     - gochecknoglobals
     - gochecknoinits
@@ -21,7 +19,6 @@ linters:
     - gocyclo
     - godot
     - godox
-    - gosec
     - inamedparam
     - ireturn
     - lll

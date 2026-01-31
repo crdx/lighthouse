@@ -14,7 +14,7 @@ func main() {
 	}
 	path := os.Args[1]
 
-	output, err := exec.Command("setcap", "cap_net_raw+ep", path).CombinedOutput()
+	output, err := exec.Command("setcap", "cap_net_raw+ep", path).CombinedOutput() //nolint:gosec // Path is from os.Args, not arbitrary user input.
 	if err != nil {
 		fmt.Println(string(output))
 		log.Fatal(err)

@@ -66,7 +66,7 @@ func Init() {
 }
 
 func InitFrom(path string) error {
-	b, err := os.ReadFile(path)
+	b, err := os.ReadFile(path) //nolint:gosec // Path is provided by the caller, not user input.
 	if err != nil {
 		return err
 	}

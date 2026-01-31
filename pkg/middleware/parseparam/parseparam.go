@@ -35,5 +35,9 @@ func New[T any](param string, fetch func(int64) (*T, bool)) fiber.Handler {
 func Get[T any](c fiber.Ctx) *T {
 	var v T
 	name := strings.ToLower(reflectutil.GetType(v).Name())
-	return c.Locals(prefix + name).(*T)
+	value, ok := c.Locals(prefix + name).(*T)
+	if !ok {
+		panic("parseparam: value not found for " + name)
+	}
+	return value
 }

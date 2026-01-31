@@ -96,7 +96,7 @@ func sendPackets(handle *pcap.Handle, config *Config) {
 	}
 
 	tcpLayer := layers.TCP{
-		SrcPort: layers.TCPPort(config.srcPort),
+		SrcPort: layers.TCPPort(config.srcPort), //nolint:gosec // Valid TCP port from net.ListenTCP.
 		DstPort: 0,
 		SYN:     true,
 	}
@@ -104,7 +104,7 @@ func sendPackets(handle *pcap.Handle, config *Config) {
 	lo.Must0(tcpLayer.SetNetworkLayerForChecksum(&ipLayer))
 
 	for _, port := range config.dstPorts {
-		tcpLayer.DstPort = layers.TCPPort(port)
+		tcpLayer.DstPort = layers.TCPPort(port) //nolint:gosec // Valid TCP port number.
 		_ = sendPacket(handle, &ethernetLayer, &ipLayer, &tcpLayer)
 	}
 }
@@ -132,7 +132,7 @@ func readPackets(handle *pcap.Handle, srcPort int, result *Result, done chan str
 
 		for _, layerType := range decodedLayers {
 			if layerType == layers.LayerTypeTCP {
-				if tcpLayer.DstPort != layers.TCPPort(srcPort) {
+				if tcpLayer.DstPort != layers.TCPPort(srcPort) { //nolint:gosec // Valid TCP port from net.ListenTCP.
 					continue
 				} else if tcpLayer.SYN && tcpLayer.ACK {
 					result.Ports = append(result.Ports, int64(tcpLayer.SrcPort))
@@ -167,5 +167,11 @@ func getSourcePort() (int, error) {
 	}
 
 	defer listener.Close() //nolint:errcheck
-	return listener.Addr().(*net.TCPAddr).Port, nil
+
+	tcpAddr, ok := listener.Addr().(*net.TCPAddr)
+	if !ok {
+		return 0, errors.New("failed to get TCP address")
+	}
+
+	return tcpAddr.Port, nil
 }

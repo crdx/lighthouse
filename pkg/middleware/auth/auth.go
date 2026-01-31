@@ -129,7 +129,7 @@ func ExpireUserID(userId int64, exceptSessionId string) {
 		sessionData := map[any]any{}
 		lo.Must0(gob.NewDecoder(bytes.NewBuffer(session.V)).Decode(&sessionData))
 
-		if sessionUserId := sessionData["user_id"].(int64); sessionUserId == userId {
+		if sessionUserId, ok := sessionData["user_id"].(int64); ok && sessionUserId == userId {
 			db.DeleteSession(session.K)
 		}
 	}
