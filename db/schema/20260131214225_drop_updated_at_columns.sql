@@ -1,0 +1,17 @@
+alter table devices drop column updated_at;
+alter table users drop column updated_at;
+alter table adapters drop column updated_at;
+alter table audit_logs drop column updated_at;
+alter table device_discovery_notifications drop column updated_at;
+alter table device_ip_address_logs drop column updated_at;
+alter table device_limit_notifications drop column updated_at;
+alter table device_state_logs drop column updated_at;
+alter table device_state_notifications drop column updated_at;
+alter table mappings drop column updated_at;
+alter table notifications drop column updated_at;
+alter table scan_results drop column updated_at;
+alter table scans drop column updated_at;
+alter table services drop column updated_at;
+alter table device_service_notifications drop column updated_at;
+alter table settings drop column updated_at;
+alter table vendor_lookups drop column updated_at;

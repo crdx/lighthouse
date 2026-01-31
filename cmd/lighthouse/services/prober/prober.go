@@ -71,7 +71,7 @@ func process(device *db.Device, foundPorts []int64) {
 	var servicePorts []int64
 	for _, service := range services {
 		if !slices.Contains(foundPorts, service.Port) {
-			if service.UpdatedAt.Valid && service.UpdatedAt.V.Before(db.Now().Add(-probeR.TTL())) {
+			if service.LastSeenAt.Before(db.Now().Add(-probeR.TTL())) {
 				service.Delete()
 			}
 		} else {

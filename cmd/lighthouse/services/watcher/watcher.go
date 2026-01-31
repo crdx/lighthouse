@@ -113,7 +113,6 @@ func deviceOffline(device *db.Device, transitionedAt time.Time) {
 		State:       state,
 		GracePeriod: device.GracePeriod,
 		CreatedAt:   transitionedAt,
-		UpdatedAt:   db.N(transitionedAt),
 	})
 
 	if device.Watch {
@@ -122,7 +121,6 @@ func deviceOffline(device *db.Device, transitionedAt time.Time) {
 			State:       state,
 			GracePeriod: device.GracePeriod,
 			CreatedAt:   transitionedAt,
-			UpdatedAt:   db.N(transitionedAt),
 		})
 	}
 
