@@ -6,7 +6,6 @@ NAME := 'lighthouse'
 IMAGE_NAME := 'lighthouse_app'
 REMOTE_DIR := 'lighthouse'
 DB_NAME := 'lighthouse'
-HOST := 's'
 BIN_PATH := 'bin/' + NAME
 AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 
@@ -35,9 +34,6 @@ db:
 
 drop:
     echo 'drop database if exists {{ DB_NAME }}' | mariadb
-
-fetchdb:
-    importdb -f --host {{ HOST }} --local {{ DB_NAME }} --remote {{ DB_NAME }}
 
 fmt:
     go fmt ./...
@@ -69,15 +65,6 @@ lint:
 
 fix:
     unbuffer golangci-lint --color never run --fix | gostack
-
-deploy: buildc
-    deploy-container \
-        --host {{ HOST }} \
-        --image {{ IMAGE_NAME }} \
-        --dir {{ REMOTE_DIR }} \
-        --compose compose.yml \
-        --add .env.prod \
-        --init deploy/init
 
 check: test fmt lint
 

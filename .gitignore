@@ -5,3 +5,4 @@
 # sfe: ignore rest
 /.env
 /.env.prod
+/local.just
