@@ -1,4 +1,4 @@
-FROM golang:1.25.1-alpine3.22 AS build
+FROM golang:1.26.2-alpine3.23 AS build
 # https://hub.docker.com/_/golang
 
 RUN apk add --no-cache \
@@ -18,7 +18,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     setcap cap_net_raw+eip lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
-FROM alpine:3.22.1
+FROM alpine:3.23.3
 # https://hub.docker.com/_/alpine
 
 RUN apk add --no-cache \
