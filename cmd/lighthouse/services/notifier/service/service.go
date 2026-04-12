@@ -63,7 +63,7 @@ func getSubject(discoveries []*discovery) string {
 func getBody(discoveries []*discovery) string {
 	var s strings.Builder
 	for _, discovery := range discoveries {
-		s.WriteString(fmt.Sprintf("%s\n", discovery.Service.Details()))
+		fmt.Fprintf(&s, "%s\n", discovery.Service.Details())
 	}
 	return strings.TrimSpace(s.String())
 }

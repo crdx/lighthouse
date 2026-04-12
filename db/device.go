@@ -62,17 +62,17 @@ func (self *Device) Details() string {
 	// Ensure HTML minification can't strip these spaces.
 	indent := "\u00A0\u00A0\u00A0\u00A0"
 
-	s.WriteString(fmt.Sprintf("%s:\n", self.DisplayName()))
-	s.WriteString(fmt.Sprintf(indent+"Discovered: %s\n", discovered))
+	fmt.Fprintf(&s, "%s:\n", self.DisplayName())
+	fmt.Fprintf(&s, indent+"Discovered: %s\n", discovered)
 	if self.Hostname != "" {
-		s.WriteString(fmt.Sprintf(indent+"Hostname: %s\n", self.Hostname))
+		fmt.Fprintf(&s, indent+"Hostname: %s\n", self.Hostname)
 	}
 
 	for _, adapter := range self.Adapters() {
-		s.WriteString(fmt.Sprintf(indent+"MAC Address: %s\n", adapter.MACAddress))
-		s.WriteString(fmt.Sprintf(indent+"IP Address: %s\n", adapter.IPAddress))
+		fmt.Fprintf(&s, indent+"MAC Address: %s\n", adapter.MACAddress)
+		fmt.Fprintf(&s, indent+"IP Address: %s\n", adapter.IPAddress)
 		if adapter.Vendor != "" {
-			s.WriteString(fmt.Sprintf(indent+"Vendor: %s\n", adapter.Vendor))
+			fmt.Fprintf(&s, indent+"Vendor: %s\n", adapter.Vendor)
 		}
 	}
 

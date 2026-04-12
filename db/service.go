@@ -31,6 +31,6 @@ func (self *Service) Details() string {
 		name = "unknown"
 	}
 
-	s.WriteString(fmt.Sprintf("port %d (%s) is open on %s", self.Port, name, self.Device().DisplayName()))
+	fmt.Fprintf(&s, "port %d (%s) is open on %s", self.Port, name, self.Device().DisplayName())
 	return strings.TrimSpace(s.String())
 }
