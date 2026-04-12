@@ -1,0 +1,6 @@
+[tools]
+"go:crdx.org/starfield/cmd/starfield" = "latest"
+hivemind = "latest"
+sqlc = "latest"
+"go:crdx.org/starfield/cmd/starfieldctl" = "latest"
+golangci-lint = "latest"
