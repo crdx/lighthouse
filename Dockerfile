@@ -21,16 +21,13 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 FROM alpine:3.22.1
 # https://hub.docker.com/_/alpine
 
-RUN apk add --no-cache tzdata && \
-    cp /usr/share/zoneinfo/Europe/London /etc/localtime && \
-    echo 'Europe/London' > /etc/timezone && \
-    apk del tzdata
-
 RUN apk add --no-cache \
     bash \
-    libpcap-dev \
     curl \
-    tzdata
+    libpcap \
+    tzdata && \
+    cp /usr/share/zoneinfo/Europe/London /etc/localtime && \
+    echo 'Europe/London' > /etc/timezone
 
 RUN addgroup -g 1000 anon && \
     adduser -G anon -D -u 1000 anon
