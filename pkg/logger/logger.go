@@ -7,7 +7,6 @@ import (
 
 	"crdx.org/lighthouse/pkg/env"
 	"github.com/lmittmann/tint"
-	slogmulti "github.com/samber/slog-multi"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
@@ -30,7 +29,7 @@ func Get() *slog.Logger {
 
 	switch env.LogType() {
 	case env.LogTypeAll:
-		logger = slog.New(slogmulti.Fanout(getDiskHandler(), getStderrHandler()))
+		logger = slog.New(slog.NewMultiHandler(getDiskHandler(), getStderrHandler()))
 	case env.LogTypeDisk:
 		logger = slog.New(getDiskHandler())
 	case env.LogTypeStderr:
