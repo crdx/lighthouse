@@ -13,7 +13,8 @@ RUN go mod download
 
 # Build.
 COPY . .
-RUN go build -o lighthouse -trimpath -ldflags '-s -w' ./cmd/lighthouse && \
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    go build -o lighthouse -trimpath -ldflags '-s -w' ./cmd/lighthouse && \
     setcap cap_net_raw+eip lighthouse
 
 # ——————————————————————————————————————————————————————————————————————————————————————————————————
