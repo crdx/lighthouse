@@ -81,7 +81,7 @@ func GetStructFieldValue[T any](s T, tagValue string, tagName string) (reflect.V
 // GetValue gets the value of s, following pointers.
 func GetValue(s any) reflect.Value {
 	v := reflect.ValueOf(s)
-	if v.Kind() == reflect.Ptr {
+	if v.Kind() == reflect.Pointer {
 		v = v.Elem()
 	}
 	return v
@@ -90,7 +90,7 @@ func GetValue(s any) reflect.Value {
 // GetType gets the type of s, following pointers.
 func GetType(s any) reflect.Type {
 	t := reflect.TypeOf(s)
-	if t.Kind() == reflect.Ptr {
+	if t.Kind() == reflect.Pointer {
 		t = t.Elem()
 	}
 	return t
