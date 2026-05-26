@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+NEW_VERSION="$1"
+
+git add CHANGELOG.md
+if git diff --cached --quiet; then
+    echo "Nothing to commit (files already committed)."
+else
+    git commit -m "Release v${NEW_VERSION}"
+fi

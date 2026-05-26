@@ -12,6 +12,7 @@ AUTOCAP_BIN_PATH := 'bin/autocap-$(hostname -s)'
 import? 'local.just'
 
 mod make
+mod release
 
 [private]
 help:
