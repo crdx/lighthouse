@@ -1,4 +1,4 @@
-FROM golang:1.26.3-trixie AS build
+FROM golang AS build
 # https://hub.docker.com/_/golang
 
 RUN apt-get update && \
