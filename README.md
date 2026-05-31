@@ -88,103 +88,26 @@ lighthouse is configured with a `.env` file. Only the options necessary for star
 
 Check out `.env.example` for a quick reference or continue reading for a more comprehensive rundown.
 
-### MODE
+The first value (in **bold**) is the default.
 
-- Required: yes
-- Value: `development` or `production`
-
-The execution mode. Unless you're working on lighthouse, this should always be set to `production`.
-
-### HOST
-
-- Required: yes
-- Value: an IP address e.g., `127.0.0.1` or `0.0.0.0`
-
-The interface to bind to.
-
-`0.0.0.0` binds to all interfaces allowing access for all hosts, while `127.0.0.1` binds to the loopback interface and restricts access to the local system. Other values will bind to that specific interface. The exact value to set here will depend on your network configuration.
-
-### PORT
-
-- Required: only if `MODE` is `production`
-- Value: port, e.g., `1337`
-
-The port to listen on. If not specified in development mode then a random port will be used.
-
-### LOG_TYPE
-
-- Required: yes
-- Value: `all`, `disk`, `stderr`, or `none`
-
-### LOG_PATH
-
-- Required: only if `LOG_TYPE` is `all` or `disk`
-- Value: path e.g., `logs/lighthouse.log`
-
-### DB_NAME
-
-- Required: yes
-- Value: database name e.g., `lighthouse`
-
-### DB_USERNAME
-
-- Required: yes
-- Value: username e.g., `anon`
-
-### DB_PASSWORD
-
-- Required: no
-- Value: password e.g., `anon`
-- Default: (empty)
-
-### DB_PROTOCOL
-
-- Required: no
-- Value: `tcp` or `unix`
-- Default: `tcp`
-
-### DB_ADDRESS
-
-- Required: no
-- Value: host and port combination e.g., `127.0.0.1:3306`, or a unix socket path e.g. `/run/mysqld/mysqld.sock`
-- Default: `127.0.0.1:3306`
-
-### DB_CHARSET
-
-- Required: no
-- Value: character set e.g., `utf8mb4`
-- Default: `utf8mb4`
-
-### DB_TIMEZONE
-
-- Required: no
-- Value: timezone e.g., `UTC`, `Europe/London`
-- Default: `UTC`
-
-### LIVE_RELOAD
-
-- Required: no
-- Value: `true`, `1`, or `yes` to enable, anything else to disable
-- Default: `false`
-
-### DEFAULT_ROOT_PASS
-
-- Required: no
-- Value: password e.g., `root`
-- Default: `root`
-
-### DEFAULT_ANON_PASS
-
-- Required: no
-- Value: password e.g., `anon`
-- Default: `anon`
-
-### TRUSTED_PROXIES
-
-- Required: no
-- Value: comma-separated list of IP addresses e.g. `127.0.0.1`
-
-If running behind a reverse proxy then set this to the proxy's IP address(es). This will ensure the correct IP address is displayed in the audit log.
+| Variable             | Required      | Values                                            | Description                                                                                        |
+|----------------------|---------------|---------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| `MODE`               | yes           | `development`, `production`                       | The execution mode. Should always be `production` unless developing lighthouse.                    |
+| `HOST`               | yes           | `127.0.0.1`, `0.0.0.0`                           | The interface to bind to. `0.0.0.0` binds to all interfaces, `127.0.0.1` restricts to localhost.  |
+| `PORT`               | in production | `1337`                                            | The port to listen on. A random port is used in development mode if not set.                       |
+| `LOG_TYPE`           | yes           | `all`, `disk`, `stderr`, `none`                   | Where to send log output.                                                                          |
+| `LOG_PATH`           | conditional   | `logs/lighthouse.log`                             | Log file path. Required if `LOG_TYPE` is `all` or `disk`.                                         |
+| `DB_NAME`            | yes           | `lighthouse`                                      | The database name.                                                                                 |
+| `DB_USERNAME`        | yes           | `anon`                                            | The database username.                                                                             |
+| `DB_PASSWORD`        | no            | `anon`                                            | The database password. Defaults to empty.                                                          |
+| `DB_PROTOCOL`        | no            | **`tcp`**, `unix`                                 | The database connection protocol.                                                                  |
+| `DB_ADDRESS`         | no            | **`127.0.0.1:3306`**, `/run/mysqld/mysqld.sock`  | Host and port, or a unix socket path.                                                              |
+| `DB_CHARSET`         | no            | **`utf8mb4`**                                     | The database character set.                                                                        |
+| `DB_TIMEZONE`        | no            | **`UTC`**, `Europe/London`                        | The database timezone.                                                                             |
+| `LIVE_RELOAD`        | no            | **`false`**, `true`                               | Enable live reload. Accepts `true`, `1`, or `yes`.                                                 |
+| `DEFAULT_ROOT_PASS`  | no            | **`root`**                                        | Default password for the root user.                                                                |
+| `DEFAULT_ANON_PASS`  | no            | **`anon`**                                        | Default password for the anon user.                                                                |
+| `TRUSTED_PROXIES`    | no            | `127.0.0.1`                                       | Comma-separated IP addresses of trusted reverse proxies. Ensures correct IPs in the audit log.     |
 
 ## Mail
 
