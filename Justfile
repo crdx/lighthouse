@@ -62,10 +62,10 @@ gencov flag package: generate
 
 lint:
     unbuffer go vet ./... | gostack
-    unbuffer golangci-lint --color never run | gostack
+    unbuffer golangci-lint run --color never | gostack
 
 fix:
-    unbuffer golangci-lint --color never run --fix | gostack
+    unbuffer golangci-lint run --color never --fix | gostack
 
 check: test fmt lint
 
