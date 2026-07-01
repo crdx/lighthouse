@@ -3,7 +3,6 @@ linters:
   default: all
   disable:
     - bodyclose
-    - gomodguard
     - cyclop
     - depguard
     - dupword
@@ -20,6 +19,7 @@ linters:
     - gocyclo
     - godot
     - godox
+    - gomodguard # deprecated: replaced by gomodguard_v2 (enabled via default: all)
     - inamedparam
     - ireturn
     - lll
@@ -54,5 +54,5 @@ linters:
         - '-ST1006' # Poorly chosen receiver name          [https://staticcheck.dev/docs/checks#ST1006]
 formatters:
   enable:
-    - gofmt
+    - gofumpt
     - goimports
