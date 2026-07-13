@@ -58,7 +58,7 @@
 
             for (var i = 0; i < iterations; i++) {
                 try {
-                    await fetch('/health')
+                    await fetch('/-/health')
                     break
                 } catch (e) {
                     await sleep(delayMilliseconds)

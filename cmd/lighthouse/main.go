@@ -56,7 +56,7 @@ func main() {
 	dbConfig := initState()
 
 	app := fiber.New(config.GetFiberConfig(views, "views"))
-	app.Get("/health", healthcheck.New())
+	app.Get("/-/health", healthcheck.New())
 
 	logger.Init()
 	config.InitMiddleware(app, &assets, dbConfig)

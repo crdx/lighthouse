@@ -43,7 +43,7 @@ COPY --from=build /build/lighthouse /init
 # This needs to be a script within the container because we need access to $PORT.
 RUN printf '%s\n' \
     '#!/bin/sh' \
-    'exec curl -sSf "http://localhost:$PORT/health"' > healthcheck && \
+    'exec curl -sSf "http://localhost:$PORT/-/health"' > healthcheck && \
     chmod +x healthcheck
 
 USER anon
