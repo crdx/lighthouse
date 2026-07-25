@@ -71,7 +71,8 @@ func getBody(trespassers []*trespasser) string {
 	var s strings.Builder
 
 	for _, trespasser := range trespassers {
-		s.WriteString(trespasser.String() + "\n")
+		s.WriteString(trespasser.String())
+		s.WriteString("\n")
 	}
 
 	return strings.TrimSpace(s.String())

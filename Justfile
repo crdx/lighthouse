@@ -60,7 +60,7 @@ gencov flag package: generate
     fi
     rm "$FILE"
 
-lint:
+lint: && lint-gopls
     unbuffer go vet ./... | gostack
     unbuffer golangci-lint run --color never | gostack
 
@@ -98,3 +98,13 @@ serve: build
 [private]
 generate:
     go generate ./...
+
+[private]
+lint-gopls:
+    #!/bin/bash
+    set -euo pipefail
+    OUTPUT=$(git ls-files '*.go' ':!*.gen.go' | xargs gopls check 2>&1)
+    if [[ -n "$OUTPUT" ]]; then
+        echo "$OUTPUT"
+        exit 1
+    fi

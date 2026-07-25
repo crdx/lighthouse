@@ -142,7 +142,8 @@ func getBody(newTransitions []*transition, allTransitions []*transition) string 
 	var s strings.Builder
 
 	for _, transition := range newTransitions {
-		s.WriteString(transition.TimestampedString() + "\n")
+		s.WriteString(transition.TimestampedString())
+		s.WriteString("\n")
 	}
 
 	if len(allTransitions) > len(newTransitions) {
@@ -151,7 +152,8 @@ func getBody(newTransitions []*transition, allTransitions []*transition) string 
 		}
 
 		for _, transition := range allTransitions {
-			s.WriteString(transition.TimestampedString() + "\n")
+			s.WriteString(transition.TimestampedString())
+			s.WriteString("\n")
 		}
 	}
 
