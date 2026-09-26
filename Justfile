@@ -81,7 +81,12 @@ clean:
 
 [private]
 build-autocap:
-    mkif {{ AUTOCAP_BIN_PATH }} ./tools/autocap/* -x 'just rebuild-autocap'
+    #!/bin/bash
+    set -euo pipefail
+    TARGET="{{ AUTOCAP_BIN_PATH }}"
+    if [[ ! -e "$TARGET" ]] || [[ -n "$(find ./tools/autocap -type f -newer "$TARGET" -print -quit)" ]]; then
+        just rebuild-autocap
+    fi
 
 [private]
 rebuild-autocap:
