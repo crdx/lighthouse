@@ -145,6 +145,38 @@ code {
     white-space: pre;
 }
 
+.page-header .level-left {
+    align-items: baseline;
+}
+
+@media screen and (max-width: 768px) {
+    .page-header,
+    .page-header .level-right {
+        align-items: stretch;
+    }
+
+    .page-header .level-left {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .page-header .level-item {
+        justify-content: flex-start;
+    }
+
+    .page-header > .level-left:not(:last-child) {
+        margin-bottom: var(--bulma-level-item-spacing);
+    }
+
+    .page-header form,
+    .page-header .field,
+    .page-header .select,
+    .page-header .select select,
+    .page-header .input {
+        width: 100%;
+    }
+}
+
 .navbar > .container .navbar-menu {
     margin-right: 0;
 }
