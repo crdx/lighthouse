@@ -131,16 +131,14 @@ fieldset[disabled] .toggle + label:active:after {
     border: 0;
 }
 
-.button.is-ghost[disabled]:hover {
+.button.is-ghost:hover,
+.button.is-ghost[disabled]:hover,
+.pager .button:hover {
     text-decoration: none;
 }
 
 .button.is-ghost:focus:not(:active) {
     box-shadow: none;
-}
-
-.pager .button:hover {
-    text-decoration: none;
 }
 
 .nowrap {

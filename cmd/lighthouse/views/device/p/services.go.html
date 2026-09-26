@@ -24,7 +24,7 @@
             <td>{{ template "p/time/rel" .LastSeenAt }}</td>
             {{ if $.globals.User.IsEditor }}
                 <td class="min-column">
-                    <div class="columns is-variable is-1 is-mobile">
+                    <div class="columns is-1 is-mobile">
                         <a title="Edit" href="/service/{{ .ID }}/edit" class="column has-text-dark">
                             <span class="icon">
                                 <i class="fa-duotone fa-edit"></i>
