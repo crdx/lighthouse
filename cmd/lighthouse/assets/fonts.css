@@ -1,0 +1,57 @@
+/* All three families are under the SIL Open Font License 1.1; see fonts/*-OFL.txt. */
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('IBM Plex Sans'), url('/assets/fonts/ibm-plex-sans-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('IBM Plex Sans Medium'), url('/assets/fonts/ibm-plex-sans-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'IBM Plex Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local('IBM Plex Sans SemiBold'), url('/assets/fonts/ibm-plex-sans-600.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('Barlow Medium'), url('/assets/fonts/barlow-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Barlow';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Barlow Bold'), url('/assets/fonts/barlow-700.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'DM Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('DM Mono'), url('/assets/fonts/dm-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'DM Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('DM Mono Medium'), url('/assets/fonts/dm-mono-500.woff2') format('woff2');
+}

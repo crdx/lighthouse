@@ -1,3 +1,24 @@
+:root {
+    --font-display: 'Barlow', system-ui, sans-serif;
+    --font-ui: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, monospace;
+
+    --bulma-body-family: var(--font-ui);
+    --bulma-code-family: var(--font-mono);
+}
+
+.title,
+.subtitle,
+.navbar-brand {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+
+option,
+optgroup {
+    font-family: var(--font-ui);
+}
+
 [data-theme='dark'] {
     /* Bulma applies a theme through both prefers-color-scheme and the attribute, and the switcher
        sets the attribute only when the reader overrides the system, so each palette is declared
@@ -103,8 +124,8 @@ code {
 }
 
 .mono {
-    font-size: 0.9rem;
-    font-family: monospace;
+    font-family: var(--font-mono);
+    font-size: 0.875em;
 }
 
 .notification {
