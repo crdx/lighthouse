@@ -37,7 +37,10 @@
 </div>
 
 <script type="text/javascript">
+    const bootID = '{{ liveReloadBootID }}'
+
     let navigating = false
+    let controller = null
 
     window.onbeforeunload = function() {
         navigating = true
@@ -58,24 +61,65 @@
 
             for (var i = 0; i < iterations; i++) {
                 try {
-                    await fetch('/-/health')
-                    break
-                } catch (e) {
-                    await sleep(delayMilliseconds)
-                }
+                    let res = await fetch('/-/health')
+                    if (res.status == 200) {
+                        break
+                    }
+                } catch {}
+                await sleep(delayMilliseconds)
             }
         }
 
-        try {
-            await fetch('/hang')
-        } catch (e) {
-            if (navigating) {
-                return
+        async function getBootID() {
+            try {
+                let res = await fetch('/-/boot')
+                return res.status == 200 ? await res.text() : null
+            } catch {
+                return null
             }
+        }
+
+        async function reload() {
             document.querySelector('.a5eab416-b1c5-4f51-9feb-dccf69eccd64').style.display = 'grid'
             document.title = '(...) ' + document.title
             await waitUntilHealthy()
             document.location.reload()
+        }
+
+        async function watch() {
+            controller = new AbortController()
+
+            try {
+                await fetch('/hang', { signal: controller.signal })
+            } catch (error) {
+                if (error.name == 'AbortError') {
+                    return
+                }
+            }
+
+            if (navigating || document.hidden) {
+                return
+            }
+
+            await reload()
+        }
+
+        document.addEventListener('visibilitychange', async function() {
+            if (document.hidden) {
+                controller?.abort()
+                return
+            }
+
+            if (await getBootID() != bootID) {
+                await reload()
+                return
+            }
+
+            watch()
+        })
+
+        if (!document.hidden) {
+            watch()
         }
     })()
 </script>

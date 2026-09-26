@@ -58,6 +58,16 @@ func main() {
 	app := fiber.New(config.GetFiberConfig(views, "views"))
 	app.Get("/-/health", healthcheck.New())
 
+	if env.LiveReload() {
+		app.Get("/hang", func(c fiber.Ctx) error {
+			select {}
+		})
+
+		app.Get("/-/boot", func(c fiber.Ctx) error {
+			return c.SendString(config.BootID())
+		})
+	}
+
 	logger.Init()
 	config.InitMiddleware(app, &assets, dbConfig)
 	config.InitRoutes(app)
