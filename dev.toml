@@ -1,0 +1,5 @@
+[env]
+file = ".env"
+
+[database]
+enabled = true
