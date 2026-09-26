@@ -14,6 +14,14 @@ jobs:
         with:
           go-version: stable
       - run: sudo apt-get update && sudo apt-get install -y libpcap-dev
-      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+      # sqlc and the starfield plugin it loads, which `go generate` needs to write db/*.gen.go.
+      # starfield is held at the version the author's machines build, so the generated code CI
+      # lints is the generated code they have.
+      - name: Install code generators
+        run: |
+          go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.30.0
+          go install crdx.org/starfield/cmd/starfield@v1.11.1
       - run: go generate
-      - run: golangci-lint run
+      - uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # v7.0.0
+        with:
+          version: latest
