@@ -1,6 +1,7 @@
 package transform
 
 import (
+	"reflect"
 	"strings"
 
 	"crdx.org/lighthouse/pkg/util/reflectutil"
@@ -13,7 +14,7 @@ func Struct[T any](s T) {
 	for i := range structValue.NumField() {
 		fieldValue := structValue.Field(i)
 
-		if str, ok := fieldValue.Interface().(string); ok {
+		if str, ok := reflect.TypeAssert[string](fieldValue); ok {
 			tagValue := structValue.Type().Field(i).Tag.Get("transform")
 
 			noTrim := false

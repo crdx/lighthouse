@@ -149,8 +149,7 @@ func Struct[T any](s T, validatorMaps ...ValidatorMap) (map[string]Field, error)
 
 	var errorMessages validator.ValidationErrorsTranslations
 	if err != nil {
-		var validationErrors validator.ValidationErrors
-		if errors.As(err, &validationErrors) {
+		if validationErrors, ok := errors.AsType[validator.ValidationErrors](err); ok {
 			errorMessages = fixErrorMessages(validationErrors.Translate(translator))
 		}
 	}
