@@ -31,6 +31,33 @@ document.addEventListener('alpine:init', function() {
         }
     })
 
+    // Keep the storage key in sync with the inline script in views/layout/p/theme.go.html.
+    Alpine.data('theme', function() {
+        return {
+            theme: localStorage.getItem('theme') ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+
+            themes: {
+                light: { next: 'dark', icon: 'fa-sun-bright', label: 'Light theme' },
+                dark: { next: 'light', icon: 'fa-moon', label: 'Dark theme' },
+            },
+
+            toggleTheme() {
+                this.theme = this.themes[this.theme].next
+                document.documentElement.dataset.theme = this.theme
+                localStorage.setItem('theme', this.theme)
+            },
+
+            themeIcon() {
+                return this.themes[this.theme].icon
+            },
+
+            themeLabel() {
+                return this.themes[this.theme].label
+            },
+        }
+    })
+
     Alpine.data('dropdown', function() {
         return {
             dropdownOpen: false,

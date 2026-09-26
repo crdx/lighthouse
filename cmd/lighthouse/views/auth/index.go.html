@@ -3,14 +3,14 @@
         <div class="container">
             <div class="constrained">
                 <div class="block">
-                    <div class="icon is-large {{ if .err }}has-text-danger-dark{{ end }}">
+                    <div class="icon is-large {{ if .err }}has-text-danger-on-scheme{{ end }}">
                         <fa class="fa-duotone fa-lighthouse fa-4x"></fa>
                     </div>
                 </div>
 
                 {{ if .err }}
                     <div class="block">
-                        <div class="has-text-danger-dark">
+                        <div class="has-text-danger-on-scheme">
                             Invalid credentials
                         </div>
                     </div>

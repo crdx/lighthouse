@@ -31,22 +31,22 @@
             <td class="is-hidden-mobile">{{ formatDateTimeReadable .CreatedAt }}</td>
             <td class="min-column">
                 <div class="columns is-1 is-mobile">
-                    <a title="Edit" href="/admin/users/{{ .ID }}/edit" class="column has-text-dark">
+                    <a title="Edit" href="/admin/users/{{ .ID }}/edit" class="column has-text-text-on-scheme">
                         <span class="icon">
                             <i class="fa-duotone fa-edit"></i>
                         </span>
                     </a>
                     {{ if and (gt (len $.users) 1) (ne .ID $.globals.User.ID) }}
                         <form class="column" action="/admin/users/{{ .ID }}/become" method="post">
-                            <a title="Become" onclick="parentNode.submit()" class="has-text-dark">
-                                <span class="icon has-text-grey-dark">
+                            <a title="Become" onclick="parentNode.submit()" class="has-text-text-on-scheme">
+                                <span class="icon has-text-text-on-scheme">
                                     <i class="fa-duotone fa-user-tie"></i>
                                 </span>
                             </a>
                         </form>
                         <form class="column" action="/admin/users/{{ .ID }}/delete" method="post">
-                            <a title="Delete" onclick="confirm('Are you sure you want to delete this user?') && parentNode.submit()" class="has-text-dark">
-                                <span class="icon has-text-danger-dark">
+                            <a title="Delete" onclick="confirm('Are you sure you want to delete this user?') && parentNode.submit()" class="has-text-text-on-scheme">
+                                <span class="icon has-text-danger-on-scheme">
                                     <i class="fa-duotone fa-trash"></i>
                                 </span>
                             </a>

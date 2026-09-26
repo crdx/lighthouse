@@ -1,3 +1,94 @@
+[data-theme='dark'] {
+    /* Bulma applies a theme through both prefers-color-scheme and the attribute, and the switcher
+       sets the attribute only when the reader overrides the system, so each palette is declared
+       twice. Keep in sync with the prefers-color-scheme: dark block below. */
+    --bulma-scheme-h: 204;
+    --bulma-scheme-s: 8%;
+    --bulma-scheme-main-l: 12%;
+    --bulma-body-background-color: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 8%);
+    --bulma-text-l: 70%;
+    --bulma-text-weak-l: 55%;
+    --bulma-text-title-l: 88%;
+    --bulma-text-strong-l: 85%;
+    --bulma-danger-h: 351;
+    --bulma-danger-s: 56%;
+    --bulma-success-s: 38%;
+    --bulma-success-l: 42%;
+    --bulma-link-h: 205;
+    --bulma-link-s: 30%;
+    --bulma-link-l: 42%;
+    --bulma-shadow-l: 0%;
+
+    color-scheme: dark;
+}
+
+[data-theme='light'] {
+    /* Keep in sync with the prefers-color-scheme: light block below. */
+    --bulma-link-h: 205;
+    --bulma-link-s: 51%;
+    --bulma-link-on-scheme-l: 37%;
+    --bulma-link-l: 41%;
+    --bulma-success-s: 45%;
+    --bulma-success-l: 39%;
+    --bulma-body-background-color: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 97%);
+
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: light) {
+    /* Keep in sync with the [data-theme='light'] block above. */
+    :root:not([data-theme='dark']) {
+        --bulma-link-h: 205;
+        --bulma-link-s: 51%;
+        --bulma-link-on-scheme-l: 37%;
+        --bulma-link-l: 41%;
+        --bulma-success-s: 45%;
+        --bulma-success-l: 39%;
+        --bulma-body-background-color: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 97%);
+
+        color-scheme: light;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    /* Keep in sync with the [data-theme='dark'] block above. */
+    :root:not([data-theme='light']) {
+        --bulma-scheme-h: 204;
+        --bulma-scheme-s: 8%;
+        --bulma-scheme-main-l: 12%;
+        --bulma-body-background-color: hsl(var(--bulma-scheme-h), var(--bulma-scheme-s), 8%);
+        --bulma-text-l: 70%;
+        --bulma-text-weak-l: 55%;
+        --bulma-text-title-l: 88%;
+        --bulma-text-strong-l: 85%;
+        --bulma-danger-h: 351;
+        --bulma-danger-s: 56%;
+        --bulma-success-s: 38%;
+        --bulma-success-l: 42%;
+        --bulma-link-h: 205;
+        --bulma-link-s: 30%;
+        --bulma-link-l: 42%;
+        --bulma-shadow-l: 0%;
+
+        color-scheme: dark;
+    }
+}
+
+.notification.is-danger,
+.notification.is-warning,
+.notification.is-success,
+.notification.is-info,
+.notification.is-link,
+.notification.is-primary {
+    --bulma-notification-background-l: var(--bulma-soft-l);
+    --bulma-notification-color-l: var(--bulma-soft-invert-l);
+}
+
+.navbar-item.is-active {
+    --bulma-navbar-item-selected-background-l: var(--bulma-soft-l);
+    --bulma-navbar-item-selected-color-l: var(--bulma-soft-invert-l);
+}
+
 .section {
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -8,7 +99,7 @@ th {
 }
 
 code {
-    color: #363636;
+    color: var(--bulma-text-strong);
 }
 
 .mono {
@@ -42,7 +133,7 @@ code {
 }
 
 .icon--focus {
-    color: #4a4a4a !important;
+    color: var(--bulma-text-strong) !important;
 }
 
 .toggle {
@@ -56,7 +147,7 @@ code {
     cursor: pointer;
     width: 55px;
     height: 28px;
-    background: #bbb;
+    background: var(--bulma-border);
     display: block;
     border-radius: 28px;
     position: relative;
@@ -74,13 +165,13 @@ fieldset[disabled] .toggle + label {
     left: 2px;
     width: 25px;
     height: 24px;
-    background: #fff;
+    background: var(--bulma-scheme-main);
     border-radius: 25px;
     transition: 0.3s;
 }
 
 .toggle:checked + label {
-    background: hsl(141, 53%, 31%);
+    background: var(--bulma-success);
 }
 
 .toggle:checked + label:after {
@@ -122,7 +213,7 @@ fieldset[disabled] .toggle + label:active:after {
 }
 
 .dropdown-icon-search .dropdown-content a:focus {
-    outline: 1px solid #485fc7;
+    outline: 1px solid var(--bulma-link);
     border-radius: 5px;
 }
 
@@ -143,4 +234,8 @@ fieldset[disabled] .toggle + label:active:after {
 
 .nowrap {
     white-space: nowrap;
+}
+
+input[type=checkbox] {
+    accent-color: var(--bulma-link);
 }

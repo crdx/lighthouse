@@ -12,9 +12,9 @@
         <div class="level-item">
             <span class="icon is-medium mr-2 ml-1">
                 {{ if eq .device.State "online" }}
-                    <i class="fa-2x {{ .device.IconClass }} has-text-success-dark"></i>
+                    <i class="fa-2x {{ .device.IconClass }} has-text-success-on-scheme"></i>
                 {{ else }}
-                    <i class="fa-2x {{ .device.IconClass }} has-text-grey"></i>
+                    <i class="fa-2x {{ .device.IconClass }} has-text-text-on-scheme"></i>
                 {{ end }}
             </span>
         </div>
@@ -47,7 +47,7 @@
 
                             <hr class="dropdown-divider">
 
-                            <a class="dropdown-item has-text-danger-dark" x-data="form" @click="submitForm">
+                            <a class="dropdown-item has-text-danger-on-scheme" x-data="form" @click="submitForm">
                                 <form class="is-hidden"
                                       method="post"
                                       onsubmit="return confirm('Are you sure you want to delete this device?')"

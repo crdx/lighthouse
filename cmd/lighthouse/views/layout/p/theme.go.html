@@ -1,0 +1,18 @@
+{{/*
+    Apply the stored theme before the page renders.
+
+    Keep the storage key in sync with the theme component in assets/main.js.
+
+    Context:
+        .    (not used)
+*/}}
+
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme')
+
+        if (theme === 'light' || theme === 'dark') {
+            document.documentElement.dataset.theme = theme
+        }
+    })()
+</script>

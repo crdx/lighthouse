@@ -5,7 +5,7 @@
         .    (not used)
 */}}
 
-<nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
+<nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
     <div class="container is-max-widescreen" x-data="nav">
         <div class="navbar-brand">
             <a class="navbar-item" href="/" title="Home">
@@ -46,6 +46,11 @@
                         <span class="is-hidden-desktop">administration</span>
                     </a>
                 {{ end }}
+
+                <a class="navbar-item" x-data="theme" @click="toggleTheme" :title="themeLabel()">
+                    <span class="icon"><i class="fa-solid" :class="themeIcon()"></i></span>
+                    <span class="is-hidden-desktop" x-text="themeLabel()"></span>
+                </a>
 
                 <a href="/profile" class="navbar-item{{ if eq $.globals.CurrentRoute "profile" }} is-active{{ end }}" title="Profile">
                     <span class="icon"><i class="fas fa-user"></i></span>
