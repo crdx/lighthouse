@@ -27,6 +27,7 @@ FROM debian:trixie-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         bash \
+        ca-certificates \
         curl \
         libpcap0.8 \
         tzdata && \

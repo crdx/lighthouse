@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"crdx.org/lighthouse/pkg/duration"
+	"crdx.org/lighthouse/pkg/fontawesome"
 	"crdx.org/lighthouse/pkg/util/netutil"
 	"crdx.org/lighthouse/pkg/util/reflectutil"
 	"crdx.org/lighthouse/pkg/util/stringutil"
@@ -55,9 +56,7 @@ func init() {
 		return slices.Contains([]string{"1", "2", "3"}, value)
 	})
 
-	Register("icon", "must be a valid icon", func(value string) bool {
-		return regexp.MustCompile("^(duotone|solid|brands):.+$").MatchString(value)
-	})
+	Register("icon", "must be a valid icon", fontawesome.IsValidIcon)
 
 	Register("duration", "must be a valid duration", duration.Valid)
 

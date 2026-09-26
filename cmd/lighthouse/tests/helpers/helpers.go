@@ -1,13 +1,16 @@
 package helpers
 
 import (
+	"io/fs"
 	"os"
 	"testing"
 
 	"crdx.org/lighthouse/cmd/lighthouse/config"
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/fontawesome"
 	"crdx.org/lighthouse/pkg/util/mailutil"
+	"crdx.org/lighthouse/pkg/util/runtimeutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
 	"github.com/samber/lo"
 )
@@ -37,9 +40,15 @@ func TestMain(m *testing.M) {
 
 	timeutil.Init(&timeutil.Config{Timezone: func() string { return "Europe/London" }})
 	mailutil.Init(&mailutil.Config{Enabled: func() bool { return false }})
+	InitFontAwesome()
 
 	exitCode := m.Run()
 
 	_, _ = db.Exec("DROP DATABASE " + dbConfig.DataSource.DBName)
 	os.Exit(exitCode)
+}
+
+func InitFontAwesome() {
+	root := os.DirFS(runtimeutil.FindProjectRoot())
+	fontawesome.Init(lo.Must(fs.ReadFile(root, "cmd/lighthouse/assets/fontawesome/css/all.min.css")))
 }

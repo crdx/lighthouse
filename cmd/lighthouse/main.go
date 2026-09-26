@@ -18,6 +18,7 @@ import (
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/db/repo/settingR"
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/fontawesome"
 	"crdx.org/lighthouse/pkg/logger"
 	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/pkg/util/mailutil"
@@ -102,6 +103,8 @@ func initState() *db.Config {
 }
 
 func initPackages() {
+	fontawesome.Init(lo.Must(assets.ReadFile("assets/fontawesome/css/all.min.css")))
+
 	timeutil.Init(&timeutil.Config{
 		Timezone: settingR.Timezone,
 	})

@@ -103,34 +103,110 @@ document.addEventListener('alpine:init', function() {
     })
 
     Alpine.data('iconSearch', function() {
+        const SEARCH_DELAY = 200
+        const PLACEHOLDER_CLASS = 'fa-solid fa-question'
+        const STYLES = ['duotone', 'solid', 'brands']
+
+        let controller = null
+        let timer = null
+        let isStale = false
+        let pickWhenReady = false
+
         return {
             icon: null,
             isOpen: false,
-            results: [],
+            isLoading: false,
+            results: {},
             // -1 means the search box is selected rather than a dropdown item.
             selectedIndex: -1,
 
             iconClass() {
-                if (this.icon) {
-                    let [style, name] = this.icon.split(':', 2)
-                    if (style && name) {
-                        return this.iconToClass(style, name)
-                    }
+                return this.hasIcon() ? this.iconToClass(...this.icon.split(':', 2)) : PLACEHOLDER_CLASS
+            },
+
+            hasIcon() {
+                const [style, name] = (this.icon || '').split(':', 2)
+                if (!STYLES.includes(style) || !name) {
+                    return false
                 }
+
+                const probe = this.$refs.probe
+                probe.className = `icon-probe ${this.iconToClass(style, name)}`
+                return getComputedStyle(probe, '::before').content != 'none'
             },
 
             iconToClass(style, name) {
                 return `fa-${style} fa-${name}`
             },
 
+            searchTerm() {
+                return (this.icon || '').split(':').pop()
+            },
+
             async search() {
+                this.cancelQueuedSearch()
+                this.abortSearch()
                 this.selectedIndex = -1
 
-                if (this.icon) {
-                    this.results = (await (await fetch('/api/icon/search?q=' + this.icon)).json())
+                if (!this.icon) {
+                    isStale = false
+                    pickWhenReady = false
+                    this.results = {}
+                    this.isOpen = false
+                    return
                 }
 
-                this.isOpen = !!this.icon
+                const query = this.icon
+                const current = new AbortController()
+                controller = current
+                this.isLoading = true
+
+                try {
+                    const url = '/api/icon/search?q=' + encodeURIComponent(query)
+                    const response = await fetch(url, { signal: current.signal })
+                    this.results = response.ok ? await response.json() : { failed: true }
+                } catch (error) {
+                    if (error.name == 'AbortError') {
+                        return
+                    }
+                    this.results = { failed: true }
+                } finally {
+                    if (controller == current) {
+                        controller = null
+                        this.isLoading = false
+                    }
+                }
+
+                isStale = this.icon != query
+                this.isOpen = true
+
+                if (pickWhenReady && !isStale) {
+                    pickWhenReady = false
+                    const [first] = this.options()
+                    if (first) {
+                        this.setIcon(first)
+                    }
+                }
+            },
+
+            queueSearch() {
+                isStale = true
+                this.cancelQueuedSearch()
+                timer = setTimeout(() => {
+                    timer = null
+                    this.search()
+                }, SEARCH_DELAY)
+            },
+
+            cancelQueuedSearch() {
+                clearTimeout(timer)
+                timer = null
+            },
+
+            abortSearch() {
+                controller?.abort()
+                controller = null
+                this.isLoading = false
             },
 
             setIcon(icon) {
@@ -140,21 +216,20 @@ document.addEventListener('alpine:init', function() {
             },
 
             closeDropdown() {
+                this.cancelQueuedSearch()
+                isStale = false
+                pickWhenReady = false
+                this.abortSearch()
                 this.isOpen = false
+                this.selectedIndex = -1
+            },
+
+            options() {
+                return (this.isOpen && this.results.icons) || []
             },
 
             moveSelectionUp() {
-                if (this.selectedIndex == 0) {
-                    this.selectedIndex = -1
-                    this.$refs.input.focus()
-                    return
-                }
-
-                if (this.selectedIndex > -1) {
-                    this.selectedIndex--
-                }
-
-                this.dropdownItems()[this.selectedIndex].focus()
+                this.selectedIndex = Math.max(this.selectedIndex - 1, -1)
             },
 
             moveSelectionDown() {
@@ -163,15 +238,26 @@ document.addEventListener('alpine:init', function() {
                     return
                 }
 
-                if (this.selectedIndex < this.dropdownItems().length - 1) {
-                    this.selectedIndex++
-                }
-
-                this.dropdownItems()[this.selectedIndex].focus()
+                this.selectedIndex = Math.min(this.selectedIndex + 1, this.options().length - 1)
             },
 
-            dropdownItems() {
-                return this.$refs.content.querySelectorAll('a')
+            chooseSelection(event) {
+                if (isStale && this.icon) {
+                    event.preventDefault()
+                    pickWhenReady = true
+                    if (timer || !controller) {
+                        this.search()
+                    }
+                    return
+                }
+
+                const options = this.options()
+                if (options.length == 0) {
+                    return
+                }
+
+                event.preventDefault()
+                this.setIcon(options[Math.max(this.selectedIndex, 0)])
             },
         }
     })

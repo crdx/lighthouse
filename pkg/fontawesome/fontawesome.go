@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/imroc/req/v3"
-	"github.com/samber/lo"
 )
 
 type results struct {
@@ -40,18 +39,28 @@ const (
 
 var availableStyles = []string{styleDuotone, styleSolid, styleBrands}
 
-const maxResults = 10
+const (
+	maxResults    = 10
+	upstreamLimit = 50
+)
+
+var apiURL = "https://api.fontawesome.com"
 
 // Search searches the FontAwesome API for an icon matching the query.
-func Search(query string) ([]map[string]string, bool) {
+func Search(query string) ([]map[string]string, bool, error) {
 	var wantedStyle string
 
 	if strings.Contains(query, ":") {
 		wantedStyle, query, _ = strings.Cut(query, ":")
 
 		if !slices.Contains(availableStyles, wantedStyle) {
-			return []map[string]string{}, false
+			return []map[string]string{}, false, nil
 		}
+	}
+
+	found, err := search(query)
+	if err != nil {
+		return nil, false, err
 	}
 
 	want := func(style string) bool {
@@ -60,7 +69,7 @@ func Search(query string) ([]map[string]string, bool) {
 
 	icons := []map[string]string{}
 
-	for _, icon := range search(query) {
+	for _, icon := range found {
 		add := func(style string) {
 			icons = append(icons, map[string]string{
 				"style": style,
@@ -85,15 +94,15 @@ func Search(query string) ([]map[string]string, bool) {
 	}
 
 	if len(icons) > maxResults {
-		return icons[:maxResults], true
+		return icons[:maxResults], true, nil
 	}
 
-	return icons, false
+	return icons, len(found) == upstreamLimit, nil
 }
 
-func search(s string) []icon {
+func search(s string) ([]icon, error) {
 	if s == "" {
-		return []icon{}
+		return []icon{}, nil
 	}
 
 	q := `
@@ -115,14 +124,24 @@ func search(s string) []icon {
 		}
 	`
 
-	payload := fmt.Sprintf(q, strconv.Quote(s), maxResults)
-	jsonBytes := lo.Must(json.Marshal(map[string]string{"query": payload}))
-	response := lo.Must(req.R().SetBodyJsonBytes(jsonBytes).Post("https://api.fontawesome.com"))
+	payload := fmt.Sprintf(q, strconv.Quote(s), upstreamLimit)
+	response, err := req.R().
+		SetBodyJsonMarshal(map[string]string{"query": payload}).
+		Post(apiURL)
+	if err != nil {
+		return nil, fmt.Errorf("fontawesome request: %w", err)
+	}
+
+	if !response.IsSuccessState() {
+		return nil, fmt.Errorf("fontawesome request: unexpected status %d", response.StatusCode)
+	}
 
 	var results results
-	lo.Must0(json.Unmarshal(response.Bytes(), &results))
+	if err := json.Unmarshal(response.Bytes(), &results); err != nil {
+		return nil, fmt.Errorf("fontawesome response: %w", err)
+	}
 
-	return results.Data.Search
+	return results.Data.Search, nil
 }
 
 func isSolid(style familyStyle) bool {

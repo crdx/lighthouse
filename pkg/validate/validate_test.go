@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"crdx.org/lighthouse/cmd/lighthouse/tests/helpers"
 	"crdx.org/lighthouse/pkg/validate"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -335,14 +336,18 @@ func TestIconValidator(t *testing.T) {
 		Field1 string `validate:"icon"`
 	}
 
+	helpers.InitFontAwesome()
+
 	testCases := []struct {
 		input     string
 		expected  string
 		expectErr bool
 	}{
-		{"duotone:foo", "", false},
-		{"solid:foo", "", false},
-		{"brands:foo", "", false},
+		{"duotone:pot-food", "", false},
+		{"solid:house", "", false},
+		{"brands:github", "", false},
+		{"duotone:pot-foodaaa", "must be a valid icon", true},
+		{"duotone:", "must be a valid icon", true},
 		{"foo:bar", "must be a valid icon", true},
 		{"foo", "must be a valid icon", true},
 		{"bar:foo", "must be a valid icon", true},

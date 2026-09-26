@@ -1,56 +1,77 @@
 <div class="dropdown dropdown-icon-search"
      x-data="iconSearch"
-     @click.outside="closeDropdown"
+     x-id="['icon-listbox', 'icon-option']"
      @keyup.escape.window="closeDropdown"
-     @keydown.down.throttle.25ms.prevent="moveSelectionDown"
-     @keydown.tab.throttle.25ms.prevent="moveSelectionDown"
-     @keydown.up.throttle.25ms.prevent="moveSelectionUp"
-     @keydown.shift.tab.throttle.25ms.prevent="moveSelectionUp"
      :class="{ 'is-active': isOpen }">
+
+    <i class="icon-probe" x-ref="probe" aria-hidden="true"></i>
 
     <div class="dropdown-trigger">
         <div class="field">
-            <div class="control is-expanded has-icons-left">
-                <span class="icon is-small is-left icon--focus">
+            <div class="control is-expanded has-icons-left" :class="{ 'is-loading': isLoading }">
+                <span class="icon is-small is-left icon--focus" :class="{ 'icon--placeholder': !hasIcon() }">
                     <i :class="iconClass()"></i>
                 </span>
                 <input class="input"
                        autocomplete="off"
                        spellcheck="false"
                        type="text"
+                       role="combobox"
+                       aria-autocomplete="list"
+                       :aria-expanded="isOpen"
+                       :aria-controls="$id('icon-listbox')"
+                       :aria-activedescendant="selectedIndex >= 0 ? $id('icon-option', selectedIndex) : null"
                        x-ref="input"
                        name="{{ .fields.Icon.Name }}"
                        x-model.fill="icon"
-                       @input.debounce.200ms="search"
+                       @input="queueSearch"
+                       @keydown.down.prevent="moveSelectionDown"
+                       @keydown.up.prevent="moveSelectionUp"
+                       @keydown.enter="chooseSelection"
+                       @blur="closeDropdown"
                        value="{{ if .err }}{{ .fields.Icon.Value }}{{ else }}{{ .device.Icon }}{{ end }}">
             </div>
         </div>
     </div>
 
-    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-        <div class="dropdown-content" x-ref="content">
-            <template x-for="i in results.icons">
-                <a href="#" class="dropdown-item" @click.prevent="setIcon(i)" :title="`${i.style}:${i.name}`">
-                    <div class="level is-mobile">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <span class="icon dropdown-icon is-medium">
-                                    <i :class="iconToClass(i.style, i.name)"></i>
-                                </span>
-                                <span x-text="i.label"></span>
+    <div class="dropdown-menu">
+        <div class="dropdown-content" @mousedown.prevent>
+            <div role="listbox" :id="$id('icon-listbox')">
+                <template x-for="(i, index) in results.icons" :key="`${i.style}:${i.name}`">
+                    <a href="#"
+                       class="dropdown-item"
+                       tabindex="-1"
+                       role="option"
+                       :id="$id('icon-option', index)"
+                       :aria-selected="index == selectedIndex"
+                       :class="{ 'is-highlighted': index == selectedIndex }"
+                       :title="`${i.style}:${i.name}`"
+                       @mouseenter="selectedIndex = index"
+                       @click.prevent="setIcon(i)">
+                        <div class="level is-mobile">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <span class="icon dropdown-icon is-medium">
+                                        <i :class="iconToClass(i.style, i.name)"></i>
+                                    </span>
+                                    <span x-text="i.label"></span>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item has-text-text-on-scheme">
+                                    <span x-text="i.style"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="level-right">
-                            <div class="level-item has-text-text-on-scheme">
-                                <span x-text="i.style"></span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </template>
+                    </a>
+                </template>
+            </div>
 
             <template x-if="results.hasMore">
-                <a :href="'https://fontawesome.com/search?q=' + icon" target="_blank" class="dropdown-item">
+                <a :href="'https://fontawesome.com/search?q=' + encodeURIComponent(searchTerm())"
+                   target="_blank"
+                   tabindex="-1"
+                   class="dropdown-item">
                     View all...
                 </a>
             </template>
@@ -58,6 +79,12 @@
             <template x-if="results.icons && results.icons.length == 0">
                 <p class="dropdown-item">
                     No results.
+                </p>
+            </template>
+
+            <template x-if="results.failed">
+                <p class="dropdown-item has-text-danger">
+                    Search failed.
                 </p>
             </template>
         </div>

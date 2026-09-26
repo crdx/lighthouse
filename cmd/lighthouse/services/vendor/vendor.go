@@ -66,7 +66,12 @@ retry:
 
 	res, err := getVendor(adapter.MACAddress)
 
-	if err != nil || res.StatusCode == http.StatusNotFound {
+	if err != nil {
+		log.Error("request failed", "error", err)
+		panic("request failed")
+	}
+
+	if res.StatusCode == http.StatusNotFound {
 		update("")
 		return nil
 	}
