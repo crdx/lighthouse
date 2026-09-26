@@ -76,6 +76,8 @@ func TestFormatDuration(t *testing.T) {
 	}{
 		{0, false, 0, "now", "ago"},
 		{0, true, 0, "just now", "ago"},
+		{-90 * time.Second, false, 0, "now", "ago"},
+		{-90 * time.Second, true, 0, "just now", "ago"},
 		{60 * time.Second, false, 0, "1m ago", "ago"},
 		{60 * time.Second, true, 0, "1 min ago", "ago"},
 		{3600 * time.Second, false, 0, "1h ago", "ago"},

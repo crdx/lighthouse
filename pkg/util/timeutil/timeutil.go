@@ -35,7 +35,7 @@ func ToLocal(t time.Time) time.Time {
 func FormatDuration(duration time.Duration, long bool, precision int, suffix string) string {
 	seconds := int(duration.Seconds())
 
-	if seconds == 0 {
+	if seconds <= 0 {
 		if long {
 			return "just now"
 		} else {
