@@ -19,8 +19,8 @@ jobs:
       # lints is the generated code they have.
       - name: Install code generators
         run: |
-          go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.30.0
-          go install crdx.org/starfield/cmd/starfield@v1.11.1
+          go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1
+          go install crdx.org/starfield/cmd/starfield@v1.12.0
       - run: go generate
       - uses: golangci/golangci-lint-action@1481404843c368bc19ca9406f87d6e0fc97bdcfd # v7.0.0
         with:
