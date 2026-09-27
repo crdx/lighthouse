@@ -121,6 +121,10 @@ th {
     white-space: nowrap;
 }
 
+.table th > a {
+    color: inherit;
+}
+
 code {
     color: var(--bulma-text-strong);
 }

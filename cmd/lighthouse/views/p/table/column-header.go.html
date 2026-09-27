@@ -5,7 +5,7 @@
         .    tpl.ColumnState
 */}}
 
-<a class="has-text-text-on-scheme" href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}{{ if .CurrentFilter }}&f={{ .CurrentFilter }}{{ end }}">
+<a href="?sc={{ .SortColumn }}&sd={{ .SortDirection }}{{ if .CurrentFilter }}&f={{ .CurrentFilter }}{{ end }}">
     {{ .Label }}
     {{ if and (eq .CurrentSortColumn .SortColumn) (not .Minimal) }}
         <span class="icon">
