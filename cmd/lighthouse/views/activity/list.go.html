@@ -15,11 +15,11 @@
                 <table class="table is-fullwidth">
                     <thead>
                         <tr>
-                            <th>{{ .typeColumnLabel }}</th>
-                            <th>Name</th>
-                            <th>State</th>
-                            <th>When</th>
-                            <th class="is-hidden-mobile">Date</th>
+                            <th>{{ template "p/table/column-header" .columns.type }}</th>
+                            <th>{{ template "p/table/column-header" .columns.name }}</th>
+                            <th>{{ template "p/table/column-header" .columns.state }}</th>
+                            <th>{{ template "p/table/column-header" .columns.when }}</th>
+                            <th class="is-hidden-mobile">{{ template "p/table/column-header" .columns.date }}</th>
                         </tr>
                     </thead>
                     <tbody>

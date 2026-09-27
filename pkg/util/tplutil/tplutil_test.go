@@ -14,14 +14,14 @@ func TestAddSortMetadata(t *testing.T) {
 	testCases := []struct {
 		currentSortColumn    string
 		currentSortDirection string
-		currentFilter        string
+		queryParams          map[string]string
 		input                map[string]tplutil.ColumnConfig
 		expected             map[string]tplutil.ColumnState
 	}{
 		{
 			"column1",
 			"asc",
-			"",
+			nil,
 			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
@@ -56,7 +56,7 @@ func TestAddSortMetadata(t *testing.T) {
 		{
 			"column2",
 			"desc",
-			"f",
+			map[string]string{"f": "online"},
 			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
@@ -74,7 +74,7 @@ func TestAddSortMetadata(t *testing.T) {
 					Label:                "Column 1",
 					CurrentSortColumn:    "column2",
 					CurrentSortDirection: "desc",
-					CurrentFilter:        "f",
+					QueryParams:          map[string]string{"f": "online"},
 					SortColumn:           "column1",
 					SortDirection:        "asc",
 					Minimal:              true,
@@ -83,7 +83,7 @@ func TestAddSortMetadata(t *testing.T) {
 					Label:                "Column 2",
 					CurrentSortColumn:    "column2",
 					CurrentSortDirection: "desc",
-					CurrentFilter:        "f",
+					QueryParams:          map[string]string{"f": "online"},
 					SortColumn:           "column2",
 					SortDirection:        "asc",
 					Minimal:              true,
@@ -93,7 +93,7 @@ func TestAddSortMetadata(t *testing.T) {
 		{
 			"",
 			"",
-			"",
+			nil,
 			map[string]tplutil.ColumnConfig{
 				"column1": {
 					Label:                "Column 1",
@@ -121,7 +121,7 @@ func TestAddSortMetadata(t *testing.T) {
 			actual := tplutil.AddMetadata(
 				testCase.currentSortColumn,
 				testCase.currentSortDirection,
-				testCase.currentFilter,
+				testCase.queryParams,
 				testCase.input,
 			)
 			assert.Equal(t, testCase.expected, actual)

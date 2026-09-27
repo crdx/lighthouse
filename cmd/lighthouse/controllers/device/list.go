@@ -42,7 +42,12 @@ func List(c fiber.Ctx) error {
 		"currentFilter": currentFilter,
 		"devices":       deviceR.GetList(currentSortColumn, currentSortDirection, currentFilter),
 		"counts":        deviceR.GetListCounts(),
-		"columns":       tplutil.AddMetadata(currentSortColumn, currentSortDirection, currentFilter, columns),
-		"globals":       globals.Get(c),
+		"columns": tplutil.AddMetadata(
+			currentSortColumn,
+			currentSortDirection,
+			map[string]string{"f": currentFilter},
+			columns,
+		),
+		"globals": globals.Get(c),
 	})
 }

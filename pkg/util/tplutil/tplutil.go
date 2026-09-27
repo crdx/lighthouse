@@ -8,9 +8,9 @@ type ColumnConfig struct {
 
 type ColumnState struct {
 	Label                any
-	CurrentFilter        string
 	CurrentSortColumn    string
 	CurrentSortDirection string
+	QueryParams          map[string]string
 	SortColumn           string
 	SortDirection        string
 	Minimal              bool
@@ -18,7 +18,7 @@ type ColumnState struct {
 
 // AddMetadata takes information about table columns and the current sort column and direction
 // and adds metadata for the template to use to render the sortable table headings.
-func AddMetadata(currentSortColumn string, currentSortDirection string, currentFilter string, input map[string]ColumnConfig) map[string]ColumnState {
+func AddMetadata(currentSortColumn string, currentSortDirection string, queryParams map[string]string, input map[string]ColumnConfig) map[string]ColumnState {
 	output := map[string]ColumnState{}
 
 	for slug, column := range input {
@@ -36,7 +36,7 @@ func AddMetadata(currentSortColumn string, currentSortDirection string, currentF
 			Label:                column.Label,
 			CurrentSortColumn:    currentSortColumn,
 			CurrentSortDirection: currentSortDirection,
-			CurrentFilter:        currentFilter,
+			QueryParams:          queryParams,
 			SortColumn:           slug,
 			SortDirection:        sortDirection,
 			Minimal:              column.Minimal,
