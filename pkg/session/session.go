@@ -3,10 +3,12 @@ package session
 import (
 	"time"
 
+	"crdx.org/lighthouse/pkg/mysql"
+
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/extractors"
 	"github.com/gofiber/fiber/v3/middleware/session"
-	"github.com/gofiber/storage/mysql/v2"
+	storage "github.com/gofiber/storage/mysql/v2"
 	"github.com/samber/lo"
 )
 
@@ -17,12 +19,13 @@ type Config struct {
 	DSN          string
 }
 
-// New initialises the session and returns a middleware handler.
+// New initialises the session and returns a middleware handler. The store shares the project-wide
+// pool policy, and mysql.CloseAll closes its pool on the way out.
 func New(config *Config) fiber.Handler {
 	return session.New(session.Config{
-		Storage: mysql.New(mysql.Config{
-			ConnectionURI: config.DSN,
-			Table:         config.Table,
+		Storage: storage.New(storage.Config{
+			Db:    lo.Must(mysql.Open(config.DSN)),
+			Table: config.Table,
 		}),
 		Extractor:      extractors.FromCookie("session"),
 		CookieSecure:   config.CookieSecure,

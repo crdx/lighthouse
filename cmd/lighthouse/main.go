@@ -3,6 +3,9 @@ package main
 import (
 	"embed"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"crdx.org/duckopt/v2"
@@ -20,6 +23,7 @@ import (
 	"crdx.org/lighthouse/pkg/env"
 	"crdx.org/lighthouse/pkg/fontawesome"
 	"crdx.org/lighthouse/pkg/logger"
+	"crdx.org/lighthouse/pkg/mysql"
 	"crdx.org/lighthouse/pkg/util"
 	"crdx.org/lighthouse/pkg/util/mailutil"
 	"crdx.org/lighthouse/pkg/util/timeutil"
@@ -79,7 +83,22 @@ func main() {
 		startServices()
 	}
 
-	panic(app.Listen(env.Host() + ":" + env.Port()))
+	serve(app, env.Host()+":"+env.Port())
+}
+
+func serve(app *fiber.App, address string) {
+	go func() {
+		if err := app.Listen(address); err != nil {
+			panic(err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+
+	_ = app.Shutdown()
+	mysql.CloseAll()
 }
 
 func initEnvironment(envFile string) {

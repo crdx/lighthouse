@@ -4,19 +4,18 @@ import (
 	"database/sql"
 	"strings"
 
-	_ "github.com/go-sql-driver/mysql"
-
 	"crdx.org/lighthouse/cmd/lighthouse/tests/helpers/seeder"
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/db/schema"
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/mysql"
 	"github.com/google/uuid"
 )
 
 func GetDbConfig() *db.Config {
 	return &db.Config{
 		Open: func(dsn *db.DSN) (*sql.DB, error) {
-			return sql.Open("mysql", dsn.Format())
+			return mysql.Open(dsn.Format())
 		},
 		DataSource: db.NewDSN().Apply(func(dsn *db.DSN) *db.DSN {
 			dsn.DBName = env.DatabaseName()
@@ -36,7 +35,7 @@ func GetDbConfig() *db.Config {
 func GetTestDbConfig() *db.Config {
 	return &db.Config{
 		Open: func(dsn *db.DSN) (*sql.DB, error) {
-			return sql.Open("mysql", dsn.Format())
+			return mysql.Open(dsn.Format())
 		},
 		DataSource: db.NewDSN().Apply(func(dsn *db.DSN) *db.DSN {
 			dsn.DBName = env.DatabaseName() + "_test_" + strings.ReplaceAll(uuid.NewString(), "-", "")
