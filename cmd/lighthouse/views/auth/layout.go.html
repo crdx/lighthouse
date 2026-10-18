@@ -6,13 +6,13 @@
 
     {{ template "layout/p/theme" . }}
 
-    <link rel="icon" href="/assets/favicon/light.svg" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="/assets/favicon/dark.svg" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="{{ asset "favicon/light.svg" }}" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="{{ asset "favicon/dark.svg" }}" media="(prefers-color-scheme: dark)">
 
-    <link rel="stylesheet" href="/assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/assets/fonts.css">
-    <link rel="stylesheet" href="/assets/bulma.min.css">
-    <link rel="stylesheet" href="/assets/main.css">
+    <link rel="stylesheet" href="{{ asset "fontawesome/css/all.min.css" }}">
+    <link rel="stylesheet" href="{{ asset "fonts.css" }}">
+    <link rel="stylesheet" href="{{ asset "bulma.min.css" }}">
+    <link rel="stylesheet" href="{{ asset "main.css" }}">
 
     <title>lighthouse</title>
     <style type="text/css">

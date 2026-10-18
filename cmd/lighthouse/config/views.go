@@ -46,6 +46,8 @@ func GetViewFuncMap() template.FuncMap {
 			return ""
 		},
 
+		"asset": AssetURL,
+
 		"renderMarkdown":   func(s string) template.HTML { return template.HTML(stringutil.RenderMarkdown(s)) }, //nolint:gosec // Markdown is intentionally rendered as HTML.
 		"enableLiveReload": env.LiveReload,
 		"liveReloadBootID": BootID,
