@@ -2,10 +2,13 @@ package mysql
 
 import (
 	"database/sql"
+	"fmt"
+	"strings"
 	"sync"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
+	"crdx.org/lighthouse/pkg/logger"
+	"github.com/go-sql-driver/mysql"
 )
 
 const (
@@ -18,9 +21,21 @@ const (
 var (
 	poolsMutex sync.Mutex
 	pools      []*sql.DB
+
+	driverLoggerOnce sync.Once
 )
 
+type driverLogger struct{}
+
+func (self driverLogger) Print(values ...any) {
+	logger.Get().Warn("mysql driver", "message", strings.TrimSpace(fmt.Sprint(values...)))
+}
+
 func Open(dataSourceName string) (*sql.DB, error) {
+	driverLoggerOnce.Do(func() {
+		_ = mysql.SetLogger(driverLogger{})
+	})
+
 	pool, err := sql.Open("mysql", dataSourceName)
 	if err != nil {
 		return nil, err
