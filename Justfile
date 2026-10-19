@@ -60,7 +60,7 @@ gencov flag package: generate
     fi
     rm "$FILE"
 
-lint: && lint-gopls
+lint: generate && lint-gopls
     unbuffer go vet ./... | gostack
     unbuffer golangci-lint run --color never | gostack
 
