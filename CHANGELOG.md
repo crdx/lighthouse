@@ -1,5 +1,7 @@
 # Changelog
 
+## [Next]
+
 ## [1.4.0] - 2026-10-18
 
 ### Changes
