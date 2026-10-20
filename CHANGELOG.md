@@ -2,6 +2,8 @@
 
 ## [Next]
 
+## [1.4.1] — 2026-10-21
+
 - Publish Linux amd64 and arm64 releases
 
 ## [1.4.0] — 2026-10-18
