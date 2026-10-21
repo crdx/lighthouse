@@ -38,7 +38,7 @@ jobs:
             - name: Install code generators
               run: |
                   go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1
-                  go install crdx.org/starfield/cmd/starfield@v1.13.0
+                  go install crdx.org/starfield/cmd/starfield@v1.14.0
 
             - name: Generate database code
               run: go generate
