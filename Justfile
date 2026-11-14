@@ -40,7 +40,7 @@ fmt:
     go fmt ./...
 
 test package='./...': generate
-    LOG_TYPE=none unbuffer go test -cover {{ package }} | gostack --test
+    LOG_TYPE=none go test -cover {{ package }}
 
 cov package='./...': (gencov 'func' package)
 cov-html package='./...': (gencov 'html' package)
@@ -51,26 +51,26 @@ gencov flag package: generate
     set -euo pipefail
     FILE=$(mktemp)
     export LOG_TYPE=none
-    unbuffer go test {{ package }} -cover -coverprofile="$FILE" | gostack --test
+    go test {{ package }} -cover -coverprofile="$FILE"
     sed -i '/\.gen\.go/d' "$FILE"
     if [ "{{ flag }}" = func ]; then
-        unbuffer go tool cover -{{ flag }}="$FILE" | gostack --test
+        go tool cover -{{ flag }}="$FILE"
     else
         go tool cover -{{ flag }}="$FILE"
     fi
     rm "$FILE"
 
 lint: generate && lint-gopls
-    unbuffer go vet ./... | gostack
-    unbuffer golangci-lint run --color never | gostack
+    go vet ./...
+    golangci-lint run --color never
 
 fix:
-    unbuffer golangci-lint run --color never --fix | gostack
+    golangci-lint run --color never --fix
 
 check: test fmt lint
 
 build: generate
-    unbuffer go build -o {{ BIN_PATH }} ./cmd/{{ NAME }} | gostack
+    go build -o {{ BIN_PATH }} ./cmd/{{ NAME }}
 
 buildc: generate
     docker-compose build
@@ -98,7 +98,7 @@ rebuild-autocap:
 [private]
 serve: build
     {{ AUTOCAP_BIN_PATH }} {{ BIN_PATH }}
-    unbuffer {{ BIN_PATH }} | gostack
+    {{ BIN_PATH }}
 
 [private]
 generate:
