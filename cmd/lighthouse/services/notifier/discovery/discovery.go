@@ -38,6 +38,10 @@ func Notifications() *db.Notification {
 		}
 	}()
 
+	if len(discoveries) == 0 {
+		return nil
+	}
+
 	subject := getSubject(discoveries)
 	body := getBody(discoveries)
 

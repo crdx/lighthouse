@@ -50,6 +50,10 @@ func Notifications() *db.Notification {
 		}
 	}()
 
+	if len(trespassers) == 0 {
+		return nil
+	}
+
 	subject := getSubject(trespassers)
 	body := getBody(trespassers)
 
