@@ -18,7 +18,7 @@ func InitAssets(router fiber.Router, assets fs.FS) {
 	assetsVersion = digestAssets(assets)
 	router.Use(assetsPrefix, revalidateAssets)
 	router.Use(assetsPrefix, etag.New(etag.Config{Weak: true}))
-	router.Use(static.New("/assets", static.Config{FS: assets}))
+	router.Use(assetsPrefix, static.New("assets", static.Config{FS: assets}))
 }
 
 var (
