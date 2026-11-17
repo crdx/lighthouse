@@ -29,11 +29,11 @@ func Get() *slog.Logger {
 
 	switch env.LogType() {
 	case env.LogTypeAll:
-		logger = slog.New(slog.NewMultiHandler(getDiskHandler(), getStderrHandler()))
+		logger = slog.New(slog.NewMultiHandler(getDiskHandler(), getStderrHandler(slog.LevelInfo)))
 	case env.LogTypeDisk:
-		logger = slog.New(getDiskHandler())
+		logger = slog.New(slog.NewMultiHandler(getDiskHandler(), getStderrHandler(slog.LevelWarn)))
 	case env.LogTypeStderr:
-		logger = slog.New(getStderrHandler())
+		logger = slog.New(getStderrHandler(slog.LevelInfo))
 	case env.LogTypeNone:
 		logger = slog.New(slog.DiscardHandler)
 	}
@@ -54,8 +54,9 @@ func getDiskHandler() slog.Handler {
 	}, nil)
 }
 
-func getStderrHandler() slog.Handler {
+func getStderrHandler(level slog.Leveler) slog.Handler {
 	return tint.NewHandler(os.Stderr, &tint.Options{
+		Level:      level,
 		TimeFormat: "15:04:05 |", // Closer in style to fiber's debug output.
 	})
 }
