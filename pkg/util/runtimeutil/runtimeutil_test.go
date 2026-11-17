@@ -21,14 +21,14 @@ func TestPrintStackTrace(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(fmt.Sprintf("%d", testCase.input), func(t *testing.T) {
-			originalStdout := os.Stdout
+			originalStderr := os.Stderr
 			r, w, _ := os.Pipe()
-			os.Stdout = w
+			os.Stderr = w
 
 			runtimeutil.PrintStackTrace(testCase.input)
 
 			_ = w.Close()
-			os.Stdout = originalStdout
+			os.Stderr = originalStderr
 
 			var buf bytes.Buffer
 			_, _ = io.Copy(&buf, r)

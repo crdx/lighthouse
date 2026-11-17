@@ -29,8 +29,6 @@ func FindProjectRoot() string {
 	}
 }
 
-// PrintStackTrace prints out the current stack trace, stripping out stripDepth levels from the
-// top.
 func PrintStackTrace(stripDepth int) {
 	b := make([]byte, 1024*10)
 	length := runtime.Stack(b, false)
@@ -38,6 +36,6 @@ func PrintStackTrace(stripDepth int) {
 	lines := strings.Split(s, "\n")
 	header := lines[0]
 	lines = lines[1+stripDepth*2:]
-	fmt.Println(header)
-	fmt.Println(strings.Join(lines, "\n"))
+	fmt.Fprintln(os.Stderr, header)
+	fmt.Fprintln(os.Stderr, strings.Join(lines, "\n"))
 }
