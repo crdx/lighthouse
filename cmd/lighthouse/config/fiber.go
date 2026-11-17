@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"crdx.org/lighthouse/pkg/env"
+	"crdx.org/lighthouse/pkg/logger"
 	"crdx.org/lighthouse/pkg/util/runtimeutil"
 	"crdx.org/lighthouse/pkg/util/stringutil"
 	"github.com/gofiber/fiber/v3"
@@ -37,11 +38,14 @@ func GetFiberConfig(views fs.FS, subdir string) fiber.Config {
 
 	if env.Production() {
 		config.ErrorHandler = func(c fiber.Ctx, err error) error {
-			if e := new(fiber.Error); errors.As(err, &e) {
-				return c.SendStatus(e.Code)
-			} else {
-				return c.SendStatus(fiber.StatusInternalServerError)
+			code := fiber.StatusInternalServerError
+			if fiberError, ok := errors.AsType[*fiber.Error](err); ok {
+				code = fiberError.Code
 			}
+			if code >= fiber.StatusInternalServerError {
+				logger.Get().Error("request failed", "status", code, "method", c.Method(), "path", c.Path(), "err", err)
+			}
+			return c.SendStatus(code)
 		}
 	}
 
