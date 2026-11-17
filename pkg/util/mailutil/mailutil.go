@@ -38,6 +38,7 @@ func Send(subject string, body string) error {
 	}
 
 	if pkgConfig.Enabled == nil || !pkgConfig.Enabled() {
+		logger.With("subject", subject).Warn("mail is disabled, so this mail is not sent")
 		return nil
 	}
 
@@ -47,8 +48,12 @@ func Send(subject string, body string) error {
 		return nil
 	}
 
-	defer logger.With("subject", subject).Info("mail sent to configured smtp server")
-	return sendFunc(smtp.SendMail, subject, body)
+	if err := sendFunc(smtp.SendMail, subject, body); err != nil {
+		return err
+	}
+
+	logger.With("subject", subject).Info("mail sent to configured smtp server")
+	return nil
 }
 
 func sendFunc(send Func, subject string, body string) error {

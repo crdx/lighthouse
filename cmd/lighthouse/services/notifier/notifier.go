@@ -11,7 +11,6 @@ import (
 	"crdx.org/lighthouse/cmd/lighthouse/services/notifier/state"
 	"crdx.org/lighthouse/db"
 	"crdx.org/lighthouse/pkg/util/mailutil"
-	"github.com/samber/lo"
 )
 
 type Notifier struct {
@@ -27,20 +26,22 @@ func (self *Notifier) Init(args *services.Args) error {
 	return nil
 }
 
-func (*Notifier) Run() error {
-	add(discovery.Notifications())
-	add(limit.Notifications())
-	add(service.Notifications())
-	add(state.Notifications())
+func (self *Notifier) Run() error {
+	self.add(discovery.Notifications())
+	self.add(limit.Notifications())
+	self.add(service.Notifications())
+	self.add(state.Notifications())
 
 	return nil
 }
 
-func add(notification *db.Notification) {
+func (self *Notifier) add(notification *db.Notification) {
 	if notification == nil {
 		return
 	}
 
 	db.CreateNotification(notification)
-	lo.Must0(mailutil.Send(notification.Subject, notification.Body))
+	if err := mailutil.Send(notification.Subject, notification.Body); err != nil {
+		self.logger.Error("unable to send notification", "subject", notification.Subject, "err", err)
+	}
 }
