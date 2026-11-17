@@ -117,6 +117,7 @@ func Start(name string, config *Config) {
 			}
 
 			if !restarting {
+				restartInterval = config.InitialRestartInterval
 				time.Sleep(getRunInterval(config))
 			}
 		}
@@ -131,8 +132,8 @@ func getRunInterval(config *Config) time.Duration {
 	}
 }
 
-// ExponentialBackoff transforms a time.Duration to the next time.Duration using exponential
-// backoff.
+const maximumRestartInterval = time.Hour
+
 func ExponentialBackoff(d time.Duration) time.Duration {
-	return d * 2
+	return min(d*2, maximumRestartInterval)
 }
