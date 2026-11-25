@@ -1,6 +1,7 @@
 package settingR
 
 import (
+	"sync"
 	"time"
 
 	"crdx.org/lighthouse/db"
@@ -43,10 +44,17 @@ func Timezone() string         { return get("timezone") }
 
 func SourceMACAddresses() string { return get("source_mac_addresses") }
 
-var cache map[string]string
+// cacheMutex guards cache.
+var (
+	cacheMutex sync.Mutex
+	cache      map[string]string
+)
 
 // invalidate invalidates the settings cache.
 func invalidate() {
+	cacheMutex.Lock()
+	defer cacheMutex.Unlock()
+
 	cache = nil
 }
 
@@ -73,6 +81,9 @@ func Set(name string, value any) {
 
 // get returns a setting as a string.
 func get(name string) string {
+	cacheMutex.Lock()
+	defer cacheMutex.Unlock()
+
 	if cache == nil {
 		cache = Map()
 	}

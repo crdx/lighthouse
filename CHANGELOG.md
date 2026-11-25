@@ -2,6 +2,8 @@
 
 ## [Next]
 
+- Fix concurrent access to the settings cache
+
 ## [1.5.0] — 2026-11-25
 
 - Stop sending empty notifications
