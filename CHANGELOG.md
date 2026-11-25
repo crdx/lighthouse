@@ -2,6 +2,8 @@
 
 ## [Next]
 
+## [1.5.0] — 2026-11-25
+
 - Stop sending empty notifications
 
 ## [1.4.1] — 2026-10-21
