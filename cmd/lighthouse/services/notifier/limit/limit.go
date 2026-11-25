@@ -24,10 +24,10 @@ func (self *trespasser) String() string {
 	)
 }
 
-func Notifications() *db.Notification {
+func Notifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceLimitNotifications()
 	if len(notifications) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	var trespassers []*trespasser
@@ -44,14 +44,15 @@ func Notifications() *db.Notification {
 		}
 	}
 
-	defer func() {
+	markProcessed := func() {
 		for _, notification := range notifications {
 			notification.UpdateProcessed(true)
 		}
-	}()
+	}
 
 	if len(trespassers) == 0 {
-		return nil
+		markProcessed()
+		return nil, nil
 	}
 
 	subject := getSubject(trespassers)
@@ -60,7 +61,7 @@ func Notifications() *db.Notification {
 	return &db.Notification{
 		Subject: subject,
 		Body:    body,
-	}
+	}, markProcessed
 }
 
 func getSubject(trespassers []*trespasser) string {

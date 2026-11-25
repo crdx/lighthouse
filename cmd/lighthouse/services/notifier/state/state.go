@@ -39,10 +39,10 @@ func (self *transition) TimestampedString() string {
 	)
 }
 
-func Notifications() *db.Notification {
+func Notifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceStateNotifications()
 	if len(notifications) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	var transitions []*transition
@@ -59,20 +59,22 @@ func Notifications() *db.Notification {
 		}
 	}
 
-	defer func() {
+	markProcessed := func() {
 		for _, transition := range transitions {
 			transition.Notification.UpdateProcessed(true)
 		}
-	}()
+	}
 
 	if len(transitions) == 0 {
-		return nil
+		markProcessed()
+		return nil, nil
 	}
 
 	newTransitions := getNewTransitions(transitions)
 
 	if len(newTransitions) == 0 {
-		return nil
+		markProcessed()
+		return nil, nil
 	}
 
 	subject := getSubject(newTransitions)
@@ -81,7 +83,7 @@ func Notifications() *db.Notification {
 	return &db.Notification{
 		Subject: subject,
 		Body:    body,
-	}
+	}, markProcessed
 }
 
 func getNewTransitions(transitions []*transition) []*transition {

@@ -13,10 +13,10 @@ type discovery struct {
 	Device       *db.Device
 }
 
-func Notifications() *db.Notification {
+func Notifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceServiceNotifications()
 	if len(notifications) == 0 {
-		return nil
+		return nil, nil
 	}
 
 	var discoveries []*discovery
@@ -37,14 +37,15 @@ func Notifications() *db.Notification {
 		})
 	}
 
-	defer func() {
+	markProcessed := func() {
 		for _, notification := range notifications {
 			notification.UpdateProcessed(true)
 		}
-	}()
+	}
 
 	if len(discoveries) == 0 {
-		return nil
+		markProcessed()
+		return nil, nil
 	}
 
 	subject := getSubject(discoveries)
@@ -53,7 +54,7 @@ func Notifications() *db.Notification {
 	return &db.Notification{
 		Subject: subject,
 		Body:    body,
-	}
+	}, markProcessed
 }
 
 func getSubject(discoveries []*discovery) string {

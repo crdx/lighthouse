@@ -2,6 +2,7 @@
 
 ## [Next]
 
+- Retry notifications whose mail failed to send
 - Fix concurrent access to the settings cache
 
 ## [1.5.0] — 2026-11-25

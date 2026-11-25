@@ -35,13 +35,16 @@ func (self *Notifier) Run() error {
 	return nil
 }
 
-func (self *Notifier) add(notification *db.Notification) {
+func (self *Notifier) add(notification *db.Notification, markProcessed func()) {
 	if notification == nil {
 		return
 	}
 
-	db.CreateNotification(notification)
 	if err := mailutil.Send(notification.Subject, notification.Body); err != nil {
-		self.logger.Error("unable to send notification", "subject", notification.Subject, "err", err)
+		self.logger.Error("unable to send notification, will retry", "subject", notification.Subject, "err", err)
+		return
 	}
+
+	db.CreateNotification(notification)
+	markProcessed()
 }
