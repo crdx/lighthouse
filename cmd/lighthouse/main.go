@@ -65,7 +65,8 @@ func main() {
 
 	if env.LiveReload() {
 		app.Get("/hang", func(c fiber.Ctx) error {
-			select {}
+			<-c.RequestCtx().Done()
+			return nil
 		})
 
 		app.Get("/-/boot", func(c fiber.Ctx) error {
@@ -97,7 +98,7 @@ func serve(app *fiber.App, address string) {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 
-	_ = app.Shutdown()
+	_ = app.ShutdownWithTimeout(time.Second)
 	mysql.CloseAll()
 }
 
