@@ -24,61 +24,25 @@ func (self *trespasser) String() string {
 	)
 }
 
-func limitNotifications() (*db.Notification, func()) {
-	notifications := db.FindUnprocessedDeviceLimitNotifications()
-	if len(notifications) == 0 {
-		return nil, nil
-	}
-
-	var trespassers []*trespasser
-
-	for _, notification := range notifications {
-		if device, found := db.FindDevice(notification.DeviceID); !found {
-			notification.Delete()
-			continue
-		} else {
-			trespassers = append(trespassers, &trespasser{
-				Notification: notification,
-				Device:       device,
-			})
+// devicesOverLimit notifies about devices that stayed online past their limit.
+var devicesOverLimit = notificationKind[*db.DeviceLimitNotification, *trespasser]{
+	find: db.FindUnprocessedDeviceLimitNotifications,
+	resolve: func(notification *db.DeviceLimitNotification) (*trespasser, bool) {
+		device, found := db.FindDevice(notification.DeviceID)
+		return &trespasser{Notification: notification, Device: device}, found
+	},
+	subject: func(trespassers []*trespasser) string {
+		if len(trespassers) == 1 {
+			return fmt.Sprintf("%s is still online", trespassers[0].Device.DisplayName())
 		}
-	}
-
-	markProcessed := func() {
-		for _, notification := range notifications {
-			notification.UpdateProcessed(true)
-		}
-	}
-
-	if len(trespassers) == 0 {
-		markProcessed()
-		return nil, nil
-	}
-
-	subject := limitSubject(trespassers)
-	body := limitBody(trespassers)
-
-	return &db.Notification{
-		Subject: subject,
-		Body:    body,
-	}, markProcessed
-}
-
-func limitSubject(trespassers []*trespasser) string {
-	if len(trespassers) == 1 {
-		return fmt.Sprintf("%s is still online", trespassers[0].Device.DisplayName())
-	} else {
 		return fmt.Sprintf("%d devices are still online", len(trespassers))
-	}
-}
-
-func limitBody(trespassers []*trespasser) string {
-	var s strings.Builder
-
-	for _, trespasser := range trespassers {
-		s.WriteString(trespasser.String())
-		s.WriteString("\n")
-	}
-
-	return strings.TrimSpace(s.String())
+	},
+	body: func(trespassers []*trespasser, _ []*trespasser) string {
+		var s strings.Builder
+		for _, trespasser := range trespassers {
+			s.WriteString(trespasser.String())
+			s.WriteString("\n")
+		}
+		return strings.TrimSpace(s.String())
+	},
 }

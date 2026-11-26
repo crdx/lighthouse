@@ -8,67 +8,29 @@ import (
 )
 
 type newService struct {
-	Notification *db.DeviceServiceNotification
-	Service      *db.Service
-	Device       *db.Device
+	Service *db.Service
+	Device  *db.Device
 }
 
-func serviceNotifications() (*db.Notification, func()) {
-	notifications := db.FindUnprocessedDeviceServiceNotifications()
-	if len(notifications) == 0 {
-		return nil, nil
-	}
-
-	var discoveries []*newService
-
-	for _, notification := range notifications {
+// newServices notifies about services found on devices.
+var newServices = notificationKind[*db.DeviceServiceNotification, *newService]{
+	find: db.FindUnprocessedDeviceServiceNotifications,
+	resolve: func(notification *db.DeviceServiceNotification) (*newService, bool) {
 		device, foundDevice := db.FindDevice(notification.DeviceID)
 		service, foundService := db.FindService(notification.ServiceID.V)
-
-		if !foundDevice || !foundService {
-			notification.Delete()
-			continue
+		return &newService{Service: service, Device: device}, foundDevice && foundService
+	},
+	subject: func(services []*newService) string {
+		if len(services) == 1 {
+			return fmt.Sprintf("new service found on %s", services[0].Device.DisplayName())
 		}
-
-		discoveries = append(discoveries, &newService{
-			Notification: notification,
-			Device:       device,
-			Service:      service,
-		})
-	}
-
-	markProcessed := func() {
-		for _, notification := range notifications {
-			notification.UpdateProcessed(true)
+		return fmt.Sprintf("%d new services found", len(services))
+	},
+	body: func(services []*newService, _ []*newService) string {
+		var s strings.Builder
+		for _, service := range services {
+			fmt.Fprintf(&s, "%s\n", service.Service.Details())
 		}
-	}
-
-	if len(discoveries) == 0 {
-		markProcessed()
-		return nil, nil
-	}
-
-	subject := serviceSubject(discoveries)
-	body := serviceBody(discoveries)
-
-	return &db.Notification{
-		Subject: subject,
-		Body:    body,
-	}, markProcessed
-}
-
-func serviceSubject(discoveries []*newService) string {
-	if len(discoveries) == 1 {
-		return fmt.Sprintf("new service found on %s", discoveries[0].Device.DisplayName())
-	} else {
-		return fmt.Sprintf("%d new services found", len(discoveries))
-	}
-}
-
-func serviceBody(discoveries []*newService) string {
-	var s strings.Builder
-	for _, discovery := range discoveries {
-		fmt.Fprintf(&s, "%s\n", discovery.Service.Details())
-	}
-	return strings.TrimSpace(s.String())
+		return strings.TrimSpace(s.String())
+	},
 }

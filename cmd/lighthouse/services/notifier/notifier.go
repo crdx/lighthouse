@@ -9,6 +9,9 @@ import (
 	"crdx.org/lighthouse/pkg/util/mailutil"
 )
 
+// sources are the kinds of notification, in the order the notifier sends them.
+var sources = []source{discoveredDevices, devicesOverLimit, newServices, stateChanges}
+
 type Notifier struct {
 	logger *slog.Logger
 }
@@ -23,10 +26,9 @@ func (self *Notifier) Init(args *services.Args) error {
 }
 
 func (self *Notifier) Run() error {
-	self.add(discoveryNotifications())
-	self.add(limitNotifications())
-	self.add(serviceNotifications())
-	self.add(stateNotifications())
+	for _, source := range sources {
+		self.add(source.pending())
+	}
 
 	return nil
 }

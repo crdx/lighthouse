@@ -11,8 +11,6 @@ import (
 	"github.com/samber/lo"
 )
 
-type DeviceID = int64
-
 type transition struct {
 	Notification *db.DeviceStateNotification
 	Device       *db.Device
@@ -39,62 +37,27 @@ func (self *transition) TimestampedString() string {
 	)
 }
 
-func stateNotifications() (*db.Notification, func()) {
-	notifications := db.FindUnprocessedDeviceStateNotifications()
-	if len(notifications) == 0 {
-		return nil, nil
-	}
-
-	var transitions []*transition
-
-	for _, notification := range notifications {
-		if device, found := db.FindDevice(notification.DeviceID); !found {
-			notification.Delete()
-			continue
-		} else {
-			transitions = append(transitions, &transition{
-				Notification: notification,
-				Device:       device,
-			})
-		}
-	}
-
-	markProcessed := func() {
-		for _, transition := range transitions {
-			transition.Notification.UpdateProcessed(true)
-		}
-	}
-
-	if len(transitions) == 0 {
-		markProcessed()
-		return nil, nil
-	}
-
-	newTransitions := changedDevices(transitions)
-
-	if len(newTransitions) == 0 {
-		markProcessed()
-		return nil, nil
-	}
-
-	subject := stateSubject(newTransitions)
-	body := stateBody(newTransitions, transitions)
-
-	return &db.Notification{
-		Subject: subject,
-		Body:    body,
-	}, markProcessed
+// stateChanges notifies about devices that went online or offline.
+var stateChanges = notificationKind[*db.DeviceStateNotification, *transition]{
+	find: db.FindUnprocessedDeviceStateNotifications,
+	resolve: func(notification *db.DeviceStateNotification) (*transition, bool) {
+		device, found := db.FindDevice(notification.DeviceID)
+		return &transition{Notification: notification, Device: device}, found
+	},
+	keep:    changedDevices,
+	subject: stateSubject,
+	body:    stateBody,
 }
 
-func changedDevices(transitions []*transition) []*transition {
-	initialTransitions := map[DeviceID]*transition{}
-	finalTransitions := map[DeviceID]*transition{}
+// changedDevices returns the last transition of each device that ends in a different state from
+// the one it started in. A device that went offline and came back is left out.
+func changedDevices(all []*transition) []*transition {
+	initialTransitions := map[int64]*transition{}
+	finalTransitions := map[int64]*transition{}
 
-	// Notifications are looped through in chronological order, so each iteration of the loop will
-	// overwrite the map entry in finalTransitions for the same device — this is intentional. This
-	// means the final entry will be the most recent notification. We also store the first one in
-	// initialTransitions, as this will let us compare the first and last notification below.
-	for _, transition := range transitions {
+	// The transitions are in chronological order, so the last one for a device overwrites the
+	// others in finalTransitions. The first one stays in initialTransitions.
+	for _, transition := range all {
 		deviceID := transition.Device.ID
 
 		if _, ok := initialTransitions[deviceID]; !ok {
@@ -104,56 +67,50 @@ func changedDevices(transitions []*transition) []*transition {
 		finalTransitions[deviceID] = transition
 	}
 
-	// If the final transition is the same as the first one then we know the device has overall
-	// changed state. This logic holds if there is only one transition logged for this period, as
-	// then it's being compared to itself.
-	return lo.Values(lo.OmitBy(finalTransitions, func(deviceID DeviceID, finalTransition *transition) bool {
+	// A device with one transition compares it with itself, so it is kept.
+	return lo.Values(lo.OmitBy(finalTransitions, func(deviceID int64, finalTransition *transition) bool {
 		return finalTransition.Notification.State != initialTransitions[deviceID].Notification.State
 	}))
 }
 
-func stateSubject(newTransitions []*transition) string {
-	if len(newTransitions) == 0 {
-		return "device state has fluctuated"
+func stateSubject(changes []*transition) string {
+	if len(changes) == 1 {
+		return changes[0].String()
 	}
 
-	if len(newTransitions) == 1 {
-		return newTransitions[0].String()
+	isOnline := func(change *transition) bool { return change.Notification.State == deviceR.StateOnline }
+	isOffline := func(change *transition) bool { return change.Notification.State == deviceR.StateOffline }
+
+	if lo.EveryBy(changes, isOnline) {
+		return fmt.Sprintf("%d devices are online", len(changes))
 	}
 
-	isOnline := func(t *transition) bool { return t.Notification.State == deviceR.StateOnline }
-	isOffline := func(t *transition) bool { return t.Notification.State == deviceR.StateOffline }
-
-	if lo.EveryBy(newTransitions, isOnline) {
-		return fmt.Sprintf("%d devices are online", len(newTransitions))
-	}
-
-	if lo.EveryBy(newTransitions, isOffline) {
-		return fmt.Sprintf("%d devices are offline", len(newTransitions))
+	if lo.EveryBy(changes, isOffline) {
+		return fmt.Sprintf("%d devices are offline", len(changes))
 	}
 
 	return fmt.Sprintf(
 		"%d devices changed state (%d online, %d offline)",
-		len(newTransitions),
-		lo.CountBy(newTransitions, isOnline),
-		lo.CountBy(newTransitions, isOffline),
+		len(changes),
+		lo.CountBy(changes, isOnline),
+		lo.CountBy(changes, isOffline),
 	)
 }
 
-func stateBody(newTransitions []*transition, allTransitions []*transition) string {
+// stateBody lists the changes. If some devices only went offline and came back, it also lists all
+// the activity.
+func stateBody(changes []*transition, all []*transition) string {
 	var s strings.Builder
 
-	for _, transition := range newTransitions {
-		s.WriteString(transition.TimestampedString())
+	for _, change := range changes {
+		s.WriteString(change.TimestampedString())
 		s.WriteString("\n")
 	}
 
-	if len(allTransitions) > len(newTransitions) {
-		if len(newTransitions) > 0 {
-			s.WriteString("\nAll activity:\n\n")
-		}
+	if len(all) > len(changes) {
+		s.WriteString("\nAll activity:\n\n")
 
-		for _, transition := range allTransitions {
+		for _, transition := range all {
 			s.WriteString(transition.TimestampedString())
 			s.WriteString("\n")
 		}
