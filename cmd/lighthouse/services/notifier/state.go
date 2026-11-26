@@ -1,4 +1,4 @@
-package state
+package notifier
 
 import (
 	"fmt"
@@ -39,7 +39,7 @@ func (self *transition) TimestampedString() string {
 	)
 }
 
-func Notifications() (*db.Notification, func()) {
+func stateNotifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceStateNotifications()
 	if len(notifications) == 0 {
 		return nil, nil
@@ -70,15 +70,15 @@ func Notifications() (*db.Notification, func()) {
 		return nil, nil
 	}
 
-	newTransitions := getNewTransitions(transitions)
+	newTransitions := changedDevices(transitions)
 
 	if len(newTransitions) == 0 {
 		markProcessed()
 		return nil, nil
 	}
 
-	subject := getSubject(newTransitions)
-	body := getBody(newTransitions, transitions)
+	subject := stateSubject(newTransitions)
+	body := stateBody(newTransitions, transitions)
 
 	return &db.Notification{
 		Subject: subject,
@@ -86,7 +86,7 @@ func Notifications() (*db.Notification, func()) {
 	}, markProcessed
 }
 
-func getNewTransitions(transitions []*transition) []*transition {
+func changedDevices(transitions []*transition) []*transition {
 	initialTransitions := map[DeviceID]*transition{}
 	finalTransitions := map[DeviceID]*transition{}
 
@@ -112,7 +112,7 @@ func getNewTransitions(transitions []*transition) []*transition {
 	}))
 }
 
-func getSubject(newTransitions []*transition) string {
+func stateSubject(newTransitions []*transition) string {
 	if len(newTransitions) == 0 {
 		return "device state has fluctuated"
 	}
@@ -140,7 +140,7 @@ func getSubject(newTransitions []*transition) string {
 	)
 }
 
-func getBody(newTransitions []*transition, allTransitions []*transition) string {
+func stateBody(newTransitions []*transition, allTransitions []*transition) string {
 	var s strings.Builder
 
 	for _, transition := range newTransitions {

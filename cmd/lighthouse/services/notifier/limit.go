@@ -1,4 +1,4 @@
-package limit
+package notifier
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ func (self *trespasser) String() string {
 	)
 }
 
-func Notifications() (*db.Notification, func()) {
+func limitNotifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceLimitNotifications()
 	if len(notifications) == 0 {
 		return nil, nil
@@ -55,8 +55,8 @@ func Notifications() (*db.Notification, func()) {
 		return nil, nil
 	}
 
-	subject := getSubject(trespassers)
-	body := getBody(trespassers)
+	subject := limitSubject(trespassers)
+	body := limitBody(trespassers)
 
 	return &db.Notification{
 		Subject: subject,
@@ -64,7 +64,7 @@ func Notifications() (*db.Notification, func()) {
 	}, markProcessed
 }
 
-func getSubject(trespassers []*trespasser) string {
+func limitSubject(trespassers []*trespasser) string {
 	if len(trespassers) == 1 {
 		return fmt.Sprintf("%s is still online", trespassers[0].Device.DisplayName())
 	} else {
@@ -72,7 +72,7 @@ func getSubject(trespassers []*trespasser) string {
 	}
 }
 
-func getBody(trespassers []*trespasser) string {
+func limitBody(trespassers []*trespasser) string {
 	var s strings.Builder
 
 	for _, trespasser := range trespassers {

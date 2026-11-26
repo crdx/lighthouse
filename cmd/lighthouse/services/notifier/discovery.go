@@ -1,4 +1,4 @@
-package discovery
+package notifier
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ type discovery struct {
 	Device       *db.Device
 }
 
-func Notifications() (*db.Notification, func()) {
+func discoveryNotifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceDiscoveryNotifications()
 	if len(notifications) == 0 {
 		return nil, nil
@@ -43,8 +43,8 @@ func Notifications() (*db.Notification, func()) {
 		return nil, nil
 	}
 
-	subject := getSubject(discoveries)
-	body := getBody(discoveries)
+	subject := discoverySubject(discoveries)
+	body := discoveryBody(discoveries)
 
 	return &db.Notification{
 		Subject: subject,
@@ -52,7 +52,7 @@ func Notifications() (*db.Notification, func()) {
 	}, markProcessed
 }
 
-func getSubject(discoveries []*discovery) string {
+func discoverySubject(discoveries []*discovery) string {
 	if len(discoveries) == 1 {
 		return fmt.Sprintf("%s joined the network", discoveries[0].Device.DisplayName())
 	} else {
@@ -60,7 +60,7 @@ func getSubject(discoveries []*discovery) string {
 	}
 }
 
-func getBody(discoveries []*discovery) string {
+func discoveryBody(discoveries []*discovery) string {
 	var s strings.Builder
 	for _, discovery := range discoveries {
 		fmt.Fprintf(&s, "%s\n", discovery.Device.Details())

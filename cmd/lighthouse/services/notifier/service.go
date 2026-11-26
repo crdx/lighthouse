@@ -1,4 +1,4 @@
-package service
+package notifier
 
 import (
 	"fmt"
@@ -7,19 +7,19 @@ import (
 	"crdx.org/lighthouse/db"
 )
 
-type discovery struct {
+type newService struct {
 	Notification *db.DeviceServiceNotification
 	Service      *db.Service
 	Device       *db.Device
 }
 
-func Notifications() (*db.Notification, func()) {
+func serviceNotifications() (*db.Notification, func()) {
 	notifications := db.FindUnprocessedDeviceServiceNotifications()
 	if len(notifications) == 0 {
 		return nil, nil
 	}
 
-	var discoveries []*discovery
+	var discoveries []*newService
 
 	for _, notification := range notifications {
 		device, foundDevice := db.FindDevice(notification.DeviceID)
@@ -30,7 +30,7 @@ func Notifications() (*db.Notification, func()) {
 			continue
 		}
 
-		discoveries = append(discoveries, &discovery{
+		discoveries = append(discoveries, &newService{
 			Notification: notification,
 			Device:       device,
 			Service:      service,
@@ -48,8 +48,8 @@ func Notifications() (*db.Notification, func()) {
 		return nil, nil
 	}
 
-	subject := getSubject(discoveries)
-	body := getBody(discoveries)
+	subject := serviceSubject(discoveries)
+	body := serviceBody(discoveries)
 
 	return &db.Notification{
 		Subject: subject,
@@ -57,7 +57,7 @@ func Notifications() (*db.Notification, func()) {
 	}, markProcessed
 }
 
-func getSubject(discoveries []*discovery) string {
+func serviceSubject(discoveries []*newService) string {
 	if len(discoveries) == 1 {
 		return fmt.Sprintf("new service found on %s", discoveries[0].Device.DisplayName())
 	} else {
@@ -65,7 +65,7 @@ func getSubject(discoveries []*discovery) string {
 	}
 }
 
-func getBody(discoveries []*discovery) string {
+func serviceBody(discoveries []*newService) string {
 	var s strings.Builder
 	for _, discovery := range discoveries {
 		fmt.Fprintf(&s, "%s\n", discovery.Service.Details())
