@@ -2,6 +2,8 @@
 
 ## [Next]
 
+## [1.5.1] — 2026-11-26
+
 - Retry notifications whose mail failed to send
 - Fix concurrent access to the settings cache
 
